@@ -1,0 +1,71 @@
+<!-- 基础空白文档 -->
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="utf-8">
+  <title>选择工种</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+  <link rel="stylesheet" href="css/weui.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div class="jobs page">
+    <!-- 页面导航，后面需要注销掉 -->
+    <div class="nav flex">
+      <div class="icon-left">返回</div>
+      <div class="title">选择工种</div>
+      <div class="icon-right"></div>
+    </div>
+
+    <!-- 头部 -->
+    <header>
+      <span class="icon">icon:</span><span>深圳市福田区新民路24号</span>
+    </header>
+
+    <!-- 主体内容 -->
+    <section class="main">
+      <div class="jobsBox">
+        <div class="jobs_hd">请选择您需要的工种，最多两个</div>
+        <div class="jobs_bd flex">
+          <input type="button" class="job" value="土建木工">
+          <input type="button" class="job" value="土建木工">
+          <input type="button" class="job" value="土建木工">
+          <input type="button" class="job" value="土建木工">
+          <input type="button" class="job" value="土建木工">
+          <input type="button" class="job" value="土建木工">
+          <input type="button" class="job" value="土建木工">
+          <input type="button" class="job" value="土建木工">
+          <input type="button" class="job" value="土建木工">
+          <input type="button" class="job" value="土建木工">
+          <input type="button" class="job" value="土建木工">
+          <input type="button" class="job" value="土建木工">
+        </div>
+      </div>
+
+
+    </section>
+
+    <!-- 底部 -->
+    <footer>
+      <div class="footerBox">
+        <input type="button" class="publish" value="立即发布"><input type="button" class="personal" value="我的">
+      </div>
+    </footer>
+  </div>
+
+  <script type="text/javascript" src="js/weui.js"></script>
+
+  <script>
+    window.onload = function () {
+      var goback = document.querySelector('.icon-left');
+      goback.onclick = function () {
+        window.history.go(-1);
+      }
+    }
+  </script>
+</body>
+
+</html>
