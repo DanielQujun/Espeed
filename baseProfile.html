@@ -1,0 +1,58 @@
+<!-- 基础空白文档 -->
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="utf-8">
+  <title>基础资料填写</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+  <link rel="stylesheet" href="css/weui.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div class="baseProfile page">
+    <!-- 页面导航，后面需要注销掉 -->
+    <div class="nav flex">
+      <div class="icon-left">返回</div>
+      <div class="title">基础资料填写</div>
+      <div class="icon-right"></div>
+    </div>
+
+    <!-- 头部 -->
+    <header>
+    </header>
+
+    <!-- 主体内容 -->
+    <section class="main">
+      <div class="portraitBox">
+        <img src="images/defaultHead.png">
+        <a class="changePortrait" href="#">替换头像</a>
+      </div>
+      <div class="inputBox">
+        <label for="username">用户名</label>
+        <input type="text" id="username" placeholder="请输入用户名（必填,别人可见）">
+      </div>
+      <input class="submitBtn" type="button" value="确定">
+    </section>
+
+    <!-- 底部 -->
+    <footer>
+      
+    </footer>
+  </div>
+
+  <script type="text/javascript" src="js/weui.js"></script>
+
+  <script>
+    window.onload = function () {
+      var goback = document.querySelector('.icon-left');
+      goback.onclick = function () {
+        window.history.go(-1);
+      }
+    }
+  </script>
+</body>
+
+</html>

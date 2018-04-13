@@ -1,0 +1,55 @@
+<!-- 基础空白文档 -->
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="utf-8">
+  <title>选择角色</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+  <link rel="stylesheet" href="css/weui.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div class="role page">
+    <!-- 页面导航，后面需要注销掉 -->
+    <div class="nav flex">
+      <div class="icon-left">返回</div>
+      <div class="title">选择角色</div>
+      <div class="icon-right"></div>
+    </div>
+
+    <!-- 头部 -->
+
+    <!-- 主体内容 -->
+    <section class="main">
+      <div class="roleBox">
+        <label for="boss"><img src="images/role_boss.png" ></label>
+        <input type="radio" id="boss" name="role" value="boss" checked>我需要专业技术人员
+      </div>
+      <div class="roleBox">
+        <label for="worker"><img src="images/role_worker.png" ></label>
+        <input type="radio" id="worker" name="role" value="workder">我是技术人员
+      </div>
+    </section>
+
+    <!-- 底部 -->
+    <footer>
+
+    </footer>
+  </div>
+
+  <script type="text/javascript" src="js/weui.js"></script>
+
+  <script>
+    window.onload = function () {
+      var goback = document.querySelector('.icon-left');
+      goback.onclick = function () {
+        window.history.go(-1);
+      }
+    }
+  </script>
+</body>
+
+</html>

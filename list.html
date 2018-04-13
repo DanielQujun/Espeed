@@ -1,0 +1,96 @@
+<!-- 基础空白文档 -->
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="utf-8">
+  <title>列表页</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+  <link rel="stylesheet" href="css/weui.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div class="list page">
+    <!-- 页面导航，后面需要注销掉 -->
+    <div class="nav flex">
+      <div class="icon-left">返回</div>
+      <div class="title">列表页</div>
+      <div class="icon-right"></div>
+    </div>
+
+    <!-- 头部 -->
+    <header>
+      <div class="headerBox">
+        <input type="button" class="filter" value="离我最近"><input type="button" class="filter" value="最新上线">
+      </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <section class="main">
+      <ul class="listCon">
+        <li class="listItem">
+          <div class="list_hd flex">
+            <div class="tagBox">我是<span class="tag">木工</span></div>
+            <span class="distance">距您：2.6km</span>
+          </div>
+          <div class="list_bd flex">
+            <p class="publishedTime">发布时间：03-24 18:42</p>
+          </div>
+          <div class="list_ft flex">
+            <div class="infoBox">
+              <img src="images/role_worker.png">
+              <span class="username">张三</span>
+              <span>五颗星</span>
+            </div>
+            <div class="buttonBox">
+              <input type="button" value="去评价">
+              <input type="button" value="查看电话号码">
+            </div>
+          </div>
+        </li>
+        <li class="listItem">
+          <div class="list_hd flex">
+            <div class="tagBox">我是<span class="tag">木工</span></div>
+            <span class="distance">距您：2.6km</span>
+          </div>
+          <div class="list_bd flex">
+            <p class="publishedTime">发布时间：03-24 18:42</p>
+          </div>
+          <div class="list_ft flex">
+            <div class="infoBox">
+              <img src="images/role_worker.png">
+              <span class="username">张三</span>
+              <span>五颗星</span>
+            </div>
+            <div class="buttonBox">
+              <input type="button" value="去评价">
+              <input type="button" value="查看电话号码">
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 底部 -->
+    <footer>
+      <div class="footerBox">
+        <input type="button" class="publish" value="取消发布"><input type="button" class="personal" value="我的">
+      </div>
+    </footer>
+  </div>
+
+  <script type="text/javascript" src="js/weui.js"></script>
+
+  <script>
+    window.onload = function () {
+      var goback = document.querySelector('.icon-left');
+      goback.onclick = function () {
+        window.history.go(-1);
+      }
+    }
+  </script>
+</body>
+
+</html>

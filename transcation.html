@@ -1,0 +1,54 @@
+<!-- 基础空白文档 -->
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="utf-8">
+  <title>交易记录</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+  <link rel="stylesheet" href="css/weui.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div class="transcation page">
+    <!-- 页面导航，后面需要注销掉 -->
+    <div class="nav flex">
+      <div class="icon-left">返回</div>
+      <div class="title">交易记录</div>
+      <div class="icon-right"></div>
+    </div>
+
+    <!-- 头部 -->
+
+    <!-- 主体内容 -->
+    <section class="main">
+      <ul class="listCon">
+        <li class="listItem">
+          <div class="list_hd flex">
+            <div class="tagBox">订单编号:<span class="tag">124537842</span></div>
+            <span class="distance">0.5元</span>
+          </div>
+          <div class="list_bd flex">
+            <p class="publishedTime">发布时间：03-24 18:42</p>  
+          </div>
+        </li>
+      </ul>
+    </section>
+
+  </div>
+
+  <script type="text/javascript" src="js/weui.js"></script>
+
+  <script>
+    window.onload = function () {
+      var goback = document.querySelector('.icon-left');
+      goback.onclick = function () {
+        window.history.go(-1);
+      }
+    }
+  </script>
+</body>
+
+</html>
