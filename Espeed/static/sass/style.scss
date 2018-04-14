@@ -1,66 +1,74 @@
-@charset "UTF-8";
+
 /* 为减少加载，提高用户体验，所有自己写的页面样式写在一个文件内，每个页面定义一个类名，与文件名保持一致 */
 /* ============================================================公共样式开始============================================================ */
 .blue {
-  color: #43b4dc; }
+  color: #43b4dc;
+}
 
 .deepblue {
-  color: #16a4ca; }
+  color: #16a4ca;
+}
 
 .flex {
-  display: flex; }
-
+  display: flex;
+}
 .page {
   width: 100vw;
-  height: 100vh; }
+  height: 100vh;
+  
+}
 
 footer {
   position: fixed;
   width: 100%;
   height: 46px;
   left: 0;
-  bottom: 0; }
-
+  bottom: 0;
+}
 footer .footerBox input[type="button"] {
   width: 50%;
   height: 46px;
   outline: none;
-  border: none; }
-
+  border: none;
+}
 footer .footerBox .publish {
-  background: #16a4ca; }
-
+  background: #16a4ca;
+}
 footer .footerBox .personal {
-  background: #43b4dc; }
+  background: #43b4dc;
+}
 
 .main .listCon {
   margin-top: 46px;
-  padding: 10px; }
-
+  padding: 10px;
+}
 .main .listCon .listItem {
   background: #fff;
   margin: 10px auto;
   width: 100%;
   padding: 10px;
-  box-sizing: border-box; }
-
+  box-sizing: border-box;
+}
 .main .listCon .listItem .list_hd,
 .main .listCon .listItem .list_bd,
 .main .listCon .listItem .list_ft {
-  justify-content: space-between; }
-
+  justify-content: space-between;
+  
+}
 .main .listCon .listItem .list_hd .tag {
   border: 1px solid #e0ca1c;
   padding: 0 4px;
   font-size: 14px;
   line-height: 18px;
   color: #e0ca1c;
-  border-radius: 2px; }
-
+  border-radius: 2px;
+}
 .main .listCon .listItem .list_ft .infoBox img {
   width: 20px;
   height: 20px;
-  border-radius: 50%; }
+  border-radius: 50%;
+} 
+
 
 /* 页面导航，后面需要注释掉 */
 .nav {
@@ -70,32 +78,43 @@ footer .footerBox .personal {
   line-height: 44px;
   height: 44px;
   background: #393a3f;
-  justify-content: space-around; }
-
+  justify-content: space-around;
+}
 .nav .icon-left, .nav .icon-right {
-  width: 10%; }
-
+  width: 10%;
+}
 .nav .title {
-  width: 80%; }
+  width: 80%;
+}
+
 
 /* ============================================================私有样式开始============================================================ */
+
 /* 注册页面开始 */
 .register {
-  background: #43b4dc; }
-  .register .main {
-    text-align: center; }
-    .register .main h1 {
-      color: #fff;
-      font-size: 48px; }
-    .register .main .registerBox {
-      width: 320px;
-      background: #fff;
-      margin: 44px auto 0 auto;
-      box-shadow: 0 4px 8px rgba(100, 100, 100, 0.2); }
-      .register .main .registerBox h4 {
-        color: #f8d851;
-        line-height: 50px; }
-
+  background: #43b4dc;
+  
+  .main {
+      text-align: center;
+      
+      h1 {
+          color: #fff;
+          font-size: 48px;
+      }
+      
+      .registerBox {
+          width: 320px;
+          background: #fff;
+          margin: 44px auto 0 auto;
+          box-shadow: 0 4px 8px rgba(100,100,100,.2);
+          
+          h4 {
+            color: #f8d851;
+            line-height: 50px;
+          }
+        }   
+    }
+}
 .register .main .registerBox .phoneBox,
 .register .main .registerBox .codeBox {
   width: 300px;
@@ -104,14 +123,14 @@ footer .footerBox .personal {
   height: 60px;
   text-align: left;
   box-sizing: border-box;
-  padding: 12px 0; }
-
+  padding: 12px 0;
+}
 .register .main .registerBox .phoneBox input[type="phone"] {
   outline: none;
   border: none;
   height: 35px;
-  line-height: 35px; }
-
+  line-height: 35px;
+}
 .register .main .registerBox .phoneBox input[type="button"] {
   outline: none;
   border: none;
@@ -119,18 +138,19 @@ footer .footerBox .personal {
   line-height: 35px;
   background: #e6e6e6;
   color: #7b7b7b;
-  padding: 0 6px; }
-
+  padding: 0 6px;
+}
 .register .main .registerBox .codeBox input[type="number"] {
   outline: none;
   border: none;
   height: 35px;
-  line-height: 35px; }
-
+  line-height: 35px;
+}
 .register .main .submitBox {
   margin: 20px auto;
-  width: 320px; }
-
+  width: 320px;
+  
+}
 .register .main .submitBox input[type="button"] {
   outline: none;
   border: none;
@@ -138,72 +158,75 @@ footer .footerBox .personal {
   line-height: 35px;
   background: #e6e6e6;
   color: #7b7b7b;
-  width: 100%; }
-
+  width: 100%;
+}
 .register .main .submitBox .tips {
   margin-top: 15px;
   font-size: 13px;
   line-height: 1.5em;
-  color: #9f9f9f; }
-
+  color: #9f9f9f;
+}
 .register .main .submitBox .tips a {
   color: #43b4dc;
-  text-decoration: underline; }
-
+  text-decoration: underline;
+}
 /* 注册页面结束 */
+
 /* 角色选择界面开始 */
+
 .role .main .roleBox {
   margin: 26px auto 0 auto;
   text-align: center;
-  width: 306px; }
-
+  width: 306px;
+}
 .role .main .roleBox label {
   width: 306px;
   display: block;
-  margin-bottom: 18px; }
-
+  margin-bottom: 18px;
+}
 .role .main .roleBox label img {
-  width: 153px; }
-
+  width: 153px;
+}
 /* 角色选择界面结束 */
+
 /* 基础资料填写开始 */
 .baseProfile .main {
-  text-align: center; }
-
+  text-align: center;
+}
 .baseProfile .main .portraitBox {
   margin-top: 50px;
   width: 60px;
   margin: 50px auto;
-  text-align: center; }
-
+  text-align: center;
+}
 .baseProfile .main .portraitBox img {
   width: 60px;
   height: 60px;
   border-radius: 50%;
   border: 1px solid #e0e0e0;
   display: block;
-  margin-bottom: 20px; }
-
+  margin-bottom: 20px;
+}
 .baseProfile .main .portraitBox .changePortrait {
-  font-size: 14px; }
-
+  font-size: 14px;
+}
 .baseProfile .main .inputBox {
   width: 320px;
   margin: 0 auto;
-  text-align: left; }
-
+  text-align: left;
+}
 .baseProfile .main .inputBox label {
   width: 320px;
-  display: block; }
-
+  display: block;
+}
 .baseProfile .main .inputBox input[type="text"] {
   outline: none;
   border: none;
   height: 35px;
   line-height: 35px;
   border-bottom: 1px solid #e0e0e0;
-  width: 100%; }
-
+  width: 100%;
+}
 .baseProfile .main .submitBtn {
   outline: none;
   border: none;
@@ -212,139 +235,215 @@ footer .footerBox .personal {
   background: #e6e6e6;
   color: #7b7b7b;
   width: 320px;
-  margin-top: 20px; }
-
+  margin-top: 20px;
+}
 /* 基础资料填写结束 */
+
+
 /* 选择工种开始 */
 .jobs header {
   text-align: center;
   font-size: 14px;
-  color: #666; }
-
+  color: #666;
+}
 .jobs .main .jobsBox {
   margin-top: 10px;
-  padding: 0 5%; }
-
+  padding: 0 5%;
+}
 .jobs .main .jobsBox .jobs_bd {
   justify-content: flex-start;
   width: 100%;
-  flex-wrap: wrap; }
-
+  flex-wrap: wrap;
+}
 .jobs .main .jobsBox .jobs_bd .job {
   width: 27%;
-  margin: 10px 3%; }
-
+  margin: 10px 3%;
+}
 /* 选择工种结束 */
+
 /* 列表页开始 */
 .list {
-  background: #f5f6f7; }
-
+  background: #f5f6f7;
+}
 .list header {
   position: fixed;
   width: 100%;
   height: 46px;
   left: 0;
-  top: 46px; }
-
+  top: 46px;
+}
 .list header .headerBox .filter {
   width: 50%;
   height: 46px;
   outline: none;
   border: none;
-  background: #43b4dc; }
-
+  background: #43b4dc;
+}
 .list .main .listCon {
   margin-top: 46px;
-  padding: 10px; }
-
+  padding: 10px;
+}
 .list .main .listCon .listItem {
   background: #fff;
   margin: 10px auto;
   width: 100%;
   padding: 10px;
-  box-sizing: border-box; }
-
+  box-sizing: border-box;
+}
 .list .main .listCon .listItem .list_hd,
 .list .main .listCon .listItem .list_bd,
 .list .main .listCon .listItem .list_ft {
-  justify-content: space-between; }
-
+  justify-content: space-between;
+  
+}
 .list .main .listCon .listItem .list_hd .tag {
   border: 1px solid #e0ca1c;
   padding: 0 4px;
   font-size: 14px;
   line-height: 18px;
   color: #e0ca1c;
-  border-radius: 2px; }
-
+  border-radius: 2px;
+}
 .list .main .listCon .listItem .list_ft .infoBox img {
   width: 20px;
   height: 20px;
-  border-radius: 50%; }
+  border-radius: 50%;
+} 
+
 
 /* 列表页结束 */
+
 /* 个人中心开始 */
 .personal .main {
-  text-align: center; }
-
+  text-align: center;
+}
 .personal .main .portraitBox {
   margin-top: 50px;
   width: 60px;
   margin: 50px auto;
-  text-align: center; }
-
+  text-align: center;
+}
 .personal .main .portraitBox img {
   width: 60px;
   height: 60px;
   border-radius: 50%;
   border: 1px solid #e0e0e0;
   display: block;
-  margin-bottom: 20px; }
-
+  margin-bottom: 20px;
+}
 .personal .main .portraitBox .username {
-  font-size: 14px; }
-
+  font-size: 14px;
+}
 .personal .main .menuBox {
-  text-align: left; }
-
+  text-align: left;
+}
 .personal .main .menuBox .menuList .link {
-  justify-content: space-between; }
+  justify-content: space-between;
+}
 
 /* 个人中心结束 */
+
+
 /* 历史查看开始 */
 .history {
-  background: #f5f6f7; }
-
+  background: #f5f6f7;
+}
 /* 历史查看结束 */
+
+
 /* 交易记录开始 */
 .transcation {
-  background: #f5f6f7; }
-
+  background: #f5f6f7;
+}
 /* 交易记录结束 */
+
+
 /* 个人资料开始 */
 .profile .main {
-  text-align: center; }
-
+  text-align: center;
+}
 .profile .main .portraitBox {
   margin-top: 50px;
-  width: 60px;
+  width: 60px; 
   margin: 50px auto;
-  text-align: center; }
-
+  text-align: center;
+}
 .profile .main .portraitBox img {
   width: 60px;
   height: 60px;
   border-radius: 50%;
   border: 1px solid #e0e0e0;
   display: block;
-  margin-bottom: 20px; }
-
+  margin-bottom: 20px;
+}
 .profile .main .profileBox {
-  text-align: left; }
-
+  text-align: left;
+}
 .profile .main .profileBox label {
-  display: block; }
+  display: block;
+}
 
 /* 个人资料结束 */
 
-/*# sourceMappingURL=style.css.map */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

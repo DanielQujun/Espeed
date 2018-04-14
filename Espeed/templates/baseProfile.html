@@ -7,18 +7,20 @@
   <title>基础资料填写</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
-  <link rel="stylesheet" href="css/weui.css">
-  <link rel="stylesheet" href="css/style.css">
+  <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
+  <link rel="stylesheet" href="../static/css/weui.css">
+  <link rel="stylesheet" href="../static/css/jquery-weui.css">
+  <link rel="stylesheet" href="../static/css/style.css">
 </head>
 
 <body>
   <div class="baseProfile page">
     <!-- 页面导航，后面需要注销掉 -->
-    <div class="nav flex">
+    <!-- <div class="nav flex">
       <div class="icon-left">返回</div>
       <div class="title">基础资料填写</div>
       <div class="icon-right"></div>
-    </div>
+    </div> -->
 
     <!-- 头部 -->
     <header>
@@ -27,7 +29,7 @@
     <!-- 主体内容 -->
     <section class="main">
       <div class="portraitBox">
-        <img src="images/defaultHead.png">
+        <img src="../static/images/defaultHead.png">
         <a class="changePortrait" href="#">替换头像</a>
       </div>
       <div class="inputBox">
@@ -42,16 +44,14 @@
       
     </footer>
   </div>
-
-  <script type="text/javascript" src="js/weui.js"></script>
-
+  <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
+  <script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
+  <script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
   <script>
-    window.onload = function () {
-      var goback = document.querySelector('.icon-left');
-      goback.onclick = function () {
-        window.history.go(-1);
-      }
-    }
+    // 开启fastclick功能
+    $(function() {
+        FastClick.attach(document.body);
+    });
   </script>
 </body>
 
