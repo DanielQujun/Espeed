@@ -93,24 +93,27 @@ footer .footerBox .personal {
 /* 注册页面开始 */
 .register {
   background: #43b4dc;
-}
-.register .main {
-  text-align: center;
-}
-.register .main h1 {
-  color: #fff;
-  margin-top: 95px;
-  font-size: 48px;
-}
-.register .main .registerBox {
-  width: 320px;
-  background: #fff;
-  margin: 44px auto 0 auto;
-  box-shadow: 0 4px 8px rgba(100,100,100,.2);
-}
-.register .main .registerBox h4 {
-  color: #f8d851;
-  line-height: 50px;
+  
+  .main {
+      text-align: center;
+      
+      h1 {
+          color: #fff;
+          font-size: 48px;
+      }
+      
+      .registerBox {
+          width: 320px;
+          background: #fff;
+          margin: 44px auto 0 auto;
+          box-shadow: 0 4px 8px rgba(100,100,100,.2);
+          
+          h4 {
+            color: #f8d851;
+            line-height: 50px;
+          }
+        }   
+    }
 }
 .register .main .registerBox .phoneBox,
 .register .main .registerBox .codeBox {
