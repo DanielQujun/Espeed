@@ -269,68 +269,198 @@ footer {
           .workerList .main .listItem .infoBox .list_ft .rate {
             display: none; }
 
-/* 列表页结束 */
+/* 工人列表页结束 */
 /* 个人中心开始 */
-.personal .main {
-  text-align: center; }
-
-.personal .main .portraitBox {
-  margin-top: 50px;
-  width: 60px;
-  margin: 50px auto;
-  text-align: center; }
-
-.personal .main .portraitBox img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 1px solid #e0e0e0;
-  display: block;
-  margin-bottom: 20px; }
-
-.personal .main .portraitBox .username {
-  font-size: 14px; }
-
-.personal .main .menuBox {
+.userCenter .main .menuBox {
   text-align: left; }
 
-.personal .main .menuBox .menuList .link {
+.userCenter .main .menuBox .menuList .link {
   justify-content: space-between; }
+
+.userCenter {
+  background: #fff url(../images/wave_bg.jpg) no-repeat center top;
+  background-size: 100% auto; }
+  .userCenter .main {
+    height: 100vh;
+    width: 86%;
+    margin: 0 auto;
+    text-align: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding-top: 2rem;
+    font-size: 14px; }
+    .userCenter .main .changePortrait {
+      color: #fff; }
+      .userCenter .main .changePortrait img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 1px solid #e0e0e0; }
+    .userCenter .main .menuBox {
+      margin-top: 2rem; }
+      .userCenter .main .menuBox .menuList {
+        list-style: none;
+        font-size: 16px;
+        margin-bottom: 20px; }
+        .userCenter .main .menuBox .menuList a {
+          color: #333; }
+          .userCenter .main .menuBox .menuList a .iconfont {
+            margin: 0 4px; }
+          .userCenter .main .menuBox .menuList a .icon-history {
+            color: #3cb878; }
+          .userCenter .main .menuBox .menuList a .icon-profile {
+            color: #fc7d4a; }
+          .userCenter .main .menuBox .menuList a .icon-record {
+            color: #ffc245; }
+          .userCenter .main .menuBox .menuList a .icon-arrow-right {
+            color: #999999; }
 
 /* 个人中心结束 */
 /* 历史查看开始 */
 .history {
-  background: #f5f6f7; }
+  background: #f5f6f7;
+  padding-top: 10px; }
+  .history header {
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    left: 0;
+    top: 0; }
+  .history .main {
+    height: 100vh;
+    box-sizing: border-box;
+    font-size: 14px; }
+    .history .main .listItem {
+      border-top: 1px solid #eaeaea;
+      border-bottom: 1px solid #eaeaea;
+      justify-content: space-between;
+      background: #fff;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      margin-bottom: 10px; }
+      .history .main .listItem .portraitBox {
+        width: 1.6rem;
+        text-align: center; }
+        .history .main .listItem .portraitBox img {
+          border-radius: 50%;
+          width: 54px;
+          height: 54px;
+          border: 1px solid #e0e0e0; }
+      .history .main .listItem .infoBox {
+        width: 7.6rem;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative; }
+        .history .main .listItem .infoBox .list_hd {
+          justify-content: space-between; }
+          .history .main .listItem .infoBox .list_hd .tag {
+            border: 1px solid #fbaf5d;
+            padding: 0 10px;
+            font-size: 12px;
+            line-height: 1.5em;
+            color: #fbaf5d;
+            border-radius: 2px;
+            margin-right: 4px; }
+          .history .main .listItem .infoBox .list_hd .star {
+            color: #fbaf5d; }
+        .history .main .listItem .infoBox .list_bd {
+          justify-content: space-between;
+          font-size: 12px;
+          color: #999; }
+        .history .main .listItem .infoBox .list_ft {
+          font-size: 13px;
+          justify-content: flex-end; }
+          .history .main .listItem .infoBox .list_ft .weui-btn {
+            margin-top: 0;
+            margin-left: 10px;
+            margin-right: 0;
+            line-height: 1.8em; }
+          .history .main .listItem .infoBox .list_ft .complain {
+            display: block; }
+        .history .main .listItem .infoBox .jiaobiaoBox {
+          position: absolute;
+          top: -10px;
+          right: -10px;
+          color: #fff;
+          width: 140px;
+          height: 37px; }
+        .history .main .listItem .infoBox .stop {
+          background: url(../images/stop_bg.png) no-repeat top right;
+          background-size: contain; }
+        .history .main .listItem .infoBox .offline {
+          background: url(../images/offline_bg.png) no-repeat top right;
+          background-size: contain; }
 
 /* 历史查看结束 */
 /* 交易记录开始 */
 .transcation {
-  background: #f5f6f7; }
+  background: #f5f6f7;
+  height: 100vh;
+  padding-top: 10px; }
+  .transcation .listCon .listItem {
+    padding: 10px;
+    list-style: none;
+    background: #fff;
+    border-top: 1px solid #dedede;
+    border-bottom: 1px solid #dedede;
+    font-size: 14px;
+    margin-bottom: 10px;
+    line-height: 2em; }
+    .transcation .listCon .listItem .list_hd {
+      justify-content: space-between;
+      color: #999; }
+    .transcation .listCon .listItem .list_bd {
+      justify-content: space-between;
+      color: #333;
+      font-weight: 700; }
 
 /* 交易记录结束 */
 /* 个人资料开始 */
-.profile .main {
-  text-align: center; }
-
-.profile .main .portraitBox {
-  margin-top: 50px;
-  width: 60px;
-  margin: 50px auto;
-  text-align: center; }
-
-.profile .main .portraitBox img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 1px solid #e0e0e0;
-  display: block;
-  margin-bottom: 20px; }
-
-.profile .main .profileBox {
-  text-align: left; }
-
-.profile .main .profileBox label {
-  display: block; }
+.profile {
+  background: #fff; }
+  .profile .main {
+    height: 100vh;
+    width: 86%;
+    margin: 0 auto;
+    text-align: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding-top: 2rem;
+    font-size: 14px; }
+    .profile .main img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 1px solid #e0e0e0; }
+    .profile .main .inputBox {
+      margin-top: 1rem;
+      text-align: left; }
+      .profile .main .inputBox .username {
+        margin-top: 4px;
+        height: 46px;
+        line-height: 46px;
+        width: 100%;
+        border-radius: 5px;
+        border: 1px solid #dedede;
+        outline: none;
+        padding: 0 0 0 14px;
+        box-sizing: border-box;
+        margin-bottom: 6px; }
+      .profile .main .inputBox .username.active {
+        box-shadow: 0 0 1px 2px #3493eb; }
+      .profile .main .inputBox .tag {
+        border: 1px solid #fbaf5d;
+        padding: 4px 10px;
+        font-size: 14px;
+        line-height: 2.5em;
+        color: #fbaf5d;
+        border-radius: 2px;
+        margin-right: 4px; }
+    .profile .main .submitBtn {
+      margin-top: 1rem; }
 
 /* 个人资料结束 */
 

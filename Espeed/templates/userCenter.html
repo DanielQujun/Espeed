@@ -9,43 +9,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
   <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
   <link rel="stylesheet" href="../static/css/weui.css">
+  <link rel="stylesheet" href="../static/iconfont/iconfont.css">
   <link rel="stylesheet" href="../static/css/jquery-weui.css">
   <link rel="stylesheet" href="../static/css/style.css">
 </head>
 
 <body>
-  <div class="personal page">
-    <!-- 页面导航，后面需要注销掉 -->
-    <div class="nav flex">
-      <div class="icon-left">返回</div>
-      <div class="title">我的</div>
-      <div class="icon-right"></div>
-    </div>
-
-    <!-- 头部 -->
-    <header>
-      
-    </header>
-
-    <!-- 主体内容 -->
+  <div class="userCenter">
     <section class="main">
-      <div class="portraitBox">
-        <img src="images/defaultHead.png">
-        <a class="username" href="#">张三 木工</a>
-      </div>
+      <a class="changePortrait" href="#"><img src="../static/images/defaultHead.png"><p>替换头像</p></a>
       <ul class="menuBox">
-        <li class="menuList"><a href="#" class="link flex"><span class="title">历史查看</span><span>icon</span></a></li>
-        <li class="menuList"><a href="#" class="link flex"><span class="title">我的资料</span><span>icon</span></a></li>
-        <li class="menuList"><a href="#" class="link flex"><span class="title">交易记录</span><span>icon</span></a></li>
+        <li class="menuList"><a href="history.html" class="link flex"><span class="title"><i class="iconfont icon-history"></i>历史查看</span><i class="iconfont icon-arrow-right"></i></a></li>
+        <li class="menuList"><a href="profile.html" class="link flex"><span class="title"><i class="iconfont icon-profile"></i>我的资料</span><i class="iconfont icon-arrow-right"></i></a></li>
+        <li class="menuList"><a href="transcation.html" class="link flex"><span class="title"><i class="iconfont icon-record"></i>交易记录</span><i class="iconfont icon-arrow-right"></i></a></li>
       </ul>
     </section>
-
-    <!-- 底部 -->
-    <footer>
-      <div class="footerBox">
-        <input type="button" class="publish" value="取消发布"><input type="button" class="personal" value="我的">
-      </div>
-    </footer>
   </div>
 
   <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>

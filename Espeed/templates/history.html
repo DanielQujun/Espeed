@@ -9,66 +9,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
   <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
   <link rel="stylesheet" href="../static/css/weui.css">
+  <link rel="stylesheet" href="../static/iconfont/iconfont.css">
   <link rel="stylesheet" href="../static/css/jquery-weui.css">
   <link rel="stylesheet" href="../static/css/style.css">
 </head>
 
 <body>
-  <div class="history page">
-    <!-- 页面导航，后面需要注销掉 -->
-    <div class="nav flex">
-      <div class="icon-left">返回</div>
-      <div class="title">历史查看</div>
-      <div class="icon-right"></div>
-    </div>
-
-    <!-- 头部 -->
-
+  <div class="history">
     <!-- 主体内容 -->
     <section class="main">
       <ul class="listCon">
-        <li class="listItem">
-          <div class="list_hd flex">
-            <div class="tagBox">我是<span class="tag">木工</span></div>
-            <span class="distance">距您：2.6km</span>
+        <li class="listItem flex">
+          <div class="portraitBox">
+            <img src="../static/images/defaulthead.png" >
+            <p>刘黎波</p>
           </div>
-          <div class="list_bd flex">
-            <p class="publishedTime">发布时间：03-24 18:42</p>  <p>停止招工</p>
-          </div>
-          <div class="list_ft flex">
-            <div class="infoBox">
-              <img src="images/role_worker.png">
-              <span class="username">张三</span>
-              <span>五颗星</span>
-            </div>
-            <div class="buttonBox">
-              <input type="button" value="去评价">
-              <input type="button" value="查看电话号码">
-            </div>
+          <div class="infoBox flex">
+              <div class="list_hd flex">
+                  <div class="tagBox"><span class="tag">木工</span><span class="tag">木工</span></div>
+                  <div class="star"><i class="iconfont icon-wuxing"></i></div>
+                </div>
+                <div class="list_bd flex">
+                </div>
+                <div class="list_ft flex">
+                    <a href="#" class="complain weui-btn weui-btn_mini weui-btn_default">申诉</a>
+                    <a href="#" class="check weui-btn weui-btn_mini weui-btn_success">15080755770</a>
+                </div>
+                <div class="jiaobiaoBox offline">
+                </div>
           </div>
         </li>
-        <li class="listItem">
-          <div class="list_hd flex">
-            <div class="tagBox">我是<span class="tag">木工</span></div>
-            <span class="distance">距您：2.6km</span>
+        <li class="listItem flex">
+          <div class="portraitBox">
+            <img src="../static/images/defaulthead.png" >
+            <p>刘黎波</p>
           </div>
-          <div class="list_bd flex">
-            <p class="publishedTime">发布时间：03-24 18:42</p>
-          </div>
-          <div class="list_ft flex">
-            <div class="infoBox">
-              <img src="images/role_worker.png">
-              <span class="username">张三</span>
-              <span>五颗星</span>
-            </div>
-            <div class="buttonBox">
-              <input type="button" value="去评价">
-              <input type="button" value="查看电话号码">
-            </div>
+          <div class="infoBox flex">
+              <div class="list_hd flex">
+                  <div class="tagBox"><span class="tag">木工</span><span class="tag">木工</span></div>
+                  <div class="star"><i class="iconfont icon-wuxing"></i></div>
+                </div>
+                <div class="list_bd flex">
+                </div>
+                <div class="list_ft flex">
+                    <a href="#" class="complain weui-btn weui-btn_mini weui-btn_default">申诉</a>
+                    <a href="#" class="check weui-btn weui-btn_mini weui-btn_success">15080755770</a>
+                </div>
+                <div class="jiaobiaoBox stop">
+                </div>
           </div>
         </li>
       </ul>
     </section>
+
   </div>
 
   <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>

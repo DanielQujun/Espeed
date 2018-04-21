@@ -224,6 +224,16 @@ a{
 .weui-btn_primary:not(.weui-btn_disabled):visited{
   color:#FFFFFF;
 }
+.weui-btn_success{
+  background-color:#09BB07;
+}
+.weui-btn_success:not(.weui-btn_disabled):visited{
+  color:#FFFFFF;
+}
+.weui-btn_success:not(.weui-btn_disabled):active{
+  color:rgba(255, 255, 255, 0.6);
+  background-color:#09BB07;
+}
 .weui-btn_primary:not(.weui-btn_disabled):active{
   color:rgba(255, 255, 255, 0.6);
   background-color:#3284d1;
@@ -272,6 +282,10 @@ a{
   color:rgba(52,  147,235, 0.6);
   border-color:rgba(50, 132, 209, 0.6);
 }
+/* .weui-btn_success {
+  color:#09BB07;
+  border:1px solid #09BB07;
+} */
 .weui-btn_plain-primary:after{
   border-width:0;
 }
