@@ -2,11 +2,11 @@
 /* 为减少加载，提高用户体验，所有自己写的页面样式写在一个文件内，每个页面定义一个类名，与文件名保持一致 */
 /* ============================================================公共样式开始============================================================ */
 .blue {
-  color: #43b4dc;
+  color: #3493eb;
 }
 
 .deepblue {
-  color: #16a4ca;
+  color: #3284d1;
 }
 
 .flex {
@@ -15,7 +15,6 @@
 .page {
   width: 100vw;
   height: 100vh;
-  
 }
 
 footer {
@@ -70,23 +69,6 @@ footer .footerBox .personal {
 } 
 
 
-/* 页面导航，后面需要注释掉 */
-.nav {
-  width: 100%;
-  text-align: center;
-  color: #fff;
-  line-height: 44px;
-  height: 44px;
-  background: #393a3f;
-  justify-content: space-around;
-}
-.nav .icon-left, .nav .icon-right {
-  width: 10%;
-}
-.nav .title {
-  width: 80%;
-}
-
 
 /* ============================================================私有样式开始============================================================ */
 
@@ -99,6 +81,7 @@ footer .footerBox .personal {
       text-align: center;
       
       h1 {
+        padding-top: 1.17rem;
           color: #fff;
           font-size: 48px;
       }
@@ -108,12 +91,12 @@ footer .footerBox .personal {
           background: #fff;
           margin: 1.17rem auto 0 auto;
           box-shadow: 0 .1rem .2rem rgba(100,100,100,.2);
-          padding-bottom: 12px;
+          padding-bottom: 20px;
           
           h4 {
+            padding-top: 15px;
             color: #f8d851;
-            line-height: 50px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: normal;
           }
 
@@ -128,7 +111,7 @@ footer .footerBox .personal {
           .phoneBox {
             border-bottom: 1px solid #e0e0e0;
 
-            input[type="phone"] {
+            input[type="tel"] {
               outline: none;
               border: none;
               height: 35px;
@@ -148,17 +131,11 @@ footer .footerBox .personal {
               width: 100%;
             }
 
-            input[type="button"] {
+            .codeBtn {
               position: absolute;
-              top: 15px;
+              top: 50%;
+              margin-top: -10px;
               right: 0;
-              outline: none;
-              border: none;
-              height: 35px;
-              line-height: 35px;
-              background: #3493eb;
-              color: #fff;
-              padding: 0 10px;
             }
 
             input[type="button"]:active {
@@ -172,40 +149,48 @@ footer .footerBox .personal {
           margin: .6rem auto;
           width: 86%;
           
-        }
+          .tips {
+            margin-top: 15px;
+            font-size: 13px;
+            line-height: 1.5em;
+            color: #9f9f9f;
 
-        
-        
-    
-    
+            a {
+              color: #3493eb;
+              text-decoration: underline;
+            }
+          }
+        }
       }
-}
-.register .main .submitBox .tips {
-  margin-top: 15px;
-  font-size: 13px;
-  line-height: 1.5em;
-  color: #9f9f9f;
-}
-.register .main .submitBox .tips a {
-  color: #43b4dc;
-  text-decoration: underline;
 }
 /* 注册页面结束 */
 
 /* 角色选择界面开始 */
+.role {
+  .main {
+    flex-direction: column;
+    justify-content: space-between;
 
-.role .main .roleBox {
-  margin: 26px auto 0 auto;
-  text-align: center;
-  width: 306px;
-}
-.role .main .roleBox label {
-  width: 306px;
-  display: block;
-  margin-bottom: 18px;
-}
-.role .main .roleBox label img {
-  width: 153px;
+    .roleBox {
+      margin: 2rem auto 0 auto;
+      text-align: center;
+      widows: 50%;
+
+      label {
+        width:100%;
+        display: block;
+        font-size: 18px;
+        color: #333;
+
+        // label样式 有待优化
+        
+        img {
+          width: 50%;
+        }
+      }
+    }
+  }
+
 }
 /* 角色选择界面结束 */
 

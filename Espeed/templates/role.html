@@ -15,31 +15,18 @@
 
 <body>
   <div class="role page">
-    <!-- 页面导航，后面需要注销掉 -->
-    <div class="nav flex">
-      <div class="icon-left">返回</div>
-      <div class="title">选择角色</div>
-      <div class="icon-right"></div>
-    </div>
-
-    <!-- 头部 -->
-
-    <!-- 主体内容 -->
-    <section class="main">
+    <section class="main flex">
       <div class="roleBox">
-        <label for="boss"><img src="images/role_boss.png" ></label>
-        <input type="radio" id="boss" name="role" value="boss" checked>我需要专业技术人员
+        <label for="worker"><img src="../static/images/role_worker.png" ><br/>
+        <input class="worker" type="radio" id="worker" name="role" value="workder">我是技术人员
+      </label>
       </div>
       <div class="roleBox">
-        <label for="worker"><img src="images/role_worker.png" ></label>
-        <input type="radio" id="worker" name="role" value="workder">我是技术人员
+        <label for="boss"><img src="../static/images/role_boss.png" ><br/>
+        <input type="radio" id="boss" name="role" value="boss" checked>我需要专业技术人员
+      </label>
       </div>
     </section>
-
-    <!-- 底部 -->
-    <footer>
-
-    </footer>
   </div>
 
   <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
