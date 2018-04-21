@@ -271,12 +271,6 @@ footer {
 
 /* 工人列表页结束 */
 /* 个人中心开始 */
-.userCenter .main .menuBox {
-  text-align: left; }
-
-.userCenter .main .menuBox .menuList .link {
-  justify-content: space-between; }
-
 .userCenter {
   background: #fff url(../images/wave_bg.jpg) no-repeat center top;
   background-size: 100% auto; }
@@ -297,12 +291,21 @@ footer {
         height: 80px;
         border-radius: 50%;
         border: 1px solid #e0e0e0; }
+    .userCenter .main .tag {
+      border: 1px solid #fff;
+      padding: 0 10px;
+      font-size: 12px;
+      line-height: 1.5em;
+      color: #fff;
+      border-radius: 2px;
+      margin-right: 4px; }
     .userCenter .main .menuBox {
-      margin-top: 2rem; }
+      margin-top: 6rem; }
       .userCenter .main .menuBox .menuList {
         list-style: none;
         font-size: 16px;
-        margin-bottom: 20px; }
+        margin-bottom: 20px;
+        justify-content: space-between; }
         .userCenter .main .menuBox .menuList a {
           color: #333; }
           .userCenter .main .menuBox .menuList a .iconfont {
