@@ -219,14 +219,14 @@ a{
   background-color:#DEDEDE;
 }
 .weui-btn_primary{
-  background-color:#1AAD19;
+  background-color:#3493eb;
 }
 .weui-btn_primary:not(.weui-btn_disabled):visited{
   color:#FFFFFF;
 }
 .weui-btn_primary:not(.weui-btn_disabled):active{
   color:rgba(255, 255, 255, 0.6);
-  background-color:#179B16;
+  background-color:#3284d1;
 }
 .weui-btn_warn{
   background-color:#E64340;
