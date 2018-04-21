@@ -14,31 +14,23 @@
 </head>
 
 <body>
-  <div class="profile page">
-    <!-- 页面导航，后面需要注销掉 -->
-    <div class="nav flex">
-      <div class="icon-left">返回</div>
-      <div class="title">个人资料</div>
-      <div class="icon-right"></div>
-    </div>
+  <div class="profile">
+      <section class="main">
+          <a class="changePortrait" href="#"><img src="../static/images/defaultHead.png"><p>替换头像</p></a>
+          <div class="inputBox">
+            <label for="username">用户名
+            <input disabled class="username" type="text" id="username" placeholder="张小伟">
+          </label>
+            <label for="username">电话号码
+            <input disabled class="username" type="text" id="username" placeholder="15080755770">
+          </label>
+            <span>工种</span>
+            <div class="tagBox"><span class="tag">木工</span><span class="tag">木工</span></div>
+          
+          </div>
+          <a href="#" class="weui-btn weui-btn_primary submitBtn">确定</a>
+        </section>
 
-    <!-- 主体内容 -->
-    <section class="main">
-      <div class="portraitBox">
-        <img src="images/defaultHead.png">
-        <a class="username" href="#">张三 木工</a>
-      </div>
-      <div class="profileBox">
-        <label for="username">用户名</label>
-        <input type="text" id="username" placeholder="张三" disabled>
-        <label for="jobs">工种</label>
-        <input type="button" value="木工">
-        <input type="button" value="瓦工">
-        <label for="username">电话号码</label>
-        <input type="text" id="phone" placeholder="15080755770" disabled>
-      </div>
-
-    </section>
 
   </div>
   <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
