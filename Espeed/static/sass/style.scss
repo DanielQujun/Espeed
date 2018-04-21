@@ -12,62 +12,53 @@
 .flex {
   display: flex;
 }
-.page {
-  width: 100vw;
-  height: 100vh;
+body {
+  background: #fff;
 }
 
+.clearfix:after {
+  display: block;
+  content: '';
+  clear: both;
+}
+// 底部导航栏
 footer {
   position: fixed;
   width: 100%;
   height: 46px;
   left: 0;
   bottom: 0;
-}
-footer .footerBox input[type="button"] {
-  width: 50%;
-  height: 46px;
-  outline: none;
-  border: none;
-}
-footer .footerBox .publish {
-  background: #16a4ca;
-}
-footer .footerBox .personal {
-  background: #43b4dc;
-}
+box-sizing: border-box;
+font-size: 0;
 
-.main .listCon {
-  margin-top: 46px;
-  padding: 10px;
-}
-.main .listCon .listItem {
-  background: #fff;
-  margin: 10px auto;
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-}
-.main .listCon .listItem .list_hd,
-.main .listCon .listItem .list_bd,
-.main .listCon .listItem .list_ft {
-  justify-content: space-between;
-  
-}
-.main .listCon .listItem .list_hd .tag {
-  border: 1px solid #e0ca1c;
-  padding: 0 4px;
-  font-size: 14px;
-  line-height: 18px;
-  color: #e0ca1c;
-  border-radius: 2px;
-}
-.main .listCon .listItem .list_ft .infoBox img {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-} 
+  a:first-child button {
+    border-right: 1px solid rgba(100,100,100,.2);
+  }
+  button {
+    width: 50%;
+    height: 46px;
+    outline: none;
+    border: none;
+    background: #eaeaea;
+    color: #333;
+    box-sizing: border-box;
+    margin: 0;
+    font-size: 15px;;
+  }
 
+  .iconfont {
+    margin: 0 4px;
+  }
+
+  .publish {
+    background: #3493eb;
+    color: #fff;
+  }
+  .unpublish {
+    background: #fbaf5d;
+    color: #fff;
+  }
+}
 
 
 /* ============================================================私有样式开始============================================================ */
@@ -169,10 +160,11 @@ footer .footerBox .personal {
 .role {
   .main {
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
+    height: 100vh;
 
     .roleBox {
-      margin: 2rem auto 0 auto;
+      margin: 0 auto 0 auto;
       text-align: center;
       widows: 50%;
 
@@ -183,11 +175,15 @@ footer .footerBox .personal {
         color: #333;
 
         // label样式 有待优化
-        
+
         img {
           width: 50%;
         }
       }
+    }
+    .confirmBtn {
+      width: 86%;
+
     }
   }
 
@@ -195,125 +191,208 @@ footer .footerBox .personal {
 /* 角色选择界面结束 */
 
 /* 基础资料填写开始 */
-.baseProfile .main {
-  text-align: center;
-}
-.baseProfile .main .portraitBox {
-  margin-top: 50px;
-  width: 60px;
-  margin: 50px auto;
-  text-align: center;
-}
-.baseProfile .main .portraitBox img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 1px solid #e0e0e0;
-  display: block;
-  margin-bottom: 20px;
-}
-.baseProfile .main .portraitBox .changePortrait {
-  font-size: 14px;
-}
-.baseProfile .main .inputBox {
-  width: 320px;
-  margin: 0 auto;
-  text-align: left;
-}
-.baseProfile .main .inputBox label {
-  width: 320px;
-  display: block;
-}
-.baseProfile .main .inputBox input[type="text"] {
-  outline: none;
-  border: none;
-  height: 35px;
-  line-height: 35px;
-  border-bottom: 1px solid #e0e0e0;
-  width: 100%;
-}
-.baseProfile .main .submitBtn {
-  outline: none;
-  border: none;
-  height: 35px;
-  line-height: 35px;
-  background: #e6e6e6;
-  color: #7b7b7b;
-  width: 320px;
-  margin-top: 20px;
+.baseProfile {
+  background: #fff;
+
+  .main {
+    height: 100vh;
+    width: 86%;
+    margin: 0 auto;
+    text-align: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding-top: 2rem;
+    font-size: 14px;;
+
+    img {
+      width: 80px;
+      height:80px;
+      border-radius: 50%;
+      border: 1px solid #e0e0e0;
+    }
+
+    .inputBox {
+     margin-top: 1rem;
+     text-align: left;
+     
+     .username {
+       margin-top: 4px;
+      height: 46px;
+      line-height: 46px;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #dedede;
+      outline: none;
+      padding: 0 0 0 14px;
+      box-sizing: border-box;
+    }
+
+
+    .username.active {
+      box-shadow: 0 0 1px 2px #3493eb;
+    }
+
+    }
+
+    
+    .submitBtn {
+      margin-top: 1rem;
+    }
+
+  }
 }
 /* 基础资料填写结束 */
 
 
 /* 选择工种开始 */
-.jobs header {
-  text-align: center;
-  font-size: 14px;
-  color: #666;
-}
-.jobs .main .jobsBox {
-  margin-top: 10px;
-  padding: 0 5%;
-}
-.jobs .main .jobsBox .jobs_bd {
-  justify-content: flex-start;
-  width: 100%;
-  flex-wrap: wrap;
-}
-.jobs .main .jobsBox .jobs_bd .job {
-  width: 27%;
-  margin: 10px 3%;
+.jobs {
+  header {
+    background: #3493eb;
+    text-align: center;
+    font-size: 12px;
+    line-height: 2.5em;
+    color: #fff;
+
+    .iconfont {
+      font-size: 13px;
+      margin-right: 2px;
+    }
+  }
+
+  .main {
+    font-size: 14px;
+    padding: 0 12px;
+    box-sizing: border-box;
+
+    .jobsBox {
+      margin-top: 10px;
+
+      .jobs_bd {
+        justify-content: flex-start;
+        width: 100%;
+        flex-wrap: wrap;
+        position: relative;
+
+        .job {
+          width: 27%;
+          margin: 10px 3%;
+          border: 1px solid #999999;
+          border-radius: 3px;
+          background: #fff;
+          color: #666666;
+          font-size: 13px;
+          line-height: 2.4em;
+          position: relative;
+        }
+        .job.active {
+          color: #fff;
+          background: #3493eb;
+          border: 1px solid #3284d1;
+        }
+      }
+
+
+    }
+  }
+
 }
 /* 选择工种结束 */
 
-/* 列表页开始 */
-.list {
+/* 工人列表页开始 */
+.workerList {
   background: #f5f6f7;
+  padding-top: 60px;
+
+  header {
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    left: 0;
+    top: 0;
+  }
+
+  .main {
+    height: 100vh;
+    box-sizing: border-box;
+    font-size: 14px;
+    
+    .listItem {
+      border-top: 1px solid #eaeaea;
+      border-bottom: 1px solid #eaeaea;
+      justify-content: space-between;
+      background: #fff;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      margin-bottom: 10px;
+
+      .portraitBox {
+        width: 1.6rem;
+        text-align: center;
+
+        img {
+          border-radius: 50%;
+          width: 54px;
+          height: 54px;
+          border: 1px solid #e0e0e0;
+        }
+
+      }
+
+      .infoBox {
+        width: 7.6rem;
+        flex-direction: column;
+        justify-content: space-between;
+
+         .list_hd {
+           justify-content: space-between;
+
+           .tag {
+            border: 1px solid #fbaf5d;
+            padding: 0 10px;
+            font-size: 12px;
+            line-height: 1.5em;
+            color: #fbaf5d;
+            border-radius: 2px;
+            margin-right: 4px;
+          }
+
+          .star {
+            color: #fbaf5d;
+          }
+
+         }
+
+         .list_bd {
+           justify-content: space-between;
+           font-size: 12px;
+           color: #999;
+
+        }
+
+        .list_ft {
+          font-size: 13px;
+          justify-content: flex-end;
+
+          .weui-btn {
+            margin-top: 0;
+            margin-left: 10px;
+            margin-right: 0;
+            line-height: 1.8em;
+        }
+
+        .rate {
+          display: none;
+        }
+        }     
+      }
+    }
+
+
+  }
 }
-.list header {
-  position: fixed;
-  width: 100%;
-  height: 46px;
-  left: 0;
-  top: 46px;
-}
-.list header .headerBox .filter {
-  width: 50%;
-  height: 46px;
-  outline: none;
-  border: none;
-  background: #43b4dc;
-}
-.list .main .listCon {
-  margin-top: 46px;
-  padding: 10px;
-}
-.list .main .listCon .listItem {
-  background: #fff;
-  margin: 10px auto;
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-}
-.list .main .listCon .listItem .list_hd,
-.list .main .listCon .listItem .list_bd,
-.list .main .listCon .listItem .list_ft {
-  justify-content: space-between;
-  
-}
-.list .main .listCon .listItem .list_hd .tag {
-  border: 1px solid #e0ca1c;
-  padding: 0 4px;
-  font-size: 14px;
-  line-height: 18px;
-  color: #e0ca1c;
-  border-radius: 2px;
-}
-.list .main .listCon .listItem .list_ft .infoBox img {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-} 
+
 
 
 /* 列表页结束 */

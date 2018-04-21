@@ -14,35 +14,16 @@
 </head>
 
 <body>
-  <div class="baseProfile page">
-    <!-- 页面导航，后面需要注销掉 -->
-    <!-- <div class="nav flex">
-      <div class="icon-left">返回</div>
-      <div class="title">基础资料填写</div>
-      <div class="icon-right"></div>
-    </div> -->
-
-    <!-- 头部 -->
-    <header>
-    </header>
-
-    <!-- 主体内容 -->
+  <div class="baseProfile">
     <section class="main">
-      <div class="portraitBox">
-        <img src="../static/images/defaultHead.png">
-        <a class="changePortrait" href="#">替换头像</a>
-      </div>
+      <a class="changePortrait" href="#"><img src="../static/images/defaultHead.png"><p>替换头像</p></a>
       <div class="inputBox">
-        <label for="username">用户名</label>
-        <input type="text" id="username" placeholder="请输入用户名（必填,别人可见）">
+        <label for="username">用户名
+        <input class="username" type="text" id="username" placeholder="请输入用户名（必填,别人可见）">
+      </label>
       </div>
-      <input class="submitBtn" type="button" value="确定">
+      <a href="jobs.html" class="weui-btn weui-btn_primary submitBtn">确定</a>
     </section>
-
-    <!-- 底部 -->
-    <footer>
-      
-    </footer>
   </div>
   <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
   <script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
