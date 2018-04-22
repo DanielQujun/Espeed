@@ -2,343 +2,473 @@
 /* 为减少加载，提高用户体验，所有自己写的页面样式写在一个文件内，每个页面定义一个类名，与文件名保持一致 */
 /* ============================================================公共样式开始============================================================ */
 .blue {
-  color: #43b4dc;
+  color: #3493eb;
 }
 
 .deepblue {
-  color: #16a4ca;
+  color: #3284d1;
 }
 
 .flex {
   display: flex;
 }
-.page {
-  width: 100vw;
-  height: 100vh;
-  
+body {
+  background: #fff;
 }
 
+.clearfix:after {
+  display: block;
+  content: '';
+  clear: both;
+}
+// 底部导航栏
 footer {
   position: fixed;
   width: 100%;
   height: 46px;
   left: 0;
   bottom: 0;
-}
-footer .footerBox input[type="button"] {
-  width: 50%;
-  height: 46px;
-  outline: none;
-  border: none;
-}
-footer .footerBox .publish {
-  background: #16a4ca;
-}
-footer .footerBox .personal {
-  background: #43b4dc;
-}
+box-sizing: border-box;
+font-size: 0;
 
-.main .listCon {
-  margin-top: 46px;
-  padding: 10px;
-}
-.main .listCon .listItem {
-  background: #fff;
-  margin: 10px auto;
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-}
-.main .listCon .listItem .list_hd,
-.main .listCon .listItem .list_bd,
-.main .listCon .listItem .list_ft {
-  justify-content: space-between;
-  
-}
-.main .listCon .listItem .list_hd .tag {
-  border: 1px solid #e0ca1c;
-  padding: 0 4px;
-  font-size: 14px;
-  line-height: 18px;
-  color: #e0ca1c;
-  border-radius: 2px;
-}
-.main .listCon .listItem .list_ft .infoBox img {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-} 
+  a:first-child button {
+    border-right: 1px solid rgba(100,100,100,.2);
+  }
+  button {
+    width: 50%;
+    height: 46px;
+    outline: none;
+    border: none;
+    background: #eaeaea;
+    color: #333;
+    box-sizing: border-box;
+    margin: 0;
+    font-size: 15px;;
+  }
 
+  .iconfont {
+    margin: 0 4px;
+  }
 
-/* 页面导航，后面需要注释掉 */
-.nav {
-  width: 100%;
-  text-align: center;
-  color: #fff;
-  line-height: 44px;
-  height: 44px;
-  background: #393a3f;
-  justify-content: space-around;
-}
-.nav .icon-left, .nav .icon-right {
-  width: 10%;
-}
-.nav .title {
-  width: 80%;
+  .publish {
+    background: #3493eb;
+    color: #fff;
+  }
+  .unpublish {
+    background: #fbaf5d;
+    color: #fff;
+  }
 }
 
 
 /* ============================================================私有样式开始============================================================ */
 
 /* 注册页面开始 */
-.register {
-  background: #43b4dc;
+.login {
+  background: #fff url(../images/wave_bg.jpg) no-repeat center top;
+  background-size: 100% auto;
+  height: 100vh;
   
   .main {
       text-align: center;
       
       h1 {
+        padding-top: 1.17rem;
           color: #fff;
           font-size: 48px;
       }
       
       .registerBox {
-          width: 320px;
+          width: 86%;
           background: #fff;
-          margin: 44px auto 0 auto;
-          box-shadow: 0 4px 8px rgba(100,100,100,.2);
+          margin: 1.17rem auto 0 auto;
+          box-shadow: 0 .1rem .2rem rgba(100,100,100,.2);
+          padding-bottom: 20px;
           
           h4 {
+            padding-top: 15px;
             color: #f8d851;
-            line-height: 50px;
+            font-size: 16px;
+            font-weight: normal;
           }
-        }   
-    }
-}
-.register .main .registerBox .phoneBox,
-.register .main .registerBox .codeBox {
-  width: 300px;
-  margin: 0 auto;
-  border-bottom: 1px solid #e0e0e0;
-  height: 60px;
-  text-align: left;
-  box-sizing: border-box;
-  padding: 12px 0;
-}
-.register .main .registerBox .phoneBox input[type="phone"] {
-  outline: none;
-  border: none;
-  height: 35px;
-  line-height: 35px;
-}
-.register .main .registerBox .phoneBox input[type="button"] {
-  outline: none;
-  border: none;
-  height: 35px;
-  line-height: 35px;
-  background: #e6e6e6;
-  color: #7b7b7b;
-  padding: 0 6px;
-}
-.register .main .registerBox .codeBox input[type="number"] {
-  outline: none;
-  border: none;
-  height: 35px;
-  line-height: 35px;
-}
-.register .main .submitBox {
-  margin: 20px auto;
-  width: 320px;
-  
-}
-.register .main .submitBox input[type="button"] {
-  outline: none;
-  border: none;
-  height: 35px;
-  line-height: 35px;
-  background: #e6e6e6;
-  color: #7b7b7b;
-  width: 100%;
-}
-.register .main .submitBox .tips {
-  margin-top: 15px;
-  font-size: 13px;
-  line-height: 1.5em;
-  color: #9f9f9f;
-}
-.register .main .submitBox .tips a {
-  color: #43b4dc;
-  text-decoration: underline;
+
+          .phoneBox,.codeBox {
+            width: 90%;
+            margin: 0 auto;
+            height: 60px;
+            text-align: left;
+            box-sizing: border-box;
+            padding: 12px 0;
+          }
+          .phoneBox {
+            border-bottom: 1px solid #e0e0e0;
+
+            input[type="tel"] {
+              outline: none;
+              border: none;
+              height: 35px;
+              line-height: 35px;
+              width: 100%; 
+            }
+          }
+
+          .codeBox {
+            position: relative;
+
+            input[type="number"] {
+              outline: none;
+              border: none;
+              height: 35px;
+              line-height: 35px;
+              width: 100%;
+            }
+
+            .codeBtn {
+              position: absolute;
+              top: 50%;
+              margin-top: -10px;
+              right: 0;
+            }
+
+            input[type="button"]:active {
+              background: #3284d1;
+              color: #fff;
+            }
+          }
+        }
+
+        .submitBox {
+          margin: .6rem auto;
+          width: 86%;
+          
+          .tips {
+            margin-top: 15px;
+            font-size: 13px;
+            line-height: 1.5em;
+            color: #9f9f9f;
+
+            a {
+              color: #3493eb;
+              text-decoration: underline;
+            }
+          }
+        }
+      }
 }
 /* 注册页面结束 */
 
 /* 角色选择界面开始 */
+.role {
+  .main {
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100vh;
 
-.role .main .roleBox {
-  margin: 26px auto 0 auto;
-  text-align: center;
-  width: 306px;
-}
-.role .main .roleBox label {
-  width: 306px;
-  display: block;
-  margin-bottom: 18px;
-}
-.role .main .roleBox label img {
-  width: 153px;
+    .roleBox {
+      margin: 0 auto 0 auto;
+      text-align: center;
+      widows: 50%;
+
+      label {
+        width:100%;
+        display: block;
+        font-size: 18px;
+        color: #333;
+
+        // label样式 有待优化
+
+        img {
+          width: 50%;
+        }
+      }
+    }
+    .confirmBtn {
+      width: 86%;
+
+    }
+  }
+
 }
 /* 角色选择界面结束 */
 
 /* 基础资料填写开始 */
-.baseProfile .main {
-  text-align: center;
-}
-.baseProfile .main .portraitBox {
-  margin-top: 50px;
-  width: 60px;
-  margin: 50px auto;
-  text-align: center;
-}
-.baseProfile .main .portraitBox img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 1px solid #e0e0e0;
-  display: block;
-  margin-bottom: 20px;
-}
-.baseProfile .main .portraitBox .changePortrait {
-  font-size: 14px;
-}
-.baseProfile .main .inputBox {
-  width: 320px;
-  margin: 0 auto;
-  text-align: left;
-}
-.baseProfile .main .inputBox label {
-  width: 320px;
-  display: block;
-}
-.baseProfile .main .inputBox input[type="text"] {
-  outline: none;
-  border: none;
-  height: 35px;
-  line-height: 35px;
-  border-bottom: 1px solid #e0e0e0;
-  width: 100%;
-}
-.baseProfile .main .submitBtn {
-  outline: none;
-  border: none;
-  height: 35px;
-  line-height: 35px;
-  background: #e6e6e6;
-  color: #7b7b7b;
-  width: 320px;
-  margin-top: 20px;
+.baseProfile {
+  background: #fff;
+
+  .main {
+    height: 100vh;
+    width: 86%;
+    margin: 0 auto;
+    text-align: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding-top: 2rem;
+    font-size: 14px;;
+
+    img {
+      width: 80px;
+      height:80px;
+      border-radius: 50%;
+      border: 1px solid #e0e0e0;
+    }
+
+    .inputBox {
+     margin-top: 1rem;
+     text-align: left;
+     
+     .username {
+       margin-top: 4px;
+      height: 46px;
+      line-height: 46px;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #dedede;
+      outline: none;
+      padding: 0 0 0 14px;
+      box-sizing: border-box;
+    }
+
+
+    .username.active {
+      box-shadow: 0 0 1px 2px #3493eb;
+    }
+
+    }
+
+    
+    .submitBtn {
+      margin-top: 1rem;
+    }
+
+  }
 }
 /* 基础资料填写结束 */
 
 
 /* 选择工种开始 */
-.jobs header {
-  text-align: center;
-  font-size: 14px;
-  color: #666;
-}
-.jobs .main .jobsBox {
-  margin-top: 10px;
-  padding: 0 5%;
-}
-.jobs .main .jobsBox .jobs_bd {
-  justify-content: flex-start;
-  width: 100%;
-  flex-wrap: wrap;
-}
-.jobs .main .jobsBox .jobs_bd .job {
-  width: 27%;
-  margin: 10px 3%;
+.jobs {
+  header {
+    background: #3493eb;
+    text-align: center;
+    font-size: 12px;
+    line-height: 2.5em;
+    color: #fff;
+
+    .iconfont {
+      font-size: 13px;
+      margin-right: 2px;
+    }
+  }
+
+  .main {
+    font-size: 14px;
+    padding: 0 12px;
+    box-sizing: border-box;
+
+    .jobsBox {
+      margin-top: 10px;
+
+      .jobs_bd {
+        justify-content: flex-start;
+        width: 100%;
+        flex-wrap: wrap;
+        position: relative;
+
+        .job {
+          width: 27%;
+          margin: 10px 3%;
+          border: 1px solid #999999;
+          border-radius: 3px;
+          background: #fff;
+          color: #666666;
+          font-size: 13px;
+          line-height: 2.4em;
+          position: relative;
+        }
+        .job.active {
+          color: #fff;
+          background: #3493eb;
+          border: 1px solid #3284d1;
+        }
+      }
+
+
+    }
+  }
+
 }
 /* 选择工种结束 */
 
-/* 列表页开始 */
-.list {
+/* 工人列表页开始 */
+.workerList {
   background: #f5f6f7;
-}
-.list header {
-  position: fixed;
-  width: 100%;
-  height: 46px;
-  left: 0;
-  top: 46px;
-}
-.list header .headerBox .filter {
-  width: 50%;
-  height: 46px;
-  outline: none;
-  border: none;
-  background: #43b4dc;
-}
-.list .main .listCon {
-  margin-top: 46px;
-  padding: 10px;
-}
-.list .main .listCon .listItem {
-  background: #fff;
-  margin: 10px auto;
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-}
-.list .main .listCon .listItem .list_hd,
-.list .main .listCon .listItem .list_bd,
-.list .main .listCon .listItem .list_ft {
-  justify-content: space-between;
-  
-}
-.list .main .listCon .listItem .list_hd .tag {
-  border: 1px solid #e0ca1c;
-  padding: 0 4px;
-  font-size: 14px;
-  line-height: 18px;
-  color: #e0ca1c;
-  border-radius: 2px;
-}
-.list .main .listCon .listItem .list_ft .infoBox img {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-} 
+  padding-top: 60px;
+
+  header {
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    left: 0;
+    top: 0;
+  }
+
+  .main {
+    height: 100vh;
+    box-sizing: border-box;
+    font-size: 14px;
+    
+    .listItem {
+      border-top: 1px solid #eaeaea;
+      border-bottom: 1px solid #eaeaea;
+      justify-content: space-between;
+      background: #fff;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      margin-bottom: 10px;
+
+      .portraitBox {
+        width: 20%;
+        text-align: center;
+
+        img {
+          border-radius: 50%;
+          width: 54px;
+          height: 54px;
+          border: 1px solid #e0e0e0;
+        }
+
+      }
+
+      .infoBox {
+        width: 80%;
+        flex-direction: column;
+        justify-content: space-between;
+
+         .list_hd {
+           justify-content: space-between;
+
+           .tag {
+            border: 1px solid #fbaf5d;
+            padding: 0 10px;
+            font-size: 12px;
+            line-height: 1.5em;
+            color: #fbaf5d;
+            border-radius: 2px;
+            margin-right: 4px;
+          }
+
+          .star {
+            color: #fbaf5d;
+          }
+
+         }
+
+         .list_bd {
+           justify-content: space-between;
+           font-size: 12px;
+           color: #999;
+
+        }
+
+        .list_ft {
+          font-size: 13px;
+          justify-content: flex-end;
+
+          .weui-btn {
+            margin-top: 0;
+            margin-left: 10px;
+            margin-right: 0;
+            line-height: 1.8em;
+        }
+
+        .rate {
+          display: none;
+        }
+        }     
+      }
+    }
 
 
-/* 列表页结束 */
+  }
+}
+
+/* 工人列表页结束 */
 
 /* 个人中心开始 */
-.personal .main {
-  text-align: center;
-}
-.personal .main .portraitBox {
-  margin-top: 50px;
-  width: 60px;
-  margin: 50px auto;
-  text-align: center;
-}
-.personal .main .portraitBox img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 1px solid #e0e0e0;
-  display: block;
-  margin-bottom: 20px;
-}
-.personal .main .portraitBox .username {
-  font-size: 14px;
-}
-.personal .main .menuBox {
-  text-align: left;
-}
-.personal .main .menuBox .menuList .link {
-  justify-content: space-between;
+
+.userCenter {
+  background: #fff url(../images/wave_bg.jpg) no-repeat center top;
+  background-size: contain;
+  
+  .main {
+    height: 100vh;
+    width: 86%;
+    margin: 0 auto;
+    text-align: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding-top: 2rem;
+    font-size: 14px;;
+
+    .changePortrait {
+      color:#fff;
+
+      img {
+        width: 80px;
+        height:80px;
+        border-radius: 50%;
+        border: 1px solid #e0e0e0;
+      }
+
+      
+    }
+
+    .tag {
+      border: 1px solid #fff;
+      padding: 0 10px;
+      font-size: 12px;
+      line-height: 1.5em;
+      color: #fff;
+      border-radius: 2px;
+      margin-right: 4px;
+    }
+
+    .menuBox {
+      margin-top: 60px;
+      
+
+      .menuList {
+        list-style: none;
+        font-size: 16px;
+        margin-bottom: 20px;
+        justify-content: space-between;
+        a {
+          color: #333;
+
+          .iconfont {
+            margin: 0 4px;
+          }
+          .icon-history {
+            color: #3cb878;
+          }
+          .icon-profile {
+            color: #fc7d4a;
+          }
+            .icon-record {
+              color: #ffc245;
+            }
+            .icon-arrow-right {
+              color: #999999;
+            }
+        }
+      }
+    }
+    
+  }
+
 }
 
 /* 个人中心结束 */
@@ -347,6 +477,115 @@ footer .footerBox .personal {
 /* 历史查看开始 */
 .history {
   background: #f5f6f7;
+  padding-top: 10px;
+
+  header {
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    left: 0;
+    top: 0;
+  }
+
+  .main {
+    height: 100vh;
+    box-sizing: border-box;
+    font-size: 14px;
+    
+    .listItem {
+      border-top: 1px solid #eaeaea;
+      border-bottom: 1px solid #eaeaea;
+      justify-content: space-between;
+      background: #fff;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      margin-bottom: 10px;
+
+      .portraitBox {
+        width: 20%;
+        text-align: center;
+
+        img {
+          border-radius: 50%;
+          width: 54px;
+          height: 54px;
+          border: 1px solid #e0e0e0;
+        }
+
+      }
+
+      .infoBox {
+        width: 80%;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+
+         .list_hd {
+           justify-content: space-between;
+
+           .tag {
+            border: 1px solid #fbaf5d;
+            padding: 0 10px;
+            font-size: 12px;
+            line-height: 1.5em;
+            color: #fbaf5d;
+            border-radius: 2px;
+            margin-right: 4px;
+          }
+
+          .star {
+            color: #fbaf5d;
+          }
+
+         }
+
+         .list_bd {
+           justify-content: space-between;
+           font-size: 12px;
+           color: #999;
+
+        }
+
+        .list_ft {
+          font-size: 13px;
+          justify-content: flex-end;
+
+          .weui-btn {
+            margin-top: 0;
+            margin-left: 10px;
+            margin-right: 0;
+            line-height: 1.8em;
+        }
+
+        .complain {
+          display: block;
+        }
+        }   
+        
+        .jiaobiaoBox  {
+          position: absolute;
+          top: -10px;
+          right: -10px;
+          color: #fff;
+          width: 140px;
+          height: 37px;
+          
+        }
+        .stop {
+          background: url(../images/stop_bg.png) no-repeat top right;
+          background-size: contain;
+        }
+        .offline {
+          background: url(../images/offline_bg.png) no-repeat top right;
+          background-size: contain;
+        }
+      }
+    }
+
+
+  }
+
 }
 /* 历史查看结束 */
 
@@ -354,35 +593,103 @@ footer .footerBox .personal {
 /* 交易记录开始 */
 .transcation {
   background: #f5f6f7;
+  height: 100vh;
+  padding-top: 10px;
+  .listCon {
+
+    .listItem {
+      padding: 10px;
+      list-style: none;
+      background: #fff;
+      border-top: 1px solid #dedede;
+      border-bottom: 1px solid #dedede;
+      font-size: 14px;
+      margin-bottom: 10px;
+      line-height: 2em;;
+      
+      .list_hd {
+        justify-content: space-between;
+        color: #999;
+        // border-bottom: 1px solid #dedede;
+      }
+      
+      .list_bd {
+        justify-content: space-between;
+        color: #333;
+font-weight: 700;
+      }
+
+
+    }
+  }
+
+
 }
 /* 交易记录结束 */
 
 
 /* 个人资料开始 */
-.profile .main {
-  text-align: center;
-}
-.profile .main .portraitBox {
-  margin-top: 50px;
-  width: 60px; 
-  margin: 50px auto;
-  text-align: center;
-}
-.profile .main .portraitBox img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 1px solid #e0e0e0;
-  display: block;
-  margin-bottom: 20px;
-}
-.profile .main .profileBox {
-  text-align: left;
-}
-.profile .main .profileBox label {
-  display: block;
-}
+.profile {
+  background: #fff;
 
+  .main {
+    height: 100vh;
+    width: 86%;
+    margin: 0 auto;
+    text-align: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding-top: 2rem;
+    font-size: 14px;;
+
+    img {
+      width: 80px;
+      height:80px;
+      border-radius: 50%;
+      border: 1px solid #e0e0e0;
+    }
+
+    .inputBox {
+     margin-top: 1rem;
+     text-align: left;
+     
+     .username {
+       margin-top: 4px;
+      height: 46px;
+      line-height: 46px;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #dedede;
+      outline: none;
+      padding: 0 0 0 14px;
+      box-sizing: border-box;
+      margin-bottom:  6px;
+    }
+
+    .username.active {
+      box-shadow: 0 0 1px 2px #3493eb;
+    }
+
+    .tag {
+      border: 1px solid #fbaf5d;
+            padding: 4px 10px;
+            font-size: 14px;
+            line-height: 2.5em;
+            color: #fbaf5d;
+            border-radius: 2px;
+            margin-right: 4px;
+    }
+    
+    }
+
+    
+    .submitBtn {
+      margin-top: 1rem;
+    }
+
+  }
+}
 /* 个人资料结束 */
 
 

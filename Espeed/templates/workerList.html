@@ -4,7 +4,7 @@
 
 <head lang="en">
   <meta charset="utf-8">
-  <title>历史查看</title>
+  <title>列表页</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
   <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
@@ -15,7 +15,19 @@
 </head>
 
 <body>
-  <div class="history">
+  <div class="workerList">
+    <!-- 头部 -->
+    <header>
+        <div class="weui-navbar">
+            <div class="weui-navbar__item weui_bar__item_on">
+                离我最近
+            </div>
+            <div class="weui-navbar__item">
+                最新上线
+            </div>
+          </div>
+    </header>
+
     <!-- 主体内容 -->
     <section class="main">
       <ul class="listCon">
@@ -30,12 +42,12 @@
                   <div class="star"><i class="iconfont icon-wuxing"></i></div>
                 </div>
                 <div class="list_bd flex">
+                    <span class="distance">距您：2.6km</span>
+                    <p class="publishedTime">发布于：03-24 18:42</p>
                 </div>
                 <div class="list_ft flex">
-                    <a href="#" class="complain weui-btn weui-btn_mini weui-btn_default">申诉</a>
-                    <a href="#" class="check weui-btn weui-btn_mini weui-btn_success">15080755770</a>
-                </div>
-                <div class="jiaobiaoBox offline">
+                    <a href="#" class="rate weui-btn weui-btn_mini weui-btn_plain-primary">评价</a>
+                    <a href="#" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>
                 </div>
           </div>
         </li>
@@ -50,18 +62,22 @@
                   <div class="star"><i class="iconfont icon-wuxing"></i></div>
                 </div>
                 <div class="list_bd flex">
+                    <span class="distance">距您：2.6km</span>
+                    <p class="publishedTime">发布于：03-24 18:42</p>
                 </div>
                 <div class="list_ft flex">
-                    <a href="#" class="complain weui-btn weui-btn_mini weui-btn_default">申诉</a>
-                    <a href="#" class="check weui-btn weui-btn_mini weui-btn_success">15080755770</a>
-                </div>
-                <div class="jiaobiaoBox stop">
+                    <a href="#" class="rate weui-btn weui-btn_mini weui-btn_plain-primary">评价</a>
+                    <a href="#" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>
                 </div>
           </div>
         </li>
       </ul>
     </section>
 
+    <!-- 底部 -->
+    <footer>
+        <a href="workerList.html"><button  class="unpublish"><i class="iconfont icon-gouxuan"></i>立即发布</button></a> <a href="userCenter.html"><button  class="personal"><i class="iconfont icon-wode"></i>我的</button></a>
+    </footer>
   </div>
 
   <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
