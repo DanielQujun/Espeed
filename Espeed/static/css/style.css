@@ -51,7 +51,8 @@ footer {
 /* 注册页面开始 */
 .login {
   background: #fff url(../images/wave_bg.jpg) no-repeat center top;
-  background-size: 100% auto; }
+  background-size: 100% auto;
+  height: 100vh; }
   .login .main {
     text-align: center; }
     .login .main h1 {
@@ -231,7 +232,7 @@ footer {
       padding: 10px;
       margin-bottom: 10px; }
       .workerList .main .listItem .portraitBox {
-        width: 1.6rem;
+        width: 20%;
         text-align: center; }
         .workerList .main .listItem .portraitBox img {
           border-radius: 50%;
@@ -239,7 +240,7 @@ footer {
           height: 54px;
           border: 1px solid #e0e0e0; }
       .workerList .main .listItem .infoBox {
-        width: 7.6rem;
+        width: 80%;
         flex-direction: column;
         justify-content: space-between; }
         .workerList .main .listItem .infoBox .list_hd {
@@ -273,7 +274,7 @@ footer {
 /* 个人中心开始 */
 .userCenter {
   background: #fff url(../images/wave_bg.jpg) no-repeat center top;
-  background-size: 100% auto; }
+  background-size: contain; }
   .userCenter .main {
     height: 100vh;
     width: 86%;
@@ -300,7 +301,7 @@ footer {
       border-radius: 2px;
       margin-right: 4px; }
     .userCenter .main .menuBox {
-      margin-top: 6rem; }
+      margin-top: 60px; }
       .userCenter .main .menuBox .menuList {
         list-style: none;
         font-size: 16px;
@@ -344,7 +345,7 @@ footer {
       padding: 10px;
       margin-bottom: 10px; }
       .history .main .listItem .portraitBox {
-        width: 1.6rem;
+        width: 20%;
         text-align: center; }
         .history .main .listItem .portraitBox img {
           border-radius: 50%;
@@ -352,7 +353,7 @@ footer {
           height: 54px;
           border: 1px solid #e0e0e0; }
       .history .main .listItem .infoBox {
-        width: 7.6rem;
+        width: 80%;
         flex-direction: column;
         justify-content: space-between;
         position: relative; }
