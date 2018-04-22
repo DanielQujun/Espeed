@@ -67,6 +67,7 @@ font-size: 0;
 .login {
   background: #fff url(../images/wave_bg.jpg) no-repeat center top;
   background-size: 100% auto;
+  height: 100vh;
   
   .main {
       text-align: center;
@@ -328,7 +329,7 @@ font-size: 0;
       margin-bottom: 10px;
 
       .portraitBox {
-        width: 1.6rem;
+        width: 20%;
         text-align: center;
 
         img {
@@ -341,7 +342,7 @@ font-size: 0;
       }
 
       .infoBox {
-        width: 7.6rem;
+        width: 80%;
         flex-direction: column;
         justify-content: space-between;
 
@@ -399,7 +400,7 @@ font-size: 0;
 
 .userCenter {
   background: #fff url(../images/wave_bg.jpg) no-repeat center top;
-  background-size: 100% auto;
+  background-size: contain;
   
   .main {
     height: 100vh;
@@ -436,7 +437,7 @@ font-size: 0;
     }
 
     .menuBox {
-      margin-top: 6rem;
+      margin-top: 60px;
       
 
       .menuList {
@@ -502,7 +503,7 @@ font-size: 0;
       margin-bottom: 10px;
 
       .portraitBox {
-        width: 1.6rem;
+        width: 20%;
         text-align: center;
 
         img {
@@ -515,7 +516,7 @@ font-size: 0;
       }
 
       .infoBox {
-        width: 7.6rem;
+        width: 80%;
         flex-direction: column;
         justify-content: space-between;
         position: relative;
