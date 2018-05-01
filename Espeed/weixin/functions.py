@@ -71,20 +71,20 @@ def dictfetchall(cursor):
 
 def get_access_token():
     # 获取 access_token 存入 WEIXIN_ACCESS_TOKEN
-    if wechat.config.WEIXIN_ACCESS_TOKEN_LASTTIME == 0 or (int(
-            time.time()) - wechat.config.WEIXIN_ACCESS_TOKEN_LASTTIME > wechat.config.WEIXIN_ACCESS_TOKEN_EXPIRES_IN - 300):
+    if weixin.config.WEIXIN_ACCESS_TOKEN_LASTTIME == 0 or (int(
+            time.time()) - weixin.config.WEIXIN_ACCESS_TOKEN_LASTTIME > weixin.config.WEIXIN_ACCESS_TOKEN_EXPIRES_IN - 300):
 
-        resp, result = my_get(wechat.config.WEIXIN_ACCESS_TOKEN_URL)
+        resp, result = my_get(weixin.config.WEIXIN_ACCESS_TOKEN_URL)
         decodejson = parse_Json2Dict(result)
 
-        wechat.config.WEIXIN_ACCESS_TOKEN = str(decodejson[u'access_token'])
-        wechat.config.WEIXIN_ACCESS_TOKEN_LASTTIME = int(time.time())
-        wechat.config.WEIXIN_ACCESS_TOKEN_EXPIRES_IN = decodejson['expires_in']
+        weixin.config.WEIXIN_ACCESS_TOKEN = str(decodejson[u'access_token'])
+        weixin.config.WEIXIN_ACCESS_TOKEN_LASTTIME = int(time.time())
+        weixin.config.WEIXIN_ACCESS_TOKEN_EXPIRES_IN = decodejson['expires_in']
 
-        print "new access_token ->> " + wechat.config.WEIXIN_ACCESS_TOKEN + "---" + str(
-            wechat.config.WEIXIN_ACCESS_TOKEN_LASTTIME) + "---" + str(wechat.config.WEIXIN_ACCESS_TOKEN_EXPIRES_IN)
-        return wechat.config.WEIXIN_ACCESS_TOKEN
+        print "new access_token ->> " + weixin.config.WEIXIN_ACCESS_TOKEN + "---" + str(
+            weixin.config.WEIXIN_ACCESS_TOKEN_LASTTIME) + "---" + str(weixin.config.WEIXIN_ACCESS_TOKEN_EXPIRES_IN)
+        return weixin.config.WEIXIN_ACCESS_TOKEN
     else:
-        print "old access_token ->> " + wechat.config.WEIXIN_ACCESS_TOKEN + "---" + str(
-            wechat.config.WEIXIN_ACCESS_TOKEN_LASTTIME) + "---" + str(wechat.config.WEIXIN_ACCESS_TOKEN_EXPIRES_IN)
-        return wechat.config.WEIXIN_ACCESS_TOKEN
+        print "old access_token ->> " + weixin.config.WEIXIN_ACCESS_TOKEN + "---" + str(
+            weixin.config.WEIXIN_ACCESS_TOKEN_LASTTIME) + "---" + str(weixin.config.WEIXIN_ACCESS_TOKEN_EXPIRES_IN)
+        return weixin.config.WEIXIN_ACCESS_TOKEN
