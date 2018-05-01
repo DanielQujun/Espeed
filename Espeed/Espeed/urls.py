@@ -16,8 +16,17 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 import views
+import weixin.views as weixin_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^register/', views.register, name = 'register'),
+    url(r'^register/', weixin_views.register, name='register'),
+    url(r'^role/', weixin_views.chose_role, name='chose_role'),
+    url(r'^baseProfile/', weixin_views.input_name, name='input_name'),
+    url(r'^jobs/', weixin_views.chose_job_cate, name='chose_job_cate'),
+    url(r'^workerList/', weixin_views.wokers_or_jobs_list, name='wokers_or_jobs_list'),
+    url(r'^userCenter/', weixin_views.usercenter, name='usercenter'),
+    url(r'^profile/', weixin_views.profile, name='profile'),
+    url(r'^history/', weixin_views.history, name='history'),
+    url(r'^transaction/', weixin_views.transaction, name='transaction'),
 ]
