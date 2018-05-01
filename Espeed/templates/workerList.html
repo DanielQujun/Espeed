@@ -17,6 +17,7 @@
 <body>
   <div class="workerList">
     <!-- 头部 -->
+
     <header>
         <div class="weui-navbar">
             <div class="weui-navbar__item weui_bar__item_on">
@@ -30,7 +31,7 @@
 
     <!-- 主体内容 -->
     <section class="main">
-      <ul class="listCon">
+          <ul class="listCon">
         <li class="listItem flex">
           <div class="portraitBox">
             <img src="../static/images/defaulthead.png" >
@@ -76,7 +77,10 @@
 
     <!-- 底部 -->
     <footer>
-        <a href="workerList.html"><button  class="unpublish"><i class="iconfont icon-gouxuan"></i>立即发布</button></a> <a href="userCenter.html"><button  class="personal"><i class="iconfont icon-wode"></i>我的</button></a>
+        <a href="javascript:;"><button  class="smallBtn Relocate"><i class="iconfont icon-shuaxin"></i></button></a>
+        <a href="javascript:;"><button  class="bigBtn cancel"><i class="iconfont icon-quxiao"></i>取消发布</button></a>
+        <a href="userCenter.html"><button  class="smallBtn"><i class="iconfont icon-wode"></i></button></a>
+
     </footer>
   </div>
 
@@ -84,69 +88,83 @@
   <script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
   <script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
   <script>
-      window.onload = function (ev) {
-          //数据格式
-          var listData = [
-              {
-                  id: 01,
-                  username: "刘黎波",
-                  tag:['木工','瓦工'],
-                  star: 4,
-                  pubTime: 45124245624412,
-                  distance: 26000,
-                  isVisible: false,
-                  phoneNum: 1524214782,
-                  portraitUrl: "http://www.baidu.llllll"
-              },
-              {
-                  id: 01,
-                  username: "刘黎波",
-                  tag:['木工','瓦工'],
-                  star: 4,
-                  pubTime: 45124245624412,
-                  distance: 26000,
-                  isVisible: false,
-                  phoneNum: 1524214782,
-                  portraitUrl: "http://www.baidu.llllll"
-              }
-          ];
-          var str = "";
-          for(var i = 0; i< listData.length; i++) {
-              str+= "<li class=\"listItem flex\">\n" +
-                  "          <div class=\"portraitBox\">\n" +
-                  "            <img src=\"../static/images/defaulthead.png\" >\n" +
-                  "            <p>刘黎波</p>\n" +
-                  "          </div>\n" +
-                  "          <div class=\"infoBox flex\">\n" +
-                  "              <div class=\"list_hd flex\">\n" +
-                  "                  <div class=\"tagBox\"><span class=\"tag\">木工</span><span class=\"tag\">木工</span></div>\n" +
-                  "                  <div class=\"star\"><i class=\"iconfont icon-wuxing\"></i></div>\n" +
-                  "                </div>\n" +
-                  "                <div class=\"list_bd flex\">\n" +
-                  "                    <span class=\"distance\">距您：2.6km</span>\n" +
-                  "                    <p class=\"publishedTime\">发布于：03-24 18:42</p>\n" +
-                  "                </div>\n" +
-                  "                <div class=\"list_ft flex\">\n" +
-                  "                    <a href=\"#\" class=\"rate weui-btn weui-btn_mini weui-btn_plain-primary\">评价</a>\n" +
-                  "                    <a href=\"#\" class=\"check weui-btn weui-btn_mini weui-btn_primary\">查看电话号码</a>\n" +
-                  "                </div>\n" +
-                  "          </div>\n" +
-                  "        </li>"
-          }
-
-      }
-
-
     // 开启fastclick功能
     $(function() {
         FastClick.attach(document.body);
+
+        //数据格式，格式内容有待确定
+        var $listData = [
+            {
+                id: 01,
+                username: "刘黎波",
+                tag:['木工','瓦工'],
+                star: 4,
+                pubTime: 45124245624412,
+                distance: 26000,
+                isVisible: false,
+                phoneNum: 18570607610,
+                portraitUrl: "https://pic4.zhimg.com/e64e79141_xl.jpg"
+            },
+            {
+                id: 01,
+                username: "刘黎波",
+                tag:['木工','瓦工'],
+                star: 4,
+                pubTime: 45124245624412,
+                distance: 26000,
+                isVisible: false,
+                phoneNum: 15080755770,
+                portraitUrl: "https://pic2.zhimg.com/508cda69d36115a28704ea2e12bbfbcb_xl.jpg"
+            }
+        ]
+
+
+        $.each($listData,function (key,val) {
+            var str = "";
+
+            str += '<li class="listItem flex">' +
+                '<div class="portraitBox">' +
+                '<img src="val.portraitUrl" >' +
+                '<p>val.username</p>' +
+                '</div>' +
+                '<div class="infoBox flex">' +
+                '<div class="list_hd flex">' +
+                '<div class="tagBox"><span class="tag">木工</span><span class="tag">木工</span></div>' +
+                '<div class="star"><i class="iconfont icon-wuxing"></i></div>' +
+                '</div>' +
+                '<div class="list_bd flex">' +
+                '<span class="distance">距您：'+ val.distance + 'km</span>' +
+                '<p class="publishedTime">发布于：'+ val.pubTime + '</p>' +
+                '</div>' +
+                '<div class="list_ft flex">' +
+                '<a href="#" class="rate weui-btn weui-btn_mini weui-btn_plain-primary">评价</a>' +
+                '<a href="#" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>' +
+                '</div>' +
+                '</div>' +
+                '</li>'
+
+            $('.listCon').html(str);
+        })
+
+
+
+        $('.cancel').click(function () {
+            $.confirm("取消后，您的信息将对其他人不可见","确认取消", function() {
+                //点击确认后跳转到列表页
+                location.href = "http://localhost:63342/Espeed/Espeed/templates/jobs.html"
+                //（TODO:清除session)
+
+
+            }, function() {
+                //点击取消
+                return false;
+            });
+        })
+
     });
-    $(function () {
 
 
-    });
-
-    //获取位置信息排序列表
+    //获取位置信息排序列表,接口未定义（TODO: 定义排序接口）
     $(function () {
         $("#distanceFilter").click(function () {
             $.get(
