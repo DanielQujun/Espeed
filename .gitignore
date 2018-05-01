@@ -2,4 +2,7 @@
 venv
 workspace.xml
 
+Espeed/weixin/config.py
+settings.py
+
 .idea
