@@ -296,7 +296,20 @@ footer {
             border-radius: 2px;
             margin-right: 4px; }
           .workerList .main .listItem .infoBox .list_hd .star {
-            color: #fbaf5d; }
+            width: 100px;
+            height: 16px; }
+          .workerList .main .listItem .infoBox .list_hd .star2 {
+            background: url("../images/star2.png") no-repeat left top;
+            background-size: contain; }
+          .workerList .main .listItem .infoBox .list_hd .star3 {
+            background: url("../images/star3.png") no-repeat left top;
+            background-size: contain; }
+          .workerList .main .listItem .infoBox .list_hd .star4 {
+            background: url("../images/star4.png") no-repeat left top;
+            background-size: contain; }
+          .workerList .main .listItem .infoBox .list_hd .star5 {
+            background: url("../images/star5.png") no-repeat left top;
+            background-size: contain; }
         .workerList .main .listItem .infoBox .list_bd {
           justify-content: space-between;
           font-size: 12px;

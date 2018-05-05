@@ -400,8 +400,25 @@ footer {
             margin-right: 4px;
           }
 
-          .star {
-            color: #fbaf5d;
+           .star {
+             width: 100px;
+             height: 16px;
+           }
+          .star2 {
+            background: url("../images/star2.png") no-repeat left top;
+            background-size: contain;
+          }
+           .star3 {
+            background: url("../images/star3.png") no-repeat left top;
+            background-size: contain;
+          }
+           .star4 {
+            background: url("../images/star4.png") no-repeat left top;
+            background-size: contain;
+          }
+           .star5 {
+            background: url("../images/star5.png") no-repeat left top;
+            background-size: contain;
           }
 
          }
