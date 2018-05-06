@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-import views
 import weixin.views as weixin_views
 
 urlpatterns = [
@@ -30,5 +29,5 @@ urlpatterns = [
     url(r'^profile/', weixin_views.profile, name='profile'),
     url(r'^history/', weixin_views.history, name='history'),
     url(r'^transaction/', weixin_views.transaction, name='transaction'),
-    url(r'^create_menu/', weixin_views.create_menu, name = 'create_menu'),
+    url(r'^create_menu/', weixin_views.create_menu, name='create_menu'),
 ]
