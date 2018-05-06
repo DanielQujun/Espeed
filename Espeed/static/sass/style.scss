@@ -27,20 +27,40 @@ body {
 
 // 底部导航栏
 footer {
+<<<<<<< HEAD
+
+  position: fixed;
+  width: 100%;
+  height: 56px;
+  left: 0;
+  bottom: 0;
+  padding: 10px 12px;
+=======
   position: fixed;
   width: 100%;
   height: 46px;
   left: 0;
   bottom: 0;
   padding: 0 12px;
+>>>>>>> a72bcb2444b5e56899c01b0acca6dbfd5eaa6f42
   box-sizing: border-box;
   font-size: 0;
   display: flex;
   justify-content: space-between;
+<<<<<<< HEAD
+  //background: rgba(0,0,0,.4);
+  background: url("../images/footer_bg.png") repeat-x top left;
+  //background: #FAFAFA;
+  /*background: -webkit-linear-gradient(rgba(0,0,0,0), #3493eb); !* Safari 5.1 - 6.0 *!
+  background: -o-linear-gradient(rgba(0,0,0,0),   #3493eb); !* Opera 11.1 - 12.0 *!
+  background: -moz-linear-gradient(rgba(0,0,0,0), #3493eb); !* Firefox 3.6 - 15 *!
+  background: linear-gradient(rgba(0,0,0,0), #3493eb); !* 标准的语法 *!*/
+=======
   background: -webkit-linear-gradient(rgba(0,0,0,0), rgba(200,200,200,.5)); /* Safari 5.1 - 6.0 */
   background: -o-linear-gradient(rgba(0,0,0,0), rgba(200,200,200,.5)); /* Opera 11.1 - 12.0 */
   background: -moz-linear-gradient(rgba(0,0,0,0), rgba(200,200,200,.5)); /* Firefox 3.6 - 15 */
   background: linear-gradient(rgba(0,0,0,0), rgba(200,200,200,.5)); /* 标准的语法 */
+>>>>>>> a72bcb2444b5e56899c01b0acca6dbfd5eaa6f42
 
   a:first-child button {
     border-right: 1px solid rgba(100,100,100,.2);
@@ -92,6 +112,38 @@ footer {
     color: #fff;
   }
 }
+<<<<<<< HEAD
+.rateActionstar {
+  display: inline-block;
+  width: 100px;
+  height: 16px;
+  vertical-align: middle;
+}
+.rateDes {
+  margin-left: 15px;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.star2 {
+  background: url("../images/star2.png") no-repeat left top;
+  background-size: contain;
+}
+.star3 {
+  background: url("../images/star3.png") no-repeat left top;
+  background-size: contain;
+}
+.star4 {
+  background: url("../images/star4.png") no-repeat left top;
+  background-size: contain;
+}
+.star5 {
+  background: url("../images/star5.png") no-repeat left top;
+  background-size: contain;
+}
+
+=======
+>>>>>>> a72bcb2444b5e56899c01b0acca6dbfd5eaa6f42
 
 
 /* ============================================================私有样式开始============================================================ */
@@ -291,6 +343,10 @@ footer {
     top: 0;
     left: 0;
     width: 100%;
+<<<<<<< HEAD
+    z-index: 100;
+=======
+>>>>>>> a72bcb2444b5e56899c01b0acca6dbfd5eaa6f42
 
     .iconfont {
       font-size: 13px;
@@ -352,13 +408,31 @@ footer {
     height: 50px;
     left: 0;
     top: 0;
+<<<<<<< HEAD
+    z-index: 100;
+=======
+>>>>>>> a72bcb2444b5e56899c01b0acca6dbfd5eaa6f42
   }
 
   .main {
     height: 100vh;
     box-sizing: border-box;
     font-size: 14px;
+<<<<<<< HEAD
+
+
+    .weui-loadmore {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin-left: -121px;
+      margin-top: -12px;
+      z-index: 101;
+      display: none;
+    }
+=======
     
+>>>>>>> a72bcb2444b5e56899c01b0acca6dbfd5eaa6f42
     .listItem {
       border-top: 1px solid #eaeaea;
       border-bottom: 1px solid #eaeaea;
@@ -400,8 +474,30 @@ footer {
             margin-right: 4px;
           }
 
+<<<<<<< HEAD
+           .star {
+             width: 100px;
+             height: 16px;
+           }
+          .star2 {
+            background: url("../images/star2.png") no-repeat left top;
+            background-size: contain;
+          }
+           .star3 {
+            background: url("../images/star3.png") no-repeat left top;
+            background-size: contain;
+          }
+           .star4 {
+            background: url("../images/star4.png") no-repeat left top;
+            background-size: contain;
+          }
+           .star5 {
+            background: url("../images/star5.png") no-repeat left top;
+            background-size: contain;
+=======
           .star {
             color: #fbaf5d;
+>>>>>>> a72bcb2444b5e56899c01b0acca6dbfd5eaa6f42
           }
 
          }
@@ -422,16 +518,40 @@ footer {
             margin-left: 10px;
             margin-right: 0;
             line-height: 1.8em;
+<<<<<<< HEAD
+
+            .checkNum {
+              display: block;
+            }
+
+            .phoneNum {
+              display: none;
+            }
+        }
+
+        /*.rate {
+          display: none;
+        }*/
+=======
         }
 
         .rate {
           display: none;
         }
+>>>>>>> a72bcb2444b5e56899c01b0acca6dbfd5eaa6f42
         }     
       }
     }
 
+<<<<<<< HEAD
+    .bottomTips {
+      display:none;
+      text-align: center;
+      margin-bottom: 70px;
+    }
+=======
 
+>>>>>>> a72bcb2444b5e56899c01b0acca6dbfd5eaa6f42
   }
 }
 
@@ -526,6 +646,10 @@ footer {
     height: 50px;
     left: 0;
     top: 0;
+<<<<<<< HEAD
+    z-index: 100;
+=======
+>>>>>>> a72bcb2444b5e56899c01b0acca6dbfd5eaa6f42
   }
 
   .main {

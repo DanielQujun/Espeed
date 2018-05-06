@@ -3,19 +3,19 @@
 <html>
 
 <head lang="en">
-  <meta charset="utf-8">
-  <title>列表页</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
-  <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
-  <link rel="stylesheet" href="../static/css/weui.css">
-  <link rel="stylesheet" href="../static/iconfont/iconfont.css">
-  <link rel="stylesheet" href="../static/css/jquery-weui.css">
-  <link rel="stylesheet" href="../static/css/style.css">
+    <meta charset="utf-8">
+    <title>列表页</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+    <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
+    <link rel="stylesheet" href="../static/css/weui.css">
+    <link rel="stylesheet" href="../static/iconfont/iconfont.css">
+    <link rel="stylesheet" href="../static/css/jquery-weui.css">
+    <link rel="stylesheet" href="../static/css/style.css">
 </head>
 
 <body>
-  <div class="workerList">
+<div class="workerList">
     <!-- 头部 -->
 
     <header>
@@ -26,158 +26,372 @@
             <div class="weui-navbar__item">
                 最新上线
             </div>
-          </div>
+        </div>
     </header>
 
     <!-- 主体内容 -->
     <section class="main">
-          <ul class="listCon">
-        <li class="listItem flex">
-          <div class="portraitBox">
-            <img src="../static/images/defaulthead.png" >
-            <p>刘黎波</p>
-          </div>
-          <div class="infoBox flex">
-              <div class="list_hd flex">
-                  <div class="tagBox"><span class="tag">木工</span><span class="tag">木工</span></div>
-                  <div class="star"><i class="iconfont icon-wuxing"></i></div>
-                </div>
-                <div class="list_bd flex">
-                    <span class="distance">距您：2.6km</span>
-                    <p class="publishedTime">发布于：03-24 18:42</p>
-                </div>
-                <div class="list_ft flex">
-                    <a href="#" class="rate weui-btn weui-btn_mini weui-btn_plain-primary">评价</a>
-                    <a href="#" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>
-                </div>
-          </div>
-        </li>
-        <li class="listItem flex">
-          <div class="portraitBox">
-            <img src="../static/images/defaulthead.png" >
-            <p>刘黎波</p>
-          </div>
-          <div class="infoBox flex">
-              <div class="list_hd flex">
-                  <div class="tagBox"><span class="tag">木工</span><span class="tag">木工</span></div>
-                  <div class="star"><i class="iconfont icon-wuxing"></i></div>
-                </div>
-                <div class="list_bd flex">
-                    <span class="distance">距您：2.6km</span>
-                    <p class="publishedTime">发布于：03-24 18:42</p>
-                </div>
-                <div class="list_ft flex">
-                    <a href="#" class="rate weui-btn weui-btn_mini weui-btn_plain-primary">评价</a>
-                    <a href="#" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>
-                </div>
-          </div>
-        </li>
-      </ul>
+        <div class="weui-loadmore">
+            <i class="weui-loading"></i>
+            <span class="weui-loadmore__tips">正在加载</span>
+        </div>
+        <ul class="listCon">
+
+
+        </ul>
+
+        <p class="bottomTips weui-footer__text">没有更多了</p>
     </section>
 
     <!-- 底部 -->
     <footer>
-        <a href="javascript:;"><button  class="smallBtn Relocate"><i class="iconfont icon-shuaxin"></i></button></a>
-        <a href="javascript:;"><button  class="bigBtn cancel"><i class="iconfont icon-quxiao"></i>取消发布</button></a>
-        <a href="userCenter.html"><button  class="smallBtn"><i class="iconfont icon-wode"></i></button></a>
+        <a href="javascript:;">
+            <button class="smallBtn Relocate"><i class="iconfont icon-shuaxin"></i></button>
+        </a>
+        <a href="javascript:;">
+            <button class="bigBtn cancel"><i class="iconfont icon-quxiao"></i>取消发布</button>
+        </a>
+        <a href="userCenter.html">
+            <button class="smallBtn"><i class="iconfont icon-wode"></i></button>
+        </a>
 
     </footer>
-  </div>
+</div>
 
-  <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
-  <script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
-  <script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
-  <script>
+<script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
+<script type="text/javascript" src="../static/lib/jquerySession.js"></script>
+<script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>        <!-- 引入微信js sdk -->
+<script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
+<script>
     // 开启fastclick功能
-    $(function() {
+    $(function () {
         FastClick.attach(document.body);
 
-        //数据格式，格式内容有待确定
-        var $listData = [
-            {
-                id: 01,
-                username: "刘黎波",
-                tag:['木工','瓦工'],
-                star: 4,
-                pubTime: 45124245624412,
-                distance: 26000,
-                isVisible: false,
-                phoneNum: 18570607610,
-                portraitUrl: "https://pic4.zhimg.com/e64e79141_xl.jpg"
+        //初始化数据
+        $.ajax({
+            async: true,
+            url: "workerList.json",
+            dataType: "json",
+            type: "post",
+            data: {
+                "openId": 123456,           //TODO:需要从session中获取,并且写出转换函数
+                "time": $.now(),
+                "tag": $.session.get('myJob').split(','),
+                "latitude": parseFloat($.session.get('latitude')),
+                "longitude": parseFloat($.session.get('longitude')),
+                "page": 1
             },
-            {
-                id: 01,
-                username: "刘黎波",
-                tag:['木工','瓦工'],
-                star: 4,
-                pubTime: 45124245624412,
-                distance: 26000,
-                isVisible: false,
-                phoneNum: 15080755770,
-                portraitUrl: "https://pic2.zhimg.com/508cda69d36115a28704ea2e12bbfbcb_xl.jpg"
+            success: function (data) {
+
+                var $totalPage = data.totalPage;
+                var $currentPage = data.currentPage;
+                showData(data.listData);
+
+                //上拉加载
+                var loading = false;  //状态标记
+                $(document.body).infinite().on("infinite", function() {
+                    if(loading) return;
+                    loading = true;
+                    $currentPage +=1;
+                    if($currentPage <= $totalPage ){
+                        loadData($currentPage);
+                    } else {
+                        $('.bottomTips').css("display","block");
+                    }
+                    loading = false;
+                });
+            },
+            error: function(error) {
+                console.log(error.readyState, error.statusText);
             }
-        ]
+        });
+
+        // 加载数据时状态显示
+        $('.weui-loadmore').ajaxStart(function () {
+            $(this).show();
+        });
+
+        $('.weui-loadmore').ajaxStop(function () {
+            $(this).hide();
+        });
 
 
-        $.each($listData,function (key,val) {
-            var str = "";
-
-            str += '<li class="listItem flex">' +
-                '<div class="portraitBox">' +
-                '<img src="val.portraitUrl" >' +
-                '<p>val.username</p>' +
-                '</div>' +
-                '<div class="infoBox flex">' +
-                '<div class="list_hd flex">' +
-                '<div class="tagBox"><span class="tag">木工</span><span class="tag">木工</span></div>' +
-                '<div class="star"><i class="iconfont icon-wuxing"></i></div>' +
-                '</div>' +
-                '<div class="list_bd flex">' +
-                '<span class="distance">距您：'+ val.distance + 'km</span>' +
-                '<p class="publishedTime">发布于：'+ val.pubTime + '</p>' +
-                '</div>' +
-                '<div class="list_ft flex">' +
-                '<a href="#" class="rate weui-btn weui-btn_mini weui-btn_plain-primary">评价</a>' +
-                '<a href="#" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>' +
-                '</div>' +
-                '</div>' +
-                '</li>'
-
-            $('.listCon').html(str);
-        })
-
-
-
+        //取消发布按钮弹窗
         $('.cancel').click(function () {
-            $.confirm("取消后，您的信息将对其他人不可见","确认取消", function() {
+            $.confirm("取消后，您的信息将对其他人不可见", "确认取消", function () {
                 //点击确认后跳转到列表页
-                location.href = "jobs"
-                //（TODO:清除session)
+                location.href = "jobs.html"
+                //（TODO:发送取消请求)
 
-
-            }, function() {
+            }, function () {
                 //点击取消
                 return false;
             });
         })
 
-    });
+        //排序（TODO: 定义排序接口）
+        $(function () {
+            $("#distanceFilter").click(function () {
+                $.ajax({
 
 
-    //获取位置信息排序列表,接口未定义（TODO: 定义排序接口）
-    $(function () {
-        $("#distanceFilter").click(function () {
-            $.get(
-                "/try/ajax/demo_test.php",
-                function(data,status){
-                alert("数据: " + data + "\n状态: " + status);
+                });
+
             });
 
         });
 
     });
 
-  </script>
+
+    //加载对应页码数据
+    function loadData(page) {
+        $.ajax({
+            url: "workerList.json",
+            dataType: "json",
+            type: "post",
+            data: {
+                "openId": 123456,
+                "time": $.now(),            //TODO:需要从session中获取,并且写出转换函数
+                "tag": [1, 3],              //TODO:需要从session中获取,并且写出转换函数
+                "latitude": 116.331398,     //TODO:需要从session中获取,并且写出转换函数
+                "longitude": 39.897445,
+                "page": page
+            },
+            success: function (data) {
+                showData(data.listData);
+            },
+            error: function (error) {
+                console.log(error.readyState, error.statusText);
+            }
+        });
+
+    };
+
+    //渲染数据
+    function showData(data) {
+        $.each(data, function (key, val) {
+            // 造工种标签html
+            var $tags = "";
+            //循环工种数组，取出对应的title
+            $.each(val.tag, function (key, tagval) {
+                //工种数据
+                var $jobList = [
+                    {
+                        title: "土建木工",
+                        value: 1
+                    }, {
+                        title: "装修木工",
+                        value: 2
+                    }, {
+                        title: "铺砖工",
+                        value: 3
+                    }, {
+                        title: "铁工",
+                        value: 4
+                    }, {
+                        title: "空调工",
+                        value: 5
+                    }, {
+                        title: "贴墙纸工",
+                        value: 6
+                    }, {
+                        title: "刮腻子工",
+                        value: 7
+                    }, {
+                        title: "仿古油漆工",
+                        value: 8
+                    }, {
+                        title: "油性油漆工",
+                        value: 9
+                    }, {
+                        title: "彩绘工",
+                        value: 10
+                    }, {
+                        title: "高空作业工",
+                        value: 11
+                    }, {
+                        title: "铝焊工",
+                        value: 12
+                    }, {
+                        title: "不锈钢焊工",
+                        value: 13
+                    }, {
+                        title: "特殊焊工",
+                        value: 14
+                    }, {
+                        title: "绿化工",
+                        value: 15
+                    }, {
+                        title: "汽修工",
+                        value: 16
+                    }, {
+                        title: "铲车/钩机",
+                        value: 17
+                    }, {
+                        title: "压路机/泥头车",
+                        value: 18
+                    }, {
+                        title: "吊车货车司机",
+                        value: 19
+                    }, {
+                        title: "高压电工",
+                        value: 20
+                    }, {
+                        title: "低压电工",
+                        value: 21
+                    }, {
+                        title: "弱电工",
+                        value: 22
+                    }, {
+                        title: "临时杂工",
+                        value: 23
+                    }, {
+                        title: "网络布线维护",
+                        value: 24
+                    }, {
+                        title: "雕刻师傅",
+                        value: 25
+                    }, {
+                        title: "高空作业工",
+                        value: 26
+                    }, {
+                        title: "水泥塑石工",
+                        value: 27
+                    }
+                ];
+
+                //将工种与title对应上
+                $.each($jobList, function (key, job) {
+
+                    if (job.value == tagval) {
+                        $tags += '<span class="tag">' + job.title + '</span>';
+                    }
+                });
+            });
+
+            //拼大字符串
+            var str = "";
+            str += '<li class="listItem flex">' +
+                '<div class="portraitBox">' +
+                '<img src="' + val.portraitUrl + '" >' +
+                '<p>' + val.username + '</p>' +
+                '</div>' +
+                '<div class="infoBox flex">' +
+                '<div class="list_hd flex">' +
+                '<div class="tagBox">' + $tags + '</div>' +
+                '<div class="star star' + val.star + '"></div>' +
+                '</div>' +
+                '<div class="list_bd flex">' +
+                '<span class="distance">距您：' + formatDistance(val.distance) + '</span>' +
+                '<p class="publishedTime">发布于：' + formatTime(val.pubTime) + '</p>' +
+                '</div>' +
+                '<div class="list_ft flex">' + isRateble(val.isVisible) + isVisible(val.isVisible, val.phoneNum) +
+                '</div>' +
+                '</div>' +
+                '</li>';
+            $('.listCon').append(str);
+        });
+
+        //是否可以评价
+        function isRateble(vis) {
+            return vis ? '<a href="#" class="rate weui-btn weui-btn_mini weui-btn_plain-primary">评价</a>' : "";
+        }
+
+        //是否可见
+        function isVisible(vis, val) {
+            return vis ? '<a href="javascript:;" class="dial weui-btn weui-btn_mini weui-btn_primary">' + val + '</a>' : '<a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>'
+        }
+
+        //距离格式化
+        function formatDistance(val) {
+            if (val > 1000) {
+                return (val / 1000).toFixed(2) + ' km';
+            } else {
+                return parseInt(val) + ' m';
+            }
+        }
+
+        //日期格式化
+        function formatTime(str) {
+            var oDate = new Date(str),
+                oYear = oDate.getFullYear(),
+                oMonth = oDate.getMonth() + 1,
+                oDay = oDate.getDate(),
+                oHour = oDate.getHours(),
+                oMin = oDate.getMinutes(),
+                oSen = oDate.getSeconds(),
+                oTime = getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin);//最后拼接时间
+            return oTime;
+        };
+
+        //补0操作
+        function getzf(num) {
+            if (parseInt(num) < 10) {
+                num = '0' + num;
+            }
+            return num;
+        }
+
+        //查看电话号码弹窗
+        $('.check').click(function () {
+            $.confirm({
+                title: '温馨提示',
+                text: '查看电话号码需要支付0.5元查看费用',
+                onOK: function () {
+                    //点击确认（TODO：调用微信支付接口）
+                },
+                onCancel: function () {
+                    return false;
+                }
+            });
+        });
+
+        //拨号弹窗（todo：调用系统拨打电话号码）
+        $('.dial').click(function () {
+            $.confirm({
+                title: '拨打电话',
+                text: '是否给他拨打号码？',
+                onOK: function () {
+                    //点击确认（todo：调用系统拨打电话号码）
+                },
+                onCancel: function () {
+                    return false;
+                }
+            });
+        });
+
+        //评价弹窗
+        $('.rate').click(function (){
+            var $star3 = '<span class="rateActionstar star5"></span><span class="rateDes">很专业</span>'
+            var $star4 = '<span class="rateActionstar star4"></span><span class="rateDes">专业</span>'
+            var $star5 = '<span class="rateActionstar star3"></span><span class="rateDes">一般</span>'
+            $.actions({
+                actions: [{
+                    text: $star3,
+                    onClick: function() {
+                        //do something(todo: 发送评价数据
+                    }
+                },{
+                    text: $star4,
+                    onClick: function() {
+                        //do something
+                    }
+                },{
+                text: $star5,
+                    onClick: function() {
+                    //do something
+                }
+            }]
+            });
+        });
+    };
+
+
+
+
+</script>
 </body>
 
 </html>

@@ -23,14 +23,15 @@
     <section class="main">
       <div class="jobsBox">
         <div class="jobs_hd">请选择您需要的工种，最多两个</div>
-        <div class="jobs_bd flex">
+        <div class="jobs_bd flex" id="inputsParent">
+
         </div>
       </div>
     </section>
 
     <!-- 底部 -->
     <footer>
-      <a href="javascript:;"><button  class="smallBtn Relocate"><i class="iconfont icon-dingwei"></i></button></a>
+      <a href="javascript:;"><button  class="smallBtn relocate"><i class="iconfont icon-dingwei"></i></button></a>
       <a href="javascript:;"><button  class="bigBtn"><i class="iconfont icon-jia1"></i>立即发布</button></a>
       <a href="/userCenter.html"><button  class="smallBtn"><i class="iconfont icon-wode"></i></button></a>
     </footer>
@@ -39,18 +40,63 @@
   <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
   <script type="text/javascript" src="../static/lib/jquerySession.js"></script>
   <script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
+  <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>        <!-- 引入微信js sdk -->
+  <!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=dhRLKMR9QUO4wHmnnSZTarta"></script>   &lt;!&ndash; 百度地图api &ndash;&gt;-->
   <script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
   <script>
 
     $(function() {
+
         // 开启fastclick功能
         FastClick.attach(document.body);
-        //显示location信息
-        locationInit();
+
+        //调用微信sdk配置
+        wx.config({
+            online:true,
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: "wx4afee8acfb13f3a3", // 必填，企业号的唯一标识，此处填写企业号corpid
+            timestamp: 1280977330000, // 必填，生成签名的时间戳
+            nonceStr: "aaaaa", // 必填，生成签名的随机串
+            signature: "bbbbb",// 必填，签名，见附录1
+            jsApiList: [
+                'getLocation'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+        //通过error接口处理失败验证
+        wx.error(function (res) {
+            $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
+        });
+        //配置成功后，调用接口
+        wx.ready(function() {
+            function lacation() {
+                wx.getLocation({
+                    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                    success: function (res) {
+                        var $latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                        var $longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                        var $speed = res.speed; // 速度，以米/每秒计
+                        var $accuracy = res.accuracy; // 位置精度
+
+                        $.session.set('latitude',$latitude);
+                        $.session.set('longitude',$longitude);
+
+                        // baiduLocation(res.latitude,res.longitude);
+                    }
+                });
+            }
+            lacation();
+
+            $('.relocate').click(function () {
+                lacation();
+            })
+
+        });
+
+
 
         //模拟session数据
         $.session.set('role',"1");
-        var $choosedJob = [];
+        var $choosedJob = [1,3];
         $.session.set('myJob',$choosedJob);
 
         //工种数据
@@ -139,16 +185,47 @@
             }
         ]
 
+        var p_tag,inputs,selectInputs=[];
+
+        p_tag = document.getElementById("inputsParent");
+        inputs = p_tag.getElementsByTagName("input");
+        /*for(var i=0; i<inputs.length; i++){
+            if(inputs[i].checked == true) selectInputs.push(inputs[i]);
+        }*/
+
+
         //渲染工种按钮
         $.each($jobList,function (key,val) {
             var str = "";
-            str += '<button class="job " value="'+ val.value + '">' + val.title +'</button>'
+            str += '<input value="1" type="checkbox" name="chRates"  value="'+ val.value + '" /><label>' + val.title +'</label>'
 
             $('.jobs_bd').append(str);
         })
 
 
-        if($.session.get('myJob').length !== 0) {
+        $('.jobs_bd input').click(function () {
+            var l = $('.jobs_bd input').length;
+            k = 0;
+            for (i = 0; i < l; i++) {
+                if (inputs[i].checked == true) {
+                    //这里暂时还有点问题
+                    /*$('.bigBtn').addClass('publish');
+                    $('.bigBtn .icon-jia1').removeClass('icon-jia1').addClass('icon-gouxuan');*/
+                    k++;
+                    if (k > 2) {
+                        inputs[i].checked = false;
+                    }
+                }else {
+                    /*$('.bigBtn').removeClass('publish');
+                    $('.bigBtn .icon-gouxuan').removeClass('icon-gouxuan').addClass('icon-jia1');*/
+                }
+            }
+
+        });
+
+
+
+        /*if($.session.get('myJob').length !== 0) {
             //页面初始化读取session 判断有几个按钮被选中
             var $activeArr = $.session.get('myJob').split(',');
             $.each($activeArr,function (key,val) {
@@ -162,100 +239,57 @@
                 });
 
             });
-        }
-
-
-        $('.job').click(function () {
-            /*
-            * 1、判断session中有没有数据，如果为空，push一条数据进去，增加active class
-            * 2、如果有一条数据，先判断点击的是不是原来的那条，如果是，删除该条目，移除active class；如果不是，push一条
-            * 3、如果有两条，先判断点击的是不是原来的两条，如果是，删除该条目，移除class
-            *
-            * */
-
-            var $jobArr = [];
-            if($.session.get('myJob').length == 0) {
-                $jobArr.push($(this).val());
-                $.session.set('myJob',$jobArr);
-                $(this).addClass('active');
-            } else if($.session.get('myJob').split(',').length == 1) {
-                var $checked = $('.job.active');
-//                console.log($(this).val());
-                if($(this).val() == $checked.eq(0).val() ){
-                    $jobArr.splice(0,1);
-                    $.session.set('myJob',$jobArr);
-                    $(this).removeClass('active');
-                } else {
-                    $jobArr = $.session.get('myJob').split(',');
-                    $jobArr.push($(this).val());
-                    $.session.set('myJob',$jobArr);
-                    $(this).addClass('active');
-                }
-            } else if ($.session.get('myJob').split(',').length == 2){
-//                 var $checkedArr = $.session.get('myJob').split(',');
-//                $.each($checkedArr,function (key, val) {
-//                    //通过循环的val值来生成一个属性选择器参数，来选择对应的button
-//                    var $attribute = '.job[value="'+val+'"]';
-//                    $($attribute).addClass('active');
-////                    $jobArr.push($($attribute).val());
-////                    $.session.set('myJob',$jobArr);
-//                });
-//
-//                $(this).removeClass('active');
-
-//                这里的逻辑有问题，待修复
-            }
-
-
-            //写入session
+        }*/
 
 
 
-            //判断是否有工种被选中，操作发布按钮的状态
-            var $myJobArr = $.session.get('myJob').split(",");
-            if ( $myJobArr.length > 0) {
-                //seesion 不为空时激活发布按钮
-                $('.bigBtn').addClass('publish');
-                $('.bigBtn .icon-jia1').removeClass('icon-jia1').addClass('icon-gouxuan');
-            } else {
-                //seesion 为空时切换回按钮的置黑状态
-                $('.bigBtn').removeClass('publish');
-                $('.bigBtn .icon-gouxuan').removeClass('icon-gouxuan').addClass('icon-jia1');
-            }
-        });
 
-
-        //如果没有publish类（没有选工种），则不能发布，弹窗提示
-        $('.bigBtn').click(function () {
-            if($('.bigBtn.publish').length == 1){
-                //至少选了1个工种
-                $.confirm("发布后，您的消息将被各位老板看见，您可能会接到老板的招工电话，请保持手机畅通","确认发布", function() {
-                    //点击确认后跳转到列表页
-                    location.href = "/workerList"
-                }, function() {
-                    //点击取消
-                    return false;
-                });
-            } else {
-                //没有选工种
-                $.alert('请先选择工种然后再发布','温馨提示')
-            }
-        });
-
-
-
-        //手动重新定位
-        $('.Relocate').click(function () {
-            locationInit();
-        })
-
-        function locationInit() {
-            //wx.location();
-            console.log('这里需要调用微信js-sdk 的location接口')
+        //判断是否有工种被选中，操作发布按钮的状态
+        var $myJobArr = $.session.get('myJob').split(",");
+        if ( $myJobArr.length > 0) {
+            //seesion 不为空时激活发布按钮
+            $('.bigBtn').addClass('publish');
+            $('.bigBtn .icon-jia1').removeClass('icon-jia1').addClass('icon-gouxuan');
+        } else {
+            //seesion 为空时切换回按钮的置黑状态
+            $('.bigBtn').removeClass('publish');
+            $('.bigBtn .icon-gouxuan').removeClass('icon-gouxuan').addClass('icon-jia1');
         }
 
 
     });
+
+    //如果没有publish类（没有选工种），则不能发布，弹窗提示
+    $('.bigBtn').click(function () {
+        if($('.bigBtn.publish').length == 1){
+            //至少选了1个工种
+            $.confirm("发布后，您的消息将被各位老板看见，您可能会接到老板的招工电话，请保持手机畅通","确认发布", function() {
+                //点击确认后跳转到列表页
+                location.href = "workerList.html"
+            }, function() {
+                //点击取消
+                return false;
+            });
+        } else {
+            //没有选工种
+            $.alert('请先选择工种然后再发布','温馨提示')
+        }
+    });
+
+
+    //(todo:百度地图位置转换有待验证
+    function baiduLocation(longitude, latitude){
+        var json = GPS.bd_encrypt(latitude, longitude);
+        console.log("json" + JSON.stringify(json));
+        var myGeo = new BMap.Geocoder();
+        // 根据坐标得到地址描述
+        myGeo.getLocation(new BMap.Point(json.lon, json.lat), function(result){
+            if (result){
+                Tip.layerTip("您当前的位置：" + result.address);
+//              alert(JSON.stringify(result));
+            }
+        });
+    }
   </script>
 </body>
 
