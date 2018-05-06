@@ -1,3 +1,7 @@
 *.pyc
+*settings.py
 venv
 workspace.xml
+Espeed/Espeed/settings.py
+Espeed/weixin/config.py
+.idea
