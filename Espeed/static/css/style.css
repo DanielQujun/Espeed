@@ -24,22 +24,19 @@ body {
 footer {
   position: fixed;
   width: 100%;
-  height: 46px;
+  height: 56px;
   left: 0;
   bottom: 0;
-  padding: 0 12px;
+  padding: 10px 12px;
   box-sizing: border-box;
   font-size: 0;
   display: flex;
   justify-content: space-between;
-  background: -webkit-linear-gradient(rgba(0, 0, 0, 0), rgba(200, 200, 200, 0.5));
-  /* Safari 5.1 - 6.0 */
-  background: -o-linear-gradient(rgba(0, 0, 0, 0), rgba(200, 200, 200, 0.5));
-  /* Opera 11.1 - 12.0 */
-  background: -moz-linear-gradient(rgba(0, 0, 0, 0), rgba(200, 200, 200, 0.5));
-  /* Firefox 3.6 - 15 */
-  background: linear-gradient(rgba(0, 0, 0, 0), rgba(200, 200, 200, 0.5));
-  /* 标准的语法 */ }
+  background: url("../images/footer_bg.png") repeat-x top left;
+  /*background: -webkit-linear-gradient(rgba(0,0,0,0), #3493eb); !* Safari 5.1 - 6.0 *!
+  background: -o-linear-gradient(rgba(0,0,0,0),   #3493eb); !* Opera 11.1 - 12.0 *!
+  background: -moz-linear-gradient(rgba(0,0,0,0), #3493eb); !* Firefox 3.6 - 15 *!
+  background: linear-gradient(rgba(0,0,0,0), #3493eb); !* 标准的语法 *!*/ }
   footer a:first-child button {
     border-right: 1px solid rgba(100, 100, 100, 0.2); }
   footer button {
@@ -80,6 +77,33 @@ footer {
   footer .cancel {
     background: #3493eb;
     color: #fff; }
+
+.rateActionstar {
+  display: inline-block;
+  width: 100px;
+  height: 16px;
+  vertical-align: middle; }
+
+.rateDes {
+  margin-left: 15px;
+  font-size: 14px;
+  vertical-align: middle; }
+
+.star2 {
+  background: url("../images/star2.png") no-repeat left top;
+  background-size: contain; }
+
+.star3 {
+  background: url("../images/star3.png") no-repeat left top;
+  background-size: contain; }
+
+.star4 {
+  background: url("../images/star4.png") no-repeat left top;
+  background-size: contain; }
+
+.star5 {
+  background: url("../images/star5.png") no-repeat left top;
+  background-size: contain; }
 
 /* ============================================================私有样式开始============================================================ */
 /* 注册页面开始 */
@@ -215,7 +239,8 @@ footer {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%; }
+  width: 100%;
+  z-index: 100; }
   .jobs header .iconfont {
     font-size: 13px;
     margin-right: 2px; }
@@ -259,11 +284,20 @@ footer {
     width: 100%;
     height: 50px;
     left: 0;
-    top: 0; }
+    top: 0;
+    z-index: 100; }
   .workerList .main {
     height: 100vh;
     box-sizing: border-box;
     font-size: 14px; }
+    .workerList .main .weui-loadmore {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin-left: -121px;
+      margin-top: -12px;
+      z-index: 101;
+      display: none; }
     .workerList .main .listItem {
       border-top: 1px solid #eaeaea;
       border-bottom: 1px solid #eaeaea;
@@ -316,14 +350,23 @@ footer {
           color: #999; }
         .workerList .main .listItem .infoBox .list_ft {
           font-size: 13px;
-          justify-content: flex-end; }
+          justify-content: flex-end;
+          /*.rate {
+            display: none;
+          }*/ }
           .workerList .main .listItem .infoBox .list_ft .weui-btn {
             margin-top: 0;
             margin-left: 10px;
             margin-right: 0;
             line-height: 1.8em; }
-          .workerList .main .listItem .infoBox .list_ft .rate {
-            display: none; }
+            .workerList .main .listItem .infoBox .list_ft .weui-btn .checkNum {
+              display: block; }
+            .workerList .main .listItem .infoBox .list_ft .weui-btn .phoneNum {
+              display: none; }
+    .workerList .main .bottomTips {
+      display: none;
+      text-align: center;
+      margin-bottom: 70px; }
 
 /* 工人列表页结束 */
 /* 个人中心开始 */
@@ -385,7 +428,8 @@ footer {
     width: 100%;
     height: 50px;
     left: 0;
-    top: 0; }
+    top: 0;
+    z-index: 100; }
   .history .main {
     height: 100vh;
     box-sizing: border-box;
