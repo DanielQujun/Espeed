@@ -165,6 +165,7 @@ def chose_job_cate(request):
             if POST_DATA.get('online'):
                 user = UserProfileBase.objects.filter(openId=openid).first()
                 user.jobs = POST_DATA.get('jobs')
+                user.Location = POST_DATA.get('location')
                 user.online = POST_DATA.get('online')
                 user.save()
             else:
@@ -214,11 +215,7 @@ def wokers_or_jobs_list(request):
 
                 # 获取用户的个人信息
                 userInfo = {}
-                # 用户的 id 以 django 提供的 auth_user 表为准
-                userInfo["userId"] = profile.fromUser.id
-                userInfo["imageUrl"] = profile.photoAddr
-                userInfo["userName"] = profile.nickName
-                userInfo["inClass"] = profile.inClass
+
 
                 return render(request, 'workerList.html')
             else:
@@ -229,20 +226,19 @@ def wokers_or_jobs_list(request):
             showUrl = HOME_URL
             showText = "审核中，请等待..."
     else:
-        print "i am in register"
         callbackurl = "/register?openid={openid}".format(openid=user_dict['openid'])
         return HttpResponseRedirect(callbackurl)
 
-
+@login_required
 def usercenter(request):
     return render(request, 'userCenter.html')
-
+@login_required
 def profile(request):
     return render(request, 'profile.html')
-
+@login_required
 def history(request):
     return render(request, 'history.html')
-
+@login_required
 def transaction(request):
     return render(request, 'transaction')
 
