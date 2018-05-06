@@ -235,14 +235,14 @@ def wokers_or_jobs_list(request):
 
 
 def usercenter(request):
-    render(request, 'userCenter.html')
+    return render(request, 'userCenter.html')
 
 def profile(request):
-    render(request, 'profile.html')
+    return render(request, 'profile.html')
 
 def history(request):
-    render(request, 'history.html')
+    return render(request, 'history.html')
 
 def transaction(request):
-    render(request, 'transaction')
+    return render(request, 'transaction')
 
