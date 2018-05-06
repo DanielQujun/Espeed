@@ -1,0 +1,46 @@
+/*
+Error: Invalid CSS after "  position: fixed": expected "{", was ";"
+        on line 32 of D:\Git\Espeed\Espeed\static\sass\style.scss
+
+27: 
+28: // 底部导航栏
+29: footer {
+30: <<<<<<< HEAD
+31: 
+32:   position: fixed;
+33:   width: 100%;
+34:   height: 56px;
+35:   left: 0;
+36:   bottom: 0;
+37:   padding: 10px 12px;
+
+Backtrace:
+D:\Git\Espeed\Espeed\static\sass\style.scss:32
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:1278:in `expected'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:1208:in `expected'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:1203:in `tok!'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:677:in `block'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:747:in `declaration_or_ruleset'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:697:in `block_child'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:686:in `block_contents'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:678:in `block'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:670:in `ruleset'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:696:in `block_child'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:689:in `block_contents'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:137:in `stylesheet'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:41:in `parse'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/engine.rb:414:in `_to_tree'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/engine.rb:389:in `_render_with_sourcemap'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/engine.rb:307:in `render_with_sourcemap'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/exec/sass_scss.rb:391:in `run'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/exec/sass_scss.rb:63:in `process_result'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/exec/base.rb:52:in `parse'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/lib/sass/exec/base.rb:19:in `parse!'
+G:/Program Files/koala/rubygems/gems/sass-3.5.2/bin/sass:13:in `<top (required)>'
+G:/Program Files/koala/bin/sass:22:in `load'
+G:/Program Files/koala/bin/sass:22:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Invalid CSS after \"  position: fixed\": expected \"{\", was \";\"\A         on line 32 of D:\Git\Espeed\Espeed\static\sass\style.scss\A \A 27: \A 28: // 底部导航栏\A 29: footer {\A 30: <<<<<<< HEAD\A 31: \A 32:   position: fixed;\A 33:   width: 100%;\A 34:   height: 56px;\A 35:   left: 0;\A 36:   bottom: 0;\A 37:   padding: 10px 12px;"; }

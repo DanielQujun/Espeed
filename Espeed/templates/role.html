@@ -1,0 +1,44 @@
+<!-- 基础空白文档 -->
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="utf-8">
+  <title>选择角色</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+  <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
+  <link rel="stylesheet" href="../static/css/weui.css">
+  <link rel="stylesheet" href="../static/css/jquery-weui.css">
+  <link rel="stylesheet" href="../static/css/style.css">
+</head>
+
+<body>
+  <div class="role page">
+    <section class="main flex">
+      <div class="roleBox">
+        <label for="worker"><img src="../static/images/role_worker.png" ><br/>
+        <input class="worker" type="radio" id="worker" name="role" value="workder">我是技术人员
+      </label>
+      </div>
+      <div class="roleBox">
+        <label for="boss"><img src="../static/images/role_boss.png" ><br/>
+        <input type="radio" id="boss" name="role" value="boss" checked>我需要专业技术人员
+      </label>
+      </div>
+      <a href="/baseProfile/" class="weui-btn weui-btn_primary confirmBtn">确定</a>
+    </section>
+  </div>
+
+  <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
+  <script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
+  <script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
+  <script>
+    // 开启fastclick功能
+    $(function() {
+        FastClick.attach(document.body);
+    });
+  </script>
+</body>
+
+</html>
