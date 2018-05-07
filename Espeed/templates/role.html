@@ -16,17 +16,19 @@
 <body>
   <div class="role page">
     <section class="main flex">
-      <div class="roleBox">
-        <label for="worker"><img src="../static/images/role_worker.png" ><br/>
-        <input class="worker" type="radio" id="worker" name="role" value="workder">我是技术人员
-      </label>
-      </div>
-      <div class="roleBox">
-        <label for="boss"><img src="../static/images/role_boss.png" ><br/>
-        <input type="radio" id="boss" name="role" value="boss" checked>我需要专业技术人员
-      </label>
-      </div>
-      <a href="/baseProfile/" class="weui-btn weui-btn_primary confirmBtn">确定</a>
+      <form action="" action="post">
+        <div class="roleBox">
+          <label for="worker"><img src="../static/images/role_worker.png" ><br/>
+          <input class="worker" type="radio" id="worker" name="role" value="workder">我是技术人员
+        </label>
+        </div>
+        <div class="roleBox">
+          <label for="boss"><img src="../static/images/role_boss.png" ><br/>
+          <input type="radio" id="boss" name="role" value="boss" checked>我需要专业技术人员
+        </label>
+        </div>
+        <button class="weui-btn weui-btn_primary confirmBtn">确定</button>
+      </form>
     </section>
   </div>
 
