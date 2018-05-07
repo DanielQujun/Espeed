@@ -19,7 +19,7 @@ import weixin.views as weixin_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^wechat/', weixin_views.index, name='index'),
+    url(r'^wechat/', weixin_views.chushihua, name='index'),
     url(r'^register/', weixin_views.register, name='register'),
     url(r'^role/', weixin_views.chose_role, name='chose_role'),
     url(r'^baseProfile/', weixin_views.input_name, name='input_name'),

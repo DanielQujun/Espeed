@@ -16,10 +16,18 @@
 <body>
   <div class="baseProfile">
     <section class="main">
-      <a class="changePortrait" href="#"><img src="../static/images/defaultHead.png"><p>替换头像</p></a>
+      <a class="changePortrait" href="#"><img src="{{ headimgurl }}"><p>替换头像</p></a>
       <div class="inputBox">
         <label for="username">用户名
         <input class="username" type="text" id="username" placeholder="请输入用户名（必填,别人可见）">
+        <input id="openid" type="hidden" value="{{ openid }}" name="openid">
+        <input id="nickname" type="hidden" value="{{ nickname }}" name="nickname">
+        <input id="sex" type="hidden" value="{{ sex }}" name="sex">
+        <input id="country" type="hidden" value="{{ country }}" name="country">
+        <input id="province" type="hidden" value="{{ province }}" name="province">
+        <input id="city" type="hidden" value="{{ city }}" name="city">
+        <input id="language" type="hidden" value="{{ language }}" name="language">
+        <input id="headimgurl" type="hidden" value="{{ headimgurl }}" name="headimgurl">
       </label>
       </div>
       <a href="/jobs" class="weui-btn weui-btn_primary submitBtn">确定</a>
