@@ -13,7 +13,12 @@ from weixin.config import *
 from weixin.functions import *
 from weixin.models import *
 
+
 def index(request):
+    callbackurl = "/register"
+    return HttpResponseRedirect(callbackurl)
+
+def chushihua(request):
     """
     :param request: 
     :return: 
@@ -34,6 +39,56 @@ def index(request):
         # 判断与传递进来的 signature 是否一致
         if tmp_str == signature:
             return HttpResponse(echostr)
+        else:
+            return HttpResponse('')
+    elif request.method == "POST":
+        raw_xml = request.body.decode(u'UTF-8')
+        dict_str = parse_Xml2Dict(raw_xml)
+        try:
+            MsgType = dict_str['MsgType']
+        except BaseException:
+            MsgType = ''
+        try:
+            Event = dict_str['Event']
+        except BaseException:
+            Event = ''
+        if MsgType == 'text':  # 当接收到用户发来的文本信息时
+            res_dict = {}
+            res_dict['ToUserName'] = dict_str['FromUserName']
+            res_dict['FromUserName'] = dict_str['ToUserName']
+            res_dict['CreateTime'] = int(time.time())
+            res_dict['MsgType'] = 'text'
+            res_dict['Content'] = dict_str['Content']
+            echostr = parse_Dict2Xml('xml', res_dict)
+            return HttpResponse(echostr)
+        elif MsgType == 'image':
+            send_text(dict_str['FromUserName'], "收到你发送的图片")
+            return HttpResponse('')
+        elif MsgType == 'voice':
+            dict_user_info = get_user_info(dict_str['FromUserName'])
+            print '------------------------------'
+            print '发送语音的用户信息如下'
+            print dict_user_info
+            print dict_user_info['nickname'].encode('utf-8')
+            print '------------------------------'
+            return HttpResponse('')
+        elif Event == 'subscribe':  # 关注公众号事件
+            if dict_str['EventKey'] and dict_str['Ticket']:  # 通过扫描二维码进行关注
+                qrcode_num = dict_str['EventKey'].split('_')[1]
+                send_text(
+                    dict_str['FromUserName'],
+                    "感谢您关注公众号！qrcode is " +
+                    str(qrcode_num))
+            else:
+                send_text(dict_str['FromUserName'], "感谢您关注公众号！")
+            return HttpResponse('')
+        elif Event == 'SCAN':
+            send_text(dict_str['FromUserName'],
+                      "qrcode is " + str(dict_str['EventKey']))
+            return HttpResponse('')
+        elif MsgType == 'location':
+            send_text(dict_str['FromUserName'], "你现在在:\n" + dict_str['Label'])
+            return HttpResponse('')
         else:
             return HttpResponse('')
 
@@ -127,6 +182,7 @@ def input_name(request):
         baseinfourl = BASEINFOURL.format(WEIXIN_ACCESS_TOKEN=WEIXIN_ACCESS_TOKEN, OPENID=data['openid'])
         resp, content = my_get(baseinfourl)
         user_info_dict = parse_Json2Dict(content)
+        print user_info_dict
 
         return render(request, 'baseProfile.html', user_info_dict)
     elif request.method == 'POST':
