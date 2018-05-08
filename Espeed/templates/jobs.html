@@ -1,7 +1,6 @@
 <!-- 基础空白文档 -->
 <!DOCTYPE html>
 <html>
-
 <head lang="en">
   <meta charset="utf-8">
   <title>选择工种</title>
@@ -40,12 +39,11 @@
   <script type="text/javascript" src="../static/lib/jquerySession.js"></script>
   <script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
   <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>        <!-- 引入微信js sdk -->
-  <!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=dhRLKMR9QUO4wHmnnSZTarta"></script>   &lt;!&ndash; 百度地图api &ndash;&gt;-->
+  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BVbS3AVAs8iNor6NGxKfc1gG5OcqTxBu"></script>   <!-- 百度地图api -->
   <script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
   <script>
 
     $(function() {
-
         // 开启fastclick功能
         FastClick.attach(document.body);
 
@@ -54,9 +52,9 @@
             online:true,
             debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: "wx4afee8acfb13f3a3", // 必填，企业号的唯一标识，此处填写企业号corpid
-            timestamp: 1280977330000, // 必填，生成签名的时间戳
-            nonceStr: "aaaaa", // 必填，生成签名的随机串
-            signature: "bbbbb",// 必填，签名，见附录1
+            timestamp: 1525788920370, // 必填，生成签名的时间戳
+            nonceStr: "a", // 必填，生成签名的随机串
+            signature: "b",// 必填，签名，见附录1
             jsApiList: [
                 'getLocation'
             ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
@@ -90,8 +88,6 @@
             })
 
         });
-
-
 
         //模拟session数据
         $.session.set('role',"1");
@@ -184,65 +180,28 @@
             }
         ]
 
-
-
-
         //渲染工种按钮
         $.each($jobList,function (key,val) {
             var str = "";
-            str += '<input  type="checkbox" name="chRates" onclick="check_count(this)" value="'+ val.value + '" /><label>' + val.title +'</label>'
-
+            str += '<input id="job'+ val.value +'" type="checkbox" onclick="check_count(this)" value="'+ val.value + '" /><label for="job'+ val.value +'">' + val.title +'</label>'
             $('.jobs_bd').append(str);
         });
 
 
-
-
-
-        /*if($.session.get('myJob').length !== 0) {
-            //页面初始化读取session 判断有几个按钮被选中
-            var $activeArr = $.session.get('myJob').split(',');
-            $.each($activeArr,function (key,val) {
-                $.each($('.job'),function () {
-                    //如果session中已标注的岗位与button组中对应的按钮value值对应上的话，添加active class
-                    if($(this).attr("value") == val ) {
-                        $(this).addClass('active');
-                        $('.bigBtn').addClass('publish');
-                        $('.bigBtn .icon-jia1').removeClass('icon-jia1').addClass('icon-gouxuan');
-                    }
-                });
-
-            });
-        }*/
-
-
-        //判断是否有工种被选中，操作发布按钮的状态
-        var $myJobArr = $.session.get('myJob').split(",");
-        if ( $myJobArr.length > 0) {
-            //seesion 不为空时激活发布按钮
-            $('.bigBtn').addClass('publish');
-            $('.bigBtn .icon-jia1').removeClass('icon-jia1').addClass('icon-gouxuan');
-        } else {
-            //seesion 为空时切换回按钮的置黑状态
-            $('.bigBtn').removeClass('publish');
-            $('.bigBtn .icon-gouxuan').removeClass('icon-gouxuan').addClass('icon-jia1');
-        }
-
-
     });
-
 
     var p_tag,inputs,selectInputs=[];
     $(function(){
+        //按钮初始化
         p_tag = document.getElementById("inputsParent");
         inputs = p_tag.getElementsByTagName("input");
         for(var i=0; i<inputs.length; i++){
             if(inputs[i].checked == true) selectInputs.push(inputs[i]);
-        }
-    })
+        };
+
+    });
 
     function check_count(th){
-        var i=n=0;
         if(th.checked == true)
         {
             selectInputs.push(th);
@@ -260,11 +219,20 @@
                 return false;
             }
         }
+
+        //激活发布按钮，else暂时没有用
+        if(selectInputs.length > 0) {
+            $('.bigBtn').addClass('publish');
+            $('.bigBtn .icon-jia1').removeClass('icon-jia1').addClass('icon-gouxuan');
+        } else {
+            $('.bigBtn').removeClass('publish');
+            $('.bigBtn .icon-gouxuan').removeClass('icon-gouxuan').addClass('icon-jia1');
+        }
     }
 
 
     //(todo:百度地图位置转换有待验证
-    /*function baiduLocation(longitude, latitude) {
+    function baiduLocation(longitude, latitude) {
         var json = GPS.bd_encrypt(latitude, longitude);
         console.log("json" + JSON.stringify(json));
         var myGeo = new BMap.Geocoder();
@@ -275,26 +243,50 @@
             //  alert(JSON.stringify(result));
             }
         });
-    }*/
+    }
 
 
       //如果没有publish类（没有选工种），则不能发布，弹窗提示
-      /*$('.bigBtn').click(function () {
+      $('.bigBtn').click(function () {
+          //将选择的工种数值写入session
+          var $jobVal = [];
+          for(var i=0; i< selectInputs.length; i++) {
+              $jobVal.push(selectInputs[i].value);
+          }
+          $.session.set("myJob",$jobVal);
+
+
           if($('.bigBtn.publish').length == 1){
               //至少选了1个工种
               $.confirm("发布后，您的消息将被各位老板看见，您可能会接到老板的招工电话，请保持手机畅通","确认发布", function() {
-                  //点击确认后跳转到列表页
-                  //  by qujun：此处需要回调微信链接
-                  location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx4afee8acfb13f3a3&redirect_uri=http://bobozhu.cn/workerList/&response_type=code&scope=snsapi_userinfo&state=snsapi_base#wechat_redirect"
+                  //通过ajax将session中发布参数传到后台
+                  $.ajax({
+                      url: "",                //TODO:需要设置请求地址
+                      dataType: "json",
+                      type: "post",
+                      data: {
+                          "online": true,
+                          "openId": $.session.get('openId'),
+                          "time": $.now(),
+                          "tag": $.session.get('myJob').split(','),
+                          "latitude": parseFloat($.session.get('latitude')),
+                          "longitude": parseFloat($.session.get('longitude')),
+                          "page": 1
+                      },
+                      success: function () {
+                          //  by qujun：此处需要回调微信链接
+                          location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx4afee8acfb13f3a3&redirect_uri=http://bobozhu.cn/workerList/&response_type=code&scope=snsapi_userinfo&state=snsapi_base#wechat_redirect"
+                      }
+                  })
+
               }, function() {
-                  //点击取消
                   return false;
               });
           } else {
               //没有选工种
-              $.alert('请先选择工种然后再发布','温馨提示')
+              $.alert('请至少选择一个工种，然后再进行发布','温馨提示')
           }
-      });*/
+      });
 
 
 
