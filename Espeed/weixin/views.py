@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-import hashlib
+import hashlib,datetime
 from django.http import HttpResponseRedirect
 
 from weixin.config import *
@@ -122,6 +122,7 @@ def create_menu(request):
             ' create menu err:' +
             response['errmsg'])
 
+
 def register(request):
     if request.method == 'GET':
         data = {}
@@ -129,6 +130,8 @@ def register(request):
         return render(request, 'login.html', data)
 
     elif request.method == 'POST':
+        print "qujun:get register post!"
+        print request.POST
         openid = request.POST.get('openid')
         phonenum = request.POST.get('phonemun')
         veirycode = request.POST.get('verifycode')
@@ -150,6 +153,9 @@ def register(request):
             )
             profile.save()
             callbackurl = "/role?openid={openid}".format(openid=openid)
+            return HttpResponseRedirect(callbackurl)
+        else:
+            callbackurl = "/register?openid={openid}".format(openid=openid)
             return HttpResponseRedirect(callbackurl)
 
 
@@ -257,6 +263,8 @@ def wokers_or_jobs_list(request):
         username=user_dict['openid'],
         password=user_dict['scope']
     )
+    print "qujun get user!"
+    print user
     if user is not None:
         # 用户存在，判断用户是否是认证用户
         if user.is_active:
