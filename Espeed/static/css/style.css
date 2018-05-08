@@ -250,7 +250,29 @@ footer {
       justify-content: flex-start;
       width: 100%;
       flex-wrap: wrap;
-      position: relative; }
+      position: relative;
+      text-align: center; }
+      .jobs .main .jobsBox .jobs_bd input[type="checkbox"] {
+        position: absolute;
+        clip: rect(0, 0, 0, 0); }
+      .jobs .main .jobsBox .jobs_bd input[type="checkbox"] + label {
+        width: 26%;
+        margin: 10px 3%;
+        border: 1px solid #999999;
+        border-radius: 3px;
+        background: #fff;
+        color: #666666;
+        font-size: 13px;
+        line-height: 2.4em;
+        position: relative;
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; }
+      .jobs .main .jobsBox .jobs_bd input[type="checkbox"]:checked + label {
+        color: #fff;
+        background: #3493eb;
+        border: 1px solid #3284d1; }
       .jobs .main .jobsBox .jobs_bd .job {
         width: 27%;
         margin: 10px 3%;
