@@ -113,6 +113,9 @@ footer {
       padding-top: 1.17rem;
       color: #fff;
       font-size: 48px; }
+    .login .main #errorMsg {
+      font-size: 12px;
+      color: red; }
     .login .main .registerBox {
       width: 86%;
       background: #fff;

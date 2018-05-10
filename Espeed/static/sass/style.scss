@@ -132,10 +132,14 @@ footer {
       
       h1 {
         padding-top: 1.17rem;
-          color: #fff;
-          font-size: 48px;
+        color: #fff;
+        font-size: 48px;
       }
-      
+
+    #errorMsg {
+      font-size: 12px;
+      color: red;
+    }
       .registerBox {
           width: 86%;
           background: #fff;
