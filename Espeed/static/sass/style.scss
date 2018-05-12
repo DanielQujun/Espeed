@@ -227,7 +227,7 @@ footer {
     height: 100vh;
 
     .roleBox {
-      margin: 0 auto 0 auto;
+      margin: 0 auto 40px auto;
       text-align: center;
       width: 50%;
 
@@ -236,11 +236,10 @@ footer {
         display: block;
         font-size: 18px;
         color: #333;
-
-        // label样式 有待优化
+        text-align: center;
 
         img {
-          width: 50%;
+          width: 90%;
         }
       }
     }

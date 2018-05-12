@@ -17,7 +17,7 @@
   <div class="baseProfile">
     <section class="main">
       <form action="/baseProfile/" method="post">
-      <a class="changePortrait" href="#"><img src="{{ headimgurl }}"><p>替换头像</p></a>
+      <a class="changePortrait"><img src="{{ headimgurl }}"><p>替换头像  {{ nickname }}</p></a>
       <div class="inputBox">
         <label for="username">用户名
         <input class="username" type="text" id="username" name="username" value="屈骏" placeholder="请输入用户名（必填,别人可见）">
@@ -39,7 +39,6 @@
   <script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
   <script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
   <script>
-    // 开启fastclick功能
     $(function() {
         FastClick.attach(document.body);
     });

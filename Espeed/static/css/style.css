@@ -177,16 +177,17 @@ footer {
   justify-content: space-around;
   height: 100vh; }
   .role .main .roleBox {
-    margin: 0 auto 0 auto;
+    margin: 0 auto 40px auto;
     text-align: center;
     width: 50%; }
     .role .main .roleBox label {
       width: 100%;
       display: block;
       font-size: 18px;
-      color: #333; }
+      color: #333;
+      text-align: center; }
       .role .main .roleBox label img {
-        width: 50%; }
+        width: 90%; }
   .role .main .confirmBtn {
     width: 86%; }
 
