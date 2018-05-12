@@ -21,6 +21,16 @@ body {
 .weui-dialog__hd {
   padding: 0.5em 1.6em 0.5em; }
 
+.weui-dialog__hd {
+  padding: 0; }
+
+.weui-dialog__bd {
+  max-height: 300px;
+  overflow-y: scroll; }
+
+.weui-dialog__btn {
+  color: #3493eb; }
+
 footer {
   position: fixed;
   width: 100%;
@@ -113,6 +123,9 @@ footer {
       padding-top: 1.17rem;
       color: #fff;
       font-size: 48px; }
+    .login .main #errorMsg {
+      font-size: 12px;
+      color: red; }
     .login .main .registerBox {
       width: 86%;
       background: #fff;
@@ -174,16 +187,17 @@ footer {
   justify-content: space-around;
   height: 100vh; }
   .role .main .roleBox {
-    margin: 0 auto 0 auto;
+    margin: 0 auto 40px auto;
     text-align: center;
     width: 50%; }
     .role .main .roleBox label {
       width: 100%;
       display: block;
       font-size: 18px;
-      color: #333; }
+      color: #333;
+      text-align: center; }
       .role .main .roleBox label img {
-        width: 50%; }
+        width: 90%; }
   .role .main .confirmBtn {
     width: 86%; }
 
@@ -369,6 +383,10 @@ footer {
         .workerList .main .listItem .infoBox .list_ft {
           font-size: 13px;
           justify-content: flex-end; }
+          .workerList .main .listItem .infoBox .list_ft .userid {
+            visibility: hidden;
+            display: inline-block;
+            width: 1px; }
           .workerList .main .listItem .infoBox .list_ft .weui-btn {
             margin-top: 0;
             margin-left: 10px;

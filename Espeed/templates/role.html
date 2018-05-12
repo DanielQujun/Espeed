@@ -18,16 +18,18 @@
     <section class="main flex">
       <form action="/role/" method="post">
         <div class="roleBox">
-          <input id="openid" type="hidden" value="{{ openid }}" name="openid">
-          <label for="worker"><img src="../static/images/role_worker.png" ><br/>
-          <input class="worker" type="radio" id="worker" name="role" value="workder">我是技术人员
-        </label>
+          <label for="worker"><img src="../static/images/role_worker.png" ><br>
+            <input class="worker" type="radio" id="worker" name="role" value="1">我是技术人员
+          </label>
+
         </div>
         <div class="roleBox">
-          <label for="boss"><img src="../static/images/role_boss.png" ><br/>
-          <input type="radio" id="boss" name="role" value="boss" checked>我需要专业技术人员
-        </label>
+          <label for="boss"><img src="../static/images/role_boss.png" ><br>
+            <input type="radio" id="boss" name="role" value="2" checked >我需要专业技术人员
+          </label>
+
         </div>
+        <input id="openid" type="hidden" value="{{ openid }}" name="openid">
         <button class="weui-btn weui-btn_primary confirmBtn">确定</button>
       </form>
     </section>
@@ -37,7 +39,6 @@
   <script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
   <script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
   <script>
-    // 开启fastclick功能
     $(function() {
         FastClick.attach(document.body);
     });

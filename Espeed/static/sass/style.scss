@@ -25,6 +25,18 @@ body {
   padding:.5em 1.6em 0.5em
 }
 
+.weui-dialog__hd {
+  padding: 0;
+}
+
+.weui-dialog__bd {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+.weui-dialog__btn {
+  color:#3493eb;
+}
+
 // 底部导航栏
 footer {
   position: fixed;
@@ -132,10 +144,14 @@ footer {
       
       h1 {
         padding-top: 1.17rem;
-          color: #fff;
-          font-size: 48px;
+        color: #fff;
+        font-size: 48px;
       }
-      
+
+    #errorMsg {
+      font-size: 12px;
+      color: red;
+    }
       .registerBox {
           width: 86%;
           background: #fff;
@@ -223,7 +239,7 @@ footer {
     height: 100vh;
 
     .roleBox {
-      margin: 0 auto 0 auto;
+      margin: 0 auto 40px auto;
       text-align: center;
       width: 50%;
 
@@ -232,11 +248,10 @@ footer {
         display: block;
         font-size: 18px;
         color: #333;
-
-        // label样式 有待优化
+        text-align: center;
 
         img {
-          width: 50%;
+          width: 90%;
         }
       }
     }
@@ -498,6 +513,11 @@ footer {
           font-size: 13px;
           justify-content: flex-end;
 
+          .userid {
+            visibility: hidden;
+            display: inline-block;
+            width: 1px;
+          }
           .weui-btn {
             margin-top: 0;
             margin-left: 10px;
