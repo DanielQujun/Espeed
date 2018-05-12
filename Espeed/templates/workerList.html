@@ -96,16 +96,13 @@
         //初始化数据
         $.ajax({
             async: true,
-            url: "workerList.json",
+            url: "//",
             dataType: "json",
             type: "post",
             data: {
-                "openId": 123456,
-                "time": $.now(),
-                "tag": $.session.get('myJob').split(','),
-                "latitude": parseFloat($.session.get('latitude')),
-                "longitude": parseFloat($.session.get('longitude')),
-                "page": 1
+                sortByDis: true,
+                sortByPubTime:false,
+                page: 1
             },
             success: function (data) {
                 var $totalPage = data.totalPage;

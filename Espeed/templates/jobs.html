@@ -258,18 +258,17 @@
                     type: "post",
                     data: {
                         online: true,
-                        openId: $.session.get('openid'),
-                        time: $.now(),
+                        openid: $.session.get('openid'),
                         tag: $.session.get('myJob'),
                         latitude: $.session.get('latitude'),
                         longitude: $.session.get('longitude'),
-                        sortByDis: true,
-                        sortByPubTime:false,
-                        page: 1
+
                     },
                     success: function () {
                         //  by qujun：此处需要回调微信链接
-                        location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx4afee8acfb13f3a3&redirect_uri=http://bobozhu.cn/workerList/&response_type=code&scope=snsapi_userinfo&state=snsapi_base#wechat_redirect"
+
+//                        location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx4afee8acfb13f3a3&redirect_uri=http://bobozhu.cn/workerList/&response_type=code&scope=snsapi_userinfo&state=snsapi_base#wechat_redirect"
+                        location.href = "workerList.html"
                     }
                 })
 
