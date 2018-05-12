@@ -224,7 +224,17 @@ def chose_job_cate(request):
     if request.method == 'GET':
         data = {}
         data['openid'] = request.GET.get('openid')
+        data['timestamp'] = int(time.time())
+        data['nonceStr'] = 'qujunqujun'
+        data['appid'] = WEIXIN_APPID
+        data['jsapi_ticket'] = get_jsapi_token()
+        data['url'] = 'http://ewosugong.com/jobs/?openid=oT69X1Chvefxgv3wby_-PaEIM9nY'
+        jsapi_string = "jsapi_ticket={JSAPI_TICKET}&noncestr={NONCESTR}&timestamp={TIMESTAMP}&url={URL}".\
+            format(JSAPI_TICKET=data['jsapi_ticket'],NONCESTR=data['nonceStr'], TIMESTAMP=data['timestamp'], URL=data['url'])
+        data['signature'] = hashlib.sha1(jsapi_string).hexdigest()
 
+        print "qujun RENDER jsapi data!!!!!!!!!!!!!"
+        print data
         return render(request, 'jobs.html', data)
 
     elif request.method == 'POST':

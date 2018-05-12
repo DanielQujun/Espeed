@@ -88,3 +88,22 @@ def get_access_token():
         print "old access_token ->> " + weixin.config.WEIXIN_ACCESS_TOKEN + "---" + str(
             weixin.config.WEIXIN_ACCESS_TOKEN_LASTTIME) + "---" + str(weixin.config.WEIXIN_ACCESS_TOKEN_EXPIRES_IN)
         return weixin.config.WEIXIN_ACCESS_TOKEN
+
+def get_jsapi_token():
+    if weixin.config.WEIXIN_ACCESS_TOKEN_LASTTIME == 0 or (int(
+            time.time()) - weixin.config.WEIXIN_ACCESS_TOKEN_LASTTIME > weixin.config.WEIXIN_ACCESS_TOKEN_EXPIRES_IN - 300):
+        jsapi_url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={ACCESS_TOKEN}&type=jsapi". \
+            format(ACCESS_TOKEN=get_access_token())
+        resp, content = my_get(jsapi_url)
+        jsapi_ticket_dic = parse_Json2Dict(content)
+        weixin.config.JSAPI_TICKET = str(jsapi_ticket_dic[u'ticket'])
+        weixin.config.JSAPI_TICKET_LASTTIME = int(time.time())
+        weixin.config.JSAPI_TICKET_EXPIRES_IN = jsapi_ticket_dic['expires_in']
+
+        print "new JSAPI_TICKET ->> " + weixin.config.JSAPI_TICKET + "---" + str(
+            weixin.config.JSAPI_TICKET_LASTTIME) + "---" + str(weixin.config.JSAPI_TICKET_EXPIRES_IN)
+        return weixin.config.JSAPI_TICKET
+    else:
+        print "old access_token ->> " + weixin.config.JSAPI_TICKET + "---" + str(
+            weixin.config.JSAPI_TICKET_LASTTIME) + "---" + str(weixin.config.JSAPI_TICKET_EXPIRES_IN)
+        return weixin.config.JSAPI_TICKET
