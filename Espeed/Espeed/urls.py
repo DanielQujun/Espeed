@@ -30,4 +30,5 @@ urlpatterns = [
     url(r'^history/', weixin_views.history, name='history'),
     url(r'^transaction/', weixin_views.transaction, name='transaction'),
     url(r'^create_menu/', weixin_views.create_menu, name='create_menu'),
+    url(r'^worklist_ajax/',weixin_views.worklist_ajax, name='worklist_ajax'),
 ]

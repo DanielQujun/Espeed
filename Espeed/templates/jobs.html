@@ -105,8 +105,8 @@
         });
 
         //模拟session数据
-        $.session.set('role', "1");
-        $.session.set('openid', "14521sdkfjskdfj5214");
+        //$.session.set('role', "1");
+        //$.session.set('openid', "14521sdkfjskdfj5214");
 
         //工种数据
         var $jobList = [
@@ -254,7 +254,7 @@
             $.confirm("发布后，您的消息将被各位老板看见，您可能会接到老板的招工电话，请保持手机畅通", "确认发布", function () {
                 //通过ajax将session中发布参数传到后台
                 $.ajax({
-                    url: "",
+                    url: "/jobs/",
                     type: "post",
                     data: {
                         online: true,
@@ -266,9 +266,7 @@
                     },
                     success: function () {
                         //  by qujun：此处需要回调微信链接
-
-//                        location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx4afee8acfb13f3a3&redirect_uri=http://bobozhu.cn/workerList/&response_type=code&scope=snsapi_userinfo&state=snsapi_base#wechat_redirect"
-                        location.href = "workerList.html"
+                        // location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx4afee8acfb13f3a3&redirect_uri=http://ewosugong.com/workerList/&response_type=code&scope=snsapi_userinfo&state=snsapi_base#wechat_redirect"
                     }
                 })
 

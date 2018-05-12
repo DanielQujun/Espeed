@@ -5,3 +5,5 @@ workspace.xml
 Espeed/Espeed/settings.py
 Espeed/weixin/config.py
 .idea
+rlsync.sh
+rlsync_bobo.sh

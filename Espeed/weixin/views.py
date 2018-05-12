@@ -134,8 +134,8 @@ def register(request):
         print "qujun:get register post!"
         print request.POST
         openid = request.POST.get('openid')
-        phonenum = request.POST.get('phonemun')
-        veirycode = request.POST.get('verifycode')
+        phonenum = request.POST.get('phoneNum')
+        veirycode = request.POST.get('signCode')
 
         if veirycode and phonenum and openid:
 
@@ -151,12 +151,13 @@ def register(request):
                 phonenum=phonenum,
                 openId=openid,
                 createTime=dt.now(),
-                lastTime=dt.now(),
+                last_login=dt.now(),
             )
             profile.save()
             callbackurl = "/role?openid={openid}".format(openid=openid)
             return HttpResponseRedirect(callbackurl)
         else:
+            print 'qujun:信息不全！！'
             callbackurl = "/register?openid={openid}".format(openid=openid)
             return HttpResponseRedirect(callbackurl)
 
@@ -209,6 +210,7 @@ def input_name(request):
             user.avatarAddr =POST_DATA.get('headimgurl')
 
             user.fromUser.is_active = True
+            user.fromUser.save()
             user.save()
             #callbackurl = RedirectURL.format(WEIXIN_APPID=WEIXIN_APPID, CALLBACK="http://ewosugong.com/jobs")
             callbackurl = "/jobs?openid={openid}".format(openid=POST_DATA.get('openid'))
@@ -234,9 +236,12 @@ def chose_job_cate(request):
                 user.jobs = POST_DATA.get('jobs')
                 user.Location = POST_DATA.get('location')
                 user.online = POST_DATA.get('online')
+                user.publishTime = time.time()
                 user.save()
             else:
-                pass
+                data = {}
+                data['openid'] = openid
+                return render(request, 'jobs.html', data)
 
         callbackurl = "/workerList?openid={openid}".format(openid=openid)
         return HttpResponseRedirect(callbackurl)
@@ -257,6 +262,7 @@ def wokers_or_jobs_list(request):
     if code:
         url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' + WEIXIN_APPID + \
             '&secret=' + WEIXIN_APPSECRET + '&code=' + code + '&grant_type=authorization_code'
+        print url
         resp, content = my_get(url)
         user_dict = parse_Json2Dict(content)
         print user_dict
@@ -264,45 +270,60 @@ def wokers_or_jobs_list(request):
         user_dict['openid'] = openid
         user_dict['scope'] = "snsapi_userinfo"
 
-    user = UserProfileBase.objects.filter(openId=openid).first()
-    if user is not None:
-        # 用户存在，判断用户是否是认证用户
-        if user.fromUser.is_active:
-            # 登录用户，其他任何途径都无法登录用户，后面使用装饰器验证用户是否登录来防止一些页面被用户直接访问
+    if user_dict['openid']:
+        user = UserProfileBase.objects.filter(openId=user_dict['openid']).first()
+        if user is not None:
+            print "user name is : " +user.nickName
+            # 用户存在，判断用户是否是认证用户
+            if user.fromUser.is_active:
+                # 登录用户，其他任何途径都无法登录用户，后面使用装饰器验证用户是否登录来防止一些页面被用户直接访问
 
-            # 取用户信息
-            profile = user
+                # 取用户信息
 
-            phonenum = profile.phonenum
-            if phonenum:
-                login(request, user)
+                if user.phonenum:
+                    if user.online:
 
-                # 获取用户的个人信息
-                userInfo = {}
+                        return render(request, 'workerList.html')
+                    else:
+                        callbackurl = "/jobs?openid={openid}".format(openid=user.openId)
+                        return HttpResponseRedirect(callbackurl)
 
 
-                return render(request, 'workerList.html')
+                else:
+                    return HttpResponseRedirect('/register/')
+
             else:
-                return HttpResponseRedirect('/register/')
-
+                # 修改前台用来显示的文字
+                showUrl = HOME_URL
+                showText = "审核中，请等待..."
+                print "qujun:审核中！！！"
+                return HttpResponse(showText)
         else:
-            # 修改前台用来显示的文字
-            showUrl = HOME_URL
-            showText = "审核中，请等待..."
-    else:
-        callbackurl = "/register?openid={openid}".format(openid=user_dict['openid'])
-        return HttpResponseRedirect(callbackurl)
 
-@login_required
+            callbackurl = "/register?openid={openid}".format(openid=user_dict['openid'])
+            return HttpResponseRedirect(callbackurl)
+    else:
+        print "user_dict 为空！！！！！"
+        return HttpResponse('非法访问...')
+
+
+
+#@login_required
 def usercenter(request):
     return render(request, 'userCenter.html')
-@login_required
+#@login_required
 def profile(request):
     return render(request, 'profile.html')
-@login_required
+#@login_required
 def history(request):
     return render(request, 'history.html')
-@login_required
+#@login_required
 def transaction(request):
     return render(request, 'transaction')
+
+
+def worklist_ajax(request):
+    if request.method == 'POST':
+        print request.POST
+        return "hello"
 

@@ -142,7 +142,7 @@
         $('.cancel').click(function () {
             $.confirm("取消后，您的信息将对其他人不可见", "确认取消", function () {
                 $.ajax({
-                    url: "",
+                    url: "/jobs/",
                     type: "post",
                     data: {
                         online: false,
