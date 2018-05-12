@@ -6,7 +6,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-import hashlib,datetime
+import hashlib
+from datetime import datetime as dt
 from django.http import HttpResponseRedirect
 
 from weixin.config import *
@@ -92,7 +93,7 @@ def chushihua(request):
         else:
             return HttpResponse('')
 
-
+@csrf_exempt
 def create_menu(request):
     """
     # 在微信公共号中创建菜单
@@ -149,7 +150,8 @@ def register(request):
                 fromUser=user,
                 phonenum=phonenum,
                 openId=openid,
-                createTime=datetime.datetime.now(),
+                createTime=dt.now(),
+                lastTime=dt.now(),
             )
             profile.save()
             callbackurl = "/role?openid={openid}".format(openid=openid)
@@ -171,7 +173,7 @@ def chose_role(request):
         role = request.POST.get('role')
         if role and openid:
 
-            user = UserProfileBase.objects.filter(openId=openid)
+            user = UserProfileBase.objects.filter(openId=openid).first()
             user.role = role
             user.save()
             callbackurl = "/baseProfile?openid={openid}".format(openid=openid)
@@ -185,14 +187,16 @@ def input_name(request):
         data['openid'] = request.GET.get('openid')
 
         # 准备根据openid来获取基本信息
-        baseinfourl = BASEINFOURL.format(WEIXIN_ACCESS_TOKEN=WEIXIN_ACCESS_TOKEN, OPENID=data['openid'])
+        baseinfourl = BASEINFOURL.format(WEIXIN_ACCESS_TOKEN=get_access_token(), OPENID=data['openid'])
         resp, content = my_get(baseinfourl)
         user_info_dict = parse_Json2Dict(content)
         print user_info_dict
 
         return render(request, 'baseProfile.html', user_info_dict)
     elif request.method == 'POST':
+        print "qujun: iam in inpurt name!"
         POST_DATA = request.POST
+        print POST_DATA
 
         if not None in POST_DATA.values():
             user = UserProfileBase.objects.filter(openId=POST_DATA.get('openid')).first()
@@ -204,9 +208,10 @@ def input_name(request):
             user.country = POST_DATA.get('country')
             user.avatarAddr =POST_DATA.get('headimgurl')
 
-            user.fromUser.is_alive = True
+            user.fromUser.is_active = True
             user.save()
-            callbackurl = RedirectURL.format(WEIXIN_APPID=WEIXIN_APPID, CALLBACK="http://bobozhu.cn/jobs")
+            #callbackurl = RedirectURL.format(WEIXIN_APPID=WEIXIN_APPID, CALLBACK="http://ewosugong.com/jobs")
+            callbackurl = "/jobs?openid={openid}".format(openid=POST_DATA.get('openid'))
             return HttpResponseRedirect(callbackurl)
         else:
             return "bad post data"
@@ -259,19 +264,14 @@ def wokers_or_jobs_list(request):
         user_dict['openid'] = openid
         user_dict['scope'] = "snsapi_userinfo"
 
-    user = authenticate(
-        username=user_dict['openid'],
-        password=user_dict['scope']
-    )
-    print "qujun get user!"
-    print user
+    user = UserProfileBase.objects.filter(openId=openid).first()
     if user is not None:
         # 用户存在，判断用户是否是认证用户
-        if user.is_active:
+        if user.fromUser.is_active:
             # 登录用户，其他任何途径都无法登录用户，后面使用装饰器验证用户是否登录来防止一些页面被用户直接访问
 
             # 取用户信息
-            profile = UserProfileBase.objects.get(fromUser=user)
+            profile = user
 
             phonenum = profile.phonenum
             if phonenum:

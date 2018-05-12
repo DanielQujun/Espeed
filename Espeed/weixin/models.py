@@ -24,5 +24,5 @@ class UserProfileBase(models.Model):
     Jobs = models.TextField(null=True)              # 工种类型
     online = models.BooleanField(default=False)     # 是否在线
     createTime = models.DateField()						# 注册时间
-    lastTime = models.DateField()						# 最后访问时间
+    lastTime = models.DateField(default=None)						# 最后访问时间
 
