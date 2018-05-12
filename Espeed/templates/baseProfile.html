@@ -36,11 +36,24 @@
     </section>
   </div>
   <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
+  <script type="text/javascript" src="../static/lib/jquerySession.js"></script>
   <script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
   <script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
   <script>
     $(function() {
         FastClick.attach(document.body);
+
+        //将个人信息写入session
+        $.session.set("username",$('#username').val());
+        $.session.set("openid",$('#openid').val());
+        $.session.set("nickname",$('#nickname').val());
+        $.session.set("sex",$('#sex').val());
+        $.session.set("country",$('#country').val());
+        $.session.set("province",$('#province').val());
+        $.session.set("city",$('#city').val());
+        $.session.set("language",$('#language').val());
+        $.session.set("headimgurl",$('#headimgurl').val());
+
     });
   </script>
 </body>

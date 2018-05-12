@@ -66,9 +66,32 @@
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>        <!-- 引入微信js sdk -->
 <script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
 <script>
-    // 开启fastclick功能
     $(function () {
         FastClick.attach(document.body);
+        //调用微信sdk配置
+        wx.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: "wx4afee8acfb13f3a3", // 必填，企业号的唯一标识，此处填写企业号corpid
+            timestamp: 1525788920370, // 必填，生成签名的时间戳
+            nonceStr: "a", // 必填，生成签名的随机串
+            signature: "b",// 必填，签名，见附录1
+            jsApiList: [
+                'getLocation'
+            ]
+        });
+        //通过error接口处理失败验证
+        /*wx.error(function (res) {
+            $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
+        });*/
+
+        //配置成功后，调用接口
+        wx.ready(function () {
+
+        });
+
+
+        $.session.set("myJob", "1,3");
+
 
         //初始化数据
         $.ajax({
@@ -77,7 +100,7 @@
             dataType: "json",
             type: "post",
             data: {
-                "openId": 123456,           //TODO:需要从session中获取,并且写出转换函数
+                "openId": 123456,
                 "time": $.now(),
                 "tag": $.session.get('myJob').split(','),
                 "latitude": parseFloat($.session.get('latitude')),
@@ -85,7 +108,6 @@
                 "page": 1
             },
             success: function (data) {
-
                 var $totalPage = data.totalPage;
                 var $currentPage = data.currentPage;
                 showData(data.listData);
@@ -122,9 +144,20 @@
         //取消发布按钮弹窗
         $('.cancel').click(function () {
             $.confirm("取消后，您的信息将对其他人不可见", "确认取消", function () {
-                //点击确认后跳转到列表页
-                location.href = "jobs.html"
-                //（TODO:发送取消请求)
+                $.ajax({
+                    url: "",
+                    type: "post",
+                    data: {
+                        online: false,
+                        openid: 123456,
+                        timestamp: $.now(),
+                        sortByDis: true,
+                        sortByPubTime: false
+                    },
+                    success: function () {
+                        location.href="jobs.html";
+                    }
+                });
 
             }, function () {
                 //点击取消
@@ -132,12 +165,44 @@
             });
         })
 
-        //排序（TODO: 定义排序接口）
+        //距离排序
         $(function () {
             $("#distanceFilter").click(function () {
                 $.ajax({
+                    url: "",
+                    type: "post",
+                    data: {
+                        online: false,
+                        openid: 123456,
+                        timestamp: $.now(),
+                        sortByDis: true,
+                        sortByPubTime: false
+                        //(todo: 是否需要重新传选择的工种？？
+                    },
+                    success: function () {
+                        location.href="jobs.html";
+                    }
+                });
 
+            });
 
+        });
+        //时间排序
+        $(function () {
+            $("#distanceFilter").click(function () {
+                $.ajax({
+                    url: "",
+                    type: "post",
+                    data: {
+                        online: false,
+                        openid: 123456,
+                        timestamp: $.now(),
+                        sortByDis: false,
+                        sortByPubTime: true
+                    },
+                    success: function () {
+                        location.href="jobs.html";
+                    }
                 });
 
             });
@@ -154,12 +219,14 @@
             dataType: "json",
             type: "post",
             data: {
-                "openId": 123456,
-                "time": $.now(),            //TODO:需要从session中获取,并且写出转换函数
-                "tag": [1, 3],              //TODO:需要从session中获取,并且写出转换函数
-                "latitude": 116.331398,     //TODO:需要从session中获取,并且写出转换函数
-                "longitude": 39.897445,
-                "page": page
+                openId: 123456,
+                time: $.now(),            //TODO:需要从session中获取,并且写出转换函数
+                tag: [1, 3],              //TODO:需要从session中获取,并且写出转换函数
+                latitude: 116.331398,     //TODO:需要从session中获取,并且写出转换函数
+                longitude: 39.897445,
+                sortByDis: false,
+                sortByPubTime: true,
+                page: page
             },
             success: function (data) {
                 showData(data.listData);
@@ -289,7 +356,7 @@
                 '<span class="distance">距您：' + formatDistance(val.distance) + '</span>' +
                 '<p class="publishedTime">发布于：' + formatTime(val.pubTime) + '</p>' +
                 '</div>' +
-                '<div class="list_ft flex">' + isRateble(val.isVisible) + isVisible(val.isVisible, val.phoneNum) +
+                '<div class="list_ft flex"><span class="userid">'+ val.userid + '</span>' +  isRateble(val.isVisible) + isVisible(val.isVisible, val.phoneNum) +
                 '</div>' +
                 '</div>' +
                 '</li>';
@@ -350,7 +417,7 @@
             });
         });
 
-        //拨号弹窗（todo：调用系统拨打电话号码）
+        //拨号弹窗
         $('.dial').click(function () {
             $.confirm({
                 title: '拨打电话',
@@ -365,7 +432,9 @@
         });
 
         //评价弹窗
-        $('.rate').click(function (){
+        $('.rate').click(function (event){
+            var $thisList = $(event.currentTarget);
+            var $rateVal = $thisList.prev().html();
             var $star3 = '<span class="rateActionstar star5"></span><span class="rateDes">很专业</span>'
             var $star4 = '<span class="rateActionstar star4"></span><span class="rateDes">专业</span>'
             var $star5 = '<span class="rateActionstar star3"></span><span class="rateDes">一般</span>'
@@ -373,17 +442,60 @@
                 actions: [{
                     text: $star3,
                     onClick: function() {
-                        //do something(todo: 发送评价数据
+                        //发送评价数据
+                        $.ajax({
+                            url:"",
+                            method: "",
+                            data: {
+                                openId: 123456,
+                                time: $.now(),
+                                userid: $rateVal,
+                                rateVal: 3
+                            },
+                            success: function () {
+                                $.toast("评价成功", "text");
+                            }
+
+                        })
+
                     }
                 },{
                     text: $star4,
                     onClick: function() {
-                        //do something
+                        //发送评价数据
+                        $.ajax({
+                            url:"",
+                            method: "",
+                            data: {
+                                openId: 123456,
+                                time: $.now(),
+                                userid: $rateVal,
+                                rateVal: 4
+                            },
+                            success: function () {
+                                $.toast("评价成功", "text");
+                            }
+
+                        })
                     }
                 },{
                 text: $star5,
                     onClick: function() {
-                    //do something
+                        //发送评价数据
+                        $.ajax({
+                            url:"",
+                            method: "",
+                            data: {
+                                openId: 123456,
+                                time: $.now(),
+                                userid: $rateVal,
+                                rateVal: 5
+                            },
+                            success: function () {
+                                $.toast("评价成功", "text");
+                            }
+
+                        })
                 }
             }]
             });

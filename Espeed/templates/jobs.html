@@ -1,53 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-  <meta charset="utf-8">
-  <title>选择工种</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
-  <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
-  <link rel="stylesheet" href="../static/css/weui.css">
-  <link rel="stylesheet" href="../static/iconfont/iconfont.css">
-  <link rel="stylesheet" href="../static/css/jquery-weui.css">
-  <link rel="stylesheet" href="../static/css/style.css">
+    <meta charset="utf-8">
+    <title>选择工种</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+    <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
+    <link rel="stylesheet" href="../static/css/weui.css">
+    <link rel="stylesheet" href="../static/iconfont/iconfont.css">
+    <link rel="stylesheet" href="../static/css/jquery-weui.css">
+    <link rel="stylesheet" href="../static/css/style.css">
 </head>
 
 <body>
-  <div class="jobs">
+<div class="jobs">
     <header>
-      <i class="iconfont icon-location"></i><span>深圳市福田区新民路24号</span>
+        <i class="iconfont icon-location"></i><span>深圳市福田区新民路24号</span>
     </header>
     <!-- 主体内容 -->
     <section class="main">
-      <div class="jobsBox">
-        <div class="jobs_hd">请选择您需要的工种，最多两个</div>
-        <div class="jobs_bd flex" id="inputsParent">
+        <div class="jobsBox">
+            <div class="jobs_hd">请选择您需要的工种，最多两个</div>
+            <div class="jobs_bd flex" id="inputsParent">
+            </div>
         </div>
-      </div>
     </section>
 
     <!-- 底部 -->
     <footer>
-      <a href="javascript:;"><button  class="smallBtn relocate"><i class="iconfont icon-dingwei"></i></button></a>
-      <a href="javascript:;"><button  class="bigBtn"><i class="iconfont icon-jia1"></i>立即发布</button></a>
-      <a href="/userCenter"><button  class="smallBtn"><i class="iconfont icon-wode"></i></button></a>
+        <a href="javascript:;">
+            <button class="smallBtn relocate"><i class="iconfont icon-dingwei"></i></button>
+        </a>
+        <a href="javascript:;">
+            <button class="bigBtn"><i class="iconfont icon-jia1"></i>立即发布</button>
+        </a>
+        <a href="/userCenter">
+            <button class="smallBtn"><i class="iconfont icon-wode"></i></button>
+        </a>
     </footer>
-  </div>
+</div>
 
-  <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
-  <script type="text/javascript" src="../static/lib/jquerySession.js"></script>
-  <script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
-  <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>        <!-- 引入微信js sdk -->
-  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BVbS3AVAs8iNor6NGxKfc1gG5OcqTxBu"></script>   <!-- 百度地图api -->
-  <script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
-  <script>
+<script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
+<script type="text/javascript" src="../static/lib/jquerySession.js"></script>
+<script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>        <!-- 引入微信js sdk -->
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BVbS3AVAs8iNor6NGxKfc1gG5OcqTxBu"></script>
+<!-- 百度地图api -->
+<script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
+<script>
 
-    $(function() {
+    $(function () {
         FastClick.attach(document.body);
 
         //调用微信sdk配置
         wx.config({
-            online:true,
             debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: "wx4afee8acfb13f3a3", // 必填，企业号的唯一标识，此处填写企业号corpid
             timestamp: 1525788920370, // 必填，生成签名的时间戳
@@ -55,14 +61,19 @@
             signature: "b",// 必填，签名，见附录1
             jsApiList: [
                 'getLocation'
-            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+            ]
         });
         //通过error接口处理失败验证
-        wx.error(function (res) {
+        /*wx.error(function (res) {
             $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
-        });
+        });*/
+
+        //造假地理位置信息
+        $.session.set('latitude', 42.2485455555);
+        $.session.set('longitude', 78.5462217855);
+
         //配置成功后，调用接口
-        wx.ready(function() {
+        wx.ready(function () {
             function lacation() {
                 wx.getLocation({
                     type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
@@ -72,154 +83,155 @@
                         var $speed = res.speed; // 速度，以米/每秒计
                         var $accuracy = res.accuracy; // 位置精度
 
-                        $.session.set('latitude',$latitude);
-                        $.session.set('longitude',$longitude);
+                        //正常应该显示下面这段代码；
+                        /*$.session.set('latitude', $latitude);
+                        $.session.set('longitude', $longitude);*/
 
+
+                        $.session.set('latitude', 42.2485455555);
+                        $.session.set('longitude', 78.5462217855);
                         // baiduLocation(res.latitude,res.longitude);
                     }
                 });
             }
+
             lacation();
 
             $('.relocate').click(function () {
                 lacation();
+                $.toast("重新定位中...", "text");
             })
 
         });
 
         //模拟session数据
-        $.session.set('role',"1");
-        var $choosedJob = [1,3];
-        $.session.set('myJob',$choosedJob);
+        $.session.set('role', "1");
+        $.session.set('openid', "14521sdkfjskdfj5214");
 
         //工种数据
         var $jobList = [
             {
                 title: "土建木工",
                 value: 1
-            },{
+            }, {
                 title: "装修木工",
                 value: 2
-            },{
+            }, {
                 title: "铺砖工",
                 value: 3
-            },{
+            }, {
                 title: "铁工",
                 value: 4
-            },{
+            }, {
                 title: "空调工",
                 value: 5
-            },{
+            }, {
                 title: "贴墙纸工",
                 value: 6
-            },{
+            }, {
                 title: "刮腻子工",
                 value: 7
-            },{
+            }, {
                 title: "仿古油漆工",
                 value: 8
-            },{
+            }, {
                 title: "油性油漆工",
                 value: 9
-            },{
+            }, {
                 title: "彩绘工",
                 value: 10
-            },{
+            }, {
                 title: "高空作业工",
                 value: 11
-            },{
+            }, {
                 title: "铝焊工",
                 value: 12
-            },{
+            }, {
                 title: "不锈钢焊工",
                 value: 13
-            },{
+            }, {
                 title: "特殊焊工",
                 value: 14
-            },{
+            }, {
                 title: "绿化工",
                 value: 15
-            },{
+            }, {
                 title: "汽修工",
                 value: 16
-            },{
+            }, {
                 title: "铲车/钩机",
                 value: 17
-            },{
+            }, {
                 title: "压路机/泥头车",
                 value: 18
-            },{
+            }, {
                 title: "吊车货车司机",
                 value: 19
-            },{
+            }, {
                 title: "高压电工",
                 value: 20
-            },{
+            }, {
                 title: "低压电工",
                 value: 21
-            },{
+            }, {
                 title: "弱电工",
                 value: 22
-            },{
+            }, {
                 title: "临时杂工",
                 value: 23
-            },{
+            }, {
                 title: "网络布线维护",
                 value: 24
-            },{
+            }, {
                 title: "雕刻师傅",
                 value: 25
-            },{
+            }, {
                 title: "高空作业工",
                 value: 26
-            },{
+            }, {
                 title: "水泥塑石工",
                 value: 27
             }
         ]
 
         //渲染工种按钮
-        $.each($jobList,function (key,val) {
+        $.each($jobList, function (key, val) {
             var str = "";
-            str += '<input id="job'+ val.value +'" type="checkbox" onclick="check_count(this)" value="'+ val.value + '" /><label for="job'+ val.value +'">' + val.title +'</label>'
+            str += '<input id="job' + val.value + '" type="checkbox" onclick="check_count(this)" value="' + val.value + '" /><label for="job' + val.value + '">' + val.title + '</label>'
             $('.jobs_bd').append(str);
         });
-
-
     });
 
-    var p_tag,inputs,selectInputs=[];
-    $(function(){
-        //按钮初始化
+    var p_tag, inputs, selectInputs = [];
+    $(function () {
+        //工种选择初始化，页面加载时判断有几个input被选中，加入数组中
         p_tag = document.getElementById("inputsParent");
         inputs = p_tag.getElementsByTagName("input");
-        for(var i=0; i<inputs.length; i++){
-            if(inputs[i].checked == true) selectInputs.push(inputs[i]);
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].checked == true) selectInputs.push(inputs[i]);
         };
-
     });
 
-    function check_count(th){
-        if(th.checked == true)
-        {
+    function check_count(th) {
+        if (th.checked == true) {
             selectInputs.push(th);
-            if(selectInputs.length > 2){
+            if (selectInputs.length > 2) {
                 selectInputs[0].checked = false;
                 selectInputs.shift();
             }
-        }else{
-            if(selectInputs.length>1){
-                for(var i=0; i<selectInputs.length; i++){
-                    if(th == selectInputs[i]) selectInputs.splice(i,1);
+        } else {
+            if (selectInputs.length > 1) {
+                for (var i = 0; i < selectInputs.length; i++) {
+                    if (th == selectInputs[i]) selectInputs.splice(i, 1);
                 }
-            }else{
+            } else {
                 th.checked = true;
                 return false;
             }
         }
 
         //激活发布按钮，else暂时没有用
-        if(selectInputs.length > 0) {
+        if (selectInputs.length > 0) {
             $('.bigBtn').addClass('publish');
             $('.bigBtn .icon-jia1').removeClass('icon-jia1').addClass('icon-gouxuan');
         } else {
@@ -228,6 +240,47 @@
         }
     }
 
+    //如果没有publish类（没有选工种），则不能发布，弹窗提示
+    $('.bigBtn').click(function () {
+        //将选择的工种数值写入session
+        var $jobVal = [];
+        for (var i = 0; i < selectInputs.length; i++) {
+            $jobVal.push(selectInputs[i].value);
+        }
+        $.session.set("myJob", $jobVal);
+
+        if ($('.bigBtn.publish').length == 1) {
+            //至少选了1个工种
+            $.confirm("发布后，您的消息将被各位老板看见，您可能会接到老板的招工电话，请保持手机畅通", "确认发布", function () {
+                //通过ajax将session中发布参数传到后台
+                $.ajax({
+                    url: "",
+                    type: "post",
+                    data: {
+                        online: true,
+                        openId: $.session.get('openid'),
+                        time: $.now(),
+                        tag: $.session.get('myJob'),
+                        latitude: $.session.get('latitude'),
+                        longitude: $.session.get('longitude'),
+                        sortByDis: true,
+                        sortByPubTime:false,
+                        page: 1
+                    },
+                    success: function () {
+                        //  by qujun：此处需要回调微信链接
+                        location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx4afee8acfb13f3a3&redirect_uri=http://bobozhu.cn/workerList/&response_type=code&scope=snsapi_userinfo&state=snsapi_base#wechat_redirect"
+                    }
+                })
+
+            }, function () {
+                return false;
+            });
+        } else {
+            //没有选工种
+            $.alert('请至少选择一个工种，然后再进行发布', '温馨提示')
+        }
+    });
 
     //(todo:百度地图位置转换有待验证
     function baiduLocation(longitude, latitude) {
@@ -238,57 +291,13 @@
         myGeo.getLocation(new BMap.Point(json.lon, json.lat), function (result) {
             if (result) {
                 Tip.layerTip("您当前的位置：" + result.address);
-            //  alert(JSON.stringify(result));
+                //  alert(JSON.stringify(result));
             }
         });
     }
 
 
-      //如果没有publish类（没有选工种），则不能发布，弹窗提示
-      $('.bigBtn').click(function () {
-          //将选择的工种数值写入session
-          var $jobVal = [];
-          for(var i=0; i< selectInputs.length; i++) {
-              $jobVal.push(selectInputs[i].value);
-          }
-          $.session.set("myJob",$jobVal);
-
-
-          if($('.bigBtn.publish').length == 1){
-              //至少选了1个工种
-              $.confirm("发布后，您的消息将被各位老板看见，您可能会接到老板的招工电话，请保持手机畅通","确认发布", function() {
-                  //通过ajax将session中发布参数传到后台
-                  $.ajax({
-                      url: "",                //TODO:需要设置请求地址
-                      dataType: "json",
-                      type: "post",
-                      data: {
-                          "online": true,
-                          "openId": $.session.get('openId'),
-                          "time": $.now(),
-                          "tag": $.session.get('myJob').split(','),
-                          "latitude": parseFloat($.session.get('latitude')),
-                          "longitude": parseFloat($.session.get('longitude')),
-                          "page": 1
-                      },
-                      success: function () {
-                          //  by qujun：此处需要回调微信链接
-                          location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx4afee8acfb13f3a3&redirect_uri=http://bobozhu.cn/workerList/&response_type=code&scope=snsapi_userinfo&state=snsapi_base#wechat_redirect"
-                      }
-                  })
-
-              }, function() {
-                  return false;
-              });
-          } else {
-              //没有选工种
-              $.alert('请至少选择一个工种，然后再进行发布','温馨提示')
-          }
-      });
-
-
-
-  </script>
+</script>
 </body>
 
 </html>

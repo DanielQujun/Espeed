@@ -25,6 +25,18 @@ body {
   padding:.5em 1.6em 0.5em
 }
 
+.weui-dialog__hd {
+  padding: 0;
+}
+
+.weui-dialog__bd {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+.weui-dialog__btn {
+  color:#3493eb;
+}
+
 // 底部导航栏
 footer {
   position: fixed;
@@ -501,6 +513,11 @@ footer {
           font-size: 13px;
           justify-content: flex-end;
 
+          .userid {
+            visibility: hidden;
+            display: inline-block;
+            width: 1px;
+          }
           .weui-btn {
             margin-top: 0;
             margin-left: 10px;

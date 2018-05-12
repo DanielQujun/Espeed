@@ -21,6 +21,16 @@ body {
 .weui-dialog__hd {
   padding: 0.5em 1.6em 0.5em; }
 
+.weui-dialog__hd {
+  padding: 0; }
+
+.weui-dialog__bd {
+  max-height: 300px;
+  overflow-y: scroll; }
+
+.weui-dialog__btn {
+  color: #3493eb; }
+
 footer {
   position: fixed;
   width: 100%;
@@ -373,6 +383,10 @@ footer {
         .workerList .main .listItem .infoBox .list_ft {
           font-size: 13px;
           justify-content: flex-end; }
+          .workerList .main .listItem .infoBox .list_ft .userid {
+            visibility: hidden;
+            display: inline-block;
+            width: 1px; }
           .workerList .main .listItem .infoBox .list_ft .weui-btn {
             margin-top: 0;
             margin-left: 10px;
