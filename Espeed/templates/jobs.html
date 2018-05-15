@@ -249,7 +249,7 @@
                     type: "post",
                     data: {
                         online: true,
-                        openid: $.session.get('openid'),
+                        openid: window.localStorage.getItem("openid"),
                         tag: $.session.get('myJob'),
                         latitude: $.session.get('latitude'),
                         longitude: $.session.get('longitude'),
@@ -268,7 +268,8 @@
         }
     });
 
-
+    //创建百度地图对象
+    var myGeo = new BMap.Geocoder();
     //调用百度api转化坐标系
     function getBaiduPosition(lng,lat) {
         var url ="http://api.map.baidu.com/geoconv/v1/?coords="+lng+","+lat+"&from=1&to=5&ak=BVbS3AVAs8iNor6NGxKfc1gG5OcqTxBu";
@@ -278,12 +279,22 @@
             contentType: "application/json",
             dataType: 'jsonp',//这里要用jsonp的方式不然会报错
             success: function(data){
-                var newLng = data.result[0].x;//经度
-                var newLat  = data.result[0].y;//纬度
 
                 //写入session中，方便ajax发送已经转化过了的地址信息；
-                $.session.set('latitude', newLat);
-                $.session.set('longitude', newLng);
+                $.session.set('latitude', data.result[0].y);
+                $.session.set('longitude', data.result[0].x);
+
+
+                // 根据坐标得到地址描述
+                myGeo.getLocation(new BMap.Point($.session.get("longitude"),$.session.get("latitude")), function (result) {
+                    if (result) {
+                        //地址写入页面
+                        $("#location").append(result.address);
+                    } else {
+                        $.alert("获取位置失败...","text");
+                    }
+                });
+
             },
             error: function(obj) {
                 alert(obj.status);
@@ -291,22 +302,6 @@
         });
     }
 
-
-
-    //(todo:百度地图位置转换有待验证
-    function baiduLocation(longitude, latitude) {
-        var myGeo = new BMap.Geocoder();
-        // 根据坐标得到地址描述
-        myGeo.getLocation(new BMap.Point($.session.get("longitude"),$.session.get("latitude")), function (result) {
-            if (result) {
-                //地址写入页面
-                var $locationStr = result.address;
-                $("#location").append($locationStr);
-            } else {
-                $.alert("获取位置失败...","text");
-            }
-        });
-    }
 
 
 </script>
