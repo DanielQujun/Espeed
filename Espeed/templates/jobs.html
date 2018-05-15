@@ -15,7 +15,7 @@
 <body>
 <div class="jobs">
     <header>
-        <i class="iconfont icon-location"></i><span>深圳市福田区新民路24号</span>
+        <i class="iconfont icon-location"></i><span id="location">获取位置信息中...</span>
     </header>
     <!-- 主体内容 -->
     <section class="main">
@@ -56,7 +56,7 @@
         wx.config({
             debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: "{{ appid }}", // 必填，企业号的唯一标识，此处填写企业号corpid
-            timestamp: {{timestamp}}, // 必填，生成签名的时间戳
+            timestamp: "{{timestamp}}", // 必填，生成签名的时间戳
             nonceStr: "{{ nonceStr }}", // 必填，生成签名的随机串
             signature: "{{ signature }}",// 必填，签名，见附录1
             jsApiList: [
@@ -64,13 +64,10 @@
             ]
         });
         //通过error接口处理失败验证
-        /*wx.error(function (res) {
+        wx.error(function (res) {
             $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
-        });*/
+        });
 
-        //造假地理位置信息
-        $.session.set('latitude', 42.2485455555);
-        $.session.set('longitude', 78.5462217855);
 
         //配置成功后，调用接口
         wx.ready(function () {
@@ -83,12 +80,12 @@
                         var $speed = res.speed; // 速度，以米/每秒计
                         var $accuracy = res.accuracy; // 位置精度
 
-                        //正常应该显示下面这段代码；
-                        /*$.session.set('latitude', $latitude);
-                        $.session.set('longitude', $longitude);*/
 
+                        //转换为百度坐标系,并且写入session
+                        getBaiduPosition($longitude,$latitude)
 
-                        // baiduLocation(res.latitude,res.longitude);
+                        //调用百度api传入session中的坐标，获得地区街道信息，并写入页面；
+                         baiduLocation(newLng,newLat);
                     }
                 });
             }
@@ -271,16 +268,42 @@
         }
     });
 
+
+    //调用百度api转化坐标系
+    function getBaiduPosition(lng,lat) {
+        var url ="http://api.map.baidu.com/geoconv/v1/?coords="+lng+","+lat+"&from=1&to=5&ak=BVbS3AVAs8iNor6NGxKfc1gG5OcqTxBu";
+        $.ajax({
+            url: url,
+            type: 'GET',
+            contentType: "application/json",
+            dataType: 'jsonp',//这里要用jsonp的方式不然会报错
+            success: function(data){
+                var newLng = data.result[0].x;//经度
+                var newLat  = data.result[0].y;//纬度
+
+                //写入session中，方便ajax发送已经转化过了的地址信息；
+                $.session.set('latitude', newLat);
+                $.session.set('longitude', newLng);
+            },
+            error: function(obj) {
+                alert(obj.status);
+            }
+        });
+    }
+
+
+
     //(todo:百度地图位置转换有待验证
     function baiduLocation(longitude, latitude) {
-        var json = GPS.bd_encrypt(latitude, longitude);
-        console.log("json" + JSON.stringify(json));
         var myGeo = new BMap.Geocoder();
         // 根据坐标得到地址描述
-        myGeo.getLocation(new BMap.Point(json.lon, json.lat), function (result) {
+        myGeo.getLocation(new BMap.Point($.session.get("longitude"),$.session.get("latitude")), function (result) {
             if (result) {
-                Tip.layerTip("您当前的位置：" + result.address);
-                //  alert(JSON.stringify(result));
+                //地址写入页面
+                var $locationStr = result.address;
+                $("#location").append($locationStr);
+            } else {
+                $.alert("获取位置失败...","text");
             }
         });
     }
