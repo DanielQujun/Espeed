@@ -149,6 +149,8 @@
                         timestamp: $.now()
                     },
                     success: function () {
+                     // add by qujun
+                        location.href = "/jobs/?openid="+window.localStorage.getItem("openid");
                     }
                 });
 
