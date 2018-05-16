@@ -162,6 +162,12 @@
         //距离排序
         $(function () {
             $("#distanceFilter").click(function () {
+                if($("#distanceFilter .iconfont.icon-shengxu")) {
+                    $("#distanceFilter").html("距离排序<span class='iconfont icon-jiangxu'></span>");
+                }
+                if($("#distanceFilter .iconfont.icon-jiangxu")) {
+                    $("#distanceFilter").html("距离排序<span class='iconfont icon-shengxu'></span>");
+                }
                 $.ajax({
                     url: "",
                     type: "post",
@@ -173,7 +179,11 @@
                         //(todo: 是否需要重新传选择的工种？？
                     },
                     success: function () {
-                        $("#distanceFilter .iconfont")
+                        if($("#distanceFilter .iconfont.icon-shengxu")) {
+                            $(this).removeClass("icon-shengxu").addClass("icon-jiangxu");
+                        } else {
+                            $(this).removeClass("icon-jiangxu").addClass("icon-shengxu");
+                        }
                     }
                 });
 
