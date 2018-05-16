@@ -421,6 +421,14 @@ footer {
     left: 0;
     top: 0;
     z-index: 100;
+
+  .weui-navbar__item {
+
+    .iconfont {
+      margin-left: 4px;
+      font-size: 16px;
+    }
+  }
   }
 
   .main {

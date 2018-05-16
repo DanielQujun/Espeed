@@ -21,10 +21,9 @@
     <header>
         <div class="weui-navbar">
             <div class="weui-navbar__item weui_bar__item_on">
-                <span id="distanceFilter">离我最近</span>
+                <span id="distanceFilter">离我最近<span class="iconfont icon-shengxu"></span></span>
             </div>
-            <div class="weui-navbar__item">
-                最新上线
+            <div class="weui-navbar__item"><span id="pubTimeFilter">最新上线<span class="iconfont icon-shengxu"></span></span>
             </div>
         </div>
     </header>
@@ -150,6 +149,7 @@
                         timestamp: $.now()
                     },
                     success: function () {
+                        location.href = "/jobs/?"+window.localStorage.getItem("openid");
                     }
                 });
 
@@ -173,6 +173,7 @@
                         //(todo: 是否需要重新传选择的工种？？
                     },
                     success: function () {
+                        $("#distanceFilter .iconfont")
                     }
                 });
 
@@ -181,7 +182,7 @@
         });
         //时间排序
         $(function () {
-            $("#distanceFilter").click(function () {
+            $("#pubTimeFilter").click(function () {
                 $.ajax({
                     url: "",
                     type: "post",

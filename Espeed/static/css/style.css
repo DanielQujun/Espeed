@@ -318,6 +318,9 @@ footer {
     left: 0;
     top: 0;
     z-index: 100; }
+    .workerList header .weui-navbar__item .iconfont {
+      margin-left: 4px;
+      font-size: 16px; }
   .workerList .main {
     height: 100vh;
     box-sizing: border-box;
