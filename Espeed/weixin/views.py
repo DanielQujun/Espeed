@@ -154,11 +154,11 @@ def register(request):
                 last_login=dt.now(),
             )
             profile.save()
-            callbackurl = "/role?openid={openid}".format(openid=openid)
+            callbackurl = "/role/?openid={openid}".format(openid=openid)
             return HttpResponseRedirect(callbackurl)
         else:
             print 'qujun:信息不全！！'
-            callbackurl = "/register?openid={openid}".format(openid=openid)
+            callbackurl = "/register/?openid={openid}".format(openid=openid)
             return HttpResponseRedirect(callbackurl)
 
 
@@ -177,7 +177,7 @@ def chose_role(request):
             user = UserProfileBase.objects.filter(openId=openid).first()
             user.role = role
             user.save()
-            callbackurl = "/baseProfile?openid={openid}".format(openid=openid)
+            callbackurl = "/baseProfile/?openid={openid}".format(openid=openid)
             return HttpResponseRedirect(callbackurl)
 
 
@@ -213,7 +213,7 @@ def input_name(request):
             user.fromUser.save()
             user.save()
             #callbackurl = RedirectURL.format(WEIXIN_APPID=WEIXIN_APPID, CALLBACK="http://ewosugong.com/jobs")
-            callbackurl = "/jobs?openid={openid}".format(openid=POST_DATA.get('openid'))
+            callbackurl = "/jobs/?openid={openid}".format(openid=POST_DATA.get('openid'))
             return HttpResponseRedirect(callbackurl)
         else:
             return "bad post data"
@@ -238,23 +238,36 @@ def chose_job_cate(request):
         return render(request, 'jobs.html', data)
 
     elif request.method == 'POST':
+        print request.POST
         POST_DATA = request.POST
         openid = POST_DATA.get('openid')
         if not None in POST_DATA.values() and openid:
-            if POST_DATA.get('online'):
+            if POST_DATA.get('online') == 'true':
+                print "qujun : update database for jobs choose!!!"
                 user = UserProfileBase.objects.filter(openId=openid).first()
-                user.jobs = POST_DATA.get('jobs')
-                user.Location = POST_DATA.get('location')
-                user.online = POST_DATA.get('online')
-                user.publishTime = time.time()
+                user.jobs = POST_DATA.get('tag')
+                user.Location_lati = POST_DATA.get('latitude')
+                user.Location_longi = POST_DATA.get('longitude')
+                user.online = 'True'
+                user.publishTime = dt.now()
                 user.save()
+                callbackurl = "/workerList/?openid={openid}".format(openid=openid)
+                return HttpResponseRedirect(callbackurl)
             else:
+                print "qujun : update database for jobs OFFline!!!"
                 data = {}
                 data['openid'] = openid
+                user = UserProfileBase.objects.filter(openId=openid).first()
+                user.online = 'False'
+                user.save()
+
                 return render(request, 'jobs.html', data)
 
-        callbackurl = "/workerList?openid={openid}".format(openid=openid)
-        return HttpResponseRedirect(callbackurl)
+
+        else:
+            callbackurl = "/register/?openid={openid}".format(openid=openid)
+            return HttpResponseRedirect(callbackurl)
+            #return HttpResponse('invalid post')
 
 def wokers_or_jobs_list(request):
     print request.GET
@@ -281,9 +294,11 @@ def wokers_or_jobs_list(request):
         user_dict['scope'] = "snsapi_userinfo"
 
     if user_dict['openid']:
+        print "work list get openid is : "
+        print user_dict['openid']
         user = UserProfileBase.objects.filter(openId=user_dict['openid']).first()
         if user is not None:
-            print "user name is : " +user.nickName
+            print "user name is : "
             # 用户存在，判断用户是否是认证用户
             if user.fromUser.is_active:
                 # 登录用户，其他任何途径都无法登录用户，后面使用装饰器验证用户是否登录来防止一些页面被用户直接访问
@@ -292,10 +307,12 @@ def wokers_or_jobs_list(request):
 
                 if user.phonenum:
                     if user.online:
-
-                        return render(request, 'workerList.html')
+                        print "qujun: User is  Online!"
+                        data = render_js_config(request)
+                        return render(request, 'workerList.html', data)
                     else:
-                        callbackurl = "/jobs?openid={openid}".format(openid=user.openId)
+                        print "qujun: User is Not Online!"
+                        callbackurl = "/jobs/?openid={openid}".format(openid=user.openId)
                         return HttpResponseRedirect(callbackurl)
 
 
@@ -310,7 +327,7 @@ def wokers_or_jobs_list(request):
                 return HttpResponse(showText)
         else:
 
-            callbackurl = "/register?openid={openid}".format(openid=user_dict['openid'])
+            callbackurl = "/register/?openid={openid}".format(openid=user_dict['openid'])
             return HttpResponseRedirect(callbackurl)
     else:
         print "user_dict 为空！！！！！"
@@ -335,5 +352,21 @@ def transaction(request):
 def worklist_ajax(request):
     if request.method == 'POST':
         print request.POST
-        return "hello"
+        return HttpResponse("hello")
 
+
+
+def render_js_config(request):
+    data = {}
+    data['openid'] = request.GET.get('openid')
+    data['timestamp'] = int(time.time())
+    data['nonceStr'] = 'qujunqujun'
+    data['appid'] = WEIXIN_APPID
+    data['jsapi_ticket'] = get_jsapi_token()
+    data['url'] = request.build_absolute_uri()
+    jsapi_string = "jsapi_ticket={JSAPI_TICKET}&noncestr={NONCESTR}&timestamp={TIMESTAMP}&url={URL}". \
+        format(JSAPI_TICKET=data['jsapi_ticket'], NONCESTR=data['nonceStr'], TIMESTAMP=data['timestamp'],
+               URL=data['url'])
+    data['signature'] = hashlib.sha1(jsapi_string).hexdigest()
+
+    return data

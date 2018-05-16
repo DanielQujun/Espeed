@@ -19,7 +19,8 @@ class UserProfileBase(models.Model):
     phonenum = models.CharField(max_length=20)				# 电话
     avatarAddr = models.URLField()						# 头像
     Role = models.IntegerField(default=True)	    # 身份
-    Location = models.CharField(max_length=100)     # 定位
+    Location_lati = models.CharField(max_length=100)     # 定位
+    Location_longi = models.CharField(max_length=100)  # 定位
     Score = models.IntegerField(default=True)       # 评分
     Jobs = models.TextField(null=True)              # 工种类型
     online = models.BooleanField(default=False)     # 是否在线
