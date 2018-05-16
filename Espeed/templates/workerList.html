@@ -149,7 +149,7 @@
                         timestamp: $.now()
                     },
                     success: function () {
-                        location.href = "/jobs/?"+window.localStorage.getItem("openid");
+                        location.href = "/jobs/?openid="+window.localStorage.getItem("openid");
                     }
                 });
 
