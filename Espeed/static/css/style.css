@@ -114,7 +114,7 @@ footer {
 /* ============================================================私有样式开始============================================================ */
 /* 注册页面开始 */
 .login {
-  background: #fff url(../images/wave_bg.jpg) no-repeat center top;
+  background: #fff url(../images/wave_bg.png) no-repeat center top;
   background-size: 100% auto;
   height: 100vh; }
   .login .main {
@@ -318,6 +318,9 @@ footer {
     left: 0;
     top: 0;
     z-index: 100; }
+    .workerList header .weui-navbar__item .iconfont {
+      margin-left: 4px;
+      font-size: 16px; }
   .workerList .main {
     height: 100vh;
     box-sizing: border-box;
@@ -404,8 +407,8 @@ footer {
 /* 工人列表页结束 */
 /* 个人中心开始 */
 .userCenter {
-  background: #fff url(../images/wave_bg.jpg) no-repeat center top;
-  background-size: contain; }
+  background: #fff url(../images/wave_bg.png) no-repeat center top;
+  background-size: cover; }
   .userCenter .main {
     height: 100vh;
     width: 86%;
@@ -432,16 +435,18 @@ footer {
       border-radius: 2px;
       margin-right: 4px; }
     .userCenter .main .menuBox {
-      margin-top: 60px; }
+      margin-top: 100px; }
       .userCenter .main .menuBox .menuList {
         list-style: none;
-        font-size: 16px;
-        margin-bottom: 20px;
+        font-size: 18px;
+        margin-bottom: 30px;
         justify-content: space-between; }
         .userCenter .main .menuBox .menuList a {
-          color: #333; }
+          color: #333;
+          justify-content: space-between; }
           .userCenter .main .menuBox .menuList a .iconfont {
-            margin: 0 4px; }
+            margin: 0 6px;
+            font-size: 18px; }
           .userCenter .main .menuBox .menuList a .icon-history {
             color: #3cb878; }
           .userCenter .main .menuBox .menuList a .icon-profile {

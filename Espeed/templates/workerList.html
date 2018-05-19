@@ -21,10 +21,9 @@
     <header>
         <div class="weui-navbar">
             <div class="weui-navbar__item weui_bar__item_on">
-                <span id="distanceFilter">离我最近</span>
+                <span id="distanceFilter">离我最近<span class="iconfont icon-shengxu"></span></span>
             </div>
-            <div class="weui-navbar__item">
-                最新上线
+            <div class="weui-navbar__item"><span id="pubTimeFilter">最新上线<span class="iconfont icon-shengxu"></span></span>
             </div>
         </div>
     </header>
@@ -78,7 +77,8 @@
             nonceStr: "{{ nonceStr }}", // 必填，生成签名的随机串
             signature: "{{ signature }}",// 必填，签名，见附录1
             jsApiList: [
-                'getLocation'
+                'getLocation',
+                'chooseWXPay'
             ]
         });
         //通过error接口处理失败验证
@@ -149,7 +149,6 @@
                         timestamp: $.now()
                     },
                     success: function () {
-                     // add by qujun
                         location.href = "/jobs/?openid="+window.localStorage.getItem("openid");
                     }
                 });
@@ -163,17 +162,27 @@
         //距离排序
         $(function () {
             $("#distanceFilter").click(function () {
+                if($("#distanceFilter .iconfont.icon-shengxu")) {
+                    $("#distanceFilter").html("距离排序<span class='iconfont icon-jiangxu'></span>");
+                }
+                if($("#distanceFilter .iconfont.icon-jiangxu")) {
+                    $("#distanceFilter").html("距离排序<span class='iconfont icon-shengxu'></span>");
+                }
                 $.ajax({
                     url: "",
                     type: "post",
                     data: {
                         openid: window.localStorage.getItem("openid"),
-                        timestamp: $.now(),
                         sortByDis: true,
                         sortByPubTime: false
                         //(todo: 是否需要重新传选择的工种？？
                     },
                     success: function () {
+                        if($("#distanceFilter .iconfont.icon-shengxu")) {
+                            $(this).removeClass("icon-shengxu").addClass("icon-jiangxu");
+                        } else {
+                            $(this).removeClass("icon-jiangxu").addClass("icon-shengxu");
+                        }
                     }
                 });
 
@@ -182,13 +191,12 @@
         });
         //时间排序
         $(function () {
-            $("#distanceFilter").click(function () {
+            $("#pubTimeFilter").click(function () {
                 $.ajax({
                     url: "",
                     type: "post",
                     data: {
                         openid: window.localStorage.getItem("openid"),
-                        timestamp: $.now(),
                         sortByDis: false,
                         sortByPubTime: true
                     },
@@ -357,7 +365,7 @@
 
         //是否可见
         function isVisible(vis, val) {
-            return vis ? '<a href="javascript:;" class="dial weui-btn weui-btn_mini weui-btn_primary">' + val + '</a>' : '<a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>'
+            return vis ? '<a href="tel:"' + val + '"' + ' class="dial weui-btn weui-btn_mini weui-btn_primary">' + val + '</a>' : '<a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>'
         }
 
         //距离格式化
@@ -391,12 +399,37 @@
         }
 
         //查看电话号码弹窗
-        $('.check').click(function () {
+        $('.check').click(function (event) {
+            var $thisList = $(event.currentTarget);
+            var $rateVal = $thisList.siblings(".userid").html();
             $.confirm({
                 title: '温馨提示',
                 text: '查看电话号码需要支付0.5元查看费用',
                 onOK: function () {
-                    //点击确认（TODO：调用微信支付接口）
+                    //通过ajax发送预订单所需基本信息
+                    $.ajax({
+                        url:"",                 //todo:地址有待填写
+                        openId: window.localStorage.getItem("openid"),
+                        userid: $rateVal,                  //想要查看谁的电话号码
+                        success: function (res) {
+
+                            //点击确认（TODO：调用微信支付接口，需要微信签名,通过返回值取签名值）
+                            wx.chooseWXPay({
+                                timestamp: 0, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                                nonceStr: '', // 支付签名随机串，不长于 32 位
+                                package: '', // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+                                signType: '', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                                paySign: '', // 支付签名
+                                success: function (res) {
+                                    // 支付成功后的回调函数
+                                }
+                            });
+
+
+                        }
+                    })
+
+
                 },
                 onCancel: function () {
                     return false;
@@ -405,18 +438,7 @@
         });
 
         //拨号弹窗
-        $('.dial').click(function () {
-            $.confirm({
-                title: '拨打电话',
-                text: '是否给他拨打号码？',
-                onOK: function () {
-                    //点击确认（todo：调用系统拨打电话号码）
-                },
-                onCancel: function () {
-                    return false;
-                }
-            });
-        });
+       // 通过a链接自动拨号
 
         //评价弹窗
         $('.rate').click(function (event){

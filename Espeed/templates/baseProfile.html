@@ -45,14 +45,14 @@
 
         //将个人信息写入session
         window.localStorage.setItem("openid",$('#openid').val());
-        $.session.set("username",$('#username').val());
-        $.session.set("nickname",$('#nickname').val());
-        $.session.set("sex",$('#sex').val());
-        $.session.set("country",$('#country').val());
-        $.session.set("province",$('#province').val());
-        $.session.set("city",$('#city').val());
-        $.session.set("language",$('#language').val());
-        $.session.set("headimgurl",$('#headimgurl').val());
+        window.localStorage.setItem("username",$('#username').val());
+        window.localStorage.setItem("nickname",$('#nickname').val());
+        window.localStorage.setItem("sex",$('#sex').val());
+        window.localStorage.setItem("country",$('#country').val());
+        window.localStorage.setItem("province",$('#province').val());
+        window.localStorage.setItem("city",$('#city').val());
+        window.localStorage.setItem("language",$('#language').val());
+        window.localStorage.setItem("headimgurl",$('#headimgurl').val());
 
     });
   </script>
