@@ -135,7 +135,7 @@ footer {
 
 /* 注册页面开始 */
 .login {
-  background: #fff url(../images/wave_bg.jpg) no-repeat center top;
+  background: #fff url(../images/wave_bg.png) no-repeat center top;
   background-size: 100% auto;
   height: 100vh;
   
@@ -557,8 +557,8 @@ footer {
 /* 个人中心开始 */
 
 .userCenter {
-  background: #fff url(../images/wave_bg.jpg) no-repeat center top;
-  background-size: contain;
+  background: #fff url(../images/wave_bg.png) no-repeat center top;
+  background-size: cover;
   
   .main {
     height: 100vh;
@@ -595,19 +595,22 @@ footer {
     }
 
     .menuBox {
-      margin-top: 60px;
+      margin-top: 100px;
       
 
       .menuList {
         list-style: none;
-        font-size: 16px;
-        margin-bottom: 20px;
+        font-size: 18px;
+        margin-bottom: 30px;
         justify-content: space-between;
+
         a {
           color: #333;
+          justify-content: space-between;
 
           .iconfont {
-            margin: 0 4px;
+            margin: 0 6px;
+            font-size: 18px;
           }
           .icon-history {
             color: #3cb878;
@@ -615,12 +618,12 @@ footer {
           .icon-profile {
             color: #fc7d4a;
           }
-            .icon-record {
-              color: #ffc245;
-            }
-            .icon-arrow-right {
-              color: #999999;
-            }
+          .icon-record {
+            color: #ffc245;
+          }
+          .icon-arrow-right {
+            color: #999999;
+          }
         }
       }
     }

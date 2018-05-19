@@ -17,7 +17,7 @@
 <body>
   <div class="userCenter">
     <section class="main">
-      <a class="changePortrait" href="#"><img src="../static/images/defaultHead.png"><p>张小伟</p></a>
+      <div class="changePortrait" ><img class="portrait" src="../static/images/defaultHead.png"><p class="username"></p></div>
       <div class="tagBox"><span class="tag">木工</span><span class="tag">木工</span></div>
       <ul class="menuBox">
         <li class="menuList"><a href="/history" class="link flex"><span class="title"><i class="iconfont icon-history"></i>历史查看</span><i class="iconfont icon-arrow-right"></i></a></li>
@@ -28,13 +28,129 @@
   </div>
 
   <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
+  <script type="text/javascript" src="../static/lib/jquerySession.js"></script>
   <script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
   <script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
   <script>
     // 开启fastclick功能
     $(function() {
         FastClick.attach(document.body);
+
+        //显示用户名
+        $(".username").html(window.localStorage.getItem('username'));
+        // 显示头像
+        $(".portrait").attr("src",window.localStorage.getItem('headimgurl'));
+
+        //显示tag标签
+        function showTag() {
+            var $tags = "";
+            // todo：取数据，这地方有bug，可以尝试用字符串长度来判断
+            var $myJob = $.session.get('myJob').split();
+            //循环工种数组，取出对应的title
+            $.each($myJob, function (key, tagval) {
+                //工种数据
+                var $jobList = [
+                    {
+                        title: "土建木工",
+                        value: 1
+                    }, {
+                        title: "装修木工",
+                        value: 2
+                    }, {
+                        title: "铺砖工",
+                        value: 3
+                    }, {
+                        title: "铁工",
+                        value: 4
+                    }, {
+                        title: "空调工",
+                        value: 5
+                    }, {
+                        title: "贴墙纸工",
+                        value: 6
+                    }, {
+                        title: "刮腻子工",
+                        value: 7
+                    }, {
+                        title: "仿古油漆工",
+                        value: 8
+                    }, {
+                        title: "油性油漆工",
+                        value: 9
+                    }, {
+                        title: "彩绘工",
+                        value: 10
+                    }, {
+                        title: "高空作业工",
+                        value: 11
+                    }, {
+                        title: "铝焊工",
+                        value: 12
+                    }, {
+                        title: "不锈钢焊工",
+                        value: 13
+                    }, {
+                        title: "特殊焊工",
+                        value: 14
+                    }, {
+                        title: "绿化工",
+                        value: 15
+                    }, {
+                        title: "汽修工",
+                        value: 16
+                    }, {
+                        title: "铲车/钩机",
+                        value: 17
+                    }, {
+                        title: "压路机/泥头车",
+                        value: 18
+                    }, {
+                        title: "吊车货车司机",
+                        value: 19
+                    }, {
+                        title: "高压电工",
+                        value: 20
+                    }, {
+                        title: "低压电工",
+                        value: 21
+                    }, {
+                        title: "弱电工",
+                        value: 22
+                    }, {
+                        title: "临时杂工",
+                        value: 23
+                    }, {
+                        title: "网络布线维护",
+                        value: 24
+                    }, {
+                        title: "雕刻师傅",
+                        value: 25
+                    }, {
+                        title: "高空作业工",
+                        value: 26
+                    }, {
+                        title: "水泥塑石工",
+                        value: 27
+                    }
+                ];
+
+                //将工种与title对应上
+                $.each($jobList, function (key, job) {
+
+                    if (job.value == tagval) {
+                        $tags += '<span class="tag">' + job.title + '</span>';
+                    }
+                });
+            });
+
+            $("tagBox").html($tags);
+
+        }
+
     });
+
+
+
   </script>
 </body>
 

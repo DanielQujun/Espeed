@@ -46,3 +46,6 @@ function getBaiduPosition(lng,lat) {
         }
     });
 }
+
+
+
