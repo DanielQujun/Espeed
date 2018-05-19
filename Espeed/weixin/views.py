@@ -232,8 +232,17 @@ def chose_job_cate(request):
         data['url'] = request.build_absolute_uri()
         jsapi_string = "jsapi_ticket={JSAPI_TICKET}&noncestr={NONCESTR}&timestamp={TIMESTAMP}&url={URL}".\
             format(JSAPI_TICKET=data['jsapi_ticket'],NONCESTR=data['nonceStr'], TIMESTAMP=data['timestamp'], URL=data['url'])
+
         data['signature'] = hashlib.sha1(jsapi_string).hexdigest()
 
+        data['jobList'] = []
+
+
+        jobcates = Jobcates.objects.all()
+        for jobcate in jobcates:
+            job_dic = {'title': jobcate.jobcate, 'value': jobcate.id}
+            data['jobList'].append(job_dic)
+        data['jobList'] = json.dumps(data['jobList'])
         print "qujun RENDER jsapi data!!!!!!!!!!!!!"
         print data
         return render(request, 'jobs.html', data)
@@ -251,7 +260,7 @@ def chose_job_cate(request):
                 user.Location_lati = POST_DATA.get('latitude')
                 user.Location_longi = POST_DATA.get('longitude')
                 user.online = 'True'
-                user.publishTime = dt.now()
+                user.publishTime = time.time()
                 user.save()
                 callbackurl = "/workerList/?openid={openid}".format(openid=openid)
                 return HttpResponse("OK")
@@ -355,15 +364,33 @@ def transaction(request):
 def worklist_ajax(request):
     if request.method == 'POST':
         print request.POST
-        openid = request.POST.get('openid')
+        openid = request.POST.get('openId')
         sortByDis =request.POST.get('sortByDis')
         sortByPubTime = request.POST.get('sortByPubTime')
         page = request.POST.get('page')
+        # openid = 'oT69X1Chvefxgv3wby_-PaEIM9nY'
         user = UserProfileBase.objects.filter(openId=openid).first()
-        tags = user.Jobs
-        print
-
-        work_objects = [
+        tag_set = user.Jobs.copy()
+        work_objects_db = []
+        for tag in tag_set:
+            workers = UserProfileBase.objects.filter(Jobs__contains=tag)
+            for worker in workers:
+                worker_dic = {}
+                worker_dic['userid'] = worker.id
+                worker_dic['username'] = worker.userName
+                worker_dic['tag'] = list(worker.Jobs)
+                #worker_dic['star'] = int(worker.Score)
+                worker_dic['star'] = 3
+                worker_dic['pubTime'] = int(worker.publishTime.replace('.','')+'0')
+                worker_dic['distance'] = Distance(user.Location_lati, user.Location_longi, worker.Location_lati, worker.Location_longi)
+                worker_dic['isVisible'] = True if UserVisible.objects.filter(user_payed=user.openId, user_visible=worker.openId) \
+                                                else False
+                worker_dic['isRateble'] = worker_dic['isVisible']
+                worker_dic['phoneNum'] = worker.phonenum
+                worker_dic['portraitUrl'] = worker.avatarAddr
+                work_objects_db.append(worker_dic)
+        # print work_objects_db
+        work_objects = work_objects_db + [
                 {
                     "userid": 1,
                     "username": "刘黎波",
@@ -420,10 +447,10 @@ def worklist_ajax(request):
                     "phoneNum": 15080755770,
                     "portraitUrl": "../static/images/defaultHead.png"
                 },]
-        p = Paginator(work_objects, 3)  # 3条数据为一页，实例化分页对象
-        print p.count  # 10 对象总共10个元素
-        print p.num_pages  # 4 对象可分4页
-        print p.page_range  # xrange(1, 5) 对象页的可迭代范围
+        p = Paginator(work_objects, 10)  # 3条数据为一页，实例化分页对象
+        #print p.count  # 10 对象总共10个元素
+        #print p.num_pages  # 4 对象可分4页
+        #print p.page_range  # xrange(1, 5) 对象页的可迭代范围
 
         page_object = p.page(page)  # 取对象的第一分页对象
         conten_dict = {
@@ -433,6 +460,7 @@ def worklist_ajax(request):
             "currentPage": page,
             "listData": page_object.object_list
         }
+        print json.dumps(page_object.object_list)
 
         return HttpResponse(json.dumps(conten_dict))
 
@@ -452,3 +480,5 @@ def render_js_config(request):
     data['signature'] = hashlib.sha1(jsapi_string).hexdigest()
 
     return data
+
+

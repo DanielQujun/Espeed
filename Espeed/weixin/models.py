@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 
 from django.db import models
+from django_mysql.models import SetTextField
+
 
 # Create your models here.
 
@@ -22,13 +24,20 @@ class UserProfileBase(models.Model):
     Location_lati = models.CharField(max_length=100)     # 定位
     Location_longi = models.CharField(max_length=100)  # 定位
     Score = models.IntegerField(default=True)       # 评分
-    Jobs = models.TextField(null=True)              # 工种类型
+    Jobs = SetTextField(
+        base_field=models.CharField(max_length=32),
+    )           # 工种类型
     online = models.BooleanField(default=False)     # 是否在线
-    createTime = models.DateField()						# 注册时间
+    createTime = models.DateTimeField(auto_now_add=True)				# 注册时间
     last_login = models.DateField(default=None)			# 最后访问时间
-    publishTime = models.DateField(default=None,null=True)
+    publishTime = models.CharField(max_length=20,default=None)
 
 class UserVisible(models.Model):
     user_payed = models.CharField(max_length=50)  # Openid
     user_visible = models.CharField(max_length=50)  # Openid
 
+class Jobcates(models.Model):
+    jobcate = models.CharField(max_length=32)
+
+class transations(models.Model):
+    transations_user = models.CharField(max_length=50)

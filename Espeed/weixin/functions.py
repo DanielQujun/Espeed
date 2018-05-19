@@ -13,7 +13,26 @@ import json
 
 import weixin.config
 
+from math import *
 
+
+
+def Distance(lat1,lng1,lat2,lng2):# 第二种计算方法
+    lat1 = float(lat1)
+    lat2 = float(lat2)
+    lng1 = float(lng1)
+    lng2 = float(lng2)
+    radlat1=radians(lat1)
+    radlat2=radians(lat2)
+    a=radlat1-radlat2
+    b=radians(lng1)-radians(lng2)
+    s=2*asin(sqrt(pow(sin(a/2),2)+cos(radlat1)*cos(radlat2)*pow(sin(b/2),2)))
+    earth_radius=6378.137
+    s=s*earth_radius
+    if s<0:
+        return -s
+    else:
+        return s
 # xml格式的字符串 ==》 字典
 def parse_Xml2Dict(raw_xml):
     xmlstr = etree.fromstring(raw_xml)
