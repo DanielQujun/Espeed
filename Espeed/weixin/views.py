@@ -238,21 +238,23 @@ def chose_job_cate(request):
         return render(request, 'jobs.html', data)
 
     elif request.method == 'POST':
-        print request.POST
+
         POST_DATA = request.POST
         openid = POST_DATA.get('openid')
         if not None in POST_DATA.values() and openid:
             if POST_DATA.get('online') == 'true':
                 print "qujun : update database for jobs choose!!!"
+                print request.POST
                 user = UserProfileBase.objects.filter(openId=openid).first()
-                user.jobs = POST_DATA.get('tag')
+                user.Jobs = POST_DATA.get('tag')
                 user.Location_lati = POST_DATA.get('latitude')
                 user.Location_longi = POST_DATA.get('longitude')
                 user.online = 'True'
                 user.publishTime = dt.now()
                 user.save()
                 callbackurl = "/workerList/?openid={openid}".format(openid=openid)
-                return HttpResponseRedirect(callbackurl)
+                return HttpResponse("OK")
+                # return HttpResponseRedirect(callbackurl)
             else:
                 print "qujun : update database for jobs OFFline!!!"
                 data = {}
