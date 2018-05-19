@@ -505,7 +505,8 @@ footer {
             border-radius: 2px;
             margin-right: 4px; }
           .history .main .listItem .infoBox .list_hd .star {
-            color: #fbaf5d; }
+            width: 100px;
+            height: 16px; }
         .history .main .listItem .infoBox .list_bd {
           justify-content: space-between;
           font-size: 12px;
@@ -513,6 +514,10 @@ footer {
         .history .main .listItem .infoBox .list_ft {
           font-size: 13px;
           justify-content: flex-end; }
+          .history .main .listItem .infoBox .list_ft .userid {
+            visibility: hidden;
+            display: inline-block;
+            width: 1px; }
           .history .main .listItem .infoBox .list_ft .weui-btn {
             margin-top: 0;
             margin-left: 10px;
@@ -551,11 +556,18 @@ footer {
     line-height: 2em; }
     .transcation .listCon .listItem .list_hd {
       justify-content: space-between;
-      color: #999; }
+      color: #999;
+      border-bottom: 1px solid #dedede; }
     .transcation .listCon .listItem .list_bd {
       justify-content: space-between;
-      color: #333;
+      color: #666;
       font-weight: 700; }
+      .transcation .listCon .listItem .list_bd .red {
+        color: red; }
+      .transcation .listCon .listItem .list_bd .green {
+        color: #1AAD19; }
+      .transcation .listCon .listItem .list_bd strong {
+        margin-left: 4px; }
 
 /* 交易记录结束 */
 /* 个人资料开始 */

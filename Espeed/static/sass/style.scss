@@ -696,9 +696,10 @@ footer {
             margin-right: 4px;
           }
 
-          .star {
-            color: #fbaf5d;
-          }
+           .star {
+             width: 100px;
+             height: 16px;
+           }
 
          }
 
@@ -712,6 +713,12 @@ footer {
         .list_ft {
           font-size: 13px;
           justify-content: flex-end;
+
+          .userid {
+            visibility: hidden;
+            display: inline-block;
+            width: 1px;
+          }
 
           .weui-btn {
             margin-top: 0;
@@ -772,13 +779,25 @@ footer {
       .list_hd {
         justify-content: space-between;
         color: #999;
-        // border-bottom: 1px solid #dedede;
+        border-bottom: 1px solid #dedede;
       }
       
       .list_bd {
         justify-content: space-between;
-        color: #333;
-font-weight: 700;
+        color: #666;
+        font-weight: 700;
+
+        .red {
+          color: red;
+        }
+
+        .green {
+          color: #1AAD19;
+        }
+
+        strong {
+          margin-left: 4px;
+        }
       }
 
 
