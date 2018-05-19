@@ -19,46 +19,6 @@
     <!-- 主体内容 -->
     <section class="main">
       <ul class="listCon">
-        <li class="listItem flex">
-          <div class="portraitBox">
-            <img src="../static/images/defaulthead.png" >
-            <p>刘黎波</p>
-          </div>
-          <div class="infoBox flex">
-              <div class="list_hd flex">
-                  <div class="tagBox"><span class="tag">木工</span><span class="tag">木工</span></div>
-                  <div class="star"><i class="iconfont icon-wuxing"></i></div>
-                </div>
-                <div class="list_bd flex">
-                </div>
-                <div class="list_ft flex">
-                    <a href="#" class="complain weui-btn weui-btn_mini weui-btn_default">申诉</a>
-                    <a href="#" class="check weui-btn weui-btn_mini weui-btn_success">15080755770</a>
-                </div>
-                <div class="jiaobiaoBox ">
-                </div>
-          </div>
-        </li>
-        <li class="listItem flex">
-          <div class="portraitBox">
-            <img src="../static/images/defaulthead.png" >
-            <p>刘黎波</p>
-          </div>
-          <div class="infoBox flex">
-              <div class="list_hd flex">
-                  <div class="tagBox"><span class="tag">木工</span><span class="tag">木工</span></div>
-                  <div class="star"><i class="iconfont icon-wuxing"></i></div>
-                </div>
-                <div class="list_bd flex">
-                </div>
-                <div class="list_ft flex">
-                    <a href="#" class="complain weui-btn weui-btn_mini weui-btn_default">申诉</a>
-                    <a href="#" class="check weui-btn weui-btn_mini weui-btn_success">15080755770</a>
-                </div>
-                <div class="jiaobiaoBox ">
-                </div>
-          </div>
-        </li>
       </ul>
     </section>
     <!--<div class="jiaobiaoBox stop offline">-->
@@ -74,15 +34,13 @@
         FastClick.attach(document.body);
 
         $.ajax({
-            url: "",              //需要设置请求地址
+            url: "history.json",              //todo:需要设置正确的请求地址
             type: "post",
             data: {
                 openid: window.localStorage.getItem("openid"),
-                sortByDis: false,
-                sortByPubTime: true
             },
             success: function (data) {
-                showData(data);
+                showData(data.listData);
             }
         });
 
@@ -192,21 +150,19 @@
                 var str = "";
                 str += ' <li class="listItem flex">\n' +
                 '          <div class="portraitBox">\n' +
-                '            <img src="' + val.headimgurl + '" >\n' +
+                '            <img src="' + val.portraitUrl + '" >\n' +
                 '            <p>' + val.username + '</p>\n' +
                 '          </div>\n' +
                 '          <div class="infoBox flex">\n' +
                 '              <div class="list_hd flex">\n' +
                 '                  <div class="tagBox">' + $tags + '</div>\n' +
-                '                  <div class="star' + val.star + '"></div>\n' +
+                '                  <div class="star star' + val.star + '"></div>' +
                 '                </div>\n' +
                 '                <div class="list_bd flex">\n' +
                 '                </div>\n' +
-                '                <div class="list_ft flex">\n' +
-                '                    <a href="#" class="complain weui-btn weui-btn_mini weui-btn_default">申诉</a>\n' +
-                '                    <a href="#" class="check weui-btn weui-btn_mini weui-btn_success">' + val.phoneNum + '</a>\n' +
-                '                </div>\n' +
-                '                <div class="jiaobiaoBox ">\n' +
+                '                <div class="list_ft flex"><span class="userid">'+ val.userid + '</span>\n' +
+                '                    <a href="javascript:;" class="complain weui-btn weui-btn_mini weui-btn_default">申诉</a>\n' +
+                '                    <a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_success">' + val.phoneNum + '</a>\n' +
                 '                </div>\n' +
                 '          </div>\n' +
                 '        </li>';
@@ -214,10 +170,6 @@
                 $('.listCon').append(str);
             });
 
-            //是否可以评价
-            function isRateble(vis) {
-                return vis ? '<a href="#" class="rate weui-btn weui-btn_mini weui-btn_plain-primary">评价</a>' : "";
-            }
 
             //是否可见
             function isVisible(vis, val) {
@@ -254,10 +206,11 @@
                 return num;
             }
 
-
         };
 
-
+        $("complain").click(function () {
+            $.alert("申诉待定","text")
+        })
 
 
     });

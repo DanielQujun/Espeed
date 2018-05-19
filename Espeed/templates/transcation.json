@@ -1,0 +1,19 @@
+{
+  "listData": [
+    {
+      "billid": 123456789,
+      "transcationTime": 1280977330000,
+      "transcationType":"查看扣款",
+      "transcationMoney": -50
+    },{
+      "billid": 123455549,
+      "transcationTime": 1280977330000,
+      "transcationType":"查看扣款",
+      "transcationMoney": -50
+    },{
+      "billid": 122222229,
+      "transcationTime": 1280977330000,
+      "transcationType":"申诉退款",
+      "transcationMoney": 50
+    }]
+}
