@@ -13,6 +13,7 @@ from django.http import HttpResponseRedirect
 from weixin.config import *
 from weixin.functions import *
 from weixin.models import *
+from django.core.paginator import Paginator
 
 
 def index(request):
@@ -199,7 +200,7 @@ def input_name(request):
         POST_DATA = request.POST
         print POST_DATA
 
-        if not None in POST_DATA.values():
+        if POST_DATA.values():
             user = UserProfileBase.objects.filter(openId=POST_DATA.get('openid')).first()
             user.userName = POST_DATA.get('username')
             user.nickName = POST_DATA.get('nickname')
@@ -354,7 +355,86 @@ def transaction(request):
 def worklist_ajax(request):
     if request.method == 'POST':
         print request.POST
-        return HttpResponse("hello")
+        openid = request.POST.get('openid')
+        sortByDis =request.POST.get('sortByDis')
+        sortByPubTime = request.POST.get('sortByPubTime')
+        page = request.POST.get('page')
+        user = UserProfileBase.objects.filter(openId=openid).first()
+        tags = user.Jobs
+        print
+
+        work_objects = [
+                {
+                    "userid": 1,
+                    "username": "刘黎波",
+                    "tag": [2, 4],
+                    "star": 4,
+                    "pubTime": 1280977330000,
+                    "distance": 2421,
+                    "isVisible": False,
+                    "isRateble": True,
+                    "phoneNum": 18570607610,
+                    "portraitUrl": "../static/images/defaultHead.png"
+                }, {
+                    "userid": 2,
+                    "username": "刘玉石",
+                    "tag": [1, 3],
+                    "star": 2,
+                    "pubTime": 1280977330000,
+                    "distance": 123,
+                    "isVisible": True,
+                    "isRateble": False,
+                    "phoneNum": 15080755770,
+                    "portraitUrl": "../static/images/defaultHead.png"
+                }, {
+                    "userid": 3,
+                    "username": "刘玉石",
+                    "tag": [1, 3],
+                    "star": 2,
+                    "pubTime": 1280977330000,
+                    "distance": 123,
+                    "isVisible": True,
+                    "isRateble": False,
+                    "phoneNum": 15080755770,
+                    "portraitUrl": "../static/images/defaultHead.png"
+                }, {
+                    "userid": 4,
+                    "username": "刘玉石",
+                    "tag": [1, 3],
+                    "star": 2,
+                    "pubTime": 1280977330000,
+                    "distance": 123,
+                    "isVisible": True,
+                    "isRateble": False,
+                    "phoneNum": 15080755770,
+                    "portraitUrl": "../static/images/defaultHead.png"
+                }, {
+                    "userid": 5,
+                    "username": "刘玉石",
+                    "tag": [1, 3],
+                    "star": 2,
+                    "pubTime": 1280977330000,
+                    "distance": 123,
+                    "isVisible": True,
+                    "isRateble": False,
+                    "phoneNum": 15080755770,
+                    "portraitUrl": "../static/images/defaultHead.png"
+                },]
+        p = Paginator(work_objects, 3)  # 3条数据为一页，实例化分页对象
+        print p.count  # 10 对象总共10个元素
+        print p.num_pages  # 4 对象可分4页
+        print p.page_range  # xrange(1, 5) 对象页的可迭代范围
+
+        page_object = p.page(page)  # 取对象的第一分页对象
+        conten_dict = {
+            "totalNum": p.count,
+            "perNum": 3,
+            "totalPage": p.num_pages,
+            "currentPage": page,
+            "listData": page_object.object_list
+        }
+
+        return HttpResponse(json.dumps(conten_dict))
 
 
 

@@ -43,6 +43,7 @@
   <script>
     $(function() {
         FastClick.attach(document.body);
+        alert($("#openid").val());
 
         //将个人信息写入session
         window.localStorage.setItem("openid",$('#openid').val());

@@ -28,3 +28,7 @@ class UserProfileBase(models.Model):
     last_login = models.DateField(default=None)			# 最后访问时间
     publishTime = models.DateField(default=None,null=True)
 
+class UserVisible(models.Model):
+    user_payed = models.CharField(max_length=50)  # Openid
+    user_visible = models.CharField(max_length=50)  # Openid
+
