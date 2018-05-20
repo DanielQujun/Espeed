@@ -24,6 +24,10 @@
             <div class="jobs_bd flex" id="inputsParent">
             </div>
         </div>
+
+        <div>
+            {{ jobList|safe }}
+        </div>
     </section>
 
     <!-- 底部 -->
@@ -84,13 +88,13 @@
         });
 
         //工种数据
-        var $jobList ={{ jobList|safe }}
+        var $jobList ={{ jobList|safe }};
 
 
         //渲染工种按钮
         $.each($jobList, function (key, val) {
             var str = "";
-            str += '<input id="job' + val.value + '" type="checkbox" onclick="check_count(this)" value="' + val.value + '" /><label for="job' + val.value + '">' + val.title + '</label>'
+            str += '<input id="job' + val.value + '" type="checkbox" onclick="check_count(this)" value="' + val.title + '" /><label for="job' + val.value + '">' + val.title + '</label>'
             $('.jobs_bd').append(str);
         });
     });

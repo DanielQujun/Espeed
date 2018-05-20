@@ -95,6 +95,10 @@ footer {
   font-size: 14px;
   vertical-align: middle; }
 
+.star1 {
+  background: url("../images/star1.png") no-repeat left top;
+  background-size: contain; }
+
 .star2 {
   background: url("../images/star2.png") no-repeat left top;
   background-size: contain; }
@@ -318,9 +322,15 @@ footer {
     left: 0;
     top: 0;
     z-index: 100; }
-    .workerList header .weui-navbar__item .iconfont {
-      margin-left: 4px;
-      font-size: 16px; }
+    .workerList header .weui-navbar__item {
+      vertical-align: baseline; }
+      .workerList header .weui-navbar__item .filterArrow {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url("../images/filterArrow.png") no-repeat 0 0; }
+      .workerList header .weui-navbar__item .filterArrow.active {
+        background: url("../images/filterArrow.png") no-repeat 0 -20px; }
   .workerList .main {
     height: 100vh;
     box-sizing: border-box;
@@ -367,6 +377,9 @@ footer {
           .workerList .main .listItem .infoBox .list_hd .star {
             width: 100px;
             height: 16px; }
+          .workerList .main .listItem .infoBox .list_hd .star1 {
+            background: url("../images/star1.png") no-repeat left top;
+            background-size: contain; }
           .workerList .main .listItem .infoBox .list_hd .star2 {
             background: url("../images/star2.png") no-repeat left top;
             background-size: contain; }

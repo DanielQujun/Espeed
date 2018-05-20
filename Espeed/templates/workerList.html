@@ -21,9 +21,9 @@
     <header>
         <div class="weui-navbar">
             <div class="weui-navbar__item weui_bar__item_on">
-                <span id="distanceFilter">离我最近<span class="iconfont icon-shengxu"></span></span>
+                <span id="distanceFilter">离我最近<span class="filterArrow"></span></span>
             </div>
-            <div class="weui-navbar__item"><span id="pubTimeFilter">最新上线<span class="iconfont icon-shengxu"></span></span>
+            <div class="weui-navbar__item"><span id="pubTimeFilter">最新上线<span class="filterArrow"></span></span>
             </div>
         </div>
     </header>
@@ -95,7 +95,7 @@
         //初始化数据
         $.ajax({
             async: true,
-            url: "/worklist_ajax/",
+            url: "workerList.json",                /*/worklist_ajax/*/
             dataType: "json",
             type: "post",
             data: {
@@ -163,12 +163,7 @@
         //距离排序
         $(function () {
             $("#distanceFilter").click(function () {
-                if($("#distanceFilter .iconfont.icon-shengxu")) {
-                    $("#distanceFilter").html("距离排序<span class='iconfont icon-jiangxu'></span>");
-                }
-                if($("#distanceFilter .iconfont.icon-jiangxu")) {
-                    $("#distanceFilter").html("距离排序<span class='iconfont icon-shengxu'></span>");
-                }
+                $("#distanceFilter .filterArrow").toggleClass('active');
                 $.ajax({
                     url: "",
                     type: "post",
@@ -179,11 +174,6 @@
                         //(todo: 是否需要重新传选择的工种？？
                     },
                     success: function () {
-                        if($("#distanceFilter .iconfont.icon-shengxu")) {
-                            $(this).removeClass("icon-shengxu").addClass("icon-jiangxu");
-                        } else {
-                            $(this).removeClass("icon-jiangxu").addClass("icon-shengxu");
-                        }
                     }
                 });
 
@@ -193,6 +183,7 @@
         //时间排序
         $(function () {
             $("#pubTimeFilter").click(function () {
+                $("#pubTimeFilter .filterArrow").toggleClass('active');
                 $.ajax({
                     url: "",
                     type: "post",
@@ -237,104 +228,11 @@
     //渲染数据
     function showData(data) {
         $.each(data, function (key, val) {
-            // 造工种标签html
-            var $tags = "";
-            //循环工种数组，取出对应的title
-            $.each(val.tag, function (key, tagval) {
-                //工种数据
-                var $jobList = [
-                    {
-                        title: "土建木工",
-                        value: 1
-                    }, {
-                        title: "装修木工",
-                        value: 2
-                    }, {
-                        title: "铺砖工",
-                        value: 3
-                    }, {
-                        title: "铁工",
-                        value: 4
-                    }, {
-                        title: "空调工",
-                        value: 5
-                    }, {
-                        title: "贴墙纸工",
-                        value: 6
-                    }, {
-                        title: "刮腻子工",
-                        value: 7
-                    }, {
-                        title: "仿古油漆工",
-                        value: 8
-                    }, {
-                        title: "油性油漆工",
-                        value: 9
-                    }, {
-                        title: "彩绘工",
-                        value: 10
-                    }, {
-                        title: "高空作业工",
-                        value: 11
-                    }, {
-                        title: "铝焊工",
-                        value: 12
-                    }, {
-                        title: "不锈钢焊工",
-                        value: 13
-                    }, {
-                        title: "特殊焊工",
-                        value: 14
-                    }, {
-                        title: "绿化工",
-                        value: 15
-                    }, {
-                        title: "汽修工",
-                        value: 16
-                    }, {
-                        title: "铲车/钩机",
-                        value: 17
-                    }, {
-                        title: "压路机/泥头车",
-                        value: 18
-                    }, {
-                        title: "吊车货车司机",
-                        value: 19
-                    }, {
-                        title: "高压电工",
-                        value: 20
-                    }, {
-                        title: "低压电工",
-                        value: 21
-                    }, {
-                        title: "弱电工",
-                        value: 22
-                    }, {
-                        title: "临时杂工",
-                        value: 23
-                    }, {
-                        title: "网络布线维护",
-                        value: 24
-                    }, {
-                        title: "雕刻师傅",
-                        value: 25
-                    }, {
-                        title: "高空作业工",
-                        value: 26
-                    }, {
-                        title: "水泥塑石工",
-                        value: 27
-                    }
-                ];
+            //造tag标签
+            var $tagArr = val.tag.split(',');
+            var $tag = '<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
 
-                //将工种与title对应上
-                $.each($jobList, function (key, job) {
 
-                    if (job.value == tagval) {
-                        $tags += '<span class="tag">' + job.title + '</span>';
-                    }
-                });
-            });
 
             //拼大字符串
             var str = "";
@@ -345,7 +243,7 @@
                 '</div>' +
                 '<div class="infoBox flex">' +
                 '<div class="list_hd flex">' +
-                '<div class="tagBox">' + $tags + '</div>' +
+                '<div class="tagBox">'+ $tag +'</div>' +
                 '<div class="star star' + val.star + '"></div>' +
                 '</div>' +
                 '<div class="list_bd flex">' +
@@ -419,7 +317,8 @@
                                 timestamp: 0, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
                                 nonceStr: '', // 支付签名随机串，不长于 32 位
                                 package: '', // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
-                                signType: '', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                                signType: '', // 签名方式，默认为'SHA1'，使用新版支付需传入
+                                // 'MD5'
                                 paySign: '', // 支付签名
                                 success: function (res) {
                                     // 支付成功后的回调函数
@@ -445,12 +344,14 @@
         $('.rate').click(function (event){
             var $thisList = $(event.currentTarget);
             var $rateVal = $thisList.prev().html();
-            var $star3 = '<span class="rateActionstar star5"></span><span class="rateDes">很专业</span>'
-            var $star4 = '<span class="rateActionstar star4"></span><span class="rateDes">专业</span>'
-            var $star5 = '<span class="rateActionstar star3"></span><span class="rateDes">一般</span>'
+            var $star5 = '<span class="rateActionstar star5"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">很专业</span>'
+            var $star4 = '<span class="rateActionstar star4"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">专业</span>'
+            var $star3 = '<span class="rateActionstar star3"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">一般</span>'
+            var $star2 = '<span class="rateActionstar star2"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">差</span>'
+            var $star1 = '<span class="rateActionstar star1"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">很差</span>'
             $.actions({
                 actions: [{
-                    text: $star3,
+                    text: $star5,
                     onClick: function() {
                         //发送评价数据
                         $.ajax({
@@ -460,14 +361,13 @@
                                 openId: window.localStorage.getItem("openid"),
                                 time: $.now(),
                                 userid: $rateVal,
-                                rateVal: 3
+                                rateVal: 5
                             },
                             success: function () {
                                 $.toast("评价成功", "text");
                             }
 
                         })
-
                     }
                 },{
                     text: $star4,
@@ -489,7 +389,7 @@
                         })
                     }
                 },{
-                text: $star5,
+                    text: $star3,
                     onClick: function() {
                         //发送评价数据
                         $.ajax({
@@ -499,15 +399,56 @@
                                 openId: window.localStorage.getItem("openid"),
                                 time: $.now(),
                                 userid: $rateVal,
-                                rateVal: 5
+                                rateVal: 3
                             },
                             success: function () {
                                 $.toast("评价成功", "text");
                             }
 
                         })
-                }
-            }]
+
+                    }
+                },{
+                    text: $star2,
+                    onClick: function() {
+                        //发送评价数据
+                        $.ajax({
+                            url:"",
+                            method: "post",
+                            data: {
+                                openId: window.localStorage.getItem("openid"),
+                                time: $.now(),
+                                userid: $rateVal,
+                                rateVal: 2
+                            },
+                            success: function () {
+                                $.toast("评价成功", "text");
+                            }
+
+                        })
+
+                    }
+                },{
+                    text: $star1,
+                    onClick: function() {
+                        //发送评价数据
+                        $.ajax({
+                            url:"",
+                            method: "post",
+                            data: {
+                                openId: window.localStorage.getItem("openid"),
+                                time: $.now(),
+                                userid: $rateVal,
+                                rateVal: 1
+                            },
+                            success: function () {
+                                $.toast("评价成功", "text");
+                            }
+
+                        })
+
+                    }
+                }]
             });
         });
     };
