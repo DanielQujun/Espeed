@@ -112,7 +112,10 @@ footer {
   font-size: 14px;
   vertical-align: middle;
 }
-
+.star1 {
+  background: url("../images/star1.png") no-repeat left top;
+  background-size: contain;
+}
 .star2 {
   background: url("../images/star2.png") no-repeat left top;
   background-size: contain;
@@ -414,6 +417,7 @@ footer {
   background: #f5f6f7;
   padding-top: 60px;
 
+
   header {
     position: fixed;
     width: 100%;
@@ -423,12 +427,19 @@ footer {
     z-index: 100;
 
   .weui-navbar__item {
+    vertical-align: baseline;
+       .filterArrow {
+         display: inline-block;
+         width:20px;
+         height:20px;
+         background: url("../images/filterArrow.png") no-repeat 0 0;
+       }
 
-    .iconfont {
-      margin-left: 4px;
-      font-size: 16px;
+      .filterArrow.active {
+        background: url("../images/filterArrow.png") no-repeat 0 -20px;
+      }
+
     }
-  }
   }
 
   .main {
@@ -490,6 +501,10 @@ footer {
            .star {
              width: 100px;
              height: 16px;
+           }
+           .star1 {
+             background: url("../images/star1.png") no-repeat left top;
+             background-size: contain;
            }
           .star2 {
             background: url("../images/star2.png") no-repeat left top;
