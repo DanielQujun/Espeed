@@ -14,7 +14,7 @@ from weixin.config import *
 from weixin.functions import *
 from weixin.models import *
 from django.core.paginator import Paginator
-
+from wx_pay import WxPay, WxPayError
 
 def index(request):
     callbackurl = "/register"
@@ -392,63 +392,7 @@ def worklist_ajax(request):
                 worker_dic['portraitUrl'] = worker.avatarAddr
                 work_objects_db.append(worker_dic)
         # print work_objects_db
-        work_objects = work_objects_db + [
-                {
-                    "userid": 1,
-                    "username": "刘黎波",
-                    "tag": [2, 4],
-                    "star": 4,
-                    "pubTime": 1280977330000,
-                    "distance": 2421,
-                    "isVisible": False,
-                    "isRateble": True,
-                    "phoneNum": 18570607610,
-                    "portraitUrl": "../static/images/defaultHead.png"
-                }, {
-                    "userid": 2,
-                    "username": "刘玉石",
-                    "tag": [1, 3],
-                    "star": 2,
-                    "pubTime": 1280977330000,
-                    "distance": 123,
-                    "isVisible": True,
-                    "isRateble": False,
-                    "phoneNum": 15080755770,
-                    "portraitUrl": "../static/images/defaultHead.png"
-                }, {
-                    "userid": 3,
-                    "username": "刘玉石",
-                    "tag": [1, 3],
-                    "star": 2,
-                    "pubTime": 1280977330000,
-                    "distance": 123,
-                    "isVisible": True,
-                    "isRateble": False,
-                    "phoneNum": 15080755770,
-                    "portraitUrl": "../static/images/defaultHead.png"
-                }, {
-                    "userid": 4,
-                    "username": "刘玉石",
-                    "tag": [1, 3],
-                    "star": 2,
-                    "pubTime": 1280977330000,
-                    "distance": 123,
-                    "isVisible": True,
-                    "isRateble": False,
-                    "phoneNum": 15080755770,
-                    "portraitUrl": "../static/images/defaultHead.png"
-                }, {
-                    "userid": 5,
-                    "username": "刘玉石",
-                    "tag": [1, 3],
-                    "star": 2,
-                    "pubTime": 1280977330000,
-                    "distance": 123,
-                    "isVisible": True,
-                    "isRateble": False,
-                    "phoneNum": 15080755770,
-                    "portraitUrl": "../static/images/defaultHead.png"
-                },]
+        work_objects = work_objects_db
         p = Paginator(work_objects, 10)  # 3条数据为一页，实例化分页对象
         #print p.count  # 10 对象总共10个元素
         #print p.num_pages  # 4 对象可分4页
@@ -484,3 +428,44 @@ def render_js_config(request):
     return data
 
 
+
+def wxpay_notify(request):
+    if request.method == 'GET':
+        print "GET METHOD"
+        print request.GET
+    if request.method == 'POST':
+        print request.POST
+        print "POST METHOD"
+    return HttpResponse()
+
+
+
+def zhihu_pre(request):
+    if request.META.has_key('HTTP_X_FORWARDED_FOR'):
+        ip = request.META['HTTP_X_FORWARDED_FOR']
+    else:
+        ip = request.META['REMOTE_ADDR']
+    openid = request.GET.get('openid')
+
+    wx_pay = WxPay(
+        wx_app_id=WEIXIN_APPID,  # 微信平台appid
+        wx_mch_id=ZHIHU_ID,  # 微信支付商户号
+        wx_mch_key=ZHIHU_KEY,
+        # wx_mch_key 微信支付重要密钥，请登录微信支付商户平台，在 账户中心-API安全-设置API密钥设置
+        wx_notify_url='http://ewosugong.com/wxpay/notify'
+        # wx_notify_url 接受微信付款消息通知地址（通常比自己把支付成功信号写在js里要安全得多，推荐使用这个来接收微信支付成功通知）
+        # wx_notify_url 开发详见https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_7
+    )
+
+    try:
+        pay_data = wx_pay.js_pay_api(
+            openid=openid,
+            body=u'商品',
+            total_fee=100,
+            spbill_create_ip=ip
+        )
+        print pay_data
+        # 订单生成后将请将返回的json数据 传入前端页面微信支付js的参数部分
+        # print jsonify(pay_data)
+    except WxPayError, e:
+        print e.message, 400
