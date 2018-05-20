@@ -95,7 +95,7 @@
         //初始化数据
         $.ajax({
             async: true,
-            url: "workerList.json",                /*/worklist_ajax/*/
+            url: "/worklist_ajax/",                /*/worklist_ajax/*/
             dataType: "json",
             type: "post",
             data: {
@@ -229,7 +229,7 @@
     function showData(data) {
         $.each(data, function (key, val) {
             //造tag标签
-            var $tagArr = val.tag.split(',');
+            var $tagArr = val.tag;
             var $tag = '<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
 
 

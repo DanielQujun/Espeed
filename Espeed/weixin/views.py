@@ -371,10 +371,12 @@ def worklist_ajax(request):
         # openid = 'oT69X1Chvefxgv3wby_-PaEIM9nY'
         user = UserProfileBase.objects.filter(openId=openid).first()
         tag_set = user.Jobs.copy()
+
         work_objects_db = []
         for tag in tag_set:
             workers = UserProfileBase.objects.filter(Jobs__contains=tag)
             for worker in workers:
+
                 worker_dic = {}
                 worker_dic['userid'] = worker.id
                 worker_dic['username'] = worker.userName

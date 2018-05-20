@@ -25,6 +25,91 @@ name3=['','立','玲','','国','']
 nickname_str = 'zxcvbnmasdfghjklqwertyuiop'
 num = '0123456789'
 
+jobs_cates = [
+    {
+        'title': "土建木工",
+        'value': 1
+    }, {
+        'title': "装修木工",
+        'value': 2
+    }, {
+        'title': "铺砖工",
+        'value': 3
+    }, {
+        'title': "铁工",
+        'value': 4
+    }, {
+        'title': "空调工",
+        'value': 5
+    }, {
+        'title': "贴墙纸工",
+        'value': 6
+    }, {
+        'title': "刮腻子工",
+        'value': 7
+    }, {
+        'title': "仿古油漆工",
+        'value': 8
+    }, {
+        'title': "油性油漆工",
+        'value': 9
+    }, {
+        'title': "彩绘工",
+        'value': 10
+    }, {
+        'title': "高空作业工",
+        'value': 11
+    }, {
+        'title': "铝焊工",
+        'value': 12
+    }, {
+        'title': "不锈钢焊工",
+        'value': 13
+    }, {
+        'title': "特殊焊工",
+        'value': 14
+    }, {
+        'title': "绿化工",
+        'value': 15
+    }, {
+        'title': "汽修工",
+        'value': 16
+    }, {
+        'title': "铲车/钩机",
+        'value': 17
+    }, {
+        'title': "压路机/泥头车",
+        'value': 18
+    }, {
+        'title': "吊车货车司机",
+        'value': 19
+    }, {
+        'title': "高压电工",
+        'value': 20
+    }, {
+        'title': "低压电工",
+        'value': 21
+    }, {
+        'title': "弱电工",
+        'value': 22
+    }, {
+        'title': "临时杂工",
+        'value': 23
+    }, {
+        'title': "网络布线维护",
+        'value': 24
+    }, {
+        'title': "雕刻师傅",
+        'value': 25
+    }, {
+        'title': "高空作业工",
+        'value': 26
+    }, {
+        'title': "水泥塑石工",
+        'value': 27
+    }
+]
+jobs_cates_samp = [i.get('title') for i in jobs_cates]
 
 def gen_user(openid,phonenum,username,nickname,sex,jobs,Location_lati,Location_longi,Score):
     user = User.objects.create_user(
@@ -174,7 +259,7 @@ if __name__ == '__main__':
         nickname = random.choice(nickname_str) + random.choice(nickname_str) +random.choice(nickname_str) + random.choice(nickname_str)
         phonenum = random.choice(['139','188','185','136','158','151'])+"".join(random.choice("0123456789") for i in range(8))
         sex = random.choice(['1','2'])
-        jobs = set(random.sample(range(1, 40), 2))
+        jobs = set(random.sample(jobs_cates_samp, 2))
         Location_lati = '28.1{i}027215073601'.format(i=i)
         Location_longi = '112.9{i}513532428318'.format(i=i)
         Score = random.choice([1,2,3,4,5])
