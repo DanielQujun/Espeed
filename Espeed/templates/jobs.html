@@ -25,9 +25,6 @@
             </div>
         </div>
 
-        <div>
-            {{ jobList|safe }}
-        </div>
     </section>
 
     <!-- 底部 -->
@@ -49,13 +46,17 @@
 <script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>        <!-- 引入微信js sdk -->
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BVbS3AVAs8iNor6NGxKfc1gG5OcqTxBu"></script>
-<script type="text/javascript"src="../static/js/utility.js"></script>
+<script type="text/javascript" src="../static/js/utility.js"></script>
 <!-- 百度地图api -->
 <script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
 <script>
 
     $(function () {
         FastClick.attach(document.body);
+
+        //方便调试
+        alert( window.localStorage.getItem("openid"));
+
 
         //调用微信sdk配置
         wx.config({
@@ -161,7 +162,6 @@
                         longitude: $.session.get('longitude'),
                     },
                     success: function () {
-                        // add by qujun
                         location.href = "/workerList/?openid="+window.localStorage.getItem("openid");
                     }
                 })
