@@ -73,7 +73,7 @@
 
         //调用微信sdk配置
         wx.config({
-            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+//            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: "{{ appid }}", // 必填，企业号的唯一标识，此处填写企业号corpid
             timestamp: "{{timestamp}}", // 必填，生成签名的时间戳
             nonceStr: "{{ nonceStr }}", // 必填，生成签名的随机串
@@ -96,7 +96,7 @@
         //初始化数据
         $.ajax({
             async: true,
-            url: "/worklist_ajax/",
+            url: "/worklist_ajax/",           /* */
             dataType: "json",
             type: "post",
             data: {
@@ -284,7 +284,7 @@
                 '<span class="distance">距您：' + formatDistance(val.distance) + '</span>' +
                 '<p class="publishedTime">发布于：' + formatTime(val.pubTime) + '</p>' +
                 '</div>' +
-                '<div class="list_ft flex"><span class="userid">'+ val.userid + '</span>' +  isRateble(val.isVisible) + isVisible(val.isVisible, val.phoneNum) +
+                '<div class="list_ft flex"><span class="userid">'+ val.userid + '</span><span class="hidePhoneNum">'+ val.phoneNum + '</span>' +  isRateble(val.isVisible) + isVisible(val.isVisible, val.phoneNum) +
                 '</div>' +
                 '</div>' +
                 '</li>';
@@ -335,6 +335,10 @@
         $('.check').click(function (event) {
             var $thisList = $(event.currentTarget);
             var $rateVal = $thisList.siblings(".userid").html();
+            var $checkedNum = $thisList.siblings(".hidePhoneNum").html();
+            //todo:这个地方将来最好改成session
+            window.localStorage.setItem("checkedNum",$checkedNum);
+//            $.session.set("checkedNum",$checkedNum);
             $.confirm({
                 title: '温馨提示',
                 text: '查看电话号码需要支付0.5元查看费用',
@@ -350,14 +354,10 @@
                             userid: $rateVal             //想要查看谁的电话号码
                         },
                         success: function (result) {
-                            console.log(result.timeStamp);
-                            alert(result.nonceStr);
+                            //点击确认
 
-                            //点击确认（TODO：调用微信支付接口，需要微信签名,通过返回值取签名值）
-
-                            wx.ready(function () {
                                 wx.chooseWXPay({
-                                    timeStamp: result.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                                    timestamp: result.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
                                     nonceStr: result.nonceStr, // 支付签名随机串，不长于 32 位
                                     package: result.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
                                     signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入
@@ -365,22 +365,43 @@
                                     paySign: result.sign, // 支付签名
                                     success: function (res,errMsg) {
                                         // 支付成功后的回调函数
-                                        console.log(res,errMsg);
-                                        alert(res);
+                                        var str = "";
+                                        for(var item in res) {
+                                             str += item + ':'+ res[item];
+                                        }
+                                        alert(str);
+
+                                        //优先选用
+                                        location.href = "/dail/?openid="+window.localStorage.getItem("openid");
+
+                                        /*ajax重载页面作为备选方法
+                                        $.ajax({
+                                            url:"/zhihu_pre/",
+                                            dataType: "json",
+                                            type: "post",
+                                            data: {
+                                                // openId: window.localStorage.getItem("openid"),
+                                                openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                                                page: 1             //回到第一页
+                                            },
+                                            success: function (data) {
+
+                                            }
+                                        });*/
+
                                     },
                                     fail: function (errMsg) {
-                                        console.log(errMsg);
-                                        alert(errMsg);
+                                       /* console.log(errMsg);
+                                        alert(errMsg);*/
                                     }
                                 });
-                            });
                         },
                         error: function(xhr,status,error){
-                            alert(xhr);
+                            /*alert(xhr);
                             alert(xhr.status);
                             alert(xhr.statusText);
                             alert(status);
-                            alert(error);
+                            alert(error);*/
                         }
                     })
                 },
