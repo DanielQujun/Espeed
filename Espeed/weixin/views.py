@@ -10,6 +10,8 @@ import hashlib
 from datetime import datetime as dt
 from django.http import HttpResponseRedirect
 
+import xml.etree.ElementTree as et
+
 from weixin.config import *
 from weixin.functions import *
 from weixin.models import *
@@ -385,8 +387,9 @@ def worklist_ajax(request):
                 worker_dic['star'] = 3
                 worker_dic['pubTime'] = int(worker.publishTime.replace('.','')+'0')
                 worker_dic['distance'] = Distance(user.Location_lati, user.Location_longi, worker.Location_lati, worker.Location_longi)
-                worker_dic['isVisible'] = True if UserVisible.objects.filter(user_payed=user.openId, user_visible=worker.openId) \
-                                                else False
+                # worker_dic['isVisible'] = True if UserVisible.objects.filter(user_payed=user.openId, user_visible=worker.openId) \
+                #                                 else False
+                worker_dic['isVisible'] = True
                 worker_dic['isRateble'] = worker_dic['isVisible']
                 worker_dic['phoneNum'] = worker.phonenum
                 worker_dic['portraitUrl'] = worker.avatarAddr
@@ -430,14 +433,32 @@ def render_js_config(request):
 
 
 def wxpay_notify(request):
-    if request.method == 'GET':
-        print "GET METHOD"
-        print request.GET
-    if request.method == 'POST':
-        print request.POST
-        print "POST METHOD"
-    return HttpResponse()
 
+    if request.method == 'POST':
+        _xml = request.body
+        # 拿到微信发送的xml请求 即微信支付后的回调内容
+        xml = str(_xml)
+        print("xml", xml)
+        return_dict = {}
+        tree = et.fromstring(xml)
+        # xml 解析
+        return_code = tree.find("return_code").text
+        try:
+            if return_code == 'FAIL':
+                # 官方发出错误
+                return_dict['message'] = '支付失败'
+                # return Response(return_dict, status=status.HTTP_400_BAD_REQUEST)
+            elif return_code == 'SUCCESS':
+                # 拿到自己这次支付的 out_trade_no
+                _out_trade_no = tree.find("out_trade_no").text
+                print "qujun:debug in views 453line!!!"
+                print _out_trade_no
+                print return_dict
+                # 这里省略了 拿到订单号后的操作 看自己的业务需求
+        except Exception as e:
+            pass
+        finally:
+            return HttpResponse(return_dict, status=200)
 
 
 def zhihu_pre(request):
@@ -454,7 +475,7 @@ def zhihu_pre(request):
         wx_mch_id=ZHIHU_ID,  # 微信支付商户号
         wx_mch_key=ZHIHU_KEY,
         # wx_mch_key 微信支付重要密钥，请登录微信支付商户平台，在 账户中心-API安全-设置API密钥设置
-        wx_notify_url='http://ewosugong.com/wxpay/notify'
+        wx_notify_url='http://ewosugong.com/wxpay/notify/'
         # wx_notify_url 接受微信付款消息通知地址（通常比自己把支付成功信号写在js里要安全得多，推荐使用这个来接收微信支付成功通知）
         # wx_notify_url 开发详见https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_7
     )
@@ -463,7 +484,7 @@ def zhihu_pre(request):
         pay_data = wx_pay.js_pay_api(
             openid=openid,
             body=u'商品',
-            total_fee=100,
+            total_fee=1,
             spbill_create_ip=ip
         )
         return HttpResponse(json.dumps(pay_data))
