@@ -85,7 +85,6 @@ class WxPay(object):
         return "<xml>{0}</xml>".format(s)
 
     def fetch(self, url, data):
-        print "qujun:debug here!!!"
         print self.to_xml(data)
         req = urllib2.Request(url, data=self.to_xml(data))
         try:
