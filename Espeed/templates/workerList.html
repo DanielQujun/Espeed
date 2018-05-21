@@ -341,9 +341,13 @@
                 onOK: function () {
                     //通过ajax发送预订单所需基本信息
                     $.ajax({
-                        url:"",                 //todo:地址有待填写
+                        url:"/zhihu_pre/",  //todo:地址有待填写
+                        dataType: "json",
+                        type: "post",
+                        data: {
                         openId: window.localStorage.getItem("openid"),
                         userid: $rateVal,                  //想要查看谁的电话号码
+                                    },
                         success: function (res) {
 
                             //点击确认（TODO：调用微信支付接口，需要微信签名,通过返回值取签名值）

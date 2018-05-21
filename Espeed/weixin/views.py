@@ -445,7 +445,9 @@ def zhihu_pre(request):
         ip = request.META['HTTP_X_FORWARDED_FOR']
     else:
         ip = request.META['REMOTE_ADDR']
-    openid = request.GET.get('openid')
+    print "qujun zhihu_pre line 448!!!!!"
+    print request.POST
+    openid = request.POST.get('openId')
 
     wx_pay = WxPay(
         wx_app_id=WEIXIN_APPID,  # 微信平台appid
@@ -464,7 +466,7 @@ def zhihu_pre(request):
             total_fee=100,
             spbill_create_ip=ip
         )
-        print pay_data
+        return HttpResponse(json.dumps(pay_data))
         # 订单生成后将请将返回的json数据 传入前端页面微信支付js的参数部分
         # print jsonify(pay_data)
     except WxPayError, e:
