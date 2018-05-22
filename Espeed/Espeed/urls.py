@@ -33,4 +33,5 @@ urlpatterns = [
     url(r'^worklist_ajax/',weixin_views.worklist_ajax, name='worklist_ajax'),
     url(r'^wxpay/notify/',weixin_views.wxpay_notify, name='wxpay_notify'),
     url(r'^zhihu_pre/',weixin_views.zhihu_pre, name='zhihu_pre'),
+    url(r'^dail/',weixin_views.dail, name='dail'),
 ]

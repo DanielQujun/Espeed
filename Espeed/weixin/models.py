@@ -33,8 +33,10 @@ class UserProfileBase(models.Model):
     publishTime = models.CharField(max_length=20,default=None)
 
 class UserVisible(models.Model):
+    transation_no = models.CharField(default=None, max_length=50)
     user_payed = models.CharField(max_length=50)  # Openid
     user_visible = models.CharField(max_length=50)  # Openid
+    pay_status = models.CharField(default='prepay', max_length=50)
 
 class Jobcates(models.Model):
     jobcate = models.CharField(max_length=32)
