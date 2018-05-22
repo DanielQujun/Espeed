@@ -36,8 +36,8 @@
         var str = '<div class="changePortrait" >' +
             '<img class="portrait" src="'+ $checkedPortraitUrl  +'">' +
             '<p class="username">'+ $checkedUsername  +'</p></div>' +
-            '<h1 class="phoneNum"><a href="tel:' + $checkedNum +'">'+ $checkedNum  +'</a></h1>' +
-            '<a href="#" class="backBtn weui-btn weui-btn_default confirmBtn">返回列表页</a>' +
+            '<h1 class="phoneNum"><a href="tel:' + $checkedNum +'">'+ {{ phone_num }}  +'</a></h1>' +
+            '<a href="/workerList/" class="weui-btn weui-btn_default confirmBtn">返回列表页</a>' +
             '<a href="tel:' + $checkedNum +'"'+ ' class="weui-btn weui-btn_primary confirmBtn">拨打号码</a>'
         $(".main").html(str);
 
