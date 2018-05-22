@@ -34,6 +34,7 @@ class UserProfileBase(models.Model):
 
 class UserVisible(models.Model):
     transation_no = models.CharField(default=None, max_length=50)
+    paysign = models.CharField(default=None, max_length=50)
     user_payed = models.CharField(max_length=50)  # Openid
     user_visible = models.CharField(max_length=50)  # Openid
     pay_status = models.CharField(default='prepay', max_length=50)

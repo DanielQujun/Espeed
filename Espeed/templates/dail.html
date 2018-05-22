@@ -28,7 +28,7 @@
   <script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
   <script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
   <script>
-    $(function() {
+        $(function() {
         FastClick.attach(document.body);
         var $checkedNum = window.localStorage.getItem("checkedNum");
         var $checkedPortraitUrl = window.localStorage.getItem("checkedPortraitUrl");
@@ -40,11 +40,9 @@
             '<a href="#" class="backBtn weui-btn weui-btn_default confirmBtn">返回列表页</a>' +
             '<a href="tel:' + $checkedNum +'"'+ ' class="weui-btn weui-btn_primary confirmBtn">拨打号码</a>'
         $(".main").html(str);
-
         $(".backBtn").click(function () {
             location.href = "/workerList/?openid="+window.localStorage.getItem("openid");
         });
-
     });
   </script>
 </body>

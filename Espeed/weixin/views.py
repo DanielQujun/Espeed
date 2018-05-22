@@ -510,6 +510,7 @@ def zhihu_pre(request):
             out_trade_no=out_trade_no,
             spbill_create_ip=ip
         )
+        User_view_pay.paysign = pay_data.get('sign', "wrongkey")
         User_view_pay.save()
         return HttpResponse(json.dumps(pay_data))
         # 订单生成后将请将返回的json数据 传入前端页面微信支付js的参数部分
@@ -520,4 +521,9 @@ def zhihu_pre(request):
 
 def dail(request):
     print request.GET
-    return HttpResponse("OK")
+    openid = request.GET.get('openid')
+    paysign = request.GET.get('paySign')
+    User_view_pay = UserVisible.objects.filter(user_payed=openid,paysign=paysign).first()
+    phone_num = UserProfileBase.objects.filter(openId=User_view_pay.user_visible).first().phonenum
+
+    return render(request, 'dail.html', {'phone_num': phone_num})
