@@ -21,8 +21,6 @@
 <body>
   <div class="role page">
     <section class="main flex">
-        <h1 class="phoneNum"><a href="tel:"></a></h1>
-        <a href="tel:" class="weui-btn weui-btn_primary confirmBtn">确定</a>
     </section>
   </div>
 
@@ -33,9 +31,14 @@
     $(function() {
         FastClick.attach(document.body);
         var $checkedNum = window.localStorage.getItem("checkedNum");
-        var str = '<h1 class="phoneNum"><a href="tel:' + $checkedNum +'">'+ $checkedNum  +'</a></h1>\n' +
-            '  <a href="tel:' + $checkedNum +'"'+ ' class="weui-btn weui-btn_primary confirmBtn">确定</a>'
-
+        var $checkedPortraitUrl = window.localStorage.getItem("checkedPortraitUrl");
+        var $checkedUsername = window.localStorage.getItem("checkedUsername");
+        var str = '<div class="changePortrait" >' +
+            '<img class="portrait" src="'+ $checkedPortraitUrl  +'">' +
+            '<p class="username">'+ $checkedUsername  +'</p></div>' +
+            '<h1 class="phoneNum"><a href="tel:' + $checkedNum +'">'+ $checkedNum  +'</a></h1>' +
+            '<a href="/workerList/" class="weui-btn weui-btn_default confirmBtn">返回列表页</a>' +
+            '<a href="tel:' + $checkedNum +'"'+ ' class="weui-btn weui-btn_primary confirmBtn">拨打号码</a>'
         $(".main").html(str);
 
     });
