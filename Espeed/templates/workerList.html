@@ -95,7 +95,7 @@
         //初始化数据
         $.ajax({
             async: true,
-            url: "/worklist_ajax/",           /* */
+            url: "workerList.json",           /* /worklist_ajax/*/
             dataType: "json",
             type: "post",
             data: {
@@ -336,8 +336,13 @@
             var $thisList = $(event.currentTarget);
             var $rateVal = $thisList.siblings(".userid").html();
             var $checkedNum = $thisList.siblings(".hidePhoneNum").html();
+            var $checkedPortraitUrl = $thisList.parents(".infoBox").prev(".portraitBox").children("img").attr("src");
+            var $checkedUsername = $thisList.parents(".infoBox").prev(".portraitBox").children("p").html();
+
             //todo:这个地方将来最好改成session
             window.localStorage.setItem("checkedNum",$checkedNum);
+            window.localStorage.setItem("checkedPortraitUrl",$checkedPortraitUrl);
+            window.localStorage.setItem("checkedUsername",$checkedUsername);
 //            $.session.set("checkedNum",$checkedNum);
             $.confirm({
                 title: '温馨提示',
@@ -350,7 +355,6 @@
                         type: "post",
                         data: {
                             openId: window.localStorage.getItem("openid"),
-
                             userid: $rateVal             //想要查看谁的电话号码
                         },
                         success: function (result) {
@@ -373,20 +377,6 @@
                                     //优先选用
                                     location.href = "/dail/?openid=" + window.localStorage.getItem("openid");
 
-                                    /*ajax重载页面作为备选方法
-                                        $.ajax({
-                                            url:"/zhihu_pre/",
-                                            dataType: "json",
-                                            type: "post",
-                                            data: {
-                                                // openId: window.localStorage.getItem("openid"),
-                                                openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
-                                                page: 1             //回到第一页
-                                            },
-                                            success: function (data) {
-
-                                            }
-                                        });*/
 
                                 },
                                 fail: function (errMsg) {
