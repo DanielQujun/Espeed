@@ -95,7 +95,7 @@
         //初始化数据
         $.ajax({
             async: true,
-            url: "workerList.json",           /* /worklist_ajax/*/
+            url: "/worklist_ajax/",           /* /worklist_ajax/*/
             dataType: "json",
             type: "post",
             data: {
@@ -366,7 +366,8 @@
                                 signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入
                                 // 'MD5'
                                 paySign: result.sign, // 支付签名
-                                success: function (res, errMsg) {
+                                success: function (res) {
+                                    alert(res);
                                     // 支付成功后的回调函数
                                     var str = "";
                                     for (var item in res) {
