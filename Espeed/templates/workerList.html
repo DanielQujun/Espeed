@@ -99,8 +99,8 @@
             dataType: "json",
             type: "post",
             data: {
-                // openId: window.localStorage.getItem("openid"),
-                openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                openId: window.localStorage.getItem("openid"),
+                // openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                 sortByDis: true,
                 sortByPubTime:false,
                 page: 1
@@ -298,7 +298,7 @@
 
         //是否可见
         function isVisible(vis, val) {
-            return vis ? '<a href="tel:"' + val + '"' + ' class="dial weui-btn weui-btn_mini weui-btn_primary">' + val + '</a>' : '<a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>'
+            return vis ? '<a href="tel:' + val + '"' + ' class="dial weui-btn weui-btn_mini weui-btn_primary">' + val + '</a>' : '<a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>'
         }
 
         //距离格式化

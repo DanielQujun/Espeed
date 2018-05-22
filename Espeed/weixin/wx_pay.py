@@ -67,8 +67,7 @@ class WxPay(object):
         raw = [(k, str(raw[k]) if isinstance(raw[k], (int, float)) else raw[k]) for k in sorted(raw.keys())]
         s = "&".join("=".join(kv) for kv in raw if kv[1])
         s += "&key={0}".format(self.WX_MCH_KEY)
-        print "qujun debug 70line"
-        print s
+
         return hashlib.md5(self.to_utf8(s)).hexdigest().upper()
 
     def check(self, raw):

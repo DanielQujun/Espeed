@@ -373,12 +373,17 @@ def worklist_ajax(request):
         # openid = 'oT69X1Chvefxgv3wby_-PaEIM9nY'
         user = UserProfileBase.objects.filter(openId=openid).first()
         tag_set = user.Jobs.copy()
+        # 查询该用户支付过的记录
+        payed_list = [payed_user.user_visible for payed_user in UserVisible.objects.filter(user_payed=openid)]
+        print openid
+        print "qujun debug views line 378!!! for payed_list"
+        print payed_list
 
         work_objects_db = []
         for tag in tag_set:
             workers = UserProfileBase.objects.filter(Jobs__contains=tag)
             for worker in workers:
-
+                print worker.openId
                 worker_dic = {}
                 worker_dic['userid'] = worker.id
                 worker_dic['username'] = worker.userName
@@ -389,7 +394,7 @@ def worklist_ajax(request):
                 worker_dic['distance'] = Distance(user.Location_lati, user.Location_longi, worker.Location_lati, worker.Location_longi)
                 # worker_dic['isVisible'] = True if UserVisible.objects.filter(user_payed=user.openId, user_visible=worker.openId) \
                 #                                 else False
-                worker_dic['isVisible'] = True
+                worker_dic['isVisible'] = True if worker.openId in payed_list else False
                 worker_dic['isRateble'] = worker_dic['isVisible']
                 worker_dic['phoneNum'] = worker.phonenum
                 worker_dic['portraitUrl'] = worker.avatarAddr
@@ -409,7 +414,6 @@ def worklist_ajax(request):
             "currentPage": page,
             "listData": page_object.object_list
         }
-        print json.dumps(page_object.object_list)
 
         return HttpResponse(json.dumps(conten_dict))
 
@@ -433,7 +437,12 @@ def render_js_config(request):
 
 
 def wxpay_notify(request):
-
+    return_str = """
+    <xml>
+      <return_code><![CDATA[SUCCESS]]></return_code>
+      <return_msg><![CDATA[OK]]></return_msg>
+    </xml>
+    """
     if request.method == 'POST':
         _xml = request.body
         # 拿到微信发送的xml请求 即微信支付后的回调内容
@@ -453,12 +462,16 @@ def wxpay_notify(request):
                 _out_trade_no = tree.find("out_trade_no").text
                 print "qujun:debug in views 453line!!!"
                 print _out_trade_no
-                print return_dict
+                User_view_pay = UserVisible.objects.filter(transation_no=_out_trade_no).first()
+                User_view_pay.status = 'payed'
+                User_view_pay.save()
+
                 # 这里省略了 拿到订单号后的操作 看自己的业务需求
+
         except Exception as e:
             pass
         finally:
-            return HttpResponse(return_dict, status=200)
+            return HttpResponse(return_str, status=200)
 
 
 def zhihu_pre(request):
@@ -468,7 +481,16 @@ def zhihu_pre(request):
         ip = request.META['REMOTE_ADDR']
     print "qujun zhihu_pre line 448!!!!!"
     print request.POST
+    # 支付者id
     openid = request.POST.get('openId')
+    # 被查看者id
+    userid = request.POST.get('userid')
+    useropenid = UserProfileBase.objects.filter(id=userid).first().openId
+
+    out_trade_no = time.strftime('%Y%m%d%M%S',time.localtime(time.time()))+"".join(random.choice(CHAR) for _ in range(20))
+
+    User_view_pay = UserVisible(transation_no=out_trade_no,user_payed=openid,user_visible=useropenid,pay_status='prepay')
+
 
     wx_pay = WxPay(
         wx_app_id=WEIXIN_APPID,  # 微信平台appid
@@ -485,10 +507,17 @@ def zhihu_pre(request):
             openid=openid,
             body=u'商品',
             total_fee=1,
+            out_trade_no=out_trade_no,
             spbill_create_ip=ip
         )
+        User_view_pay.save()
         return HttpResponse(json.dumps(pay_data))
         # 订单生成后将请将返回的json数据 传入前端页面微信支付js的参数部分
         # print jsonify(pay_data)
     except WxPayError, e:
         print e.message, 400
+
+
+def dail(request):
+    print request.GET
+    return HttpResponse("OK")
