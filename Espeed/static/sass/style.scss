@@ -893,7 +893,33 @@ footer {
 /* 个人资料结束 */
 
 /*拨打号码页面*/
+.dail {
 
+}
+  .main {
+    height: 100vh;
+    width: 86%;
+    margin: 0 auto;
+    text-align: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding-top: 2rem;
+    font-size: 14px;;
+
+    .changePortrait {
+      color:#fff;
+
+      img {
+        width: 80px;
+        height:80px;
+        border-radius: 50%;
+        border: 1px solid #e0e0e0;
+      }
+
+
+    }
+}
 
 
 
