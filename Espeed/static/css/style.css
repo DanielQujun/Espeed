@@ -34,7 +34,7 @@ body {
 footer {
   position: fixed;
   width: 100%;
-  height: 56px;
+  height: 70px;
   left: 0;
   bottom: 0;
   padding: 10px 12px;
@@ -43,6 +43,18 @@ footer {
   display: flex;
   justify-content: space-between;
   background: url("../images/footer_bg.png") repeat-x top left; }
+  footer .testNum {
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: red;
+    z-index: 1000;
+    -webkit-animation: circle 1s infinite linear; }
+@-webkit-keyframes circle {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(-360deg); } }
   footer a:first-child button {
     border-right: 1px solid rgba(100, 100, 100, 0.2); }
   footer button {
@@ -54,8 +66,8 @@ footer {
     font-size: 15px;
     background: #fff; }
   footer .smallBtn {
-    width: 36px;
-    height: 36px;
+    width: 50px;
+    height: 50px;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
@@ -63,18 +75,33 @@ footer {
     -webkit-box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
     box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1); }
+    footer .smallBtn .iconfont {
+      font-size: 20px; }
+    footer .smallBtn .rotate {
+      display: block;
+      -webkit-animation: circle 2s infinite linear; }
+@-webkit-keyframes circle {
+  0% {
+    transform: rotate(0deg); }
+  50% {
+    transform: rotate(180deg); }
+  100% {
+    transform: rotate(360deg); } }
   footer .bigBtn {
-    width: 120px;
-    height: 36px;
-    -webkit-border-radius: 18px;
-    -moz-border-radius: 18px;
-    border-radius: 18px;
-    border: 1px solid #e0e0e0;
+    width: 150px;
+    height: 50px;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+    /*border: 1px solid #e0e0e0;*/
     -webkit-box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
     box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
     background: #333;
-    color: #fff; }
+    color: #fff;
+    font-size: 18px; }
+    footer .bigBtn .iconfont {
+      font-size: 18px; }
   footer .iconfont {
     margin: 0 4px; }
   footer .publish {
@@ -328,9 +355,9 @@ footer {
         display: inline-block;
         width: 20px;
         height: 20px;
-        background: url("../images/filterArrow.png") no-repeat 0 0; }
+        background: url("../images/filterArrow.png") no-repeat 0 5px; }
       .workerList header .weui-navbar__item .filterArrow.active {
-        background: url("../images/filterArrow.png") no-repeat 0 -20px; }
+        background: url("../images/filterArrow.png") no-repeat 0 -15px; }
   .workerList .main {
     height: 100vh;
     box-sizing: border-box;
@@ -354,7 +381,8 @@ footer {
       margin-bottom: 10px; }
       .workerList .main .listItem .portraitBox {
         width: 20%;
-        text-align: center; }
+        text-align: center;
+        font-size: 14px; }
         .workerList .main .listItem .portraitBox img {
           border-radius: 50%;
           width: 54px;
@@ -369,12 +397,15 @@ footer {
           .workerList .main .listItem .infoBox .list_hd .tag {
             border: 1px solid #fbaf5d;
             padding: 0 10px;
-            font-size: 12px;
-            line-height: 1.5em;
+            font-size: 13px;
+            line-height: 2em;
             color: #fbaf5d;
+            height: 26px;
             border-radius: 2px;
             margin-right: 4px; }
           .workerList .main .listItem .infoBox .list_hd .star {
+            position: relative;
+            top: 4px;
             width: 100px;
             height: 16px; }
           .workerList .main .listItem .infoBox .list_hd .star1 {
@@ -394,10 +425,10 @@ footer {
             background-size: contain; }
         .workerList .main .listItem .infoBox .list_bd {
           justify-content: space-between;
-          font-size: 12px;
+          font-size: 14px;
           color: #999; }
         .workerList .main .listItem .infoBox .list_ft {
-          font-size: 13px;
+          font-size: 14px;
           justify-content: flex-end; }
           .workerList .main .listItem .infoBox .list_ft .userid {
             visibility: hidden;
@@ -411,7 +442,8 @@ footer {
             margin-top: 0;
             margin-left: 10px;
             margin-right: 0;
-            line-height: 1.8em; }
+            line-height: 2em;
+            font-size: 13px; }
             .workerList .main .listItem .infoBox .list_ft .weui-btn .checkNum {
               display: block; }
             .workerList .main .listItem .infoBox .list_ft .weui-btn .phoneNum {
@@ -633,5 +665,25 @@ footer {
       margin-top: 1rem; }
 
 /* 个人资料结束 */
+/*拨打号码页面*/
+.dail .main {
+  height: 100vh;
+  width: 86%;
+  margin: 0 auto;
+  text-align: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  padding-top: 2rem;
+  font-size: 14px; }
+  .dail .main .changePortrait {
+    color: #fff; }
+    .dail .main .changePortrait img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 1px solid #e0e0e0; }
+  .dail .main .phoneNum {
+    margin-bottom: 50%; }
 
 /*# sourceMappingURL=style.css.map */

@@ -47,5 +47,15 @@ function getBaiduPosition(lng,lat) {
     });
 }
 
+// 地址跳转
+function goUrl(location,parm) {
+    var data = "";
+    for(var item in parm) {
+        data += '&' + item + '=' + parm[item];
+    }
+    location.href = '/'+ location +'/?openid='+ window.localStorage.getItem("openid")+ data;
+}
+
+
 
 

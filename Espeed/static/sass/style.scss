@@ -41,7 +41,7 @@ body {
 footer {
   position: fixed;
   width: 100%;
-  height: 56px;
+  height: 70px;
   left: 0;
   bottom: 0;
   padding: 10px 12px;
@@ -50,6 +50,21 @@ footer {
   display: flex;
   justify-content: space-between;
   background: url("../images/footer_bg.png") repeat-x top left;
+
+
+  .testNum {
+    display: block;
+    width: 10px;
+    height:10px;
+    background: red;
+    z-index: 1000;
+    -webkit-animation:circle 1s infinite linear;
+  }
+  @-webkit-keyframes circle{
+    0%{ transform:rotate(0deg); }
+    100%{ transform:rotate(-360deg); }
+  }
+
 
   a:first-child button {
     border-right: 1px solid rgba(100,100,100,.2);
@@ -65,8 +80,8 @@ footer {
   }
 
   .smallBtn {
-    width: 36px;
-    height:36px;
+    width: 50px;
+    height:50px;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
@@ -74,19 +89,39 @@ footer {
     -webkit-box-shadow: 0 8px 8px rgba(0,0,0,.1);
     -moz-box-shadow: 0 8px 8px rgba(0,0,0,.1);
     box-shadow: 0 8px 8px rgba(0,0,0,.1);
+
+    .iconfont {
+      font-size: 20px;
+    }
+
+    .rotate {
+      display: block;
+      -webkit-animation:circle 2s infinite linear;
+    }
+    @-webkit-keyframes circle{
+      0%{ transform:rotate(0deg); }
+      50%{ transform:rotate(180deg); }
+      100%{ transform:rotate(360deg); }
+    }
+
   }
   .bigBtn {
-    width: 120px;
-    height:36px;
-    -webkit-border-radius: 18px;
-    -moz-border-radius: 18px;
-    border-radius: 18px;
-    border: 1px solid #e0e0e0;
+    width: 150px;
+    height:50px;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+    /*border: 1px solid #e0e0e0;*/
     -webkit-box-shadow: 0 8px 8px rgba(0,0,0,.1);
     -moz-box-shadow: 0 8px 8px rgba(0,0,0,.1);
     box-shadow: 0 8px 8px rgba(0,0,0,.1);
     background: #333;
     color: #fff;
+    font-size: 18px;
+
+    .iconfont {
+      font-size: 18px;
+    }
   }
   .iconfont {
     margin: 0 4px;
@@ -432,11 +467,11 @@ footer {
          display: inline-block;
          width:20px;
          height:20px;
-         background: url("../images/filterArrow.png") no-repeat 0 0;
+         background: url("../images/filterArrow.png") no-repeat 0 5px;
        }
 
       .filterArrow.active {
-        background: url("../images/filterArrow.png") no-repeat 0 -20px;
+        background: url("../images/filterArrow.png") no-repeat 0 -15px;
       }
 
     }
@@ -470,6 +505,7 @@ footer {
       .portraitBox {
         width: 20%;
         text-align: center;
+        font-size: 14px;
 
         img {
           border-radius: 50%;
@@ -491,14 +527,17 @@ footer {
            .tag {
             border: 1px solid #fbaf5d;
             padding: 0 10px;
-            font-size: 12px;
-            line-height: 1.5em;
+            font-size: 13px;
+            line-height: 2em;
             color: #fbaf5d;
+             height: 26px;
             border-radius: 2px;
             margin-right: 4px;
           }
 
            .star {
+             position: relative;
+             top: 4px;
              width: 100px;
              height: 16px;
            }
@@ -527,13 +566,13 @@ footer {
 
          .list_bd {
            justify-content: space-between;
-           font-size: 12px;
+           font-size: 14px;
            color: #999;
 
         }
 
         .list_ft {
-          font-size: 13px;
+          font-size: 14px;
           justify-content: flex-end;
 
           .userid {
@@ -551,7 +590,8 @@ footer {
             margin-top: 0;
             margin-left: 10px;
             margin-right: 0;
-            line-height: 1.8em;
+            line-height: 2em;
+            font-size: 13px;
 
             .checkNum {
               display: block;
@@ -895,7 +935,6 @@ footer {
 /*拨打号码页面*/
 .dail {
 
-}
   .main {
     height: 100vh;
     width: 86%;
@@ -916,9 +955,12 @@ footer {
         border-radius: 50%;
         border: 1px solid #e0e0e0;
       }
-
-
     }
+
+    .phoneNum {
+      margin-bottom: 50%;
+    }
+  }
 }
 
 
