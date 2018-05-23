@@ -414,7 +414,7 @@ def worklist_ajax(request):
             "currentPage": page,
             "listData": page_object.object_list
         }
-
+        print conten_dict
         return HttpResponse(json.dumps(conten_dict))
 
 
