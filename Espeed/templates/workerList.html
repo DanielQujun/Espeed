@@ -20,10 +20,10 @@
 
     <header>
         <div class="weui-navbar">
-            <div class="weui-navbar__item weui_bar__item_on">
-                <span id="distanceFilter">离我最近<span class="filterArrow"></span></span>
+            <div class="weui-navbar__item weui_bar__item_on"  id="distanceFilter">
+                <span>离我最近<span class="filterArrow"></span></span>
             </div>
-            <div class="weui-navbar__item"><span id="pubTimeFilter">最新上线<span class="filterArrow"></span></span>
+            <div class="weui-navbar__item"  id="pubTimeFilter"><span>最新上线<span class="filterArrow"></span></span>
             </div>
         </div>
     </header>
@@ -42,14 +42,13 @@
 
     <!-- 底部 -->
     <footer>
-
         <a href="javascript:;">
-            <button class="smallBtn Relocate"><i class="iconfont icon-shuaxin"></i></button>
+            <button class="smallBtn refresh"><i class="iconfont icon-shuaxin "></i></button>
         </a>
         <a href="javascript:;">
             <button class="bigBtn cancel"><i class="iconfont icon-quxiao"></i>取消发布</button>
         </a>
-        <a href="/userCenter">
+        <a href="javascript:;" onclick="goUrl('userCenter')">
             <button class="smallBtn"><i class="iconfont icon-wode"></i></button>
         </a>
 
@@ -87,10 +86,6 @@
             $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
         });
 
-        //配置成功后，调用接口
-        wx.ready(function () {
-
-        });
 
         //初始化数据
         $.ajax({
@@ -138,6 +133,45 @@
             $(this).hide();
         });
 
+        $(".refresh").click(function () {
+            $(".refresh .icon-shuaxin").addClass("rotate");
+            $.ajax({
+                async: true,
+                url: " /worklist_ajax/",           /* /worklist_ajax/*/
+                dataType: "json",
+                type: "post",
+                data: {
+                    openId: window.localStorage.getItem("openid"),
+                    // openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                    sortByDis: true,
+                    sortByPubTime:false,
+                    page: 1
+                },
+                success: function (data) {
+                    $(".refresh .icon-shuaxin").removeClass("rotate");
+                    var $totalPage = data.totalPage;
+                    var $currentPage = data.currentPage;
+                    showData(data.listData);
+
+                    //上拉加载
+                    var loading = false;  //状态标记
+                    $(document.body).infinite().on("infinite", function() {
+                        if(loading) return;
+                        loading = true;
+                        $currentPage +=1;
+                        if($currentPage <= $totalPage ){
+                            loadData($currentPage);
+                        } else {
+                            $('.bottomTips').css("display","block");
+                        }
+                        loading = false;
+                    });
+                },
+                error: function(error) {
+                    console.log(error.readyState, error.statusText);
+                }
+            });
+        });
 
         //取消发布按钮弹窗
         $('.cancel').click(function () {
@@ -263,7 +297,7 @@
     function showData(data) {
         $.each(data, function (key, val) {
             //造tag标签
-            var $tagArr = val.tag;
+            var $tagArr = val.tag.split(',');
             var $tag = '<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
 
 
@@ -293,12 +327,12 @@
 
         //是否可以评价
         function isRateble(vis) {
-            return vis ? '<a href="#" class="rate weui-btn weui-btn_mini weui-btn_plain-primary">评价</a>' : "";
+            return vis ? '<a href="#" class="rate weui-btn weui-btn_mini weui-btn_default">评价</a>' : "";
         }
 
         //是否可见
         function isVisible(vis, val) {
-            return vis ? '<a href="tel:' + val + '"' + ' class="dial weui-btn weui-btn_mini weui-btn_primary">' + val + '</a>' : '<a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>'
+            return vis ? '<a href="tel:' + val + '"' + ' class="dial weui-btn weui-btn_mini weui-btn_success">' + val + '</a>' : '<a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>'
         }
 
         //距离格式化
