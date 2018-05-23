@@ -33,11 +33,11 @@
             '<img class="portrait" src="'+ $checkedPortraitUrl  +'">' +
             '<p class="username">'+ $checkedUsername  +'</p></div>' +
             '<h1 class="phoneNum"><a href="tel:' + $checkedNum +'">'+ $checkedNum  +'</a></h1>' +
-            '<div><a href="#" class="backBtn weui-btn weui-btn_default confirmBtn">返回列表页</a>' +
+            '<div><a href="javascript:;" class="backBtn weui-btn weui-btn_default confirmBtn">返回列表页</a>' +
             '<a href="tel:' + $checkedNum +'"'+ ' class="weui-btn weui-btn_primary confirmBtn">拨打号码</a></div>'
         $(".main").html(str);
         $(".backBtn").click(function () {
-            goUrl("workerList")
+            location.href ="/workerList/?openid="+ window.localStorage.getItem("openid");
         });
     });
   </script>
