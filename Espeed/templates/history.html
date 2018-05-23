@@ -48,7 +48,7 @@
         function showData(data) {
             $.each(data, function (key, val) {
                 //造tag标签
-                var $tagArr = val.tag.split(',');
+                var $tagArr = val.tag;
                 var $tags = '<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
 
 
