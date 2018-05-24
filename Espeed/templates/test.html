@@ -1,24 +1,70 @@
-<!DOCTYPE html>
-<html lang = "en">
+<!DOCTYPE html >
+<html>
 <head>
-    <meta charset = "UTF-8">
-    <title>Title</title>
+    <title></title>
+    <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
+    <script type="text/javascript">
+        /*-------------------------------------------*/
+        var InterValObj; //timer变量，控制时间
+        var count = 120; //间隔函数，1秒执行
+        var curCount;//当前剩余秒数
+        var code = ""; //验证码
+        var codeLength = 6;//验证码长度
+        function sendMessage() {
+            curCount = count;
+            var phone=$("#phone").val();//手机号码
+            if(phone != ""){
+                //产生验证码
+                for (var i = 0; i < codeLength; i++) {
+                    code += parseInt(Math.random() * 9).toString();
+                }
+                //设置button效果，开始计时
+                $("#btnSendCode").attr("disabled", "true");
+                $("#btnSendCode").val("请在" + curCount + "秒内输入验证码");
+                InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
+                //向后台发送处理数据
+                $.ajax({
+                    type: "POST", //用POST方式传输
+                    dataType: "text", //数据格式:JSON
+                    url: 'Login.ashx', //目标地址
+                    data: "phone=" + phone + "&code=" + code,
+                    error: function (XMLHttpRequest, textStatus, errorThrown) { },
+                    success: function (msg){ }
+                });
+            }else{
+                alert("手机号码不能为空！");
+            }
+        }
+        //timer处理函数
+        function SetRemainTime() {
+            if (curCount == 0) {
+                window.clearInterval(InterValObj);//停止计时器
+                $("#btnSendCode").removeAttr("disabled");//启用按钮
+                $("#btnSendCode").val("重新发送验证码");
+                code = ""; //清除验证码。如果不清除，过时间后，输入收到的验证码依然有效
+            }
+            else {
+                curCount--;
+                $("#btnSendCode").val("请在" + curCount + "秒内输入验证码");
+            }
+        }
+    </script>
 </head>
 <body>
-<br>
-<br>
-<br>
-<br>
-<br>
-<p><a href = "tel:15080755770">15080755770</a></p>
-<script>
-    var result = '{"timeStamp": 1526908204, "nonceStr": "xtnHdJy2sWKFBpYnBU1zgIasmwJ5FiXU", "package": "prepay_id=wx2121100441561749c80b0bed2120401721", "sign": "528E58A5116B319A61944B6B14BDCA5C", "appId": "wx711503c7590f6d76"}'
-
-    var $config = eval('(' + result + ')');
-
-    console.log($config);
-    console.log($config.timeStamp);
-
-</script>
+<form>
+    <div>
+        <font color="red">*</font>手机号码：
+    </div>
+    <div>
+        <input type="text" id="phone" name="phone"/>
+    </div>
+    <div>
+        <font color="red">*</font>验证码：
+    </div>
+    <div>
+        <input type="text" id="checkCode" name="checkCode" size="6"/>
+        <input id="btnSendCode" type="button" value="发送验证码" onclick="sendMessage()" />
+    </div>
+</form>
 </body>
 </html>
