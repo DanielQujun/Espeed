@@ -34,7 +34,7 @@
                     <a href="javascript:;" class="weui-btn weui-btn_primary weui-btn_mini canSend validCodeBtn">获取验证码</a>
                 </div>
             </div>
-
+            <p> {{ verify_code_wrong }}</p>
             <div class="submitBox">
                 <button type="submit" id="loginBtn" class="weui-btn weui-btn_primary">登录</button>
                 <p class="tips">未注册的手机号登录时将自动注册且<br/>代表您已同意
@@ -100,7 +100,7 @@
     $(function(){
 
         $(".validCodeBtn.canSend").click (function () {
-            var $port = "verify_code/";             /*/verify_code/*/
+            var $port = "/verify_code/";             /*/verify_code/*/
             $.ajax({
                 async: true,
                 url: $port,
@@ -113,7 +113,7 @@
                 },
                 success: function (res) {
                     console.log(res);
-                   /* alert(res);*/
+                   alert(res);
                 },
                 error: function(error) {
                     console.log(error.readyState, error.statusText);

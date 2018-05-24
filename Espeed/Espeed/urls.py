@@ -34,4 +34,7 @@ urlpatterns = [
     url(r'^wxpay/notify/',weixin_views.wxpay_notify, name='wxpay_notify'),
     url(r'^zhihu_pre/',weixin_views.zhihu_pre, name='zhihu_pre'),
     url(r'^dail/',weixin_views.dail, name='dail'),
+    url(r'^verify_code/',weixin_views.verify_code, name='verify_code'),
+
+
 ]

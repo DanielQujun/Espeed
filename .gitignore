@@ -7,3 +7,4 @@ Espeed/weixin/config.py
 .idea
 rlsync.sh
 rlsync_bobo.sh
+dysms_python/const.py

@@ -44,3 +44,8 @@ class Jobcates(models.Model):
 
 class transations(models.Model):
     transations_user = models.CharField(max_length=50)
+
+class verify_code_request(models.Model):
+    request_ip = models.CharField(max_length=50)
+    request_phonenum = models.CharField(max_length=50)
+    request_time = models.CharField(max_length=50)
