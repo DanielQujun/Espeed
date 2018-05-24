@@ -1,6 +1,7 @@
 <!DOCTYPE html >
 <html>
 <head>
+    <meta charset="utf-8">
     <title></title>
     <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
     <script type="text/javascript">
@@ -8,28 +9,36 @@
         var InterValObj; //timer变量，控制时间
         var count = 120; //间隔函数，1秒执行
         var curCount;//当前剩余秒数
-        var code = ""; //验证码
         var codeLength = 6;//验证码长度
         function sendMessage() {
+            window.clearInterval(InterValObj);//停止计时器
             curCount = count;
-            var phone=$("#phone").val();//手机号码
-            if(phone != ""){
-                //产生验证码
-                for (var i = 0; i < codeLength; i++) {
-                    code += parseInt(Math.random() * 9).toString();
-                }
+            console.log(curCount);
+            var phoneNum=$("#phoneNum").val();//手机号码
+            if(phoneNum != ""){
                 //设置button效果，开始计时
-                $("#btnSendCode").attr("disabled", "true");
-                $("#btnSendCode").val("请在" + curCount + "秒内输入验证码");
+                $(".validCodeBtn").addClass("weui-btn_disabled");
+                $(".validCodeBtn").val("请在" + curCount + "秒内输入验证码");
+//                debugger;
                 InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
                 //向后台发送处理数据
                 $.ajax({
-                    type: "POST", //用POST方式传输
-                    dataType: "text", //数据格式:JSON
-                    url: 'Login.ashx', //目标地址
-                    data: "phone=" + phone + "&code=" + code,
-                    error: function (XMLHttpRequest, textStatus, errorThrown) { },
-                    success: function (msg){ }
+                    async: true,
+                    url: 'workerList.json',
+                    dataType: "json",
+                    type: "post",
+                    data: {
+//                  openId: $("#openid").val(),
+                        openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                        phoneNum:$("#phoneNum").val()
+                    },
+                    success: function (res) {
+                        console.log(res);
+                         /*alert(res)*/;
+                    },
+                    error: function(error) {
+                        console.log(error.readyState, error.statusText);
+                    }
                 });
             }else{
                 alert("手机号码不能为空！");
@@ -39,20 +48,19 @@
         function SetRemainTime() {
             if (curCount == 0) {
                 window.clearInterval(InterValObj);//停止计时器
-                $("#btnSendCode").removeAttr("disabled");//启用按钮
-                $("#btnSendCode").val("重新发送验证码");
-                code = ""; //清除验证码。如果不清除，过时间后，输入收到的验证码依然有效
+                $(".validCodeBtn").removeClass("weui-btn_disabled");//启用按钮
+                $(".validCodeBtn").val("重新发送验证码");
             }
             else {
                 curCount--;
-                $("#btnSendCode").val("请在" + curCount + "秒内输入验证码");
+                $(".validCodeBtn").val("请在" + curCount + "秒内输入验证码");
             }
         }
     </script>
 </head>
 <body>
 <form>
-    <div>
+    <!--<div>
         <font color="red">*</font>手机号码：
     </div>
     <div>
@@ -60,10 +68,15 @@
     </div>
     <div>
         <font color="red">*</font>验证码：
-    </div>
+    </div>-->
     <div>
-        <input type="text" id="checkCode" name="checkCode" size="6"/>
-        <input id="btnSendCode" type="button" value="发送验证码" onclick="sendMessage()" />
+        <!--<input type="text" id="checkCode" name="checkCode" size="6"/>
+        <input id="btnSendCode" type="button" value="发送验证码" onclick="sendMessage()" />-->
+
+        <input id="phoneNum" type="tel" name="phoneNum" value="" maxlength="12" placeholder="请输入手机号码" >
+        <input id="signCode" type="number" name="signCode" value="" placeholder="请输入验证码" >
+        <input id="openid" type="hidden" value="{{ openid }}" name="openid">
+        <input type="button"  class="weui-btn weui-btn_primary weui-btn_mini validCodeBtn" onclick="sendMessage()" value="获取验证码" />
     </div>
 </form>
 </body>
