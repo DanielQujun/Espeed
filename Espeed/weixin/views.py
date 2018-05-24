@@ -17,6 +17,11 @@ from weixin.functions import *
 from weixin.models import *
 from django.core.paginator import Paginator
 from wx_pay import WxPay, WxPayError
+from aliyunsdkcore.client import AcsClient
+import uuid
+from aliyunsdkcore.profile import region_provider
+from aliyunsdkdysmsapi.request.v20170525 import SendSmsRequest
+
 
 def index(request):
     callbackurl = "/register"
@@ -130,6 +135,8 @@ def create_menu(request):
 def register(request):
     if request.method == 'GET':
         data = {}
+        if request.GET.get('verify_code_wrong'):
+            data['verify_code_wrong'] = request.GET.get('verify_code_wrong')
         data['openid'] = request.GET.get('openid')
         return render(request, 'login.html', data)
 
@@ -139,30 +146,34 @@ def register(request):
         openid = request.POST.get('openid')
         phonenum = request.POST.get('phoneNum')
         veirycode = request.POST.get('signCode')
+        if veirycode == request.session['verify_code'] and time.time() - request.session.get('verify_code_time') < 300:
+            if phonenum and openid:
 
-        if veirycode and phonenum and openid:
-
-            user = User.objects.create_user(
-                username=openid,
-                password='snsapi_userinfo'
-            )
-            # 默认未激活状态，用来判断是否是已经通过认证的学员
-            user.is_active = False
-            user.save()
-            profile = UserProfileBase(
-                fromUser=user,
-                phonenum=phonenum,
-                openId=openid,
-                createTime=dt.now(),
-                last_login=dt.now(),
-            )
-            profile.save()
-            callbackurl = "/role/?openid={openid}".format(openid=openid)
-            return HttpResponseRedirect(callbackurl)
+                user = User.objects.create_user(
+                    username=openid,
+                    password='snsapi_userinfo'
+                )
+                # 默认未激活状态，用来判断是否是已经通过认证的学员
+                user.is_active = False
+                user.save()
+                profile = UserProfileBase(
+                    fromUser=user,
+                    phonenum=phonenum,
+                    openId=openid,
+                    createTime=dt.now(),
+                    last_login=dt.now(),
+                )
+                profile.save()
+                callbackurl = "/role/?openid={openid}".format(openid=openid)
+                return HttpResponseRedirect(callbackurl)
+            else:
+                print 'qujun:信息不全！！'
+                callbackurl = "/register/?openid={openid}".format(openid=openid)
+                return HttpResponseRedirect(callbackurl)
         else:
-            print 'qujun:信息不全！！'
-            callbackurl = "/register/?openid={openid}".format(openid=openid)
+            callbackurl = "/register/?openid={openid}&verify_code_wrong='verify_code_wrong".format(openid=openid)
             return HttpResponseRedirect(callbackurl)
+
 
 
 
@@ -527,3 +538,61 @@ def dail(request):
     phone_num = UserProfileBase.objects.filter(openId=User_view_pay.user_visible).first().phonenum
 
     return render(request, 'dail.html', {'phone_num': phone_num})
+
+def verify_code(request):
+    phoneNum = request.POST.get('phoneNum')
+    __business_id = uuid.uuid1()
+    REGION = "cn-hangzhou"
+    PRODUCT_NAME = "Dysmsapi"
+    DOMAIN = "dysmsapi.aliyuncs.com"
+
+    if request.META.has_key('HTTP_X_FORWARDED_FOR'):
+        ip = request.META['HTTP_X_FORWARDED_FOR']
+    else:
+        ip = request.META['REMOTE_ADDR']
+    request_time = time.time()
+
+    ip_request_times = len(verify_code_request.objects.filter(request_ip=ip))
+    if ip_request_times > 10:
+        print "evoke spm control"
+        str_return = {"Message":"TOO_MANY","RequestId":"3D9745E3-5E87-4B7D-9A7A-EC89C66DBA73","Code":"TOO_MANY"}
+        return HttpResponse(str_return)
+    verify_request = verify_code_request(request_ip=ip, request_phonenum=phoneNum, request_time=request_time)
+    verify_request.save()
+    acs_client = AcsClient(SMS_ACCESS_KEY_ID, SMS_ACCESS_KEY_SECRET, REGION)
+    region_provider.add_endpoint(PRODUCT_NAME, REGION, DOMAIN)
+
+    def send_sms(business_id, phone_numbers, sign_name, template_code, template_param=None):
+        smsRequest = SendSmsRequest.SendSmsRequest()
+        # 申请的短信模板编码,必填
+        smsRequest.set_TemplateCode(template_code)
+
+        # 短信模板变量参数
+        if template_param is not None:
+            smsRequest.set_TemplateParam(template_param)
+
+        # 设置业务请求流水号，必填。
+        smsRequest.set_OutId(business_id)
+
+        # 短信签名
+        smsRequest.set_SignName(sign_name)
+
+        # 数据提交方式
+        # smsRequest.set_method(MT.POST)
+
+        # 数据提交格式
+        # smsRequest.set_accept_format(FT.JSON)
+
+        # 短信发送的号码列表，必填。
+        smsRequest.set_PhoneNumbers(phone_numbers)
+
+        # 调用短信发送接口，返回json
+        smsResponse = acs_client.do_action_with_exception(smsRequest)
+
+        return smsResponse
+    code = random.randint(1000,9999)
+    request.session['verify_code'] = str(code)
+    request.session['verify_code_time'] = request_time
+    params = "{\"code\":\"%s\"}"%(code)
+    print send_sms(__business_id, phoneNum, "E我速工", "SMS_135675002", params)
+    return HttpResponse(send_sms(__business_id, phoneNum, "E我速工", "SMS_135675002", params))
