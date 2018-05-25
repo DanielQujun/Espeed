@@ -555,7 +555,7 @@ def verify_code(request):
     ip_request_times = len(verify_code_request.objects.filter(request_ip=ip))
     if ip_request_times > 10:
         print "evoke spm control"
-        str_return = {"Message":"TOO_MANY","RequestId":"3D9745E3-5E87-4B7D-9A7A-EC89C66DBA73","Code":"TOO_MANY"}
+        str_return = {"success":"false","Code":"TOO_MANY"}
         return HttpResponse(str_return)
     verify_request = verify_code_request(request_ip=ip, request_phonenum=phoneNum, request_time=request_time)
     verify_request.save()
@@ -590,9 +590,14 @@ def verify_code(request):
         smsResponse = acs_client.do_action_with_exception(smsRequest)
 
         return smsResponse
-    code = random.randint(1000,9999)
-    request.session['verify_code'] = str(code)
-    request.session['verify_code_time'] = request_time
+    code = random.randint(1000, 9999)
+
     params = "{\"code\":\"%s\"}"%(code)
-    print send_sms(__business_id, phoneNum, "E我速工", "SMS_135675002", params)
-    return HttpResponse(send_sms(__business_id, phoneNum, "E我速工", "SMS_135675002", params))
+    sms_return_string = send_sms(__business_id, phoneNum, "E我速工", "SMS_135675002", params)
+    sms_return_dic = json.loads(sms_return_string)
+    if sms_return_dic['Code'] == 'OK':
+        request.session['verify_code'] = str(code)
+        request.session['verify_code_time'] = request_time
+        return HttpResponse({"success":"true","Code":0})
+    else:
+        return HttpResponse({"success": "false", "Code": sms_return_dic['Code']})
