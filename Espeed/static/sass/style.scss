@@ -63,7 +63,7 @@ footer {
   background: #3493eb;
 
 
-  a:first-child button {
+  button:nth-child(1) {
     border-right: 1px solid rgba(100,100,100,.2);
   }
   button {
@@ -77,7 +77,7 @@ footer {
   }
 
   .smallBtn {
-    width: 49%;
+    width: 50%;
     background: #3493eb;
     color: #fff;
     font-size: 18px;
