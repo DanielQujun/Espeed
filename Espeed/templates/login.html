@@ -7,13 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
     <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
-    <link rel="stylesheet" href="../static/css/weui.css">
-    <link rel="stylesheet" href="../static/css/jquery-weui.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
     <link rel="stylesheet" href="../static/css/style.css">
-    <style>
-        /* 部分冲突样式修正 */
-
-    </style>
 </head>
 
 <body>
@@ -24,34 +20,30 @@
         <form action="/register/" method="post" id="loginForm">
             <div class="registerBox">
                 <h4>Hi,欢迎登陆</h4>
-                <p id="errorMsg"></p>
                 <div class="phoneBox">
-                    <input id="phoneNum" type="tel" name="phoneNum" value="" maxlength="12" placeholder="请输入手机号码" >
+                    <input id="phoneNum" type="number" name="phoneNum" onkeyup="checkPhoneNum(this)" value="" placeholder="请输入手机号码" >
                 </div>
                 <div class="codeBox">
-                    <input id="signCode" type="number" name="signCode" value="" placeholder="请输入验证码" >
+                    <input id="signCode" type="number" onkeyup="checksignCode(this)" name="signCode" value="" placeholder="请输入验证码" >
                     <input id="openid" type="hidden" value="{{ openid }}" name="openid">
-                    <a href="javascript:;" class="weui-btn weui-btn_primary weui-btn_mini canSend validCodeBtn">获取验证码</a>
+                    <input type="button"  class="weui-btn weui-btn_primary weui-btn_mini validCodeBtn" onclick="sendMessage()" value="获取验证码" />
                 </div>
             </div>
-            <p> {{ verify_code_wrong }}</p>
+            <p id="tips"></p>
             <div class="submitBox">
                 <button type="submit" id="loginBtn" class="weui-btn weui-btn_primary">登录</button>
-                <p class="tips">未注册的手机号登录时将自动注册且<br/>代表您已同意
+                <p class="info">未注册的手机号登录时将自动注册且<br/>代表您已同意
                     <a id="policy" href="javascript:;">用户协议</a>
                 </p>
             </div>
-
         </form>
     </section>
 </div>
 
-<script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
 <script type="text/javascript" src="../static/lib/jquerySession.js"></script>
-<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
-<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
-<script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
-<script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
+<script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
 <script>
 
     $(function () {
@@ -62,89 +54,95 @@
             var $policyTxt = "用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容用户协议内容";
             $.alert($policyTxt, "用户协议");
         })
-
     });
 
-    $().ready(function() {
-        $("#loginForm").validate({
-            errorPlacement: function(error, element) {
-                $( element )
-                    .closest( "form" )
-                    .find( "#errorMsg" )
-                    .append( error ).delay(2000).slideUp(1000);
-            },
-            errorElement: "span",
-            rules: {
-                phoneNum: {
-                    required: true
-                },
-                signCode: {
-                    required: true
-                }
-            },
-            messages: {
-                phoneNum: {
-                    required: "请输入您的手机号",
-                    maxlength: "请输入正确的手机号"
-                },
-                signCode: {
-                    required: "请输入验证码",
-                    maxlength: "请输入正确的验证码"
-                }
-            }
-        });
-    });
+    //注册验证
+    var loginBtn = document.getElementById("loginBtn");
+    var tips = document.getElementById("tips");
+    loginBtn.onclick = function () {
+        var phoneVal = document.getElementById('phoneNum').value;
+        var signCodeVal = document.getElementById('signCode').value;
+        if(phoneVal == "" ){
+            tips.innerHTML = "请输入手机号";
+            return false;
+        }
+        if(signCodeVal == ""){
+            tips.innerHTML = "请输入验证码";
+            return false;
+        }
+    };
 
+    //字数验证
+    function checkPhoneNum(obj) {
+        tips.innerHTML = "";
+        var phoneNum = obj.value;
+        if(phoneNum.length > 11){
+            obj.value = phoneNum.slice(0,11);
+            tips.innerHTML = "只能输入11位手机号";
+        }
+    }
+    function checksignCode(obj) {
+        tips.innerHTML = "";
+        var phoneNum = obj.value;
+        if(phoneNum.length > 4){
+            obj.value = phoneNum.slice(0,4);
+            tips.innerHTML = "只能输入11位手机号";
+        }
+    }
 
-    //获取短信验证码
-    $(function(){
-
-        $(".validCodeBtn.canSend").click (function () {
-            var $port = "/verify_code/";             /*/verify_code/*/
+    //获取验证码
+    var InterValObj; //timer变量，控制时间
+    var count = 60; //间隔函数，1秒执行
+    var curCount;//当前剩余秒数
+    function sendMessage() {
+        window.clearInterval(InterValObj);//停止计时器
+        curCount = count;
+        var phoneNum=$("#phoneNum").val();//手机号码
+        if(phoneNum != ""){
+            //设置button效果，开始计时
+            $(".validCodeBtn").attr("disabled", "true");
+            $(".validCodeBtn").removeClass("weui-btn_primary");
+            $(".validCodeBtn").val(curCount + "秒后重新获取");
+            InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
+            //向后台发送处理数据
             $.ajax({
                 async: true,
-                url: $port,
+                url: '/verify_code/',
                 dataType: "json",
                 type: "post",
                 data: {
-                  openId: $("#openid").val(),
-//                    openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                    openId: $("#openid").val(),
+//                  openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                     phoneNum:$("#phoneNum").val()
                 },
                 success: function (res) {
-                    console.log(res);
-                   alert(res);
+                    var res = {"Message":"123465invalid mobile number","RequestId":"3D9745E3-5E87-4B7D-9A7A-EC89C66DBA73","Code":"isv.MOBILE_NUMBER_ILLEGAL"}
+                    if(res.Code = "isv.MOBILE_NUMBER_ILLEGAL") {
+                        tips.innerHTML = "您输入的手机号有误";
+                    }
                 },
                 error: function(error) {
                     console.log(error.readyState, error.statusText);
                 }
             });
-            /*var validCode=true;
-            var time=60;
-            var code=$(this);
-            $port = "";
-            console.log($port);
-            if (validCode) {
-                validCode=false;
-                code.removeClass('canSend');
-                code.addClass("weui-btn_disabled");
-                var t=setInterval(function () {
-                    time--;
+        }else{
+            tips.innerHTML = "手机号码不能为空！";
+        }
+    }
 
-                    code.html(time+"秒后重新获取");
-                    if (time==0) {
-                        clearInterval(t);
-                        code.html("重新获取");
-                        validCode=true;
-                        code.addClass("canSend");
-                        code.removeClass("weui-btn_disabled");
-                        $port = "workerList.json";
-                    }
-                },1000)
-            }*/
-        })
-    })
+    //倒计时timer处理函数
+    function SetRemainTime() {
+        if (curCount == 0) {
+            window.clearInterval(InterValObj);//停止计时器
+            $(".validCodeBtn").removeAttr("disabled");//启用按钮
+            $(".validCodeBtn").addClass("weui-btn_primary");
+            $(".validCodeBtn").val("重新获取验证码");
+        }
+        else {
+            curCount--;
+            $(".validCodeBtn").val(curCount + "秒后重新获取");
+        }
+    }
 </script>
 </body>
-
 </html>

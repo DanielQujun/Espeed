@@ -17,7 +17,7 @@
             var phoneNum=$("#phoneNum").val();//手机号码
             if(phoneNum != ""){
                 //设置button效果，开始计时
-                $(".validCodeBtn").addClass("weui-btn_disabled");
+                $(".validCodeBtn").attr("disabled", "true");
                 $(".validCodeBtn").val("请在" + curCount + "秒内输入验证码");
 //                debugger;
                 InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
@@ -48,7 +48,7 @@
         function SetRemainTime() {
             if (curCount == 0) {
                 window.clearInterval(InterValObj);//停止计时器
-                $(".validCodeBtn").removeClass("weui-btn_disabled");//启用按钮
+                $(".validCodeBtn").removeAttr("disabled");//启用按钮
                 $(".validCodeBtn").val("重新发送验证码");
             }
             else {
