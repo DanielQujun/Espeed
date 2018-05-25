@@ -28,7 +28,7 @@ def Distance(lat1,lng1,lat2,lng2):# 第二种计算方法
     b=radians(lng1)-radians(lng2)
     s=2*asin(sqrt(pow(sin(a/2),2)+cos(radlat1)*cos(radlat2)*pow(sin(b/2),2)))
     earth_radius=6378.137
-    s=s*earth_radius
+    s=s*earth_radius*1000
     if s<0:
         return -s
     else:

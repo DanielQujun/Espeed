@@ -111,7 +111,7 @@ jobs_cates = [
 ]
 jobs_cates_samp = [i.get('title') for i in jobs_cates]
 
-def gen_user(openid,phonenum,username,nickname,sex,jobs,Location_lati,Location_longi,Score):
+def gen_user(openid,phonenum,username,nickname,sex,jobs,role,Location_lati,Location_longi,Score):
     user = User.objects.create_user(
         username=openid,
         password='snsapi_userinfo'
@@ -133,6 +133,7 @@ def gen_user(openid,phonenum,username,nickname,sex,jobs,Location_lati,Location_l
         country = '中国',
         avatarAddr = 'http://thirdwx.qlogo.cn/mmopen/luLgB8lHE8VTeMkWypTMyoeCPaiclGtCx3lGrURWKmRkMHFcBEWAyhfGY2Ut0Qlm1KUiciaiarenVibiakEQz5vmvy1yP56P4lEzto/132',
         Jobs = jobs,
+        Role = role,
         Location_lati = Location_lati,
         Location_longi = Location_longi,
         Score = Score,
@@ -260,7 +261,9 @@ if __name__ == '__main__':
         phonenum = random.choice(['139','188','185','136','158','151'])+"".join(random.choice("0123456789") for i in range(8))
         sex = random.choice(['1','2'])
         jobs = set(random.sample(jobs_cates_samp, 2))
+        role = random.choice([1,2])
         Location_lati = '28.1{i}027215073601'.format(i=i)
         Location_longi = '112.9{i}513532428318'.format(i=i)
         Score = random.choice([1,2,3,4,5])
-        gen_user(openid, phonenum, username, nickname, sex, jobs, Location_lati, Location_longi,Score)
+        gen_user(openid, phonenum, username, nickname, sex, jobs,role, Location_lati, Location_longi,Score)
+    #print Distance('22.925574625328796','113.27683018769442','28.151706861629958','112.9853043363359')

@@ -175,8 +175,6 @@ def register(request):
             return HttpResponseRedirect(callbackurl)
 
 
-
-
 def chose_role(request):
     if request.method == 'GET':
         data = {}
@@ -233,7 +231,6 @@ def input_name(request):
             return "bad post data"
 
 
-
 def chose_job_cate(request):
     if request.method == 'GET':
         data = {}
@@ -249,7 +246,6 @@ def chose_job_cate(request):
         data['signature'] = hashlib.sha1(jsapi_string).hexdigest()
 
         data['jobList'] = []
-
 
         jobcates = Jobcates.objects.all()
         for jobcate in jobcates:
@@ -310,7 +306,6 @@ def wokers_or_jobs_list(request):
     if code:
         url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' + WEIXIN_APPID + \
             '&secret=' + WEIXIN_APPSECRET + '&code=' + code + '&grant_type=authorization_code'
-        print url
         resp, content = my_get(url)
         user_dict = parse_Json2Dict(content)
         print user_dict
@@ -323,13 +318,8 @@ def wokers_or_jobs_list(request):
         print user_dict['openid']
         user = UserProfileBase.objects.filter(openId=user_dict['openid']).first()
         if user is not None:
-            print "user name is : "
             # 用户存在，判断用户是否是认证用户
             if user.fromUser.is_active:
-                # 登录用户，其他任何途径都无法登录用户，后面使用装饰器验证用户是否登录来防止一些页面被用户直接访问
-
-                # 取用户信息
-
                 if user.phonenum:
                     if user.online:
                         print "qujun: User is  Online!"
@@ -339,19 +329,18 @@ def wokers_or_jobs_list(request):
                         print "qujun: User is Not Online!"
                         callbackurl = "/jobs/?openid={openid}".format(openid=user.openId)
                         return HttpResponseRedirect(callbackurl)
-
-
                 else:
                     return HttpResponseRedirect('/register/')
 
-            else:
+            elif not user.role:
                 # 修改前台用来显示的文字
-                showUrl = HOME_URL
-                showText = "审核中，请等待..."
-                print "qujun:审核中！！！"
-                return HttpResponse(showText)
-        else:
+                callbackurl = "/role/?openid={openid}".format(openid=openid)
+                return HttpResponseRedirect(callbackurl)
+            elif not user.userName:
+                callbackurl = "/baseProfile/?openid={openid}".format(openid=openid)
+                return HttpResponseRedirect(callbackurl)
 
+        else:
             callbackurl = "/register/?openid={openid}".format(openid=user_dict['openid'])
             return HttpResponseRedirect(callbackurl)
     else:
@@ -388,13 +377,11 @@ def worklist_ajax(request):
         payed_list = [payed_user.user_visible for payed_user in UserVisible.objects.filter(user_payed=openid)]
         print openid
         print "qujun debug views line 378!!! for payed_list"
-        print payed_list
 
         work_objects_db = []
         for tag in tag_set:
-            workers = UserProfileBase.objects.filter(Jobs__contains=tag)
+            workers = UserProfileBase.objects.exclude(role=user.role).filter(Jobs__contains=tag)
             for worker in workers:
-                print worker.openId
                 worker_dic = {}
                 worker_dic['userid'] = worker.id
                 worker_dic['username'] = worker.userName
@@ -407,14 +394,18 @@ def worklist_ajax(request):
                 #                                 else False
                 worker_dic['isVisible'] = True if worker.openId in payed_list else False
                 worker_dic['isRateble'] = worker_dic['isVisible']
-                worker_dic['phoneNum'] = worker.phonenum
+                worker_dic['phoneNum'] = worker.phonenum if worker_dic['isVisible'] else "123456789123"
                 worker_dic['portraitUrl'] = worker.avatarAddr
                 work_objects_db.append(worker_dic)
         # print work_objects_db
+        if sortByDis == 'true':
+            work_objects_db = sorted(work_objects_db, key=lambda woker: worker.get('distance'))
+        elif sortByPubTime == 'true':
+            work_objects_db = sorted(work_objects_db, key=lambda woker: worker.get('pubTime'))
         work_objects = work_objects_db
         p = Paginator(work_objects, 10)  # 3条数据为一页，实例化分页对象
         #print p.count  # 10 对象总共10个元素
-        #print p.num_pages  # 4 对象可分4页
+        print p.num_pages  # 4 对象可分4页
         #print p.page_range  # xrange(1, 5) 对象页的可迭代范围
 
         page_object = p.page(page)  # 取对象的第一分页对象
@@ -571,22 +562,12 @@ def verify_code(request):
         if template_param is not None:
             smsRequest.set_TemplateParam(template_param)
 
-        # 设置业务请求流水号，必填。
         smsRequest.set_OutId(business_id)
 
-        # 短信签名
         smsRequest.set_SignName(sign_name)
 
-        # 数据提交方式
-        # smsRequest.set_method(MT.POST)
-
-        # 数据提交格式
-        # smsRequest.set_accept_format(FT.JSON)
-
-        # 短信发送的号码列表，必填。
         smsRequest.set_PhoneNumbers(phone_numbers)
 
-        # 调用短信发送接口，返回json
         smsResponse = acs_client.do_action_with_exception(smsRequest)
 
         return smsResponse
@@ -594,6 +575,7 @@ def verify_code(request):
 
     params = "{\"code\":\"%s\"}"%(code)
     sms_return_string = send_sms(__business_id, phoneNum, "E我速工", "SMS_135675002", params)
+    print sms_return_string
     sms_return_dic = json.loads(sms_return_string)
     if sms_return_dic['Code'] == 'OK':
         request.session['verify_code'] = str(code)
