@@ -47,8 +47,8 @@
         <a href="javascript:;">
             <button class="bigBtn cancel"><i class="iconfont icon-quxiao"></i>取消发布</button>
         </a>
-        <a href="javascript:;" onclick="goUrl('userCenter')">
-            <button class="smallBtn"><i class="iconfont icon-wode"></i>个人中心</button>
+        <a href="javascript:;" >
+            <button class="smallBtn" onclick="goUrl(userCenter)" ><i class="iconfont icon-wode"></i>个人中心</button>
         </a>
     </footer>
 </div>
@@ -268,7 +268,7 @@
     //加载对应页码数据
     function loadData(page) {
         $.ajax({
-            url: "",
+            url: "/worklist_ajax/",
             dataType: "json",
             type: "post",
             data: {

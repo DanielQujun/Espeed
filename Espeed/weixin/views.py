@@ -380,7 +380,7 @@ def worklist_ajax(request):
 
         work_objects_db = []
         for tag in tag_set:
-            workers = UserProfileBase.objects.exclude(role=user.role).filter(Jobs__contains=tag)
+            workers = UserProfileBase.objects.exclude(Role=user.Role).filter(Jobs__contains=tag)
             for worker in workers:
                 worker_dic = {}
                 worker_dic['userid'] = worker.id
@@ -399,9 +399,9 @@ def worklist_ajax(request):
                 work_objects_db.append(worker_dic)
         # print work_objects_db
         if sortByDis == 'true':
-            work_objects_db = sorted(work_objects_db, key=lambda woker: worker.get('distance'))
+            work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['distance'])
         elif sortByPubTime == 'true':
-            work_objects_db = sorted(work_objects_db, key=lambda woker: worker.get('pubTime'))
+            work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['pubTime'])
         work_objects = work_objects_db
         p = Paginator(work_objects, 10)  # 3条数据为一页，实例化分页对象
         #print p.count  # 10 对象总共10个元素
