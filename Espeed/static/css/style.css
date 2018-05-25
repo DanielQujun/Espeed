@@ -57,7 +57,7 @@ footer {
           box-sizing: border-box;
   font-size: 0;
   background: #3493eb; }
-  footer a:first-child button {
+  footer button:nth-child(1) {
     border-right: 1px solid rgba(100, 100, 100, 0.2); }
   footer button {
     outline: none;
@@ -69,7 +69,7 @@ footer {
     font-size: 15px;
     background: #fff; }
   footer .smallBtn {
-    width: 49%;
+    width: 50%;
     background: #3493eb;
     color: #fff;
     font-size: 18px;
