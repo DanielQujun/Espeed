@@ -6,9 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
     <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
-    <link rel="stylesheet" href="../static/css/weui.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
     <link rel="stylesheet" href="../static/iconfont/iconfont.css">
-    <link rel="stylesheet" href="../static/css/jquery-weui.css">
     <link rel="stylesheet" href="../static/css/style.css">
 </head>
 
@@ -24,7 +24,7 @@
             <div class="jobs_bd flex" id="inputsParent">
             </div>
         </div>
-
+        <input type="hidden" id="jobList" value="{{ jobList|safe }}">
     </section>
 
     <!-- 底部 -->
@@ -41,21 +41,17 @@
     </footer>
 </div>
 
-<script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
 <script type="text/javascript" src="../static/lib/jquerySession.js"></script>
-<script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>        <!-- 为将来做拓展，引入Jquery weui -->
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>        <!-- 引入微信js sdk -->
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BVbS3AVAs8iNor6NGxKfc1gG5OcqTxBu"></script>
 <script type="text/javascript" src="../static/js/utility.js"></script>
-<!-- 百度地图api -->
 <script type="text/javascript" src="../static/lib/fastclick.js"></script>            <!-- 解决点击屏幕延迟，需要测试是否有效，无效再删除 -->
 <script>
 
     $(function () {
         FastClick.attach(document.body);
-
-        //方便调试
-
 
         //调用微信sdk配置
         wx.config({
@@ -88,7 +84,8 @@
         });
 
         //工种数据
-        var $jobList ={{ jobList|safe }};
+//        var $jobList =$("#jobList").val();
+        var $jobList =$("#jobList").val();
 
 
         //渲染工种按钮

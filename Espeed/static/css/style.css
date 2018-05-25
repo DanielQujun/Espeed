@@ -20,6 +20,20 @@ body {
   content: '';
   clear: both; }
 
+.weui-btn_primary {
+  background-color: #3493eb; }
+
+.weui-btn_primary:not(.weui-btn_disabled):active {
+  color: rgba(255, 255, 255, 0.6);
+  background-color: #3284d1; }
+
+.weui-btn_success {
+  background-color: #1aad19; }
+
+.weui-btn_success:not(.weui-btn_disabled):active {
+  color: rgba(255, 255, 255, 0.6);
+  background-color: #149213; }
+
 .weui-dialog__hd {
   padding: 0.5em 1.6em 0.5em; }
 
@@ -39,7 +53,6 @@ footer {
   height: 52px;
   left: 0;
   bottom: 0;
-  padding: 0 12px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   font-size: 0;
@@ -63,14 +76,19 @@ footer {
     line-height: 52px; }
     footer .smallBtn .iconfont {
       font-size: 18px; }
+  footer .smallBtn:active {
+    background: #3284d1; }
   footer .bigBtn {
     width: 49%;
     background: #3493eb;
     color: #fff;
     font-size: 18px;
+    background: #333;
     line-height: 52px; }
     footer .bigBtn .iconfont {
       font-size: 18px; }
+  footer .bigBtn:active {
+    background: #3284d1; }
   footer .iconfont {
     margin: 0 4px; }
   footer .publish {
@@ -123,9 +141,6 @@ footer {
       padding-top: 1.17rem;
       color: #fff;
       font-size: 48px; }
-    .login .main #errorMsg {
-      font-size: 12px;
-      color: red; }
     .login .main .registerBox {
       width: 86%;
       background: #fff;
@@ -141,14 +156,13 @@ footer {
       .login .main .registerBox .phoneBox, .login .main .registerBox .codeBox {
         width: 90%;
         margin: 0 auto;
-        height: 60px;
         text-align: left;
         -webkit-box-sizing: border-box;
                 box-sizing: border-box;
-        padding: 12px 0; }
+        padding: 7px 0; }
       .login .main .registerBox .phoneBox {
         border-bottom: 1px solid #e0e0e0; }
-        .login .main .registerBox .phoneBox input[type="tel"] {
+        .login .main .registerBox .phoneBox input[type="number"] {
           outline: none;
           border: none;
           height: 35px;
@@ -170,15 +184,20 @@ footer {
         .login .main .registerBox .codeBox input[type="button"]:active {
           background: #3284d1;
           color: #fff; }
+    .login .main #tips {
+      margin: 10px 0;
+      font-size: 12px;
+      color: red;
+      text-align: center; }
     .login .main .submitBox {
       margin: .6rem auto;
       width: 86%; }
-      .login .main .submitBox .tips {
+      .login .main .submitBox .info {
         margin-top: 15px;
         font-size: 13px;
         line-height: 1.5em;
         color: #9f9f9f; }
-        .login .main .submitBox .tips a {
+        .login .main .submitBox .info a {
           color: #3493eb;
           text-decoration: underline; }
 
@@ -608,12 +627,6 @@ footer {
           color: #fff;
           width: 140px;
           height: 37px; }
-        .history .main .listItem .infoBox .stop {
-          background: url(../images/stop_bg.png) no-repeat top right;
-          background-size: contain; }
-        .history .main .listItem .infoBox .offline {
-          background: url(../images/offline_bg.png) no-repeat top right;
-          background-size: contain; }
 
 /* 历史查看结束 */
 /* 交易记录开始 */

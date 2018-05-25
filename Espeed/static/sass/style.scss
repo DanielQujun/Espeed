@@ -21,6 +21,20 @@ body {
   content: '';
   clear: both;
 }
+.weui-btn_primary {
+  background-color: #3493eb;
+}
+.weui-btn_primary:not(.weui-btn_disabled):active {
+  color: hsla(0,0%,100%,.6);
+  background-color: #3284d1;
+}
+.weui-btn_success {
+  background-color: #1aad19;
+}
+.weui-btn_success:not(.weui-btn_disabled):active {
+  color: hsla(0,0%,100%,.6);
+  background-color: #149213;
+}
 .weui-dialog__hd {
   padding:.5em 1.6em 0.5em
 }
@@ -44,7 +58,6 @@ footer {
   height: 52px;
   left: 0;
   bottom: 0;
-  padding: 0 12px;
   box-sizing: border-box;
   font-size: 0;
   background: #3493eb;
@@ -75,16 +88,24 @@ footer {
     }
 
   }
+  .smallBtn:active {
+    background: #3284d1;
+  }
+
   .bigBtn {
     width: 49%;
     background: #3493eb;
     color: #fff;
     font-size: 18px;
+    background: #333;
     line-height:52px;
 
     .iconfont {
       font-size: 18px;
     }
+  }
+  .bigBtn:active {
+    background: #3284d1;
   }
   .iconfont {
     margin: 0 4px;
@@ -149,10 +170,7 @@ footer {
         font-size: 48px;
       }
 
-    #errorMsg {
-      font-size: 12px;
-      color: red;
-    }
+
       .registerBox {
           width: 86%;
           background: #fff;
@@ -170,15 +188,14 @@ footer {
           .phoneBox,.codeBox {
             width: 90%;
             margin: 0 auto;
-            height: 60px;
             text-align: left;
             box-sizing: border-box;
-            padding: 12px 0;
+            padding: 7px 0;
           }
           .phoneBox {
             border-bottom: 1px solid #e0e0e0;
 
-            input[type="tel"] {
+            input[type="number"] {
               outline: none;
               border: none;
               height: 35px;
@@ -212,11 +229,18 @@ footer {
           }
         }
 
+        #tips {
+          margin: 10px 0;
+          font-size: 12px;
+          color: red;
+          text-align: center;
+        }
+
         .submitBox {
           margin: .6rem auto;
           width: 86%;
           
-          .tips {
+          .info {
             margin-top: 15px;
             font-size: 13px;
             line-height: 1.5em;
@@ -764,14 +788,6 @@ footer {
           width: 140px;
           height: 37px;
           
-        }
-        .stop {
-          background: url(../images/stop_bg.png) no-repeat top right;
-          background-size: contain;
-        }
-        .offline {
-          background: url(../images/offline_bg.png) no-repeat top right;
-          background-size: contain;
         }
       }
     }
