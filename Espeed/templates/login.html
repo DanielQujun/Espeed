@@ -112,9 +112,9 @@
                 type: "post",
                 data: {
                     openId: $("#openid").val(),
+//                  openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                     phoneNum:$("#phoneNum").val()
                 },
-                /* openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",*/
                 success: function (res) {
                     var res = {"Message":"123465invalid mobile number","RequestId":"3D9745E3-5E87-4B7D-9A7A-EC89C66DBA73","Code":"isv.MOBILE_NUMBER_ILLEGAL"}
                     if(res.Code = "isv.MOBILE_NUMBER_ILLEGAL") {

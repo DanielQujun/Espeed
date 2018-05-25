@@ -17,7 +17,6 @@
 <body>
 <div class="workerList">
     <!-- 头部 -->
-
     <header>
         <div class="weui-navbar">
             <div class="weui-navbar__item weui_bar__item_on"  id="distanceFilter">
@@ -51,8 +50,6 @@
         <a href="javascript:;" onclick="goUrl('userCenter')">
             <button class="smallBtn"><i class="iconfont icon-wode"></i>个人中心</button>
         </a>
-
-
     </footer>
 </div>
 
@@ -66,12 +63,11 @@
 <script>
     $(function () {
         FastClick.attach(document.body);
-
         //方便调试
 
         //调用微信sdk配置
         wx.config({
-//            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+//          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: "{{ appid }}", // 必填，企业号的唯一标识，此处填写企业号corpid
             timestamp: "{{timestamp}}", // 必填，生成签名的时间戳
             nonceStr: "{{ nonceStr }}", // 必填，生成签名的随机串
@@ -86,7 +82,6 @@
             $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
         });
 
-
         //初始化数据
         $.ajax({
             async: true,
@@ -95,7 +90,7 @@
             type: "post",
             data: {
                 openId: window.localStorage.getItem("openid"),
-//                 openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+//              openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                 sortByDis: true,
                 sortByPubTime:false,
                 page: 1
@@ -141,8 +136,8 @@
                 dataType: "json",
                 type: "post",
                 data: {
-                  openId: window.localStorage.getItem("openid"),
-//                     openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                    openId: window.localStorage.getItem("openid"),
+//                  openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                     sortByDis: true,
                     sortByPubTime:false,
                     page: 1
@@ -188,7 +183,6 @@
                         location.href = "/jobs/?openid="+window.localStorage.getItem("openid");
                     }
                 });
-
             }, function () {
                 //点击取消
                 return false;
