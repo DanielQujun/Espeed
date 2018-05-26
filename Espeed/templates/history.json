@@ -3,42 +3,42 @@
     {
       "userid": 1,
       "username": "刘黎波",
-      "tag":"jsdfkjsdkfj,jakdsjkfsjdkf",
+      "tag":["木工","瓦工"],
       "star": 4,
       "phoneNum": 18570607610,
       "portraitUrl": "../static/images/defaultHead.png"
     },{
       "userid": 2,
       "username": "刘玉石",
-      "tag":"jsdfkjsdkfj,jakdsjkfsjdkf",
+      "tag":["木工","瓦工"],
       "star": 2,
       "phoneNum": 15080755770,
       "portraitUrl": "../static/images/defaultHead.png"
     },{
       "userid": 3,
       "username": "刘玉石",
-      "tag":"jsdfkjsdkfj,jakdsjkfsjdkf",
+      "tag":["木工","瓦工"],
       "star": 2,
       "phoneNum": 15080755770,
       "portraitUrl": "../static/images/defaultHead.png"
     },{
       "userid": 4,
       "username": "刘玉石",
-      "tag":"jsdfkjsdkfj,jakdsjkfsjdkf",
+      "tag":["木工","瓦工"],
       "star": 2,
       "phoneNum": 15080755770,
       "portraitUrl": "../static/images/defaultHead.png"
     },{
       "userid": 5,
       "username": "刘玉石",
-      "tag":"jsdfkjsdkfj,jakdsjkfsjdkf",
+      "tag":["木工","瓦工"],
       "star": 2,
       "phoneNum": 15080755770,
       "portraitUrl": "../static/images/defaultHead.png"
     },{
       "userid": 6,
       "username": "刘黎波",
-      "tag":"jsdfkjsdkfj,jakdsjkfsjdkf",
+      "tag":["木工","瓦工"],
       "star": 4,
       "phoneNum": 18570607610,
       "portraitUrl": "../static/images/defaultHead.png"

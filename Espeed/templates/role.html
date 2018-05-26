@@ -10,10 +10,10 @@
   <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
   <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
   <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
-  <link rel="stylesheet" href="../static/css/style.css">
+  <link rel="stylesheet" href="../static/css/style201805260957.css">
 </head>
 
-<body>
+<body class="page">
   <div class="role page">
     <section class="main flex">
       <form action="/role/" method="post">
@@ -30,7 +30,7 @@
 
         </div>
         <input id="openid" type="hidden" value="{{ openid }}" name="openid">
-        <button class="weui-btn weui-btn_primary confirmBtn">确定</button>
+        <button type="submit" class="weui-btn weui-btn_primary confirmBtn">确定</button>
       </form>
     </section>
   </div>
@@ -42,6 +42,12 @@
   <script>
     $(function() {
         FastClick.attach(document.body);
+
+        $(".confirmBtn").click(function () {
+            var $roleVal = $('input[name="role"]:checked').val();
+            window.localStorage.setItem("role",$roleVal);
+        })
+
     });
   </script>
 </body>

@@ -11,10 +11,10 @@
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
     <link rel="stylesheet" href="../static/iconfont/iconfont.css">
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/style201805260957.css">
 </head>
 
-<body>
+<body class="page">
 <div class="workerList">
     <!-- 头部 -->
     <header>
@@ -44,12 +44,8 @@
         <!--<a href="javascript:;">
             <button class="smallBtn refresh"><i class="iconfont icon-shuaxin "></i></button>
         </a>-->
-        <a href="javascript:;">
-            <button class="bigBtn cancel"><i class="iconfont icon-quxiao"></i>取消发布</button>
-        </a>
-        <a href="javascript:;" >
-            <button class="smallBtn" onclick="goUrl(userCenter)" ><i class="iconfont icon-wode"></i>个人中心</button>
-        </a>
+        <button class="bigBtn cancel"><i class="iconfont icon-quxiao"></i>取消发布</button>
+        <button class="smallBtn" onclick="goUrl('userCenter')" ><i class="iconfont icon-wode"></i>个人中心</button>
     </footer>
 </div>
 
@@ -66,8 +62,8 @@
         //方便调试
 
         //调用微信sdk配置
-        wx.config({
-//          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        /*wx.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: "{{ appid }}", // 必填，企业号的唯一标识，此处填写企业号corpid
             timestamp: "{{timestamp}}", // 必填，生成签名的时间戳
             nonceStr: "{{ nonceStr }}", // 必填，生成签名的随机串
@@ -76,47 +72,33 @@
                 'getLocation',
                 'chooseWXPay'
             ]
-        });
+        });*/
         //通过error接口处理失败验证
         wx.error(function (res) {
             $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
         });
 
         //初始化数据
-        $.ajax({
-            async: true,
-            url: "/worklist_ajax/",           /* /worklist_ajax/*/
-            dataType: "json",
-            type: "post",
-            data: {
-                openId: window.localStorage.getItem("openid"),
-//              openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
-                sortByDis: true,
-                sortByPubTime:false,
-                page: 1
-            },
-            success: function (data) {
-                var $totalPage = data.totalPage;
-                var $currentPage = data.currentPage;
-                showData(data.listData);
+        var $totalPage = 10
+        var $currentPage = 1;
+        var $byDis = true;
+        var $byPubTime = true;
+        loadData($currentPage,$byDis,$byPubTime);
 
-                //上拉加载
-                var loading = false;  //状态标记
-                $(document.body).infinite().on("infinite", function() {
-                    if(loading) return;
-                    loading = true;
-                    $currentPage +=1;
-                    if($currentPage <= $totalPage ){
-                        loadData($currentPage);
-                    } else {
-                        $('.bottomTips').css("display","block");
-                    }
-                    loading = false;
-                });
-            },
-            error: function(error) {
-                console.log(error.readyState, error.statusText);
+        /* /worklist_ajax/*/
+
+        //上拉加载
+        var loading = false;  //状态标记
+        $(document.body).infinite().on("infinite", function() {
+            if(loading) return;
+            loading = true;
+            $currentPage +=1;
+            if($currentPage <= $totalPage ){
+                loadData($currentPage,$byDis,$byPubTime);
+            } else {
+                $('.bottomTips').css("display","block");
             }
+            loading = false;
         });
 
         // 加载数据时状态显示
@@ -128,46 +110,6 @@
             $(this).hide();
         });
 
-        $(".refresh").click(function () {
-            $(".refresh .icon-shuaxin").addClass("rotate");
-            $.ajax({
-                async: true,
-                url: "/worklist_ajax/",           /* /worklist_ajax/*/
-                dataType: "json",
-                type: "post",
-                data: {
-                    openId: window.localStorage.getItem("openid"),
-//                  openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
-                    sortByDis: true,
-                    sortByPubTime:false,
-                    page: 1
-                },
-                success: function (data) {
-                    $(".refresh .icon-shuaxin").removeClass("rotate");
-                    var $totalPage = data.totalPage;
-                    var $currentPage = data.currentPage;
-                    showData(data.listData);
-
-                    //上拉加载
-                    var loading = false;  //状态标记
-                    $(document.body).infinite().on("infinite", function() {
-                        if(loading) return;
-                        loading = true;
-                        $currentPage +=1;
-                        if($currentPage <= $totalPage ){
-                            loadData($currentPage);
-                        } else {
-                            $('.bottomTips').css("display","block");
-                        }
-                        loading = false;
-                    });
-                },
-                error: function(error) {
-                    console.log(error.readyState, error.statusText);
-                }
-            });
-        });
-
         //取消发布按钮弹窗
         $('.cancel').click(function () {
             $.confirm("取消后，您的信息将对其他人不可见", "确认取消", function () {
@@ -176,370 +118,270 @@
                     type: "post",
                     data: {
                         online: false,
-                        openid: window.localStorage.getItem("openid"),
+//                        openid: window.localStorage.getItem("openid"),                        //    todo:正式环境需要注释掉
+                        openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                         timestamp: $.now()
                     },
                     success: function () {
-                        location.href = "/jobs/?openid="+window.localStorage.getItem("openid");
+//                        location.href = "/jobs/?openid="+window.localStorage.getItem("openid");
+                        location.href = "/jobs/?openid=oT69X1PX1jG6Ojhij3tQVOGSnWzQ";           //    todo:正式环境需要注释掉
                     }
                 });
             }, function () {
-                //点击取消
                 return false;
             });
         });
 
         //距离排序
-        $(function () {
-            $("#distanceFilter").click(function () {
-                $("#distanceFilter .filterArrow").toggleClass('active');
-                $.ajax({
-                    url: "",
-                    type: "post",
-                    data: {
-                        openid: window.localStorage.getItem("openid"),
-                        sortByDis: true,
-                        sortByPubTime: false
-                        //(todo: 是否需要重新传选择的工种？？
-                    },
-                    success: function () {
-                        var $totalPage = data.totalPage;
-                        var $currentPage = data.currentPage;
-                        showData(data.listData);
-
-                        //上拉加载
-                        var loading = false;  //状态标记
-                        $(document.body).infinite().on("infinite", function() {
-                            if(loading) return;
-                            loading = true;
-                            $currentPage +=1;
-                            if($currentPage <= $totalPage ){
-                                loadData($currentPage);
-                            } else {
-                                $('.bottomTips').css("display","block");
-                            }
-                            loading = false;
-                        });
-                    }
-                });
-            });
-
+        $("#distanceFilter").click(function () {
+            $("#distanceFilter .filterArrow").toggleClass('active');
+            $byDis = !$byDis;
+            $(".listCon").html("");
+            loadData(1,$byDis,$byPubTime);
         });
+
         //时间排序
-        $(function () {
-            $("#pubTimeFilter").click(function () {
-                $("#pubTimeFilter .filterArrow").toggleClass('active');
-                $.ajax({
-                    url: "",
-                    type: "post",
-                    data: {
-                        openid: window.localStorage.getItem("openid"),
-                        sortByDis: false,
-                        sortByPubTime: true
-                    },
-                    success: function () {
-                        var $totalPage = data.totalPage;
-                        var $currentPage = data.currentPage;
-                        showData(data.listData);
+        $("#pubTimeFilter").click(function () {
+            $("#distanceFilter .filterArrow").toggleClass('active');
+            $byPubTime = !$byPubTime;
+            $(".listCon").html("");
+            loadData(1,$byDis,$byPubTime);
+        });
 
-                        //上拉加载
-                        var loading = false;  //状态标记
-                        $(document.body).infinite().on("infinite", function() {
-                            if(loading) return;
-                            loading = true;
-                            $currentPage +=1;
-                            if($currentPage <= $totalPage ){
-                                loadData($currentPage);
-                            } else {
-                                $('.bottomTips').css("display","block");
-                            }
-                            loading = false;
-                        });
-                    }
-                });
+
+        //加载对应页码数据
+        function loadData(page,byDis,byPubTime) {
+            console.log('请求的page页码数：'+ page );
+
+            $.ajax({
+                url: "workerList.json",                    /*/worklist_ajax/*/
+                dataType: "json",
+                type: "post",
+                data: {
+//              openid: window.localStorage.getItem("openid"),
+                openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                    sortByDis: byDis,
+                    sortByPubTime: byPubTime,
+                    page: page
+                },
+                success: function (data) {
+                    $totalPage = data.totalPage;
+                    console.log('请求后获得现在的totalPage:'+ $totalPage);
+                    $currentPage = data.currentPage;
+                    console.log('请求后现在的页码数'+ $currentPage);
+                    showData(data.listData);
+                },
+                error: function (error) {
+                    console.log(error.readyState, error.statusText);
+                }
+            });
+
+        }
+//    todo:正式环境需要注释掉
+        window.localStorage.setItem("role",1);
+
+        //渲染数据
+        function showData(data) {
+            var $role = window.localStorage.getItem("role");
+            var $tag = "";
+            $.each(data, function (key, val) {
+                //造tag标签
+                var $tagArr = val.tag;
+                if($role == 1){
+                    $tag = '<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
+                } else {
+                    $tag = '招聘 <span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
+                }
+
+                //拼大字符串
+                var str = "";
+                str += '<li class="listItem flex">' +
+                    '<div class="portraitBox">' +
+                    '<img src="' + val.portraitUrl + '" >' +
+                    '<p>' + val.username + '</p>' +
+                    '</div>' +
+                    '<div class="infoBox flex">' +
+                    '<div class="list_hd flex">' +
+                    '<div class="tagBox">'+ $tag +'</div>' +
+                    '<div class="star star' + val.star + '"></div>' +
+                    '</div>' +
+                    '<div class="list_bd flex">' +
+                    '<span class="distance">距您：' + formatDistance(val.distance) + '</span>' +
+                    '<p class="publishedTime">发布于：' + formatTime(val.pubTime) + '</p>' +
+                    '</div>' +
+                    '<div class="list_ft flex"><span class="userid">'+ val.userid + '</span>' +  isRateble(val.isVisible) + isVisible(val.isVisible, val.phoneNum) +
+                    '</div>' +
+                    '</div>' +
+                    '</li>';
+                $('.listCon').append(str);
 
             });
 
-        });
+            //是否可以评价
+            function isRateble(vis) {
+                return vis ? '<a href="#" class="rate weui-btn weui-btn_mini weui-btn_default">评价</a>' : "";
+            }
+
+            //是否可见
+            function isVisible(vis, val) {
+                return vis ? '<a href="tel:' + val + '"' + ' class="dial weui-btn weui-btn_mini weui-btn_success">' + val + '</a>' : '<a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>'
+            }
+
+            //距离格式化
+            function formatDistance(val) {
+                if (val > 1000) {
+                    return (val / 1000).toFixed(2) + ' km';
+                } else {
+                    return parseInt(val) + ' m';
+                }
+            }
+
+            //日期格式化
+            function formatTime(str) {
+                var oDate = new Date(str),
+                    oYear = oDate.getFullYear(),
+                    oMonth = oDate.getMonth() + 1,
+                    oDay = oDate.getDate(),
+                    oHour = oDate.getHours(),
+                    oMin = oDate.getMinutes(),
+                    oSen = oDate.getSeconds(),
+                    oTime = getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin);//最后拼接时间
+                return oTime;
+            }
+
+            //补0操作
+            function getzf(num) {
+                if (parseInt(num) < 10) {
+                    num = '0' + num;
+                }
+                return num;
+            }
+
+            //查看电话号码弹窗
+            $('.check').click(function (event) {
+                var $thisList = $(event.currentTarget);
+                var $rateVal = $thisList.siblings(".userid").html();
+                alert($rateVal);
+                window.localStorage.setItem("rateVal",$rateVal);
+                $.confirm({
+                    title: '温馨提示',
+                    text: '查看电话号码需要支付0.5元查看费用',
+                    onOK: function () {
+                        //通过ajax发送预订单所需基本信息
+                        $.ajax({
+                            url: "/zhihu_pre/",
+                            dataType: "json",
+                            type: "post",
+                            data: {
+//                                openId: window.localStorage.getItem("openid"),
+                                openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                                userid: $rateVal             //想要查看谁的电话号码
+                            },
+                            success: function (result) {
+                                //点击确认
+                                wx.chooseWXPay({
+                                    timestamp: result.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                                    nonceStr: result.nonceStr, // 支付签名随机串，不长于 32 位
+                                    package: result.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+                                    signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入
+                                    // 'MD5'
+                                    paySign: result.sign, // 支付签名
+                                    success: function (res) {
+                                        alert(res);
+                                        // 支付成功后的回调函数
+                                        var str = "";
+                                        for (var item in res) {
+                                            str += item + ':' + res[item];
+                                        }
+                                        alert(str);
+
+                                        //优先选用
+                                        location.href = "/dail/?openid=" + window.localStorage.getItem("openid") + "&paySign=" + result.sign;
+
+                                    },
+                                    fail: function (errMsg) {
+                                         console.log(errMsg);
+                                            alert(errMsg);
+                                    }
+                                })
+                            }
+                        })
+                    },
+                    onCancel: function () {
+                        return false;
+                    }
+                });
+            });
+
+            //拨号弹窗
+            // 通过a链接自动拨号
+
+            //评价弹窗
+            $('.rate').click(function (event){
+                var $thisList = $(event.currentTarget);
+                var $rateVal = $thisList.siblings('.userid').html();
+                alert("评价获取的用户id" + $rateVal);
+                var $star5 = '<span class="rateActionstar star5"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">很专业</span>'
+                var $star4 = '<span class="rateActionstar star4"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">专业</span>'
+                var $star3 = '<span class="rateActionstar star3"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">一般</span>'
+                var $star2 = '<span class="rateActionstar star2"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">差</span>'
+                var $star1 = '<span class="rateActionstar star1"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">很差</span>'
+                $.actions({
+                    actions: [{
+                        text: $star5,
+                        onClick: function() {
+                            rate($rateVal,5);
+                        }
+                    },{
+                        text: $star4,
+                        onClick: function() {
+                            rate($rateVal,4);
+                        }
+                    },{
+                        text: $star3,
+                        onClick: function() {
+                            rate($rateVal,3);
+                        }
+                    },{
+                        text: $star2,
+                        onClick: function() {
+                            rate($rateVal,2);
+                        }
+                    },{
+                        text: $star1,
+                        onClick: function() {
+                            rate($rateVal,1);
+                        }
+                    }]
+                });
+
+                function rate(id,rateCount) {
+                    //发送评价数据
+                    $.ajax({
+                        url:"/rate/",
+                        type: "post",
+                        data: {
+//                                openId: window.localStorage.getItem("openid"),
+                            openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                            userid: id,
+                            rateVal: rateCount
+                        },
+                        success: function () {
+                            $.toast("评价成功", "text");
+                        }
+
+                    })
+                }
+            });
+
+            console.log("现在li的总数"+ $(".listItem").length)
+        }
+
 
     });
 
 
-    //加载对应页码数据
-    function loadData(page) {
-        $.ajax({
-            url: "/worklist_ajax/",
-            dataType: "json",
-            type: "post",
-            data: {
-                openId: window.localStorage.getItem("openid"),
-                sortByDis: false,
-                sortByPubTime: true,
-                page: page
-            },
-            success: function (data) {
-                showData(data.listData);
-            },
-            error: function (error) {
-                console.log(error.readyState, error.statusText);
-            }
-        });
 
-    }
-
-    //渲染数据
-    function showData(data) {
-        $.each(data, function (key, val) {
-            //造tag标签
-
-            var $tagArr = val.tag;
-            var $tag = '<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
-
-
-
-            //拼大字符串
-            var str = "";
-            str += '<li class="listItem flex">' +
-                '<div class="portraitBox">' +
-                '<img src="' + val.portraitUrl + '" >' +
-                '<p>' + val.username + '</p>' +
-                '</div>' +
-                '<div class="infoBox flex">' +
-                '<div class="list_hd flex">' +
-                '<div class="tagBox">'+ $tag +'</div>' +
-                '<div class="star star' + val.star + '"></div>' +
-                '</div>' +
-                '<div class="list_bd flex">' +
-                '<span class="distance">距您：' + formatDistance(val.distance) + '</span>' +
-                '<p class="publishedTime">发布于：' + formatTime(val.pubTime) + '</p>' +
-                '</div>' +
-                '<div class="list_ft flex"><span class="userid">'+ val.userid + '</span><span class="hidePhoneNum">'+ val.phoneNum + '</span>' +  isRateble(val.isVisible) + isVisible(val.isVisible, val.phoneNum) +
-                '</div>' +
-                '</div>' +
-                '</li>';
-            $('.listCon').append(str);
-        });
-
-        //是否可以评价
-        function isRateble(vis) {
-            return vis ? '<a href="#" class="rate weui-btn weui-btn_mini weui-btn_default">评价</a>' : "";
-        }
-
-        //是否可见
-        function isVisible(vis, val) {
-            return vis ? '<a href="tel:' + val + '"' + ' class="dial weui-btn weui-btn_mini weui-btn_success">' + val + '</a>' : '<a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>'
-        }
-
-        //距离格式化
-        function formatDistance(val) {
-            if (val > 1000) {
-                return (val / 1000).toFixed(2) + ' km';
-            } else {
-                return parseInt(val) + ' m';
-            }
-        }
-
-        //日期格式化
-        function formatTime(str) {
-            var oDate = new Date(str),
-                oYear = oDate.getFullYear(),
-                oMonth = oDate.getMonth() + 1,
-                oDay = oDate.getDate(),
-                oHour = oDate.getHours(),
-                oMin = oDate.getMinutes(),
-                oSen = oDate.getSeconds(),
-                oTime = getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin);//最后拼接时间
-            return oTime;
-        }
-
-        //补0操作
-        function getzf(num) {
-            if (parseInt(num) < 10) {
-                num = '0' + num;
-            }
-            return num;
-        }
-
-        //查看电话号码弹窗
-        $('.check').click(function (event) {
-            var $thisList = $(event.currentTarget);
-            var $rateVal = $thisList.siblings(".userid").html();
-            var $checkedNum = $thisList.siblings(".hidePhoneNum").html();
-            var $checkedPortraitUrl = $thisList.parents(".infoBox").prev(".portraitBox").children("img").attr("src");
-            var $checkedUsername = $thisList.parents(".infoBox").prev(".portraitBox").children("p").html();
-
-            //todo:这个地方将来最好改成session
-            window.localStorage.setItem("checkedNum",$checkedNum);
-            window.localStorage.setItem("checkedPortraitUrl",$checkedPortraitUrl);
-            window.localStorage.setItem("checkedUsername",$checkedUsername);
-//            $.session.set("checkedNum",$checkedNum);
-            $.confirm({
-                title: '温馨提示',
-                text: '查看电话号码需要支付0.5元查看费用',
-                onOK: function () {
-                    //通过ajax发送预订单所需基本信息
-                    $.ajax({
-                        url: "/zhihu_pre/",
-                        dataType: "json",
-                        type: "post",
-                        data: {
-                            openId: window.localStorage.getItem("openid"),
-                            userid: $rateVal             //想要查看谁的电话号码
-                        },
-                        success: function (result) {
-                            //点击确认
-                            wx.chooseWXPay({
-                                timestamp: result.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-                                nonceStr: result.nonceStr, // 支付签名随机串，不长于 32 位
-                                package: result.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
-                                signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入
-                                // 'MD5'
-                                paySign: result.sign, // 支付签名
-                                success: function (res) {
-                                    alert(res);
-                                    // 支付成功后的回调函数
-                                    var str = "";
-                                    for (var item in res) {
-                                        str += item + ':' + res[item];
-                                    }
-                                    alert(str);
-
-                                    //优先选用
-                                    location.href = "/dail/?openid=" + window.localStorage.getItem("openid") + "&paySign=" + result.sign;
-
-
-                                },
-                                fail: function (errMsg) {
-
-
-                                    /* console.log(errMsg);
-                                        alert(errMsg);*/
-                                }
-                            })
-                        }
-                    })
-                },
-                onCancel: function () {
-                    return false;
-                }
-            });
-        });
-
-        //拨号弹窗
-       // 通过a链接自动拨号
-
-        //评价弹窗
-        $('.rate').click(function (event){
-            var $thisList = $(event.currentTarget);
-            var $rateVal = $thisList.prev().html();
-            var $star5 = '<span class="rateActionstar star5"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">很专业</span>'
-            var $star4 = '<span class="rateActionstar star4"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">专业</span>'
-            var $star3 = '<span class="rateActionstar star3"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">一般</span>'
-            var $star2 = '<span class="rateActionstar star2"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">差</span>'
-            var $star1 = '<span class="rateActionstar star1"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">很差</span>'
-            $.actions({
-                actions: [{
-                    text: $star5,
-                    onClick: function() {
-                        //发送评价数据
-                        $.ajax({
-                            url:"",
-                            type: "post",
-                            data: {
-                                openId: window.localStorage.getItem("openid"),
-                                time: $.now(),
-                                userid: $rateVal,
-                                rateVal: 5
-                            },
-                            success: function () {
-                                $.toast("评价成功", "text");
-                            }
-
-                        })
-                    }
-                },{
-                    text: $star4,
-                    onClick: function() {
-                        //发送评价数据
-                        $.ajax({
-                            url:"",
-                            type: "post",
-                            data: {
-                                openId: window.localStorage.getItem("openid"),
-                                time: $.now(),
-                                userid: $rateVal,
-                                rateVal: 4
-                            },
-                            success: function () {
-                                $.toast("评价成功", "text");
-                            }
-
-                        })
-                    }
-                },{
-                    text: $star3,
-                    onClick: function() {
-                        //发送评价数据
-                        $.ajax({
-                            url:"",
-                            type: "post",
-                            data: {
-                                openId: window.localStorage.getItem("openid"),
-                                time: $.now(),
-                                userid: $rateVal,
-                                rateVal: 3
-                            },
-                            success: function () {
-                                $.toast("评价成功", "text");
-                            }
-
-                        })
-
-                    }
-                },{
-                    text: $star2,
-                    onClick: function() {
-                        //发送评价数据
-                        $.ajax({
-                            url:"",
-                            type: "post",
-                            data: {
-                                openId: window.localStorage.getItem("openid"),
-                                time: $.now(),
-                                userid: $rateVal,
-                                rateVal: 2
-                            },
-                            success: function () {
-                                $.toast("评价成功", "text");
-                            }
-
-                        })
-
-                    }
-                },{
-                    text: $star1,
-                    onClick: function() {
-                        //发送评价数据
-                        $.ajax({
-                            url:"",
-                            type: "post",
-                            data: {
-                                openId: window.localStorage.getItem("openid"),
-                                time: $.now(),
-                                userid: $rateVal,
-                                rateVal: 1
-                            },
-                            success: function () {
-                                $.toast("评价成功", "text");
-                            }
-
-                        })
-
-                    }
-                }]
-            });
-        });
-    }
 
 </script>
 </body>

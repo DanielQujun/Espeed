@@ -34,17 +34,17 @@ body {
   color: rgba(255, 255, 255, 0.6);
   background-color: #149213; }
 
-.weui-dialog__hd {
+.page .weui-dialog__hd {
   padding: 0.5em 1.6em 0.5em; }
 
-.weui-dialog__hd {
+.page .weui-dialog__hd {
   padding: 0; }
 
-.weui-dialog__bd {
+.page .weui-dialog__bd {
   max-height: 300px;
   overflow-y: scroll; }
 
-.weui-dialog__btn {
+.page .weui-dialog__btn {
   color: #3493eb; }
 
 footer {
@@ -57,8 +57,6 @@ footer {
           box-sizing: border-box;
   font-size: 0;
   background: #3493eb; }
-  footer button:nth-child(1) {
-    border-right: 1px solid rgba(100, 100, 100, 0.2); }
   footer button {
     outline: none;
     border: none;
@@ -68,6 +66,8 @@ footer {
     margin: 0;
     font-size: 15px;
     background: #fff; }
+  footer button:first-child {
+    border-right: 1px solid rgba(100, 100, 100, 0.2); }
   footer .smallBtn {
     width: 50%;
     background: #3493eb;
@@ -276,14 +276,18 @@ footer {
 .jobs header {
   background: #3493eb;
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 2.5em;
   color: #fff;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 100; }
+  z-index: 100;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
   .jobs header .iconfont {
     font-size: 13px;
     margin-right: 2px; }
@@ -505,8 +509,8 @@ footer {
     .userCenter .main .tag {
       border: 1px solid #fff;
       padding: 0 10px;
-      font-size: 12px;
-      line-height: 1.5em;
+      font-size: 14px;
+      line-height: 1.8em;
       color: #fff;
       border-radius: 2px;
       margin-right: 4px; }
@@ -588,11 +592,11 @@ footer {
               -ms-flex-pack: justify;
                   justify-content: space-between; }
           .history .main .listItem .infoBox .list_hd .tag {
-            border: 1px solid #fbaf5d;
+            border: 1px solid #fff;
             padding: 0 10px;
-            font-size: 12px;
-            line-height: 1.5em;
-            color: #fbaf5d;
+            font-size: 14px;
+            line-height: 1.8em;
+            color: #fff;
             border-radius: 2px;
             margin-right: 4px; }
           .history .main .listItem .infoBox .list_hd .star {
@@ -741,6 +745,16 @@ footer {
       height: 80px;
       border-radius: 50%;
       border: 1px solid #e0e0e0; }
+  .dail .main .tagBox {
+    text-align: center; }
+    .dail .main .tagBox .tag {
+      border: 1px solid #fff;
+      padding: 0 10px;
+      font-size: 14px;
+      line-height: 1.8em;
+      color: #fff;
+      border-radius: 2px;
+      margin-right: 4px; }
   .dail .main .phoneNum {
     margin-bottom: 50%; }
 
