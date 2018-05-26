@@ -11,10 +11,10 @@
   <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
   <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
   <link rel="stylesheet" href="../static/iconfont/iconfont.css">
-  <link rel="stylesheet" href="../static/css/style.css">
+  <link rel="stylesheet" href="../static/css/style201805260957.css">
 </head>
 
-<body>
+<body class="page">
   <div class="history">
     <!-- 主体内容 -->
     <section class="main">
@@ -34,10 +34,11 @@
         FastClick.attach(document.body);
 
         $.ajax({
-            url: "history.json",              //todo:需要设置正确的请求地址
+            url: "/history/",              //todo:需要设置正确的请求地址
             type: "post",
             data: {
-                openid: window.localStorage.getItem("openid"),
+//              openid: window.localStorage.getItem("openid"),
+                openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
             },
             success: function (data) {
                 showData(data.listData);
@@ -67,8 +68,8 @@
                 '                <div class="list_bd flex">\n' +
                 '                </div>\n' +
                 '                <div class="list_ft flex"><span class="userid">'+ val.userid + '</span>\n' +
-                '                    <a href="javascript:;" class="complain weui-btn weui-btn_mini weui-btn_default">申诉</a>\n' +
-                '                    <a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_success">' + val.phoneNum + '</a>\n' +
+            '                    <a href="javascript:;" class="complain weui-btn weui-btn_mini weui-btn_default">申诉</a>\n' +
+            '                    <a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_success">' + val.phoneNum + '</a>\n' +
                 '                </div>\n' +
                 '          </div>\n' +
                 '        </li>';
@@ -114,10 +115,63 @@
 
         }
 
-        $("complain").click(function () {
-            $.alert("申诉待定","text")
-        })
+        //申诉弹窗
+        $('.complain').click(function (event){
+            var $thisList = $(event.currentTarget);
+            var $rateVal = $thisList.siblings('.userid').html();
+            alert("申诉获取的用户id" + $rateVal);
+            var $reason5 = '<span class=""></span>申诉原因5</span>'
+            var $reason4 = '<span class=""></span>申诉原因4</span>'
+            var $reason3 = '<span class=""></span>申诉原因3</span>'
+            var $reason2 = '<span class=""></span>申诉原因2</span>'
+            var $reason1 = '<span class=""></span>申诉原因1</span>'
+            $.actions({
+                actions: [{
+                    text: $reason5,
+                    onClick: function() {
+                        rate($rateVal,5);
+                    }
+                },{
+                    text: $reason4,
+                    onClick: function() {
+                        rate($rateVal,4);
+                    }
+                },{
+                    text: $reason3,
+                    onClick: function() {
+                        rate($rateVal,3);
+                    }
+                },{
+                    text: $reason2,
+                    onClick: function() {
+                        rate($rateVal,2);
+                    }
+                },{
+                    text: $reason1,
+                    onClick: function() {
+                        rate($rateVal,1);
+                    }
+                }]
+            });
 
+            function complain(id,complainid) {
+                //发送申诉数据
+                $.ajax({
+                    url:"/complain/",
+                    type: "post",
+                    data: {
+//                      openid: window.localStorage.getItem("openid"),
+                        openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                        userid: id,
+                        rateVal: complainid
+                    },
+                    success: function () {
+                        $.toast("申诉成功，请等待客服处理", "text");
+                    }
+
+                })
+            }
+        });
 
     });
   </script>

@@ -35,19 +35,19 @@ body {
   color: hsla(0,0%,100%,.6);
   background-color: #149213;
 }
-.weui-dialog__hd {
+.page .weui-dialog__hd {
   padding:.5em 1.6em 0.5em
 }
 
-.weui-dialog__hd {
+.page .weui-dialog__hd {
   padding: 0;
 }
 
-.weui-dialog__bd {
+.page .weui-dialog__bd {
   max-height: 300px;
   overflow-y: scroll;
 }
-.weui-dialog__btn {
+.page .weui-dialog__btn {
   color:#3493eb;
 }
 
@@ -62,10 +62,6 @@ footer {
   font-size: 0;
   background: #3493eb;
 
-
-  button:nth-child(1) {
-    border-right: 1px solid rgba(100,100,100,.2);
-  }
   button {
     outline: none;
     border: none;
@@ -76,6 +72,9 @@ footer {
     background: #fff;
   }
 
+  button:first-child {
+    border-right: 1px solid rgba(100,100,100,.2);
+  }
   .smallBtn {
     width: 50%;
     background: #3493eb;
@@ -349,7 +348,7 @@ footer {
   header {
     background: #3493eb;
     text-align: center;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 2.5em;
     color: #fff;
     position: fixed;
@@ -357,6 +356,10 @@ footer {
     left: 0;
     width: 100%;
     z-index: 100;
+    display: block;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 
     .iconfont {
       font-size: 13px;
@@ -635,8 +638,8 @@ footer {
     .tag {
       border: 1px solid #fff;
       padding: 0 10px;
-      font-size: 12px;
-      line-height: 1.5em;
+      font-size: 14px;
+      line-height: 1.8em;
       color: #fff;
       border-radius: 2px;
       margin-right: 4px;
@@ -735,14 +738,14 @@ footer {
            justify-content: space-between;
 
            .tag {
-            border: 1px solid #fbaf5d;
-            padding: 0 10px;
-            font-size: 12px;
-            line-height: 1.5em;
-            color: #fbaf5d;
-            border-radius: 2px;
-            margin-right: 4px;
-          }
+             border: 1px solid #fff;
+             padding: 0 10px;
+             font-size: 14px;
+             line-height: 1.8em;
+             color: #fff;
+             border-radius: 2px;
+             margin-right: 4px;
+           }
 
            .star {
              width: 100px;
@@ -935,7 +938,19 @@ footer {
         border: 1px solid #e0e0e0;
       }
     }
+    .tagBox {
+      text-align: center;
 
+      .tag {
+        border: 1px solid #fff;
+        padding: 0 10px;
+        font-size: 14px;
+        line-height: 1.8em;
+        color: #fff;
+        border-radius: 2px;
+        margin-right: 4px;
+      }
+    }
     .phoneNum {
       margin-bottom: 50%;
     }

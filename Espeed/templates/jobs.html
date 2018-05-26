@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
     <link rel="stylesheet" href="../static/iconfont/iconfont.css">
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/style201805260957.css">
 </head>
 
-<body>
+<body class="page">
 <div class="jobs">
     <header>
         <i class="iconfont icon-location"></i><span id="location">获取位置信息中...</span>
@@ -25,6 +25,7 @@
             </div>
         </div>
         <input type="hidden" id="jobList" value="{{ jobList|safe }}">
+        <div class="hiddenData" style="">{{ jobList|safe }}</div>
     </section>
 
     <!-- 底部 -->
@@ -32,12 +33,8 @@
         <!--<a href="javascript:;">
             <button class="smallBtn relocate"><i class="iconfont icon-dingwei"></i></button>
         </a>-->
-        <a href="javascript:;">
-            <button class="bigBtn"><i class="iconfont icon-jia1"></i>立即发布</button>
-        </a>
-        <a href="/userCenter">
-            <button class="smallBtn"><i class="iconfont icon-wode"></i>个人中心</button>
-        </a>
+        <button class="bigBtn"><i class="iconfont icon-jia1"></i>立即发布</button>
+        <button class="smallBtn" onclick="goUrl('userCenter')"><i class="iconfont icon-wode"></i>个人中心</button>
     </footer>
 </div>
 
@@ -85,8 +82,9 @@
 
         //工种数据
 //        var $jobList =$("#jobList").val();
+        var $jobList ={};
 
-            var $jobList ={{ jobList|safe }};
+//            var $jobList ={{ jobList|safe }};
 
 
 
@@ -154,13 +152,15 @@
                     type: "post",
                     data: {
                         online: true,
-                        openid: window.localStorage.getItem("openid"),
+//                        openid: window.localStorage.getItem("openid"),
+                        openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                         tag: $.session.get('myJob'),
                         latitude: $.session.get('latitude'),
                         longitude: $.session.get('longitude'),
                     },
                     success: function () {
-                        location.href = "/workerList/?openid="+window.localStorage.getItem("openid");
+//                        location.href = "/workerList/?openid="+window.localStorage.getItem("openid");
+                        location.href = "/workerList/?openid=oT69X1PX1jG6Ojhij3tQVOGSnWzQ";
                     }
                 })
 
@@ -176,6 +176,9 @@
     //创建百度地图对象
     var myGeo = new BMap.Geocoder();
 
+    /*$(".smallBtn").click(function () {
+        goUrl("userCenter");
+    })*/
 
 </script>
 </body>

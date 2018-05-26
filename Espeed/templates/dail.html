@@ -10,10 +10,10 @@
   <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
   <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
   <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
-  <link rel="stylesheet" href="../static/css/style.css">
+  <link rel="stylesheet" href="../static/css/style201805260957.css">
 </head>
 
-<body>
+<body class="page">
   <div class="role page dail">
     <section class="main flex">
     </section>
@@ -27,20 +27,44 @@
   <script>
         $(function() {
         FastClick.attach(document.body);
-        var $checkedNum = window.localStorage.getItem("checkedNum");
-        var $checkedPortraitUrl = window.localStorage.getItem("checkedPortraitUrl");
-        var $checkedUsername = window.localStorage.getItem("checkedUsername");
-        var str = '<div class="changePortrait" >' +
-            '<img class="portrait" src="'+ $checkedPortraitUrl  +'">' +
-            '<p class="username">'+ $checkedUsername  +'</p></div>' +
-            '<h1 class="phoneNum"><a href="tel:' + $checkedNum +'">'+ $checkedNum  +'</a></h1>' +
-            '<div><a href="javascript:;" class="backBtn weui-btn weui-btn_default confirmBtn">返回列表页</a>' +
-            '<a href="tel:' + $checkedNum +'"'+ ' class="weui-btn weui-btn_primary confirmBtn">拨打号码</a></div>'
-        $(".main").html(str);
-        $(".backBtn").click(function () {
-            location.href ="/workerList/?openid="+ window.localStorage.getItem("openid");
-        });
+        console.log("现在被查看的用户id为" + window.localStorage.getItem("rateVal"));
+        $.ajax({
+            url: "/dail/",
+            dataType: "json",
+            type: "post",
+            data: {
+//              openid: window.localStorage.getItem("openid"),
+                openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                userid: window.localStorage.getItem("rateVal")             //想要查看谁的电话号码
+            },
+            success: function (res) {
+                //调试代码
+                var resStr = "";
+                for (var item in res) {
+                    resStr += item + ':' + res[item];
+                }
+                alert(resStr);
+
+                /*需要的json格式
+                * res = {"username":"张三","portraitUrl": "../static/images/defaultHead.png","phoneNum": 18570607610,"tag":["木工","瓦工"]}
+                * */
+                var str = '<div class="changePortrait" >' +
+                    '<img class="portrait" src="'+ res.portraitUrl  +'">' +
+                    '<p class="username">'+ res.username  +'</p></div>' +
+                    '<div class="tagBox"><span class="tag">' + res.tag[0] + '</span><span class="tag">' + res.tag[1]+ '</span></div>'+
+                    '<h1 class="phoneNum"><a href="tel:' + res.phoneNum +'">'+ res.phoneNum  +'</a></h1>' +
+                    '<div><a href="javascript:;" class="backBtn weui-btn weui-btn_default confirmBtn">返回列表页</a>' +
+                    '<a href="tel:' + res.phoneNum +'"'+ ' class="weui-btn weui-btn_primary confirmBtn">拨打号码</a></div>'
+                $(".main").html(str);
+                $(".backBtn").click(function () {
+//                    location.href ="/workerList/?openid="+ window.localStorage.getItem("openid");
+                    location.href ="/workerList/?openid=oT69X1PX1jG6Ojhij3tQVOGSnWzQ";
+                });
+            }
+        })
     });
+
+
   </script>
 </body>
 
