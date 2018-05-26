@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
     <link rel="stylesheet" href="../static/iconfont/iconfont.css">
-    <link rel="stylesheet" href="../static/css/style201805260957.css">
+    <link rel="stylesheet" href="../static/css/style201805262115.css">
 </head>
 
 <body class="page">
@@ -62,7 +62,7 @@
         //方便调试
 
         //调用微信sdk配置
-        /*wx.config({
+        wx.config({
             debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: "{{ appid }}", // 必填，企业号的唯一标识，此处填写企业号corpid
             timestamp: "{{timestamp}}", // 必填，生成签名的时间戳
@@ -72,7 +72,7 @@
                 'getLocation',
                 'chooseWXPay'
             ]
-        });*/
+        });
         //通过error接口处理失败验证
         wx.error(function (res) {
             $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
@@ -154,7 +154,7 @@
             console.log('请求的page页码数：'+ page );
 
             $.ajax({
-                url: "workerList.json",                    /*/worklist_ajax/*/
+                url: "/worklist_ajax/",                    /*/worklist_ajax/*/
                 dataType: "json",
                 type: "post",
                 data: {
@@ -196,13 +196,9 @@
                 //拼大字符串
                 var str = "";
                 str += '<li class="listItem flex">' +
-                    '<div class="portraitBox">' +
-                    '<img src="' + val.portraitUrl + '" >' +
-                    '<p>' + val.username + '</p>' +
-                    '</div>' +
                     '<div class="infoBox flex">' +
                     '<div class="list_hd flex">' +
-                    '<div class="tagBox">'+ $tag +'</div>' +
+                    '<div class="tagBox"><span class="username">' + val.username + '</span>'+ $tag +'</div>' +
                     '<div class="star star' + val.star + '"></div>' +
                     '</div>' +
                     '<div class="list_bd flex">' +

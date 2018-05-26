@@ -453,6 +453,9 @@ footer {
 
   .weui-navbar__item {
     vertical-align: baseline;
+    background: #3493eb;
+    color: #fff;
+
        .filterArrow {
          display: inline-block;
          width:20px;
@@ -492,28 +495,18 @@ footer {
       padding: 10px;
       margin-bottom: 10px;
 
-      .portraitBox {
-        width: 20%;
-        text-align: center;
-        font-size: 14px;
-
-        img {
-          border-radius: 50%;
-          width: 54px;
-          height: 54px;
-          border: 1px solid #e0e0e0;
-        }
-
-      }
 
       .infoBox {
-        width: 80%;
+        width: 100%;
         flex-direction: column;
         justify-content: space-between;
 
          .list_hd {
            justify-content: space-between;
 
+           .username {
+             margin-right: 8px;
+           }
            .tag {
             border: 1px solid #fbaf5d;
             padding: 0 10px;
@@ -736,6 +729,10 @@ footer {
 
          .list_hd {
            justify-content: space-between;
+
+           .username {
+             margin-right: 8px;
+           }
 
            .tag {
              border: 1px solid #fff;
