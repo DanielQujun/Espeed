@@ -45,7 +45,6 @@
         FastClick.attach(document.body);
 
         window.localStorage.setItem("openid",$('#openid').val());
-        window.localStorage.setItem("username",$('#username').val());
         window.localStorage.setItem("nickname",$('#nickname').val());
         window.localStorage.setItem("sex",$('#sex').val());
         window.localStorage.setItem("country",$('#country').val());
@@ -55,6 +54,15 @@
         window.localStorage.setItem("headimgurl",$('#headimgurl').val());
         window.localStorage.setItem("phoneNum",$('#phoneNum').val());
         window.localStorage.setItem("myJob","0");             //设置工种初始值，防止个人中心报错
+
+        $(".submitBtn").click(function () {
+            if($(".username").val() == ""){
+                alert("请输入用户名");
+                return false;
+            } else {
+                window.localStorage.setItem("usename",$('#username').val());
+            }
+        })
     });
   </script>
 </body>

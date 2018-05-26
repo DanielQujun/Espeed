@@ -56,11 +56,13 @@
         })
     });
 
+    alert("初始的openid:"+ $("#openid").val());
     //注册验证
     var loginBtn = document.getElementById("loginBtn");
     var tips = document.getElementById("tips");
     loginBtn.onclick = function () {
         var phoneVal = document.getElementById('phoneNum').value;
+        window.localStorage.setItem("phoneNum",phoneVal);
         var signCodeVal = document.getElementById('signCode').value;
         if(phoneVal == "" ){
             tips.innerHTML = "请输入手机号";

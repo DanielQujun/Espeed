@@ -24,8 +24,11 @@
             <div class="jobs_bd flex" id="inputsParent">
             </div>
         </div>
-        <input type="hidden" id="jobList" value="{{ jobList|safe }}">
-        <div class="hiddenData" style="">{{ jobList|safe }}</div>
+        <!--<input type="hidden" id="jobList" value="{{ jobList|safe }}">-->
+        <!--<div class="hiddenData" style="width: 100%;height: 1px; overflow:hidden;">{{ jobList|safe }}</div>       &lt;!&ndash;需要隐藏起来&ndash;&gt;-->
+        <div class="hiddenData" style="">
+            [{"value": 1, "title": "\u571f\u5efa\u6728\u5de5"}, {"value": 2, "title": "\u88c5\u4fee\u6728\u5de5"}, {"value": 3, "title": "\u94fa\u7816\u5de5"}, {"value": 4, "title": "\u94c1\u5de5"}, {"value": 5, "title": "\u7a7a\u8c03\u5de5"}, {"value": 6, "title": "\u8d34\u5899\u7eb8\u5de5"}, {"value": 7, "title": "\u522e\u817b\u5b50\u5de5"}, {"value": 8, "title": "\u4eff\u53e4\u6cb9\u6f06\u5de5"}, {"value": 9, "title": "\u6cb9\u6027\u6cb9\u6f06\u5de5"}, {"value": 10, "title": "\u5f69\u7ed8\u5de5"}, {"value": 11, "title": "\u9ad8\u7a7a\u4f5c\u4e1a\u5de5"}, {"value": 12, "title": "\u94dd\u710a\u5de5"}, {"value": 13, "title": "\u4e0d\u9508\u94a2\u710a\u5de5"}, {"value": 14, "title": "\u7279\u6b8a\u710a\u5de5"}, {"value": 15, "title": "\u7eff\u5316\u5de5"}, {"value": 16, "title": "\u6c7d\u4fee\u5de5"}, {"value": 17, "title": "\u94f2\u8f66/\u94a9\u673a"}, {"value": 18, "title": "\u538b\u8def\u673a/\u6ce5\u5934\u8f66"}, {"value": 19, "title": "\u540a\u8f66\u8d27\u8f66\u53f8\u673a"}, {"value": 20, "title": "\u9ad8\u538b\u7535\u5de5"}, {"value": 21, "title": "\u4f4e\u538b\u7535\u5de5"}, {"value": 22, "title": "\u5f31\u7535\u5de5"}, {"value": 23, "title": "\u4e34\u65f6\u6742\u5de5"}, {"value": 24, "title": "\u7f51\u7edc\u5e03\u7ebf\u7ef4\u62a4"}, {"value": 25, "title": "\u96d5\u523b\u5e08\u5085"}, {"value": 26, "title": "\u9ad8\u7a7a\u4f5c\u4e1a\u5de5"}, {"value": 27, "title": "\u6c34\u6ce5\u5851\u77f3\u5de5"}]
+        </div>
     </section>
 
     <!-- 底部 -->
@@ -82,14 +85,17 @@
 
         //工种数据
 //        var $jobList =$("#jobList").val();
-        var $jobList ={};
-
 //            var $jobList ={{ jobList|safe }};
+
+        var $jobList =$(".hiddenData").html();
+        $jobListObj = eval('('+ $jobList +')');
+        console.log($jobListObj);
+
 
 
 
         //渲染工种按钮
-        $.each($jobList, function (key, val) {
+        $.each($jobListObj, function (key, val) {
             var str = "";
             str += '<input id="job' + val.value + '" type="checkbox" onclick="check_count(this)" value="' + val.title + '" /><label for="job' + val.value + '">' + val.title + '</label>'
             $('.jobs_bd').append(str);
