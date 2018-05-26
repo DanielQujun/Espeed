@@ -631,11 +631,11 @@ footer .cancel {
 
 /* 历史查看结束 */
 /* 交易记录开始 */
-.transcation {
+.transaction {
     background: #f5f6f7;
     height: 100vh;
     padding-top: 10px; }
-.transcation .listCon .listItem {
+.transaction .listCon .listItem {
     padding: 10px;
     list-style: none;
     background: #fff;
@@ -644,23 +644,23 @@ footer .cancel {
     font-size: 14px;
     margin-bottom: 10px;
     line-height: 2em; }
-.transcation .listCon .listItem .list_hd {
+.transaction .listCon .listItem .list_hd {
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
     justify-content: space-between;
     color: #999;
     border-bottom: 1px solid #dedede; }
-.transcation .listCon .listItem .list_bd {
+.transaction .listCon .listItem .list_bd {
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
     justify-content: space-between;
     color: #666;
     font-weight: 700; }
-.transcation .listCon .listItem .list_bd .red {
+.transaction .listCon .listItem .list_bd .red {
     color: red; }
-.transcation .listCon .listItem .list_bd .green {
+.transaction .listCon .listItem .list_bd .green {
     color: #1AAD19; }
-.transcation .listCon .listItem .list_bd strong {
+.transaction .listCon .listItem .list_bd strong {
     margin-left: 4px; }
 
 /* 交易记录结束 */
@@ -754,4 +754,5 @@ footer .cancel {
     margin-right: 4px; }
 .dail .main .phoneNum {
     margin-bottom: 50%; }
+
 /*# sourceMappingURL=style.css.map */
