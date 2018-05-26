@@ -529,9 +529,14 @@ def dail(request):
     openid = request.GET.get('openid')
     paysign = request.GET.get('paySign')
     User_view_pay = UserVisible.objects.filter(user_payed=openid,paysign=paysign).first()
-    phone_num = UserProfileBase.objects.filter(openId=User_view_pay.user_visible).first().phonenum
+    show_user = UserProfileBase.objects.filter(openId=User_view_pay.user_visible).first()
 
-    return render(request, 'dail.html', {'phone_num': phone_num})
+    phone_num = show_user.phonenum
+    headimgurl = show_user.avatarAddr
+    username = show_user.userName
+
+
+    return render(request, 'dail.html', {'phone_num': phone_num,'headimgurl':headimgurl,'username':username})
 
 def verify_code(request):
     phoneNum = request.POST.get('phoneNum')
