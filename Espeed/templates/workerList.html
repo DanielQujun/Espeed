@@ -142,7 +142,7 @@
 
         //时间排序
         $("#pubTimeFilter").click(function () {
-            $("#distanceFilter .filterArrow").toggleClass('active');
+            $("#pubTimeFilter .filterArrow").toggleClass('active');
             $byPubTime = !$byPubTime;
             $(".listCon").html("");
             loadData(1,$byDis,$byPubTime);
@@ -269,7 +269,7 @@
                             dataType: "json",
                             type: "post",
                             data: {
-//                                openId: window.localStorage.getItem("openid"),
+//                                openid: window.localStorage.getItem("openid"),
                                 openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                                 userid: $rateVal             //想要查看谁的电话号码
                             },
@@ -357,8 +357,8 @@
                         url:"/rate/",
                         type: "post",
                         data: {
-//                                openId: window.localStorage.getItem("openid"),
-                            openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+//                                openid: window.localStorage.getItem("openid"),
+                            openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                             userid: id,
                             rateVal: rateCount
                         },
