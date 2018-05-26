@@ -79,7 +79,7 @@
         });
 
         //初始化数据
-        var $totalPage = 10
+        var $totalPage = 10;
         var $currentPage = 1;
         var $byDis = true;
         var $byPubTime = true;
@@ -88,17 +88,25 @@
         /* /worklist_ajax/*/
 
         //上拉加载
-        var loading = false;  //状态标记
+        var $loading = false;  //状态标记
         $(document.body).infinite().on("infinite", function() {
-            if(loading) return;
-            loading = true;
-            $currentPage +=1;
+            if($loading) return;
+            $loading = true;
+            ++ $currentPage;
+
+
             if($currentPage <= $totalPage ){
-                loadData($currentPage,$byDis,$byPubTime);
+
+                addNum($currentPage,$byDis,$byPubTime)
+                $loading = false;
+                
+//                loadData($currentPage,$byDis,$byPubTime);
             } else {
+
                 $('.bottomTips').css("display","block");
+                $loading = false;
             }
-            loading = false;
+
         });
 
         // 加载数据时状态显示
@@ -118,7 +126,7 @@
                     type: "post",
                     data: {
                         online: false,
-//                        openid: window.localStorage.getItem("openid"),                        //    todo:正式环境需要注释掉
+//                      openid: window.localStorage.getItem("openid"),                        //    todo:正式环境需要注释掉
                         openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                         timestamp: $.now()
                     },
@@ -148,13 +156,21 @@
             loadData(1,$byDis,$byPubTime);
         });
 
+        function addNum(page, byDis, byPubTime) {
+            $totalPage = 3;
+            console.log('请求后获得现在的totalPage:'+ $totalPage);
+            $currentPage = page++;
+            console.log('请求后现在的页码数'+ $currentPage);
+            $(".listCon").append("<p> 我是新加载的内容 </p>");
+        }
+
 
         //加载对应页码数据
         function loadData(page,byDis,byPubTime) {
             console.log('请求的page页码数：'+ page );
 
             $.ajax({
-                url: "/worklist_ajax/",                    /*/worklist_ajax/*/
+                url: "workerList.json",                    /*/worklist_ajax/*/
                 dataType: "json",
                 type: "post",
                 data: {
