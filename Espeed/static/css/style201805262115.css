@@ -360,7 +360,9 @@ footer .cancel {
     top: 0;
     z-index: 100; }
 .workerList header .weui-navbar__item {
-    vertical-align: baseline; }
+    vertical-align: baseline;
+    background: #3493eb;
+    color: #fff; }
 .workerList header .weui-navbar__item .filterArrow {
     display: inline-block;
     width: 20px;
@@ -393,17 +395,8 @@ footer .cancel {
     box-sizing: border-box;
     padding: 10px;
     margin-bottom: 10px; }
-.workerList .main .listItem .portraitBox {
-    width: 20%;
-    text-align: center;
-    font-size: 14px; }
-.workerList .main .listItem .portraitBox img {
-    border-radius: 50%;
-    width: 54px;
-    height: 54px;
-    border: 1px solid #e0e0e0; }
 .workerList .main .listItem .infoBox {
-    width: 80%;
+    width: 100%;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
@@ -415,6 +408,8 @@ footer .cancel {
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
     justify-content: space-between; }
+.workerList .main .listItem .infoBox .list_hd .username {
+    margin-right: 8px; }
 .workerList .main .listItem .infoBox .list_hd .tag {
     border: 1px solid #fbaf5d;
     padding: 0 10px;
@@ -591,6 +586,8 @@ footer .cancel {
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
     justify-content: space-between; }
+.history .main .listItem .infoBox .list_hd .username {
+    margin-right: 8px; }
 .history .main .listItem .infoBox .list_hd .tag {
     border: 1px solid #fff;
     padding: 0 10px;
@@ -757,5 +754,4 @@ footer .cancel {
     margin-right: 4px; }
 .dail .main .phoneNum {
     margin-bottom: 50%; }
-
 /*# sourceMappingURL=style.css.map */
