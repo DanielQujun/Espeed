@@ -366,58 +366,61 @@ def transaction(request):
 def worklist_ajax(request):
     if request.method == 'POST':
         print request.POST
-        openid = request.POST.get('openId')
+        openid = request.POST.get('openid')
         sortByDis =request.POST.get('sortByDis')
         sortByPubTime = request.POST.get('sortByPubTime')
         page = request.POST.get('page')
         # openid = 'oT69X1Chvefxgv3wby_-PaEIM9nY'
-        user = UserProfileBase.objects.filter(openId=openid).first()
-        tag_set = user.Jobs.copy()
-        # 查询该用户支付过的记录
-        payed_list = [payed_user.user_visible for payed_user in UserVisible.objects.filter(user_payed=openid)]
-        print openid
-        print "qujun debug views line 378!!! for payed_list"
+        if openid:
+            user = UserProfileBase.objects.filter(openId=openid).first()
+            tag_set = user.Jobs.copy()
+            # 查询该用户支付过的记录
+            payed_list = [payed_user.user_visible for payed_user in UserVisible.objects.filter(user_payed=openid)]
+            print openid
+            print "qujun debug views line 378!!! for payed_list"
 
-        work_objects_db = []
-        for tag in tag_set:
-            workers = UserProfileBase.objects.exclude(Role=user.Role).filter(Jobs__contains=tag)
-            for worker in workers:
-                worker_dic = {}
-                worker_dic['userid'] = worker.id
-                worker_dic['username'] = worker.userName
-                worker_dic['tag'] = list(worker.Jobs)
-                #worker_dic['star'] = int(worker.Score)
-                worker_dic['star'] = 3
-                worker_dic['pubTime'] = int(worker.publishTime.replace('.','')+'0')
-                worker_dic['distance'] = Distance(user.Location_lati, user.Location_longi, worker.Location_lati, worker.Location_longi)
-                # worker_dic['isVisible'] = True if UserVisible.objects.filter(user_payed=user.openId, user_visible=worker.openId) \
-                #                                 else False
-                worker_dic['isVisible'] = True if worker.openId in payed_list else False
-                worker_dic['isRateble'] = worker_dic['isVisible']
-                worker_dic['phoneNum'] = worker.phonenum if worker_dic['isVisible'] else "123456789123"
-                worker_dic['portraitUrl'] = worker.avatarAddr
-                work_objects_db.append(worker_dic)
-        # print work_objects_db
-        if sortByDis == 'true':
-            work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['distance'])
-        elif sortByPubTime == 'true':
-            work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['pubTime'])
-        work_objects = work_objects_db
-        p = Paginator(work_objects, 10)  # 3条数据为一页，实例化分页对象
-        #print p.count  # 10 对象总共10个元素
-        print p.num_pages  # 4 对象可分4页
-        #print p.page_range  # xrange(1, 5) 对象页的可迭代范围
+            work_objects_db = []
+            for tag in tag_set:
+                workers = UserProfileBase.objects.exclude(Role=user.Role).filter(Jobs__contains=tag)
+                for worker in workers:
+                    worker_dic = {}
+                    worker_dic['userid'] = worker.id
+                    worker_dic['username'] = worker.userName
+                    worker_dic['tag'] = list(worker.Jobs)
+                    #worker_dic['star'] = int(worker.Score)
+                    worker_dic['star'] = 3
+                    worker_dic['pubTime'] = int(worker.publishTime.replace('.','')+'0')
+                    worker_dic['distance'] = Distance(user.Location_lati, user.Location_longi, worker.Location_lati, worker.Location_longi)
+                    # worker_dic['isVisible'] = True if UserVisible.objects.filter(user_payed=user.openId, user_visible=worker.openId) \
+                    #                                 else False
+                    worker_dic['isVisible'] = True if worker.openId in payed_list else False
+                    worker_dic['isRateble'] = worker_dic['isVisible']
+                    worker_dic['phoneNum'] = worker.phonenum if worker_dic['isVisible'] else "123456789123"
+                    worker_dic['portraitUrl'] = worker.avatarAddr
+                    work_objects_db.append(worker_dic)
+            # print work_objects_db
+            if sortByDis == 'true':
+                work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['distance'])
+            elif sortByPubTime == 'true':
+                work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['pubTime'])
+            work_objects = work_objects_db
+            p = Paginator(work_objects, 10)  # 3条数据为一页，实例化分页对象
+            #print p.count  # 10 对象总共10个元素
+            print p.num_pages  # 4 对象可分4页
+            #print p.page_range  # xrange(1, 5) 对象页的可迭代范围
 
-        page_object = p.page(page)  # 取对象的第一分页对象
-        conten_dict = {
-            "totalNum": p.count,
-            "perNum": 3,
-            "totalPage": p.num_pages,
-            "currentPage": page,
-            "listData": page_object.object_list
-        }
-        print conten_dict
-        return HttpResponse(json.dumps(conten_dict))
+            page_object = p.page(page)  # 取对象的第一分页对象
+            conten_dict = {
+                "totalNum": p.count,
+                "perNum": 3,
+                "totalPage": p.num_pages,
+                "currentPage": page,
+                "listData": page_object.object_list
+            }
+            print conten_dict
+            return HttpResponse(json.dumps(conten_dict))
+        else:
+            return HttpResponse("wrong parameters!")
 
 
 
@@ -484,7 +487,7 @@ def zhihu_pre(request):
     print "qujun zhihu_pre line 448!!!!!"
     print request.POST
     # 支付者id
-    openid = request.POST.get('openId')
+    openid = request.POST.get('openid')
     # 被查看者id
     userid = request.POST.get('userid')
     useropenid = UserProfileBase.objects.filter(id=userid).first().openId
