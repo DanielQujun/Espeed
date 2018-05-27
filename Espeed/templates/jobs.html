@@ -158,15 +158,15 @@
                     type: "post",
                     data: {
                         online: true,
-//                        openid: window.localStorage.getItem("openid"),
-                        openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                        openid: window.localStorage.getItem("openid"),
+//                        openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                         tag: $.session.get('myJob'),
                         latitude: $.session.get('latitude'),
                         longitude: $.session.get('longitude'),
                     },
                     success: function () {
-//                        location.href = "/workerList/?openid="+window.localStorage.getItem("openid");
-                        location.href = "/workerList/?openid=oT69X1PX1jG6Ojhij3tQVOGSnWzQ";
+                        location.href = "/workerList/?openid="+window.localStorage.getItem("openid");
+//                        location.href = "/workerList/?openid=oT69X1PX1jG6Ojhij3tQVOGSnWzQ";
                     }
                 })
 

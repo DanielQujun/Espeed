@@ -74,12 +74,12 @@
 
             $.ajax({
                 async: true,
-                url: "/transaction/",                    /*/worklist_ajax/*/
+                url: "/transaction_ajax/",                    /*/worklist_ajax/*/
                 dataType: "json",
                 type: "post",
                 data: {
-//              openid: window.localStorage.getItem("openid"),
-                    openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+              openid: window.localStorage.getItem("openid"),
+//                    openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                     page: page
                 },
                 success: function (data) {

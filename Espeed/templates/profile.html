@@ -16,7 +16,7 @@
 <body class="page">
   <div class="profile">
       <section class="main">
-          <a class="changePortrait" href="#"><img src="https://img.zcool.cn/community/00749c5ac501afa801212573ede172.jpg@80w_80h_1c_1e_1o_100sh.jpg"></a><!--{{ headimgurl }}-->
+          <a class="changePortrait" href="#"><img src="{{ headimgurl }}"></a><!--{{ headimgurl }}-->
 
           <div class="weui-cells__title" style="text-align: left;">个人资料</div>
           <div class="weui-cells">
@@ -43,7 +43,7 @@
                   <div class="weui-cell__bd">
                       <p>工种</p>
                   </div>
-                  <div class="weui-cell__ft " class="tagWrap">木工 瓦工</div>
+                  <div class="weui-cell__ft " class="tagWrap">{{ Jobs }}</div>
               </div>
               <div class="weui-cell" id="bossWrap">
                   <div class="weui-cell__bd">
@@ -53,9 +53,11 @@
               </div>
               <div class="weui-cell weui-cell_switch">
                   <div class="weui-cell__bd">切换身份</div>
+                  <!--
                   <div class="weui-cell__ft">
                       <input class="weui-switch" type="checkbox" id="roleCheck" checked="checked">
                   </div>
+                  -->
               </div>
           </div>
 

@@ -21,6 +21,7 @@
         <div class="weui-navbar">
             <div class="weui-navbar__item weui_bar__item_on"  id="distanceFilter">
                 <span>离我最近<span class="filterArrow"></span></span>
+                <span id="openid" style="display:none;">{{ openid }}</span>
             </div>
             <div class="weui-navbar__item"  id="pubTimeFilter"><span>最新上线<span class="filterArrow"></span></span>
             </div>
@@ -61,6 +62,8 @@
     $(function () {
         FastClick.attach(document.body);
         //方便调试
+
+        window.localStorage.setItem("openid",$('#openid').text());
 
         //调用微信sdk配置
         wx.config({
@@ -141,13 +144,13 @@
                     type: "post",
                     data: {
                         online: false,
-//                      openid: window.localStorage.getItem("openid"),                        //    todo:正式环境需要注释掉
-                        openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                      openid: window.localStorage.getItem("openid"),                     //    todo:正式环境需要注释掉
+//                        openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                         timestamp: $.now()
                     },
                     success: function () {
-//                        location.href = "/jobs/?openid="+window.localStorage.getItem("openid");
-                        location.href = "/jobs/?openid=oT69X1PX1jG6Ojhij3tQVOGSnWzQ";           //    todo:正式环境需要注释掉
+                        location.href = "/jobs/?openid="+window.localStorage.getItem("openid");
+//                        location.href = "/jobs/?openid=oT69X1PX1jG6Ojhij3tQVOGSnWzQ";           //    todo:正式环境需要注释掉
                     }
                 });
             }, function () {
@@ -183,12 +186,12 @@
 
             $.ajax({
                 async: true,
-                url: "workerList.json",                    /*/worklist_ajax/*/
+                url: "/worklist_ajax/",                    /*/worklist_ajax/*/
                 dataType: "json",
                 type: "post",
                 data: {
-//              openid: window.localStorage.getItem("openid"),
-                openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+              openid: window.localStorage.getItem("openid"),
+//                openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                     sortByDis: byDis,
                     sortByPubTime: byPubTime,
                     page: page
@@ -210,6 +213,7 @@
         }
 //    todo:正式环境需要注释掉
         window.localStorage.setItem("role",1);
+
 
         //渲染数据
         function showData(data) {
@@ -299,8 +303,8 @@
                             dataType: "json",
                             type: "post",
                             data: {
-//                                openid: window.localStorage.getItem("openid"),
-                                openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                                openid: window.localStorage.getItem("openid"),
+//                                openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                                 userid: $rateVal             //想要查看谁的电话号码
                             },
                             success: function (result) {
@@ -388,8 +392,8 @@
                         url:"/rate/",
                         type: "post",
                         data: {
-//                                openid: window.localStorage.getItem("openid"),
-                            openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                                openid: window.localStorage.getItem("openid"),
+//                            openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                             userid: id,
                             rateVal: rateCount
                         },

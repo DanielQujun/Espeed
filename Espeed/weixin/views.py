@@ -192,8 +192,6 @@ def chose_role(request):
             callbackurl = "/baseProfile/?openid={openid}".format(openid=openid)
             return HttpResponseRedirect(callbackurl)
 
-
-
 def input_name(request):
     if request.method == 'GET':
         data = {}
@@ -324,6 +322,7 @@ def wokers_or_jobs_list(request):
                     if user.online:
                         print "qujun: User is  Online!"
                         data = render_js_config(request)
+                        data['openid'] = user.openId
                         return render(request, 'workerList.html', data)
                     else:
                         print "qujun: User is Not Online!"
@@ -347,20 +346,124 @@ def wokers_or_jobs_list(request):
         print "user_dict 为空！！！！！"
         return HttpResponse('非法访问...')
 
-
-
-#@login_required
+# @login_required
 def usercenter(request):
     return render(request, 'userCenter.html')
-#@login_required
+
+# @login_required
 def profile(request):
-    return render(request, 'profile.html')
-#@login_required
+    if request.method == 'GET':
+        if request.GET.get('openid'):
+            user = UserProfileBase.objects.filter(openId=request.GET.get('openid')).first()
+            if user:
+                data = {}
+                data['headimgurl'] = user.avatarAddr
+                data['username'] = user.userName
+                data['phone_num'] = user.phonenum
+                jobs = [i for i in user.Jobs]
+                data['Jobs'] = ' '.join(jobs)
+                data['role'] = user.Role
+                print data
+                return render(request, 'profile.html', data)
+        else:
+            return HttpResponse(u'非法访问')
+
+# @login_required
 def history(request):
     return render(request, 'history.html')
+
+def history_ajax(request):
+    if request.method == 'POST':
+        print request.POST
+        openid = request.POST.get('openid')
+        sortByDis =request.POST.get('sortByDis')
+        sortByPubTime = request.POST.get('sortByPubTime')
+        page = request.POST.get('page')
+        # openid = 'oT69X1Chvefxgv3wby_-PaEIM9nY'
+        if openid:
+            user = UserProfileBase.objects.filter(openId=openid).first()
+            tag_set = user.Jobs.copy()
+            # 查询该用户支付过的记录
+            payed_list = [payed_user.user_visible for payed_user in UserVisible.objects.filter(user_payed=openid,pay_status='payed')]
+            print openid
+            print "qujun debug views line 378!!! for payed_list"
+
+            work_objects_db = []
+            for payed_openid in payed_list:
+                workers = UserProfileBase.objects.filter(openId=payed_openid)
+                for worker in workers:
+                    worker_dic = {}
+                    worker_dic['userid'] = worker.id
+                    worker_dic['username'] = worker.userName
+                    worker_dic['tag'] = list(worker.Jobs)
+                    #worker_dic['star'] = int(worker.Score)
+                    worker_dic['star'] = worker.Score
+                    worker_dic['pubTime'] = int(worker.publishTime.replace('.','')+'0')
+                    worker_dic['distance'] = Distance(user.Location_lati, user.Location_longi, worker.Location_lati, worker.Location_longi)
+                    # worker_dic['isVisible'] = True if UserVisible.objects.filter(user_payed=user.openId, user_visible=worker.openId) \
+                    #                                 else False
+                    worker_dic['isVisible'] = True
+                    worker_dic['isRateble'] = worker_dic['isVisible']
+                    worker_dic['phoneNum'] = worker.phonenum
+                    worker_dic['portraitUrl'] = worker.avatarAddr
+                    work_objects_db.append(worker_dic)
+            # print work_objects_db
+            # if sortByDis == 'true':
+            #     work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['distance'])
+            # elif sortByPubTime == 'true':
+            #     work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['pubTime'])
+            work_objects = work_objects_db
+            p = Paginator(work_objects, 5)  # 3条数据为一页，实例化分页对象
+            #print p.count  # 10 对象总共10个元素
+            print p.num_pages  # 4 对象可分4页
+            #print p.page_range  # xrange(1, 5) 对象页的可迭代范围
+
+            page_object = p.page(page)  # 取对象的第一分页对象
+            conten_dict = {
+                "totalNum": p.count,
+                "perNum": 5,
+                "totalPage": p.num_pages,
+                "currentPage": page,
+                "listData": page_object.object_list
+            }
+            print conten_dict
+            return HttpResponse(json.dumps(conten_dict))
+        else:
+            return HttpResponse("wrong parameters!")
+
 #@login_required
 def transaction(request):
-    return render(request, 'transaction')
+    return render(request, 'transaction.html')
+
+def transaction_ajax(request):
+    if request.method == 'POST':
+        print request.POST
+        openid = request.POST.get('openid')
+        sortByDis =request.POST.get('sortByDis')
+        sortByPubTime = request.POST.get('sortByPubTime')
+        page = request.POST.get('page')
+        # openid = 'oT69X1Chvefxgv3wby_-PaEIM9nY'
+        if openid:
+            listData = []
+            user_transactions = UserVisible.objects.filter(user_payed=openid)
+            for tansaction_item in user_transactions:
+                transation_dic = {}
+                transation_dic['billid'] = tansaction_item.transation_no
+                transation_dic['transcationTime'] = tansaction_item.request_time.replace('.', '')+'0'
+                transation_dic['transcationType'] = u'查看扣款'
+                transation_dic['transcationMoney'] = -50
+        p = Paginator(listData, 3)  # 3条数据为一页，实例化分页对象
+        # print p.count  # 10 对象总共10个元素
+        print p.num_pages  # 4 对象可分4页
+        # print p.page_range  # xrange(1, 5) 对象页的可迭代范围
+
+        page_object = p.page(page)  # 取对象的第一分页对象
+        conten_dict = {
+
+            "listData": page_object.object_list
+        }
+        print conten_dict
+        return HttpResponse(json.dumps(conten_dict))
 
 
 def worklist_ajax(request):
@@ -375,7 +478,7 @@ def worklist_ajax(request):
             user = UserProfileBase.objects.filter(openId=openid).first()
             tag_set = user.Jobs.copy()
             # 查询该用户支付过的记录
-            payed_list = [payed_user.user_visible for payed_user in UserVisible.objects.filter(user_payed=openid)]
+            payed_list = [payed_user.user_visible for payed_user in UserVisible.objects.filter(user_payed=openid,pay_status='prepay')]
             print openid
             print "qujun debug views line 378!!! for payed_list"
 
@@ -422,8 +525,6 @@ def worklist_ajax(request):
         else:
             return HttpResponse("wrong parameters!")
 
-
-
 def render_js_config(request):
     data = {}
     data['openid'] = request.GET.get('openid')
@@ -438,8 +539,6 @@ def render_js_config(request):
     data['signature'] = hashlib.sha1(jsapi_string).hexdigest()
 
     return data
-
-
 
 def wxpay_notify(request):
     return_str = """
@@ -465,9 +564,10 @@ def wxpay_notify(request):
             elif return_code == 'SUCCESS':
                 # 拿到自己这次支付的 out_trade_no
                 _out_trade_no = tree.find("out_trade_no").text
-                print "qujun:debug in views 453line!!!"
+                print "qujun:debug in views 453line!!!  zhifu pay success!!!"
                 print _out_trade_no
                 User_view_pay = UserVisible.objects.filter(transation_no=_out_trade_no).first()
+                User_view_pay.payed_time = time.time()
                 User_view_pay.status = 'payed'
                 User_view_pay.save()
 
@@ -477,7 +577,6 @@ def wxpay_notify(request):
             pass
         finally:
             return HttpResponse(return_str, status=200)
-
 
 def zhihu_pre(request):
     if request.META.has_key('HTTP_X_FORWARDED_FOR'):
@@ -490,11 +589,10 @@ def zhihu_pre(request):
     openid = request.POST.get('openid')
     # 被查看者id
     userid = request.POST.get('userid')
+    body = request.POST.get('body') or u'查看电话'
     useropenid = UserProfileBase.objects.filter(id=userid).first().openId
 
     out_trade_no = time.strftime('%Y%m%d%M%S',time.localtime(time.time()))+"".join(random.choice(CHAR) for _ in range(20))
-
-    User_view_pay = UserVisible(transation_no=out_trade_no,user_payed=openid,user_visible=useropenid,pay_status='prepay')
 
 
     wx_pay = WxPay(
@@ -510,11 +608,13 @@ def zhihu_pre(request):
     try:
         pay_data = wx_pay.js_pay_api(
             openid=openid,
-            body=u'商品',
+            body=body,
             total_fee=1,
             out_trade_no=out_trade_no,
             spbill_create_ip=ip
         )
+        User_view_pay = UserVisible(transation_no=out_trade_no, user_payed=openid, user_visible=useropenid,
+                                    pay_status='prepay', request_time=time.time())
         User_view_pay.paysign = pay_data.get('sign', "wrongkey")
         User_view_pay.save()
         return HttpResponse(json.dumps(pay_data))
@@ -522,6 +622,7 @@ def zhihu_pre(request):
         # print jsonify(pay_data)
     except WxPayError, e:
         print e.message, 400
+        return HttpResponse("zhifu some thing wrong!")
 
 def dail(request):
     print request.GET
@@ -590,3 +691,7 @@ def verify_code(request):
         return HttpResponse({"success":"true","Code":0})
     else:
         return HttpResponse({"success": "false", "Code": sms_return_dic['Code']})
+
+def complain(request):
+    # TODO
+    return HttpResponse("OK")

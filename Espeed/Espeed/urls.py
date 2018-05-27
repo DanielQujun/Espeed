@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^zhihu_pre/',weixin_views.zhihu_pre, name='zhihu_pre'),
     url(r'^dail/',weixin_views.dail, name='dail'),
     url(r'^verify_code/',weixin_views.verify_code, name='verify_code'),
-
-
+    url(r'^history_ajax/',weixin_views.history_ajax, name='history_ajax'),
+    url(r'^complain/',weixin_views.complain, name='complain'),
+    url(r'^transaction_ajax/', weixin_views.transaction_ajax, name='transaction_ajax'),
 ]

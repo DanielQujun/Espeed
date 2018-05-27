@@ -77,12 +77,12 @@
 
             $.ajax({
                 async: true,
-                url: "/history/",                    /*/worklist_ajax/*/
+                url: "/history_ajax/",                    /*/worklist_ajax/*/
                 dataType: "json",
                 type: "post",
                 data: {
-//              openid: window.localStorage.getItem("openid"),
-                    openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+              openid: window.localStorage.getItem("openid"),
+//                    openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                     page: page
                 },
                 success: function (data) {
@@ -214,8 +214,8 @@
                     url:"/complain/",
                     type: "post",
                     data: {
-//                      openid: window.localStorage.getItem("openid"),
-                        openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                      openid: window.localStorage.getItem("openid"),
+//                        openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                         userid: id,
                         rateVal: complainid
                     },
