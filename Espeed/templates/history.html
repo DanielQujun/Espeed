@@ -33,19 +33,6 @@
     $(function() {
         FastClick.attach(document.body);
 
-        $.ajax({
-            url: "/history/",              //todo:需要设置正确的请求地址
-            type: "post",
-            data: {
-//              openid: window.localStorage.getItem("openid"),
-                openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
-            },
-            success: function (data) {
-                showData(data.listData);
-                alert(data)
-                alert(data.listData);
-            }
-        });
 
         //初始化数据
         var $j=0;

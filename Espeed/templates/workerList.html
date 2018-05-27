@@ -183,7 +183,7 @@
 
             $.ajax({
                 async: true,
-                url: "/worklist_ajax/",                    /*/worklist_ajax/*/
+                url: "workerList.json",                    /*/worklist_ajax/*/
                 dataType: "json",
                 type: "post",
                 data: {
@@ -219,7 +219,7 @@
                 //造tag标签
                 var $tagArr = val.tag;
                 if($role == 1){
-                    $tag = '<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
+                    $tag = '我是<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
                 } else {
                     $tag = '招聘 <span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
                 }
