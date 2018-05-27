@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
   <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
   <link rel="stylesheet" href="../static/iconfont/iconfont.css">
-  <link rel="stylesheet" href="../static/css/style201805262115.css">
+  <link rel="stylesheet" href="../static/css/style201805271119.css">
 </head>
 
 <body class="page">
@@ -41,11 +41,80 @@
                 openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
             },
             success: function (data) {
-                alert(data)
                 showData(data.listData);
+                alert(data)
                 alert(data.listData);
             }
         });
+
+        //初始化数据
+        var $j=0;
+        var $totalPage = 10;
+        var $currentPage = 1;
+        loadData($currentPage);
+
+        //上拉加载
+        var $loading = false;  //状态标记
+        $(document.body).infinite().on("infinite", function() {
+            if($loading) return;
+            $loading = true;
+            ++ $currentPage;
+            if($currentPage <= $totalPage ){
+                // addNum($currentPage,$byDis,$byPubTime);
+                loadData($currentPage);
+                $loading = false;
+            } else {
+                console.log("不执行了")
+                $(document.body).destroyInfinite();
+                $('.loadMoreTip').css("display","none");
+                $('.bottomTips').css("display","block");
+                $loading = false;
+            }
+
+        });
+
+        // 加载数据时状态显示
+        $('.weui-loadmore').ajaxStart(function () {
+            $(this).show();
+        });
+
+        $('.weui-loadmore').ajaxStop(function () {
+            $(this).hide();
+        });
+
+        //加载对应页码数据
+        function loadData(page) {
+            $j++;
+            console.log("开始执行loadData函数,第"+ $j + "次执行");
+            console.log('第'+ $j + '次执,loadData向后台请求的页码数'+ page);
+
+            $.ajax({
+                async: true,
+                url: "/history/",                    /*/worklist_ajax/*/
+                dataType: "json",
+                type: "post",
+                data: {
+//              openid: window.localStorage.getItem("openid"),
+                    openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                    page: page
+                },
+                success: function (data) {
+                    $totalPage = data.totalPage;
+                    $currentPage = data.currentPage;
+                    console.log('第'+ $j + '次执,现在数据中的totalPage:'+ $totalPage);
+                    console.log('第'+ $j + '次执,现在数据中的currentPage,也是自身的$currentPage:'+ $currentPage);
+                    showData(data.listData);
+                    alert(data)
+                    alert(data.listData);
+                    console.log("第" + $j + "次请求结束");
+                },
+                error: function (error) {
+                    console.log(error.readyState, error.statusText);
+                }
+            });
+
+
+        }
 
         //渲染数据
         function showData(data) {

@@ -506,6 +506,7 @@ footer {
 
            .username {
              margin-right: 8px;
+             font-size: 16px;
            }
 
            .tag {
@@ -513,11 +514,13 @@ footer {
             padding: 0 10px;
             font-size: 13px;
             line-height: 2em;
-            color: #fbaf5d;
              height: 26px;
-            border-radius: 2px;
-            margin-right: 4px;
-          }
+             border-radius: 2px;
+             margin-right: 4px;
+             //color: #fbaf5d;
+             color: #fff;
+             background: #fbaf5d;
+           }
 
            .star {
              position: relative;
@@ -589,10 +592,18 @@ footer {
       }
     }
 
+    .loadMoreTip {
+      display:block;
+      text-align: center;
+      margin-bottom: 70px;
+      color: #999;
+    }
+
     .bottomTips {
       display:none;
       text-align: center;
       margin-bottom: 70px;
+      color: #999;
     }
   }
 }
@@ -733,6 +744,7 @@ footer {
 
            .username {
              margin-right: 8px;
+
            }
 
            .tag {
