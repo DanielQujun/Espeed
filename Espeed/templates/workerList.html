@@ -78,11 +78,26 @@
             $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
         });
 
+        var $j=0;
+        /*function addNum(page, byDis, byPubTime) {
+            $totalPage = 6;
+            var $j=0;
+            $j++;
+            console.log("开始执行addnum函数,第"+ $j + "次执行");
+            /!*$totalPage = 3;*!/
+            console.log('第'+ $j + '次执,totalPage:'+ $totalPage);
+            /!*$currentPage = page++;*!/
+            console.log('第'+ $j + '次执,addnum向后台请求的页码数'+ page);
+            $(".listCon").append("<p> 我是新加载的内容<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>我是新加载的内容 </p>");
+            console.log("第" + $j + "次请求结束");
+        }*/
+
         //初始化数据
         var $totalPage = 10;
-        var $currentPage = 1;
+        var $currentPage = 5;
         var $byDis = true;
         var $byPubTime = true;
+        // addNum($currentPage, $byDis, $byPubTime)；
         loadData($currentPage,$byDis,$byPubTime);
 
         /* /worklist_ajax/*/
@@ -93,16 +108,13 @@
             if($loading) return;
             $loading = true;
             ++ $currentPage;
-
-
             if($currentPage <= $totalPage ){
-
-                addNum($currentPage,$byDis,$byPubTime)
+                // addNum($currentPage,$byDis,$byPubTime);
+                loadData($currentPage,$byDis,$byPubTime);
                 $loading = false;
-                
-//                loadData($currentPage,$byDis,$byPubTime);
             } else {
-
+                console.log("不执行了")
+                $(document.body).destroyInfinite();
                 $('.bottomTips').css("display","block");
                 $loading = false;
             }
@@ -156,21 +168,18 @@
             loadData(1,$byDis,$byPubTime);
         });
 
-        function addNum(page, byDis, byPubTime) {
-            $totalPage = 3;
-            console.log('请求后获得现在的totalPage:'+ $totalPage);
-            $currentPage = page++;
-            console.log('请求后现在的页码数'+ $currentPage);
-            $(".listCon").append("<p> 我是新加载的内容 </p>");
-        }
+
 
 
         //加载对应页码数据
         function loadData(page,byDis,byPubTime) {
-            console.log('请求的page页码数：'+ page );
+            $j++;
+            console.log("开始执行loadData函数,第"+ $j + "次执行");
+            console.log('第'+ $j + '次执,loadData向后台请求的页码数'+ page);
 
             $.ajax({
-                url: "workerList.json",                    /*/worklist_ajax/*/
+                async: true,
+                url: "/worklist_ajax/",                    /*/worklist_ajax/*/
                 dataType: "json",
                 type: "post",
                 data: {
@@ -182,15 +191,17 @@
                 },
                 success: function (data) {
                     $totalPage = data.totalPage;
-                    console.log('请求后获得现在的totalPage:'+ $totalPage);
                     $currentPage = data.currentPage;
-                    console.log('请求后现在的页码数'+ $currentPage);
+                    console.log('第'+ $j + '次执,现在数据中的totalPage:'+ $totalPage);
+                    console.log('第'+ $j + '次执,现在数据中的currentPage,也是自身的$currentPage:'+ $currentPage);
                     showData(data.listData);
+                    console.log("第" + $j + "次请求结束");
                 },
                 error: function (error) {
                     console.log(error.readyState, error.statusText);
                 }
             });
+
 
         }
 //    todo:正式环境需要注释掉
@@ -228,7 +239,7 @@
                 $('.listCon').append(str);
 
             });
-
+            console.log("现在li的总数"+ $(".listItem").length)
             //是否可以评价
             function isRateble(vis) {
                 return vis ? '<a href="#" class="rate weui-btn weui-btn_mini weui-btn_default">评价</a>' : "";
@@ -387,7 +398,7 @@
                 }
             });
 
-            console.log("现在li的总数"+ $(".listItem").length)
+
         }
 
 
