@@ -404,7 +404,7 @@ def worklist_ajax(request):
             elif sortByPubTime == 'true':
                 work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['pubTime'])
             work_objects = work_objects_db
-            p = Paginator(work_objects, 10)  # 3条数据为一页，实例化分页对象
+            p = Paginator(work_objects, 5)  # 3条数据为一页，实例化分页对象
             #print p.count  # 10 对象总共10个元素
             print p.num_pages  # 4 对象可分4页
             #print p.page_range  # xrange(1, 5) 对象页的可迭代范围
@@ -412,7 +412,7 @@ def worklist_ajax(request):
             page_object = p.page(page)  # 取对象的第一分页对象
             conten_dict = {
                 "totalNum": p.count,
-                "perNum": 3,
+                "perNum": 5,
                 "totalPage": p.num_pages,
                 "currentPage": page,
                 "listData": page_object.object_list
@@ -522,7 +522,6 @@ def zhihu_pre(request):
         # print jsonify(pay_data)
     except WxPayError, e:
         print e.message, 400
-
 
 def dail(request):
     print request.GET
