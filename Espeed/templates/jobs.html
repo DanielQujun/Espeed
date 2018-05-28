@@ -79,12 +79,8 @@
 
         });
 
-
-        var $jobList =$("#jobList").val();
-        $jobListObj = eval('('+ $jobList +')');
+        var $jobListObj = {{ jobList|safe }};
         console.log($jobListObj);
-
-
 
 
         //渲染工种按钮
