@@ -323,6 +323,7 @@ def wokers_or_jobs_list(request):
                         print "qujun: User is  Online!"
                         data = render_js_config(request)
                         data['openid'] = user.openId
+                        data['role'] = user.Role
                         return render(request, 'workerList.html', data)
                     else:
                         print "qujun: User is Not Online!"
@@ -444,6 +445,7 @@ def transaction_ajax(request):
         page = request.POST.get('page')
         # openid = 'oT69X1Chvefxgv3wby_-PaEIM9nY'
         if openid:
+            print "i get openid here 448 line :" + openid
             listData = []
             user_transactions = UserVisible.objects.filter(user_payed=openid)
             for tansaction_item in user_transactions:
@@ -452,6 +454,7 @@ def transaction_ajax(request):
                 transation_dic['transcationTime'] = tansaction_item.request_time.replace('.', '')+'0'
                 transation_dic['transcationType'] = u'查看扣款'
                 transation_dic['transcationMoney'] = -50
+                listData.append(transation_dic)
         p = Paginator(listData, 3)  # 3条数据为一页，实例化分页对象
         # print p.count  # 10 对象总共10个元素
         print p.num_pages  # 4 对象可分4页
