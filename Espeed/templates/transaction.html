@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
   <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
   <link rel="stylesheet" href="../static/iconfont/iconfont.css">
-  <link rel="stylesheet" href="../static/css/style201805262115.css">
+  <link rel="stylesheet" href="../static/css/style201805271119.css">
 </head>
 
 <body class="page">
@@ -32,66 +32,122 @@
     $(function() {
         FastClick.attach(document.body);
 
-        $.ajax({
-            async: false,
-            url: "./transaction/",              //todo:需要设置请求地址，数据格式参考transaction.json
-            dataType: "json",
-            type: "post",
-            data: {
-//              openid: window.localStorage.getItem("openid"),
-                openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ"
-            },
-            success:function(result){
-                console.log(result.listData);
-                var $str = "";
-                $.each(result.listData,function (key, val) {
-                    $str += '<li class="listItem">\n' +
-                        '          <div class="list_hd flex">\n' +
-                        '            <div class="tagBox">订单编号:<span class="tag">' + val.billid+ '</span></div>\n' +
-                        '            <p class="publishedTime">发布时间：' + formatTime(val.transcationTime) + '</p>  \n' +
-                        '          </div>\n' +
-                        '          <div class="list_bd flex">\n' +
-                        '            <p>' + val.transcationType+ '</p>\n' +
-                        '            <span class="money">' + formatCurrency(val.transcationMoney) + '</span>\n' +
-                        '          </div>\n' +
-                        '        </li>'
-                });
+        //初始化数据
+        var $j=0;
+        var $totalPage = 10;
+        var $currentPage = 1;
+        loadData($currentPage);
 
-                $('.listCon').append($str);
-            },
-            error: function (msg) {
-                console.log(msg);
+        //上拉加载
+        var $loading = false;  //状态标记
+        $(document.body).infinite().on("infinite", function() {
+            if($loading) return;
+            $loading = true;
+            ++ $currentPage;
+            if($currentPage <= $totalPage ){
+                loadData($currentPage);
+                $loading = false;
+            } else {
+                console.log("不执行了")
+                $(document.body).destroyInfinite();
+                $('.loadMoreTip').css("display","none");
+                $('.bottomTips').css("display","block");
+                $loading = false;
             }
-      });
+
+        });
+
+        // 加载数据时状态显示
+        $('.weui-loadmore').ajaxStart(function () {
+            $(this).show();
+        });
+
+        $('.weui-loadmore').ajaxStop(function () {
+            $(this).hide();
+        });
+
+        //加载对应页码数据
+        function loadData(page) {
+            $j++;
+            console.log("开始执行loadData函数,第"+ $j + "次执行");
+            console.log('第'+ $j + '次执,loadData向后台请求的页码数'+ page);
+
+            $.ajax({
+                async: true,
+                url: "/transaction_ajax/",                    /*/worklist_ajax/*/
+                dataType: "json",
+                type: "post",
+                data: {
+              openid: window.localStorage.getItem("openid"),
+//                    openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                    page: page
+                },
+                success: function (data) {
+                    $totalPage = data.totalPage;
+                    $currentPage = data.currentPage;
+                    console.log('第'+ $j + '次执,现在数据中的totalPage:'+ $totalPage);
+                    console.log('第'+ $j + '次执,现在数据中的currentPage,也是自身的$currentPage:'+ $currentPage);
+                    showData(data.listData);
+                    alert(data)
+                    alert(data.listData);
+                    console.log("第" + $j + "次请求结束");
+                },
+                error: function (error) {
+                    console.log(error.readyState, error.statusText);
+                }
+            });
 
 
-        //日期格式化
-        function formatTime(str) {
-            var oDate = new Date(str),
-                oYear = oDate.getFullYear(),
-                oMonth = oDate.getMonth() + 1,
-                oDay = oDate.getDate(),
-                oHour = oDate.getHours(),
-                oMin = oDate.getMinutes(),
-                oSen = oDate.getSeconds(),
-                oTime = getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin);//最后拼接时间
-            return oTime;
-        };
-
-        //补0操作
-        function getzf(num) {
-            if (parseInt(num) < 10) {
-                num = '0' + num;
-            }
-            return num;
         }
 
-        //金钱格式化
-        function formatCurrency(num) {
-            if(num >= 0 ) {
-                return '<span class="green">' + (num/100).toFixed(2) + '<strong>元</strong></span>';
-            } else {
-                return '<span class="red"> ' + (num/100).toFixed(2) + '<strong>元</strong></span>';
+        //渲染数据
+        function showData(data) {
+            $.each(data, function (key, val) {
+                //拼大字符串
+                var str = "";
+                $str += '<li class="listItem">\n' +
+                    '          <div class="list_hd flex">\n' +
+                    '            <div class="tagBox">订单编号:<span class="tag">' + val.billid+ '</span></div>\n' +
+                    '            <p class="publishedTime">发布时间：' + formatTime(val.transcationTime) + '</p>  \n' +
+                    '          </div>\n' +
+                    '          <div class="list_bd flex">\n' +
+                    '            <p>' + val.transcationType+ '</p>\n' +
+                    '            <span class="money">' + formatCurrency(val.transcationMoney) + '</span>\n' +
+                    '          </div>\n' +
+                    '        </li>';
+
+                $('.listCon').append(str);
+            });
+
+            //日期格式化
+            function formatTime(str) {
+                var oDate = new Date(str),
+                    oYear = oDate.getFullYear(),
+                    oMonth = oDate.getMonth() + 1,
+                    oDay = oDate.getDate(),
+                    oHour = oDate.getHours(),
+                    oMin = oDate.getMinutes(),
+                    oSen = oDate.getSeconds(),
+                    oTime = getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin);//最后拼接时间
+                return oTime;
+            };
+
+            //补0操作
+            function getzf(num) {
+                if (parseInt(num) < 10) {
+                    num = '0' + num;
+                }
+                return num;
+            }
+
+            //金钱格式化
+            function formatCurrency(num) {
+                if(num >= 0 ) {
+                    return '<span class="green">' + (num/100).toFixed(2) + '<strong>元</strong></span>';
+                } else {
+                    return '<span class="red"> ' + (num/100).toFixed(2) + '<strong>元</strong></span>';
+                }
+
             }
 
         }

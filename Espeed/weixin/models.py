@@ -38,6 +38,8 @@ class UserVisible(models.Model):
     user_payed = models.CharField(max_length=50)  # Openid
     user_visible = models.CharField(max_length=50)  # Openid
     pay_status = models.CharField(default='prepay', max_length=50)
+    request_time = models.CharField(max_length=20, null=True,blank=True,default=None)
+    payed_time = models.CharField(max_length=20, null=True,blank=True, default=None)
 
 class Jobcates(models.Model):
     jobcate = models.CharField(max_length=32)

@@ -409,16 +409,18 @@ footer .cancel {
     -ms-flex-pack: justify;
     justify-content: space-between; }
 .workerList .main .listItem .infoBox .list_hd .username {
-    margin-right: 8px; }
+    margin-right: 8px;
+    font-size: 16px; }
 .workerList .main .listItem .infoBox .list_hd .tag {
     border: 1px solid #fbaf5d;
     padding: 0 10px;
     font-size: 13px;
     line-height: 2em;
-    color: #fbaf5d;
     height: 26px;
     border-radius: 2px;
-    margin-right: 4px; }
+    margin-right: 4px;
+    color: #fff;
+    background: #fbaf5d; }
 .workerList .main .listItem .infoBox .list_hd .star {
     position: relative;
     top: 4px;
@@ -468,10 +470,16 @@ footer .cancel {
     display: block; }
 .workerList .main .listItem .infoBox .list_ft .weui-btn .phoneNum {
     display: none; }
+.workerList .main .loadMoreTip {
+    display: block;
+    text-align: center;
+    margin-bottom: 70px;
+    color: #999; }
 .workerList .main .bottomTips {
     display: none;
     text-align: center;
-    margin-bottom: 70px; }
+    margin-bottom: 70px;
+    color: #999; }
 
 /* 工人列表页结束 */
 /* 个人中心开始 */
@@ -669,7 +677,7 @@ footer .cancel {
     background: #fff; }
 .profile .main {
     height: 100vh;
-    width: 86%;
+    width: 100%;
     margin: 0 auto;
     text-align: center;
     -webkit-box-orient: vertical;
@@ -682,40 +690,54 @@ footer .cancel {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     padding-top: 2rem;
-    font-size: 14px; }
+    font-size: 14px;
+    /*.inputBox {
+     margin-top: 1rem;
+     text-align: left;
+
+     .username {
+       margin-top: 4px;
+      height: 46px;
+      line-height: 46px;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #dedede;
+      outline: none;
+      padding: 0 0 0 14px;
+      box-sizing: border-box;
+      margin-bottom:  6px;
+    }
+
+    .username.active {
+      box-shadow: 0 0 1px 2px #3493eb;
+    }
+
+    .tag {
+      border: 1px solid #fbaf5d;
+            padding: 4px 10px;
+            font-size: 14px;
+            line-height: 2.5em;
+            color: #fbaf5d;
+            border-radius: 2px;
+            margin-right: 4px;
+    }
+
+    }
+    .submitBtn {
+      margin-top: 1rem;
+    }*/ }
 .profile .main img {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    border: 1px solid #e0e0e0; }
-.profile .main .inputBox {
-    margin-top: 1rem;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 40px; }
+.profile .main .weui-cells {
     text-align: left; }
-.profile .main .inputBox .username {
-    margin-top: 4px;
-    height: 46px;
-    line-height: 46px;
-    width: 100%;
-    border-radius: 5px;
-    border: 1px solid #dedede;
-    outline: none;
-    padding: 0 0 0 14px;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    margin-bottom: 6px; }
-.profile .main .inputBox .username.active {
-    -webkit-box-shadow: 0 0 1px 2px #3493eb;
-    box-shadow: 0 0 1px 2px #3493eb; }
-.profile .main .inputBox .tag {
-    border: 1px solid #fbaf5d;
-    padding: 4px 10px;
-    font-size: 14px;
-    line-height: 2.5em;
-    color: #fbaf5d;
-    border-radius: 2px;
-    margin-right: 4px; }
-.profile .main .submitBtn {
-    margin-top: 1rem; }
+.profile .main #workerWrap {
+    display: none; }
+.profile .main #bossWrap {
+    display: none; }
 
 /* 个人资料结束 */
 /*拨打号码页面*/
