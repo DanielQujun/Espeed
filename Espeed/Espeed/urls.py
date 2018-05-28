@@ -38,4 +38,5 @@ urlpatterns = [
     url(r'^history_ajax/',weixin_views.history_ajax, name='history_ajax'),
     url(r'^complain/',weixin_views.complain, name='complain'),
     url(r'^transaction_ajax/', weixin_views.transaction_ajax, name='transaction_ajax'),
+    url(r'^rate/', weixin_views.rate, name='rate'),
 ]

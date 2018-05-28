@@ -164,7 +164,7 @@ def register(request):
                     last_login=dt.now(),
                 )
                 profile.save()
-                callbackurl = "/role/?openid={openid}".format(openid=openid)
+                callbackurl = "/baseProfile/?openid={openid}".format(openid=openid)
                 return HttpResponseRedirect(callbackurl)
             else:
                 print 'qujun:信息不全！！'
@@ -188,8 +188,9 @@ def chose_role(request):
 
             user = UserProfileBase.objects.filter(openId=openid).first()
             user.role = role
+            user.online = 'False'
             user.save()
-            callbackurl = "/baseProfile/?openid={openid}".format(openid=openid)
+            callbackurl = "/jobs/?openid={openid}".format(openid=openid)
             return HttpResponseRedirect(callbackurl)
 
 def input_name(request):
@@ -223,7 +224,7 @@ def input_name(request):
             user.fromUser.save()
             user.save()
             #callbackurl = RedirectURL.format(WEIXIN_APPID=WEIXIN_APPID, CALLBACK="http://ewosugong.com/jobs")
-            callbackurl = "/jobs/?openid={openid}".format(openid=POST_DATA.get('openid'))
+            callbackurl = "/role/?openid={openid}".format(openid=POST_DATA.get('openid'))
             return HttpResponseRedirect(callbackurl)
         else:
             return "bad post data"
@@ -414,7 +415,7 @@ def history_ajax(request):
             # elif sortByPubTime == 'true':
             #     work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['pubTime'])
             work_objects = work_objects_db
-            p = Paginator(work_objects, 5)  # 3条数据为一页，实例化分页对象
+            p = Paginator(work_objects, 10)  # 3条数据为一页，实例化分页对象
             #print p.count  # 10 对象总共10个元素
             print p.num_pages  # 4 对象可分4页
             #print p.page_range  # xrange(1, 5) 对象页的可迭代范围
@@ -481,8 +482,8 @@ def worklist_ajax(request):
             user = UserProfileBase.objects.filter(openId=openid).first()
             tag_set = user.Jobs.copy()
             # 查询该用户支付过的记录
-            payed_list = [payed_user.user_visible for payed_user in UserVisible.objects.filter(user_payed=openid,pay_status='prepay')]
-            print openid
+            payed_list = [payed_user.user_visible for payed_user in UserVisible.objects.filter(user_payed=openid,pay_status='payed')]
+            print payed_list
             print "qujun debug views line 378!!! for payed_list"
 
             work_objects_db = []
@@ -494,7 +495,7 @@ def worklist_ajax(request):
                     worker_dic['username'] = worker.userName
                     worker_dic['tag'] = list(worker.Jobs)
                     #worker_dic['star'] = int(worker.Score)
-                    worker_dic['star'] = 3
+                    worker_dic['star'] = int(worker.Score)
                     worker_dic['pubTime'] = int(worker.publishTime.replace('.','')+'0')
                     worker_dic['distance'] = Distance(user.Location_lati, user.Location_longi, worker.Location_lati, worker.Location_longi)
                     # worker_dic['isVisible'] = True if UserVisible.objects.filter(user_payed=user.openId, user_visible=worker.openId) \
@@ -571,7 +572,7 @@ def wxpay_notify(request):
                 print _out_trade_no
                 User_view_pay = UserVisible.objects.filter(transation_no=_out_trade_no).first()
                 User_view_pay.payed_time = time.time()
-                User_view_pay.status = 'payed'
+                User_view_pay.pay_status = 'payed'
                 User_view_pay.save()
 
                 # 这里省略了 拿到订单号后的操作 看自己的业务需求
@@ -698,3 +699,18 @@ def verify_code(request):
 def complain(request):
     # TODO
     return HttpResponse("OK")
+
+def rate(request):
+    if request.method == "POST":
+        userid = request.POST.get('userid')
+        rateVal = request.POST.get('rateVal')
+        if userid and rateVal:
+            rateed_user = UserProfileBase.objects.filter(id=userid).first()
+            rateed_user.ScoreCount += 1
+
+            score = (rateed_user.Score*(rateed_user.ScoreCount-1)+int(rateVal))/float(rateed_user.ScoreCount)
+            rateed_user.Score = score
+            rateed_user.save()
+            return HttpResponse("OK")
+        else:
+            return HttpResponse("wrong parameters!")

@@ -24,6 +24,7 @@ class UserProfileBase(models.Model):
     Location_lati = models.CharField(max_length=100)     # 定位
     Location_longi = models.CharField(max_length=100)  # 定位
     Score = models.IntegerField(default=True)       # 评分
+    ScoreCount = models.IntegerField(default=True)	# 评价人数
     Jobs = SetTextField(
         base_field=models.CharField(max_length=32),
     )           # 工种类型
