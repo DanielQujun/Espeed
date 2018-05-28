@@ -451,7 +451,7 @@ def transaction_ajax(request):
             for tansaction_item in user_transactions:
                 transation_dic = {}
                 transation_dic['billid'] = tansaction_item.transation_no
-                transation_dic['transcationTime'] = tansaction_item.request_time.replace('.', '')+'0'
+                transation_dic['transcationTime'] = int(tansaction_item.request_time.replace('.', '')+'0')
                 transation_dic['transcationType'] = u'查看扣款'
                 transation_dic['transcationMoney'] = -50
                 listData.append(transation_dic)
@@ -595,7 +595,7 @@ def zhihu_pre(request):
     body = request.POST.get('body') or u'查看电话'
     useropenid = UserProfileBase.objects.filter(id=userid).first().openId
 
-    out_trade_no = time.strftime('%Y%m%d%M%S',time.localtime(time.time()))+"".join(random.choice(CHAR) for _ in range(20))
+    out_trade_no = time.strftime('%Y%m%d%M%S',time.localtime(time.time()))+"".join(random.choice(CHAR) for _ in range(5))
 
 
     wx_pay = WxPay(

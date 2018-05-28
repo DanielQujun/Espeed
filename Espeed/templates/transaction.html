@@ -121,6 +121,7 @@
 
             //日期格式化
             function formatTime(str) {
+                    console.log(str);
                 var oDate = new Date(str),
                     oYear = oDate.getFullYear(),
                     oMonth = oDate.getMonth() + 1,
@@ -130,7 +131,7 @@
                     oSen = oDate.getSeconds(),
                     oTime = getzf(oYear) + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin);//最后拼接时间
                 return oTime;
-            };
+            }
 
             //补0操作
             function getzf(num) {
