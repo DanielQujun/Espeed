@@ -572,16 +572,8 @@ footer .cancel {
     box-sizing: border-box;
     padding: 10px;
     margin-bottom: 10px; }
-.history .main .listItem .portraitBox {
-    width: 20%;
-    text-align: center; }
-.history .main .listItem .portraitBox img {
-    border-radius: 50%;
-    width: 54px;
-    height: 54px;
-    border: 1px solid #e0e0e0; }
 .history .main .listItem .infoBox {
-    width: 80%;
+    width: 100%;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
