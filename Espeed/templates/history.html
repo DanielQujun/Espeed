@@ -120,8 +120,8 @@
                 '                <div class="list_bd flex">\n' +
                 '                </div>\n' +
                 '                <div class="list_ft flex"><span class="userid">'+ val.userid + '</span>\n' +
-            '                    <a href="javascript:;" class="complain weui-btn weui-btn_mini weui-btn_default">申诉</a>\n' +
-            '                    <a href="'+ val.phoneNum + '" class="check weui-btn weui-btn_mini weui-btn_success">' + val.phoneNum + '</a>\n' +
+            '                    <input type="button" class="complain weui-btn weui-btn_mini weui-btn_default" value="申诉"/>\n' +
+            '                    <a href="tel:'+ val.phoneNum + '" class="check weui-btn weui-btn_mini weui-btn_success">' + val.phoneNum + '</a>\n' +
                 '                </div>\n' +
                 '          </div>\n' +
                 '        </li>';
@@ -217,6 +217,8 @@
                         },
                         success: function () {
                             $.toast("申诉成功，请等待客服处理", "text");
+                            $thisList.val('处理中');
+                            $thisList.attr("disabled","disabled");
                         }
 
                     })
