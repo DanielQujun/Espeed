@@ -74,7 +74,7 @@
 
             $.ajax({
                 async: true,
-                url: "/transaction_ajax/",                    /*/worklist_ajax/*/
+                url: "/transaction_ajax/",                    /*/transaction_ajax/*/
                 dataType: "json",
                 type: "post",
                 data: {
@@ -88,8 +88,6 @@
                     console.log('第'+ $j + '次执,现在数据中的totalPage:'+ $totalPage);
                     console.log('第'+ $j + '次执,现在数据中的currentPage,也是自身的$currentPage:'+ $currentPage);
                     showData(data.listData);
-                    alert(data)
-                    alert(data.listData);
                     console.log("第" + $j + "次请求结束");
                 },
                 error: function (error) {
@@ -107,15 +105,17 @@
                 var $str = "";
                 $str += '<li class="listItem">\n' +
                     '          <div class="list_hd flex">\n' +
-                    '            <div class="tagBox">订单编号:<span class="tag">' + val.billid+ '</span></div>\n' +
-                    '            <p class="publishedTime">发布时间：' + formatTime(val.transcationTime) + '</p>  \n' +
+                    '            <div class="tagBox">订单编号:' + val.billid+ '</div>\n' +
                     '          </div>\n' +
                     '          <div class="list_bd flex">\n' +
                     '            <p>' + val.transcationType+ '</p>\n' +
                     '            <span class="money">' + formatCurrency(val.transcationMoney) + '</span>\n' +
                     '          </div>\n' +
+                     '        <div class="list_bd flex">\n' +
+                    '            <p>交易时间：</p>\n' +
+                    '            <span class="publishedTime">' + formatTime(val.transcationTime) + '</span>\n' +
+                    '          </div>\n' +
                     '        </li>';
-
                 $('.listCon').append($str);
             });
 
@@ -128,9 +128,11 @@
                     oHour = oDate.getHours(),
                     oMin = oDate.getMinutes(),
                     oSen = oDate.getSeconds(),
-                    oTime = getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin);//最后拼接时间
+                    oTime = getzf(oYear) + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin);//最后拼接时间
                 return oTime;
             };
+
+            formatTime(1526800315880);
 
             //补0操作
             function getzf(num) {
