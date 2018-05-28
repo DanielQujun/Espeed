@@ -104,7 +104,7 @@
         function showData(data) {
             $.each(data, function (key, val) {
                 //拼大字符串
-                var str = "";
+                var $str = "";
                 $str += '<li class="listItem">\n' +
                     '          <div class="list_hd flex">\n' +
                     '            <div class="tagBox">订单编号:<span class="tag">' + val.billid+ '</span></div>\n' +
@@ -116,7 +116,7 @@
                     '          </div>\n' +
                     '        </li>';
 
-                $('.listCon').append(str);
+                $('.listCon').append($str);
             });
 
             //日期格式化
