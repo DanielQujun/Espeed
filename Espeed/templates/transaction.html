@@ -105,7 +105,7 @@
             $.each(data, function (key, val) {
                 //拼大字符串
                 var str = "";
-                $str += '<li class="listItem">\n' +
+                str += '<li class="listItem">\n' +
                     '          <div class="list_hd flex">\n' +
                     '            <div class="tagBox">订单编号:<span class="tag">' + val.billid+ '</span></div>\n' +
                     '            <p class="publishedTime">发布时间：' + formatTime(val.transcationTime) + '</p>  \n' +
@@ -117,10 +117,11 @@
                     '        </li>';
 
                 $('.listCon').append(str);
-            });
+            })
 
             //日期格式化
             function formatTime(str) {
+                    console.log(str);
                 var oDate = new Date(str),
                     oYear = oDate.getFullYear(),
                     oMonth = oDate.getMonth() + 1,
@@ -129,8 +130,10 @@
                     oMin = oDate.getMinutes(),
                     oSen = oDate.getSeconds(),
                     oTime = getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin);//最后拼接时间
+                    console.log(oDate);
+
                 return oTime;
-            };
+            }
 
             //补0操作
             function getzf(num) {
