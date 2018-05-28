@@ -10,7 +10,7 @@
     <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
-    <link rel="stylesheet" href="../static/css/style201805271119.css">
+    <link rel="stylesheet" href="../static/css/style201805282212.css">
 </head>
 
 <body class="page">
@@ -37,31 +37,15 @@
                   <div class="weui-cell__bd">
                       <p>身份</p>
                   </div>
-                  <div class="weui-cell__ft roleTitle">工人</div>
+                  <div class="weui-cell__ft roleTitle shenfen" ></div>
               </div>
-              <div class="weui-cell" id="workerWrap" style="display: block;">
+              <div class="weui-cell" id="workerWrap" style="display: flex;">
                   <div class="weui-cell__bd">
                       <p>工种</p>
                   </div>
                   <div class="weui-cell__ft " class="tagWrap">{{ Jobs }}</div>
               </div>
-              <div class="weui-cell" id="bossWrap">
-                  <div class="weui-cell__bd">
-                      <p>招聘的工种</p>
-                  </div>
-                  <div class="weui-cell__ft " class="tagWrap">泥工 小工</div>
-              </div>
-              <div class="weui-cell weui-cell_switch">
-                  <div class="weui-cell__bd">切换身份</div>
-                  <!--
-                  <div class="weui-cell__ft">
-                      <input class="weui-switch" type="checkbox" id="roleCheck" checked="checked">
-                  </div>
-                  -->
-              </div>
           </div>
-
-          <input id="tag" type="hidden" value="{{ tag }}">
           <input id="hiddenRole" type="hidden" value="{{ role }}">
         </section>
   </div>
@@ -72,28 +56,11 @@
     $(function() {
         FastClick.attach(document.body);
 
-        $tagArr = $('#tag').val();
-        var $tag =  $tagArr[0] + '&nbsp;&nbsp;&nbsp;'+ $tagArr[1];
-        $('.tagWrap').html($tag);
-
-        if($("#hiddenRole").val() == 1){
-            $("#workerWrap").css("display","flex");
+        if($("#hiddenRole").val() == 1) {
+            $(".shenfen").html("工人");
         } else {
-            $("#bossWrap").css("display","flex");
+            $(".shenfen").html("老板");
         }
-        $('#roleCheck').change(function () {
-            $("#workerWrap").css("display","none");
-            $("#bossWrap").css("display","none");
-
-            if($('#roleCheck').is(':checked')) {
-                $("#workerWrap").css("display","flex");
-                $(".roleTitle").html("工人");
-            } else {
-                $("#bossWrap").css("display","flex");
-                $(".roleTitle").html("老板");
-            }
-        });
-
     });
   </script>
 </body>

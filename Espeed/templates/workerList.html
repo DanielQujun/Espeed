@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
     <link rel="stylesheet" href="../static/iconfont/iconfont.css">
-    <link rel="stylesheet" href="../static/css/style201805271119.css">
+    <link rel="stylesheet" href="../static/css/style201805282212.css">
 </head>
 
 <body class="page">
@@ -202,7 +202,7 @@
                     $currentPage = data.currentPage;
                     console.log('第'+ $j + '次执,现在数据中的totalPage:'+ $totalPage);
                     console.log('第'+ $j + '次执,现在数据中的currentPage,也是自身的$currentPage:'+ $currentPage);
-                    showData(data.listData);
+                    setInterval(showData(data.listData),1000);
                     console.log("第" + $j + "次请求结束");
                 },
                 error: function (error) {
@@ -212,13 +212,10 @@
 
 
         }
-//    todo:正式环境需要注释掉
-        window.localStorage.setItem("role",1);
-
-
+        var $role = parseInt($("#role").text());
         //渲染数据
         function showData(data) {
-            var $role = window.localStorage.getItem("role");
+
             var $tag = "";
             $.each(data, function (key, val) {
                 //造tag标签

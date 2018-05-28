@@ -720,21 +720,9 @@ footer {
       padding: 10px;
       margin-bottom: 10px;
 
-      .portraitBox {
-        width: 20%;
-        text-align: center;
-
-        img {
-          border-radius: 50%;
-          width: 54px;
-          height: 54px;
-          border: 1px solid #e0e0e0;
-        }
-
-      }
 
       .infoBox {
-        width: 80%;
+        width:100%;
         flex-direction: column;
         justify-content: space-between;
         position: relative;

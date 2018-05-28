@@ -3,81 +3,37 @@
 <head>
     <meta charset="utf-8">
     <title></title>
-    <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
     <script type="text/javascript">
-        /*-------------------------------------------*/
-        var InterValObj; //timer变量，控制时间
-        var count = 120; //间隔函数，1秒执行
-        var curCount;//当前剩余秒数
-        var codeLength = 6;//验证码长度
-        function sendMessage() {
-            window.clearInterval(InterValObj);//停止计时器
-            curCount = count;
-            console.log(curCount);
-            var phoneNum=$("#phoneNum").val();//手机号码
-            if(phoneNum != ""){
-                //设置button效果，开始计时
-                $(".validCodeBtn").attr("disabled", "true");
-                $(".validCodeBtn").val("请在" + curCount + "秒内输入验证码");
-//                debugger;
-                InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
-                //向后台发送处理数据
-                $.ajax({
-                    async: true,
-                    url: 'workerList.json',
-                    dataType: "json",
-                    type: "post",
-                    data: {
-//                  openId: $("#openid").val(),
-                        openId: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
-                        phoneNum:$("#phoneNum").val()
-                    },
-                    success: function (res) {
-                        console.log(res);
-                         /*alert(res)*/;
-                    },
-                    error: function(error) {
-                        console.log(error.readyState, error.statusText);
-                    }
-                });
-            }else{
-                alert("手机号码不能为空！");
+        function formatTime(str) {
+
+            var oDate = new Date(str),
+                oYear = oDate.getFullYear(),
+                oMonth = oDate.getMonth() + 1,
+                oDay = oDate.getDate(),
+                oHour = oDate.getHours(),
+                oMin = oDate.getMinutes(),
+                oSen = oDate.getSeconds(),
+                oTime = getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin);//最后拼接时间
+//            return oTime;
+            console.log(oTime)
+            alert(1);
+        };
+
+        //补0操作
+        function getzf(num) {
+            alert(2);
+            if (parseInt(num) < 10) {
+                num = '0' + num;
             }
+            return num;
         }
-        //timer处理函数
-        function SetRemainTime() {
-            if (curCount == 0) {
-                window.clearInterval(InterValObj);//停止计时器
-                $(".validCodeBtn").removeAttr("disabled");//启用按钮
-                $(".validCodeBtn").val("重新发送验证码");
-            }
-            else {
-                curCount--;
-                $(".validCodeBtn").val("请在" + curCount + "秒内输入验证码");
-            }
-        }
+
+        formatTime(1526800315880);
+
     </script>
 </head>
 <body>
 <form>
-    <!--<div>
-        <font color="red">*</font>手机号码：
-    </div>
-    <div>
-        <input type="text" id="phone" name="phone"/>
-    </div>
-    <div>
-        <font color="red">*</font>验证码：
-    </div>-->
-    <div>
-        <!--<input type="text" id="checkCode" name="checkCode" size="6"/>
-        <input id="btnSendCode" type="button" value="发送验证码" onclick="sendMessage()" />-->
-
-        <input id="phoneNum" type="tel" name="phoneNum" value="" maxlength="12" placeholder="请输入手机号码" >
-        <input id="signCode" type="number" name="signCode" value="" placeholder="请输入验证码" >
-        <input id="openid" type="hidden" value="{{ openid }}" name="openid">
-        <input type="button"  class="weui-btn weui-btn_primary weui-btn_mini validCodeBtn" onclick="sendMessage()" value="获取验证码" />
-    </div>
 </form>
 </body>
 </html>
