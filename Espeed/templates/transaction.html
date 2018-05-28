@@ -105,7 +105,7 @@
                 var $str = "";
                 $str += '<li class="listItem">\n' +
                     '          <div class="list_hd flex">\n' +
-                    '            <div class="tagBox">订单编号:' + val.billid+ '</div>\n' +
+                    '            <div class="tagBox">订单编号:' + val.billid + '</div>\n' +
                     '          </div>\n' +
                     '          <div class="list_bd flex">\n' +
                     '            <p>' + val.transcationType+ '</p>\n' +
@@ -131,8 +131,6 @@
                     oTime = getzf(oYear) + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin);//最后拼接时间
                 return oTime;
             };
-
-            formatTime(1526800315880);
 
             //补0操作
             function getzf(num) {
