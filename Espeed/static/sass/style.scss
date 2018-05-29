@@ -15,9 +15,10 @@
 body {
   background: #fff;
 
-  -webkit-user-select:none;
+  -webkit-user-select:auto;
+
   input {
-    -webkit-user-select:none;
+    -webkit-user-select:auto;
   }
 }
 
