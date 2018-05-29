@@ -9,7 +9,7 @@
     <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
-    <link rel="stylesheet" href="../static/css/style201805292144.css">
+    <link rel="stylesheet" href="../static/css/style201805292232.css">
 </head>
 
 <body class="page">
@@ -103,6 +103,7 @@
         if(phoneNum != ""){
             //设置button效果，开始计时
             $(".validCodeBtn").attr("disabled", "true");
+            $(".validCodeBtn").addClass("weui-btn_plain-default");
             $(".validCodeBtn").removeClass("weui-btn_primary");
             $(".validCodeBtn").val(curCount + "秒后重新获取");
             InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
@@ -138,6 +139,7 @@
             window.clearInterval(InterValObj);//停止计时器
             $(".validCodeBtn").removeAttr("disabled");//启用按钮
             $(".validCodeBtn").addClass("weui-btn_primary");
+            $(".validCodeBtn").removeClass("weui-btn_plain-default");
             $(".validCodeBtn").val("重新获取验证码");
         }
         else {

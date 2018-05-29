@@ -13,7 +13,10 @@
     display: flex; }
 
 body {
-    background: #fff; }
+    background: #fff;
+    -webkit-user-select: none; }
+body input {
+    -webkit-user-select: none; }
 
 .clearfix:after {
     display: block;
