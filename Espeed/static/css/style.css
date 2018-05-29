@@ -13,10 +13,14 @@
   display: flex; }
 
 body {
-  background: #fff;
-  -webkit-user-select: text; }
-  body input {
-    -webkit-user-select: text; }
+  background: #fff; }
+
+input {
+  -webkit-user-select: auto !important;
+  -o-user-select: auto !important;
+  -moz-user-select: text;
+   -ms-user-select: text;
+       user-select: text; }
 
 .clearfix:after {
   display: block;
@@ -249,7 +253,7 @@ footer {
             justify-content: flex-start;
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-    padding-top: 2rem;
+    padding-top: 75px;
     font-size: 14px; }
     .baseProfile .main img {
       width: 80px;
@@ -257,7 +261,7 @@ footer {
       border-radius: 50%;
       border: 1px solid #e0e0e0; }
     .baseProfile .main .inputBox {
-      margin-top: 1rem;
+      margin-top: 38px;
       text-align: left; }
       .baseProfile .main .inputBox .username {
         margin-top: 4px;
@@ -274,7 +278,7 @@ footer {
         -webkit-box-shadow: 0 0 1px 2px #3493eb;
                 box-shadow: 0 0 1px 2px #3493eb; }
     .baseProfile .main .submitBtn {
-      margin-top: 1rem; }
+      margin-top: 37.5px; }
 
 /* 基础资料填写结束 */
 /* 选择工种开始 */
