@@ -14,9 +14,9 @@
 
 body {
     background: #fff;
-    -webkit-user-select: none; }
+    -webkit-user-select: auto; }
 body input {
-    -webkit-user-select: none; }
+    -webkit-user-select: auto; }
 
 .clearfix:after {
     display: block;
