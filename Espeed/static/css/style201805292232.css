@@ -14,9 +14,9 @@
 
 body {
     background: #fff;
-    -webkit-user-select: auto; }
+    -webkit-user-select: text; }
 body input {
-    -webkit-user-select: auto; }
+    -webkit-user-select: text; }
 
 .clearfix:after {
     display: block;
