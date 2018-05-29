@@ -12,9 +12,11 @@ import hashlib
 import json
 
 import weixin.config
-
+from weixin.config import REDIS_HOST,REDIS_PORT
 from math import *
 
+import redis
+r = redis.Redis(host=REDIS_HOST,port=REDIS_PORT)
 
 
 def Distance(lat1,lng1,lat2,lng2):# 第二种计算方法
@@ -89,6 +91,20 @@ def dictfetchall(cursor):
 
 
 def get_access_token():
+    WEIXIN_ACCESS_TOKEN = r.get('WEIXIN_ACCESS_TOKEN')
+    if WEIXIN_ACCESS_TOKEN:
+        return WEIXIN_ACCESS_TOKEN
+    else:
+        resp, result = my_get(weixin.config.WEIXIN_ACCESS_TOKEN_URL)
+        decodejson = parse_Json2Dict(result)
+        WEIXIN_ACCESS_TOKEN = str(decodejson[u'access_token'])
+        WEIXIN_ACCESS_TOKEN_EXPIRES_IN = decodejson['expires_in']
+        r.set(name='WEIXIN_ACCESS_TOKEN',value=WEIXIN_ACCESS_TOKEN,ex=WEIXIN_ACCESS_TOKEN_EXPIRES_IN)
+        return WEIXIN_ACCESS_TOKEN
+
+
+
+def get_access_token_bak():
     # 获取 access_token 存入 WEIXIN_ACCESS_TOKEN
     if weixin.config.WEIXIN_ACCESS_TOKEN_LASTTIME == 0 or (int(
             time.time()) - weixin.config.WEIXIN_ACCESS_TOKEN_LASTTIME > weixin.config.WEIXIN_ACCESS_TOKEN_EXPIRES_IN - 300):
