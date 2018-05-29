@@ -333,12 +333,12 @@ def wokers_or_jobs_list(request):
                 else:
                     return HttpResponseRedirect('/register/')
 
-            elif not user.role:
+            elif not user.Role:
                 # 修改前台用来显示的文字
-                callbackurl = "/role/?openid={openid}".format(openid=openid)
+                callbackurl = "/role/?openid={openid}".format(openid=user.openId)
                 return HttpResponseRedirect(callbackurl)
             elif not user.userName:
-                callbackurl = "/baseProfile/?openid={openid}".format(openid=openid)
+                callbackurl = "/baseProfile/?openid={openid}".format(openid=user.openId)
                 return HttpResponseRedirect(callbackurl)
 
         else:
