@@ -953,20 +953,14 @@ footer {
         border-radius: 50%;
         border: 1px solid #e0e0e0;
       }
-    }
-    .tagBox {
-      text-align: center;
 
-      .tag {
-        border: 1px solid #fff;
-        padding: 0 10px;
-        font-size: 14px;
-        line-height: 1.8em;
-        color: #fff;
-        border-radius: 2px;
-        margin-right: 4px;
+      .username {
+        font-size: 20px;
+        color: #333;
+        font-weight: 700;
       }
     }
+
     .phoneNum {
       margin-bottom: 50%;
     }
