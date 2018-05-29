@@ -28,6 +28,7 @@
       <form action="/baseProfile/" method="post">
       <a class="changePortrait"><img src="{{ headimgurl }}"><p>{{ nickname }}</p></a>
       <div class="inputBox">
+        <label for="username">用户名
         <input class="username" type="text" id="username" name="username" value="" placeholder="请输入用户名（必填,别人可见）">
         <input id="openid" type="hidden" value="{{ openid }}" name="openid">
         <input id="nickname" type="hidden" value="{{ nickname }}" name="nickname">
@@ -38,6 +39,7 @@
         <input id="language" type="hidden" value="{{ language }}" name="language">
         <input id="headimgurl" type="hidden" value="{{ headimgurl }}" name="headimgurl">
         <input id="phoneNum" type="hidden" value="{{ phoneNum }}" name="phoneNum">
+      </label>
       </div>
       <button class="weui-btn weui-btn_primary submitBtn">确定</button>
       </form>

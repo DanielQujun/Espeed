@@ -99,7 +99,7 @@ def get_access_token():
         decodejson = parse_Json2Dict(result)
         WEIXIN_ACCESS_TOKEN = str(decodejson[u'access_token'])
         WEIXIN_ACCESS_TOKEN_EXPIRES_IN = decodejson['expires_in']
-        r.set(name='WEIXIN_ACCESS_TOKEN',value=WEIXIN_ACCESS_TOKEN,ex=WEIXIN_ACCESS_TOKEN_EXPIRES_IN)
+        r.set(name='WEIXIN_ACCESS_TOKEN',value=WEIXIN_ACCESS_TOKEN,ex=WEIXIN_ACCESS_TOKEN_EXPIRES_IN-60)
         return WEIXIN_ACCESS_TOKEN
 
 
