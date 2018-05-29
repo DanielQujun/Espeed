@@ -66,10 +66,12 @@ footer button {
     margin: 0;
     font-size: 15px;
     background: #fff; }
-footer button:first-child {
+footer button:nth-child(1) {
+    border-right: 1px solid rgba(100, 100, 100, 0.2); }
+footer button:nth-child(2) {
     border-right: 1px solid rgba(100, 100, 100, 0.2); }
 footer .smallBtn {
-    width: 50%;
+    width: 33.3%;
     background: #3493eb;
     color: #fff;
     font-size: 18px;
@@ -79,7 +81,7 @@ footer .smallBtn .iconfont {
 footer .smallBtn:active {
     background: #3284d1; }
 footer .bigBtn {
-    width: 49%;
+    width: 33.3%;
     background: #3493eb;
     color: #fff;
     font-size: 18px;
@@ -540,6 +542,8 @@ footer .cancel {
     color: #fc7d4a; }
 .userCenter .main .menuBox .menuList a .icon-record {
     color: #ffc245; }
+.userCenter .main .menuBox .menuList a .icon-qiehuan {
+    color: #cc00cc; }
 .userCenter .main .menuBox .menuList a .icon-arrow-right {
     color: #999999; }
 
