@@ -72,11 +72,14 @@ footer {
     background: #fff;
   }
 
-  button:first-child {
+  button:nth-child(1) {
+    border-right: 1px solid rgba(100,100,100,.2);
+  }
+  button:nth-child(2) {
     border-right: 1px solid rgba(100,100,100,.2);
   }
   .smallBtn {
-    width: 50%;
+    width: 33.3%;
     background: #3493eb;
     color: #fff;
     font-size: 18px;
@@ -92,7 +95,7 @@ footer {
   }
 
   .bigBtn {
-    width: 49%;
+    width: 33.3%;
     background: #3493eb;
     color: #fff;
     font-size: 18px;

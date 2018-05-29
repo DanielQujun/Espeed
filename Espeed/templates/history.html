@@ -184,7 +184,7 @@
                     },{
                         text: $reason4,
                         onClick: function() {
-                            rate($rateVal,4);
+                            complain($rateVal,4);
                         }
                     },{
                         text: $reason3,
@@ -219,6 +219,8 @@
                             $.toast("申诉成功，请等待客服处理", "text");
                             $thisList.val('处理中');
                             $thisList.attr("disabled","disabled");
+                            $currentPage = 1;
+                            loadData($currentPage);
                         }
 
                     })
