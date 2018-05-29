@@ -13,7 +13,10 @@
   display: flex; }
 
 body {
-  background: #fff; }
+  background: #fff;
+  -webkit-user-select: none; }
+  body input {
+    -webkit-user-select: none; }
 
 .clearfix:after {
   display: block;
@@ -760,16 +763,10 @@ footer {
       height: 80px;
       border-radius: 50%;
       border: 1px solid #e0e0e0; }
-  .dail .main .tagBox {
-    text-align: center; }
-    .dail .main .tagBox .tag {
-      border: 1px solid #fff;
-      padding: 0 10px;
-      font-size: 14px;
-      line-height: 1.8em;
-      color: #fff;
-      border-radius: 2px;
-      margin-right: 4px; }
+    .dail .main .changePortrait .username {
+      font-size: 20px;
+      color: #333;
+      font-weight: 700; }
   .dail .main .phoneNum {
     margin-bottom: 50%; }
 
