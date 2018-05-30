@@ -244,34 +244,34 @@ footer {
     width: 86%;
     margin: 0 auto;
     text-align: center;
-    /*flex-direction: column;
-    justify-content: flex-start;*/
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
     padding-top: 75px;
     font-size: 14px; }
-    .baseProfile .main img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 1px solid #e0e0e0; }
-    .baseProfile .main .inputBox {
-      margin-top: 38px;
-      text-align: left; }
-      .baseProfile .main .inputBox .username {
-        margin-top: 4px;
-        height: 46px;
-        line-height: 46px;
-        width: 100%;
-        border-radius: 5px;
-        border: 1px solid #dedede;
-        outline: none;
-        padding: 0 0 0 14px;
-        -webkit-box-sizing: border-box;
-                box-sizing: border-box; }
-      .baseProfile .main .inputBox .username.active {
-        -webkit-box-shadow: 0 0 1px 2px #3493eb;
-                box-shadow: 0 0 1px 2px #3493eb; }
+    .baseProfile .main form {
+      width: 100%; }
+      .baseProfile .main form img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 1px solid #e0e0e0; }
+      .baseProfile .main form .inputBox {
+        margin-top: 38px;
+        text-align: left; }
+        .baseProfile .main form .inputBox .usernameInput {
+          margin-top: 4px;
+          height: 46px;
+          line-height: 46px;
+          width: 100%;
+          border-radius: 5px;
+          border: 1px solid #dedede;
+          outline: none;
+          padding: 0 0 0 14px;
+          -webkit-box-sizing: border-box;
+                  box-sizing: border-box; }
+        .baseProfile .main form .inputBox .usernameInput.active {
+          -webkit-box-shadow: 0 0 1px 2px #3493eb;
+                  box-shadow: 0 0 1px 2px #3493eb; }
     .baseProfile .main .submitBtn {
       margin-top: 37.5px; }
 
