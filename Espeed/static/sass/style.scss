@@ -305,39 +305,44 @@ footer {
     width: 86%;
     margin: 0 auto;
     text-align: center;
-    /*flex-direction: column;
-    justify-content: flex-start;*/
     box-sizing: border-box;
     padding-top: 75px;
     font-size: 14px;;
 
-    img {
-      width: 80px;
-      height:80px;
-      border-radius: 50%;
-      border: 1px solid #e0e0e0;
-    }
-
-    .inputBox {
-     margin-top: 38px;
-     text-align: left;
-     
-     .username {
-       margin-top: 4px;
-      height: 46px;
-      line-height: 46px;
+    form {
       width: 100%;
-      border-radius: 5px;
-      border: 1px solid #dedede;
-      outline: none;
-      padding: 0 0 0 14px;
-      box-sizing: border-box;
+
+      img {
+        width: 80px;
+        height:80px;
+        border-radius: 50%;
+        border: 1px solid #e0e0e0;
+      }
+
+      .inputBox {
+        margin-top: 38px;
+        text-align: left;
+
+        .usernameInput {
+          margin-top: 4px;
+          height: 46px;
+          line-height: 46px;
+          width: 100%;
+          border-radius: 5px;
+          border: 1px solid #dedede;
+          outline: none;
+          padding: 0 0 0 14px;
+          box-sizing: border-box;
+        }
+
+
+        .usernameInput.active {
+          box-shadow: 0 0 1px 2px #3493eb;
+        }
+
     }
 
 
-    .username.active {
-      box-shadow: 0 0 1px 2px #3493eb;
-    }
 
     }
 
