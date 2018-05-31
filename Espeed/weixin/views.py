@@ -187,7 +187,7 @@ def chose_role(request):
         if role and openid:
 
             user = UserProfileBase.objects.filter(openId=openid).first()
-            user.role = role
+            user.Role = role
             user.online = 'False'
             user.save()
             callbackurl = "/jobs/?openid={openid}".format(openid=openid)
@@ -258,6 +258,7 @@ def chose_job_cate(request):
     elif request.method == 'POST':
 
         POST_DATA = request.POST
+        print POST_DATA
         openid = POST_DATA.get('openid')
         if not None in POST_DATA.values() and openid:
             if POST_DATA.get('online') == 'true':
@@ -331,7 +332,7 @@ def wokers_or_jobs_list(request):
                         callbackurl = "/jobs/?openid={openid}".format(openid=user.openId)
                         return HttpResponseRedirect(callbackurl)
                 else:
-                    return HttpResponseRedirect('/register/')
+                    return HttpResponseRedirect('/register/?openid={openid}'.format(user_dict['openid']))
 
             elif not user.Role:
                 # 修改前台用来显示的文字
@@ -350,7 +351,14 @@ def wokers_or_jobs_list(request):
 
 # @login_required
 def usercenter(request):
-    return render(request, 'userCenter.html')
+    if request.method == 'GET':
+        openid = request.GET.get('openid')
+        if openid:
+            user = UserProfileBase.objects.filter(openId=openid).first()
+            data = {}
+            data['headimgurl'] = user.avatarAddr
+
+            return render(request, 'userCenter.html', data)
 
 # @login_required
 def profile(request):
@@ -365,7 +373,6 @@ def profile(request):
                 jobs = [i for i in user.Jobs]
                 data['Jobs'] = ' '.join(jobs)
                 data['role'] = user.Role
-                print data
                 return render(request, 'profile.html', data)
         else:
             return HttpResponse(u'非法访问')

@@ -17,7 +17,7 @@
 <body class="page">
   <div class="userCenter">
     <section class="main">
-      <div class="changePortrait" ><img class="portrait" src="../static/images/defaultHead.png"><p class="username"></p></div>
+      <div class="changePortrait" ><img class="portrait" src="{{ headimgurl }}"><p class="username"></p></div>
       <div class="tagBox"></div>
       <ul class="menuBox">
         <li class="menuList"><a href="javascript:goUrl('history');"  class="link flex"><span class="title"><i class="iconfont icon-history"></i>历史查看</span><i class="iconfont icon-arrow-right"></i></a></li>
@@ -42,7 +42,7 @@
         //显示用户名
         $(".username").html(window.localStorage.getItem('username'));
         // 显示头像
-        $(".portrait").attr("src",window.localStorage.getItem('headimgurl'));
+        // $(".portrait").attr("src",window.localStorage.getItem('headimgurl'));
 
         //显示tag标签
         function showTag() {
