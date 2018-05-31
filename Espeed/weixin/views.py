@@ -715,3 +715,66 @@ def rate(request):
             return HttpResponse("OK")
         else:
             return HttpResponse("wrong parameters!")
+
+
+def nearby_jobs(request):
+    if request.method == 'GET':
+        data = {}
+        data['openid'] = request.GET.get('openid')
+        data['timestamp'] = int(time.time())
+        data['nonceStr'] = 'qujunqujun'
+        data['appid'] = WEIXIN_APPID
+        data['jsapi_ticket'] = get_jsapi_token()
+        data['url'] = request.build_absolute_uri()
+        jsapi_string = "jsapi_ticket={JSAPI_TICKET}&noncestr={NONCESTR}&timestamp={TIMESTAMP}&url={URL}".\
+            format(JSAPI_TICKET=data['jsapi_ticket'],NONCESTR=data['nonceStr'], TIMESTAMP=data['timestamp'], URL=data['url'])
+
+        data['signature'] = hashlib.sha1(jsapi_string).hexdigest()
+
+        data['jobList'] = []
+
+        jobcates = Jobcates.objects.all()
+        for jobcate in jobcates:
+
+            job_dic = {'title': jobcate.jobcate, 'value': jobcate.id}
+            data['jobList'].append(job_dic)
+        data['jobList'] = json.dumps(data['jobList'])
+        print "qujun RENDER jsapi data!!!!!!!!!!!!!"
+        print data
+        return render(request, 'jobs_nearby.html', data)
+
+    elif request.method == 'POST':
+
+        POST_DATA = request.POST
+        openid = POST_DATA.get('openid')
+        if not None in POST_DATA.values() and openid:
+            if POST_DATA.get('online') == 'true':
+                print "qujun : update database for jobs choose!!!"
+                print request.POST
+                user = UserProfileBase.objects.filter(openId=openid).first()
+                user.Jobs = POST_DATA.get('tag')
+                user.Location_lati = POST_DATA.get('latitude')
+                user.Location_longi = POST_DATA.get('longitude')
+                user.online = 'True'
+                user.publishTime = time.time()
+                user.save()
+
+                return HttpResponse("OK")
+
+            else:
+                print "qujun : update database for jobs OFFline!!!"
+                data = {}
+                data['openid'] = openid
+                user = UserProfileBase.objects.filter(openId=openid).first()
+                user.online = 'False'
+                user.save()
+
+                return render(request, 'jobs.html', data)
+
+
+        else:
+            callbackurl = "/register/?openid={openid}".format(openid=openid)
+            return HttpResponseRedirect(callbackurl)
+
+def nearby_workers(request):
+    return render(request, 'workers_nearby.html')
