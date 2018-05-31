@@ -15,19 +15,43 @@
 </head>
 
 <body class="page">
-<div class="workerList">
+<div class="workerList nearbyPage">
     <!-- 头部 -->
     <header>
         <div class="weui-navbar">
             <div class="weui-navbar__item weui_bar__item_on"  id="distanceFilter">
-                <span>离我最近<span class="filterArrow"></span></span>
-                <span id="openid" style="display:none;">{{ openid }}</span>
-                <span id="role" style="display:none;">{{ role }}</span>
+                <span>距离筛选<span class="iconfont icon-julishaixuan"></span></span>
             </div>
-            <div class="weui-navbar__item"  id="pubTimeFilter"><span>最新上线<span class="filterArrow"></span></span>
+            <div class="weui-navbar__item"  id="pubTimeFilter"><span>工种筛选<span class="iconfont icon-gongrenshaixuan"></span></span>
             </div>
         </div>
     </header>
+    <div class="topModal distanceModal">
+        <div class="distanceModal_bd">
+            <div class="page__bd page__bd_spacing">
+                <div class="weui-slider">
+                    <div class="weui-slider__inner">
+                        <div style="width: 0;" class="weui-slider__track"></div>
+                        <div style="left: 0;" class="weui-slider__handler"></div>
+                    </div>
+                </div>
+                <br>
+                <div class="weui-slider-box">
+                    <div class="weui-slider">
+                        <div id="sliderInner" class="weui-slider__inner">
+                            <div id="sliderTrack" style="width: 50%;" class="weui-slider__track"></div>
+                            <div id="sliderHandler" style="left: 50%;" class="weui-slider__handler"></div>
+                        </div>
+                    </div>
+                    <div id="sliderValue" class="weui-slider-box__value">50</div>
+                </div>
+            </div>
+        </div>
+        <div class="distanceModal_ft">
+            <a href="javascript:;" class="weui-btn weui-btn_plain-default">取消</a>
+            <a href="javascript:;" class="weui-btn weui-btn_primary">确定</a>
+        </div>
+    </div>
 
     <!-- 主体内容 -->
     <section class="main">
@@ -51,6 +75,9 @@
         <button class="bigBtn cancel"><i class="iconfont icon-quxiao"></i>取消发布</button>
         <button class="smallBtn userCenterBtn" onclick="goUrl('userCenter')" ><i class="iconfont icon-wode"></i>个人中心</button>
     </footer>
+
+    <span id="openid" style="display:none;">{{ openid }}</span>
+    <span id="role" style="display:none;">{{ role }}</span>
 </div>
 
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
@@ -61,6 +88,34 @@
 <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
 <script type="text/javascript"src="../static/js/utility.js"></script>
 <script>
+    $(function(){
+        var $sliderTrack = $('#sliderTrack'),
+            $sliderHandler = $('#sliderHandler'),
+            $sliderValue = $('#sliderValue');
+
+        var totalLen = $('#sliderInner').width(),
+            startLeft = 0,
+            startX = 0;
+
+        $sliderHandler
+            .on('touchstart', function (e) {
+                startLeft = parseInt($sliderHandler.css('left')) * totalLen / 100;
+                startX = e.changedTouches[0].clientX;
+            })
+            .on('touchmove', function(e){
+                var dist = startLeft + e.changedTouches[0].clientX - startX,
+                    percent;
+                dist = dist < 0 ? 0 : dist > totalLen ? totalLen : dist;
+                percent =  parseInt(dist / totalLen * 100);
+                $sliderTrack.css('width', percent + '%');
+                $sliderHandler.css('left', percent + '%');
+                $sliderValue.text(percent);
+
+                e.preventDefault();
+            })
+        ;
+    });
+
     $(function () {
         FastClick.attach(document.body);
         window.localStorage.setItem("openid",$('#openid').text());
@@ -172,7 +227,7 @@
 
             $.ajax({
                 async: true,
-                url: "/worklist_ajax/",                    /*/worklist_ajax/*/
+                url: "workerList.json",                    /*/worklist_ajax/*/
                 dataType: "json",
                 type: "post",
                 data: {

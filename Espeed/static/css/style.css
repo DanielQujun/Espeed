@@ -769,4 +769,30 @@ footer {
   .dail .main .phoneNum {
     margin-bottom: 50%; }
 
+.nearbyPage {
+  /*@keyframes navMove {
+    0% {
+      top: -50px;
+    }
+    100% {
+      top: 0;
+    }
+  }*/ }
+  .nearbyPage .topModal {
+    width: 100%;
+    top: 0;
+    background: #fff;
+    border-bottom: 1px solid #eaeaea;
+    z-index: 20;
+    padding-top: 51px; }
+  .nearbyPage .distanceModal {
+    height: 300px; }
+    .nearbyPage .distanceModal .distanceModal_bd {
+      padding-top: 20px; }
+    .nearbyPage .distanceModal .distanceModal_ft {
+      margin-top: 15px; }
+      .nearbyPage .distanceModal .distanceModal_ft .weui-btn {
+        width: 45%;
+        display: inline-block; }
+
 /*# sourceMappingURL=style.css.map */
