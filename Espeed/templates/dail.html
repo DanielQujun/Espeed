@@ -27,7 +27,7 @@
       </div>
     </section>
 
-    //隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分
+    <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
     <span id="openidInsert" style="display:none;">{{ openid }}</span>
 
   </div>
@@ -39,6 +39,7 @@
   <script>
         $(function() {
         FastClick.attach(document.body);
+        window.localStorage.setItem("openid",$('#openidInsert').text());
 
         $(".backBtn").click(function () {
           location.href ="/workerList/?openid="+ window.localStorage.getItem("openid");

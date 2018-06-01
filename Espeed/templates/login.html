@@ -91,6 +91,7 @@
     $(function () {
         // 开启fastclick功能
         FastClick.attach(document.body);
+        window.localStorage.setItem("openid",$('#openidInsert').text());
 
         $('#policy').click(function () {
             var $policyTxt = $("#policyText").text();

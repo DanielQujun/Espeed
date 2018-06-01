@@ -22,7 +22,7 @@
     </section>
 
 
-    //隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分
+    <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
     <span id="openidInsert" style="display:none;">{{ openid }}</span>
 
 
@@ -36,6 +36,8 @@
     // 开启fastclick功能
     $(function() {
         FastClick.attach(document.body);
+
+        window.localStorage.setItem("openid",$('#openidInsert').text());
 
         //初始化数据
         var $j=0;
