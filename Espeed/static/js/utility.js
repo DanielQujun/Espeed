@@ -49,9 +49,7 @@ function getBaiduPosition(lng,lat) {
 
 // 地址跳转
 function goUrl(url) {
-    location.href = '/'+ url +'/?openid='+ window.localStorage.getItem("openid");
-
-    // location.href = '/'+ url +'/?openid=oT69X1PX1jG6Ojhij3tQVOGSnWzQ';
+     location.href = '/'+ url +'/?openid='+ window.localStorage.getItem("openid");
 }
 
 

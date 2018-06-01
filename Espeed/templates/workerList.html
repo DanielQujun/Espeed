@@ -21,8 +21,7 @@
         <div class="weui-navbar">
             <div class="weui-navbar__item weui_bar__item_on"  id="distanceFilter">
                 <span>离我最近<span class="filterArrow"></span></span>
-                <span id="openid" style="display:none;">{{ openid }}</span>
-                <span id="role" style="display:none;">{{ role }}</span>
+
             </div>
             <div class="weui-navbar__item"  id="pubTimeFilter"><span>最新上线<span class="filterArrow"></span></span>
             </div>
@@ -51,6 +50,11 @@
         <button class="bigBtn cancel"><i class="iconfont icon-quxiao"></i>取消发布</button>
         <button class="smallBtn userCenterBtn" onclick="goUrl('userCenter')" ><i class="iconfont icon-wode"></i>个人中心</button>
     </footer>
+
+    //隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分
+    <span id="openidInsert" style="display:none;">{{ openid }}</span>
+    <span id="roleInsert" style="display:none;">{{ role }}</span>
+
 </div>
 
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
@@ -63,7 +67,7 @@
 <script>
     $(function () {
         FastClick.attach(document.body);
-        window.localStorage.setItem("openid",$('#openid').text());
+        window.localStorage.setItem("openid",$('#openidInsert').text());
 
         //调用微信sdk配置
         wx.config({
@@ -201,9 +205,9 @@
                 //造tag标签
                 var $tagArr = val.tag;
                 if($role == "1"){
-                    $tag = '我是<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
+                    $tag = '招聘<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
                 } else {
-                    $tag = '招聘 <span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
+                    $tag = '我是 <span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
                 }
 
                 //拼大字符串

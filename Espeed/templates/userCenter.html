@@ -17,7 +17,7 @@
 <body class="page">
   <div class="userCenter">
     <section class="main">
-      <div class="changePortrait" ><img class="portrait" src="{{ headimgurl }}"><p class="username"></p></div>
+      <div class="changePortrait" ><img class="portrait" src="{{ headimgurl }}"><p class="username">{{ username }}</p></div>
       <div class="tagBox"></div>
       <ul class="menuBox">
         <li class="menuList"><a href="javascript:goUrl('history');"  class="link flex"><span class="title"><i class="iconfont icon-history"></i>历史查看</span><i class="iconfont icon-arrow-right"></i></a></li>
@@ -27,6 +27,12 @@
         <li class="menuList"><a href="javascript:goUrl('role');"   class="link flex"><span class="title"><i class="iconfont icon-qiehuan"></i>切换身份</span><i class="iconfont icon-arrow-right"></i></a></li>
       </ul>
     </section>
+
+
+    //隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分
+    <span id="openidInsert" style="display:none;">{{ openid }}</span>
+
+
   </div>
 
   <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
@@ -42,7 +48,7 @@
         //显示用户名
         $(".username").html(window.localStorage.getItem('username'));
         // 显示头像
-        $(".portrait").attr("src",window.localStorage.getItem('headimgurl'));
+        // $(".portrait").attr("src",window.localStorage.getItem('headimgurl'));
 
         //显示tag标签
         function showTag() {
