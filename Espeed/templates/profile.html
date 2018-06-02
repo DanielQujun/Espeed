@@ -18,26 +18,26 @@
   <div class="profile">
       <section class="main">
           <a class="changePortrait" href="#"><img src="{{ headimgurl }}"></a>
-          <form action = "">
+          <form action="/change_username/" method="post">
               <div class="weui-cells__title" style="text-align: left;">个人资料</div>
               <div class="weui-cells">
                   <div class="weui-cell">
                       <div class="weui-cell__hd"><label class="weui-label">用户名</label></div>
                       <div class="weui-cell__bd">
-                          <input class="weui-input usernameInput" type="text" value="{{ username }}" readonly="true" placeholder="请输入用户名"/><span id="editUsername" class="iconfont icon-bianji"></span>
+                          <input class="weui-input usernameInput" name="username" type="text" value="{{ username }}" readonly="true" placeholder="请输入用户名"/><span id="editUsername" class="iconfont icon-bianji"></span>
                       </div>
                   </div>
                   <div class="weui-cell">
                       <div class="weui-cell__hd"><label class="weui-label">电话号码</label></div>
                       <div class="weui-cell__bd">
-                          <input class="weui-input" type="text" value="{{ phone_num }}" readonly="true"/>
+                          <input class="weui-input" type="text" name="phoneNum" value="{{ phone_num }}" readonly="true"/>
                       </div>
                   </div>
 
                   <div class="weui-cell">
                       <div class="weui-cell__hd"><label class="weui-label">身份</label></div>
-                      <div class="weui-cell__bd">
-                          <input class="weui-input shenfen" type="text" value="{{ phone_num }}" readonly="true"/>
+                      <div class="weui-cell__bd" onclick="goUrl('role');">
+                          <input class="weui-input shenfen" name="shenfen" type="text" value="" readonly="true"/>
                       </div>
                   </div>
                   <div class="weui-cell">
@@ -49,12 +49,10 @@
               </div>
               <input type="submit" value="确定" class="weui-btn weui-btn_primary submitBtn">
               <input id="hiddenRole" type="hidden" value="{{ role }}">
+              <input id="openidInsert" type="hidden" value="{{ openid }}">
           </form>
 
       </section>
-
-      <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
-      <span id="openidInsert" style="display:none;">{{ openid }}</span>
 
 
   </div>
@@ -65,7 +63,7 @@
     $(function() {
         FastClick.attach(document.body);
 
-        window.localStorage.setItem("openid",$('#openidInsert').text());
+        window.localStorage.setItem("openid",$('#openidInsert').val());
 
         if($("#hiddenRole").val() == 1) {
             $(".shenfen").val("工人");
@@ -78,6 +76,7 @@
             $(this).css("display","none");
             $(".usernameInput").addClass("edit").attr("readonly",false);
             $(".submitBtn").css("display","block");
+            console.log(1);
         })
 
         $(".submitBtn").click(function () {
@@ -86,10 +85,15 @@
                 $.alert("请输入用户名");
                 return false;
             }
+            console.log(2);
             $("#editUsername").css("display","block");
             $(".usernameInput").removeClass("edit").attr("readonly",true);
             $(".submitBtn").css("display","none");
+            console.log(3);
         })
+
+
+
     });
   </script>
 </body>
