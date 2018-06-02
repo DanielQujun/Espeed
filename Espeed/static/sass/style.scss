@@ -961,21 +961,25 @@ footer {
 
 .nearbyPage {
 
-  .topModal {
+  .distanceModal {
     width: 100%;
-    //position: absolute;
-    top: 0;
+    position: absolute;
     background: #fff;
     border-bottom: 1px solid #eaeaea;
     z-index: 20;
     padding-top: 51px;
-  }
-  .distanceModal {
-    height: 300px;
+    transition: all ease .3s;
+    top: -100px;
+    height: 100px;
 
     .distanceModal_bd {
-      padding-top: 20px;
+      padding:  0 10px 10px 10px;
+      justify-content: flex-start;
+      flex-wrap: wrap;
 
+      .weui-btn:nth-child(1) {
+        margin-top: 15px;
+      }
     }
     .distanceModal_ft {
       margin-top:15px;
@@ -987,14 +991,53 @@ footer {
     }
 
   }
-  /*@keyframes navMove {
-    0% {
-      top: -50px;
+
+  .jobsModal {
+    width: 100%;
+    position: absolute;
+    background: #fff;
+    border-bottom: 1px solid #eaeaea;
+    z-index: 20;
+    padding-top: 51px;
+    transition: all ease .3s;
+
+    .jobsModal_bd {
+      justify-content: flex-start;
+      width: 100%;
+      flex-wrap: wrap;
+      position: relative;
+      text-align: center;
+
+      input[type = "checkbox"] {
+        position: absolute;
+        clip: rect(0,0,0,0);
+      }
+      input[type = "checkbox"] + label {
+        width: 26%;
+        margin: 10px 3%;
+        border: 1px solid #999999;
+        border-radius: 3px;
+        background: #fff;
+        color: #666666;
+        font-size: 13px;
+        line-height: 2.4em;
+        position: relative;
+        display: block;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      input[type = "checkbox"]:checked + label {
+        color: #fff;
+        background: #3493eb;
+        border: 1px solid #3284d1;
+      }
+
     }
-    100% {
-      top: 0;
-    }
-  }*/
+
+  }
+
+
 
 }
 
