@@ -795,3 +795,13 @@ def nearby_jobs(request):
 
 def nearby_workers(request):
     return render(request, 'workers_nearby.html')
+
+
+def change_username(request):
+    if request.method == 'POST':
+        openid = request.POST.get('openid')
+        user = UserProfileBase.objects.filter(openId=openid).first()
+        user.userName = request.POST.get('username')
+        user.save()
+        callbackurl = "/profile/?openid={openid}".format(openid=openid)
+        return HttpResponseRedirect(callbackurl)
