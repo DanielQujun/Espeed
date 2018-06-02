@@ -131,7 +131,6 @@ def create_menu(request):
             ' create menu err:' +
             response['errmsg'])
 
-
 def register(request):
     if request.method == 'GET':
         data = {}
@@ -173,7 +172,6 @@ def register(request):
         else:
             callbackurl = "/register/?openid={openid}&verify_code_wrong='verify_code_wrong".format(openid=openid)
             return HttpResponseRedirect(callbackurl)
-
 
 def chose_role(request):
     if request.method == 'GET':
@@ -228,7 +226,6 @@ def input_name(request):
             return HttpResponseRedirect(callbackurl)
         else:
             return "bad post data"
-
 
 def chose_job_cate(request):
     if request.method == 'GET':
@@ -357,6 +354,7 @@ def usercenter(request):
             user = UserProfileBase.objects.filter(openId=openid).first()
             data = {}
             data['headimgurl'] = user.avatarAddr
+            data['openid'] = openid
 
             return render(request, 'userCenter.html', data)
 
@@ -367,6 +365,7 @@ def profile(request):
             user = UserProfileBase.objects.filter(openId=request.GET.get('openid')).first()
             if user:
                 data = {}
+                data['openid'] = request.GET.get('openid')
                 data['headimgurl'] = user.avatarAddr
                 data['username'] = user.userName
                 data['phone_num'] = user.phonenum
@@ -379,7 +378,13 @@ def profile(request):
 
 # @login_required
 def history(request):
-    return render(request, 'history.html')
+    if request.method == 'GET':
+        openid = request.GET.get('openid')
+        if openid:
+            data = {}
+            data['openid'] = openid
+            return render(request, 'history.html')
+
 
 def history_ajax(request):
     if request.method == 'POST':
@@ -442,7 +447,12 @@ def history_ajax(request):
 
 #@login_required
 def transaction(request):
-    return render(request, 'transaction.html')
+    if request.method == 'GET':
+        openid = request.GET.get('openid')
+        if openid:
+            data = {}
+            data['openid'] = openid
+            return render(request, 'transaction.html')
 
 def transaction_ajax(request):
     if request.method == 'POST':
@@ -647,8 +657,9 @@ def dail(request):
     headimgurl = show_user.avatarAddr
     username = show_user.userName
     #print {'phone_num': phone_num,'headimgurl':headimgurl,'username':username}
+    data = {'phone_num': phone_num, 'headimgurl':headimgurl, 'username':username, 'openid':openid}
 
-    return render(request, 'dail.html', {'phone_num': phone_num, 'headimgurl':headimgurl, 'username':username})
+    return render(request, 'dail.html', data)
 
 def verify_code(request):
     phoneNum = request.POST.get('phoneNum')
@@ -722,7 +733,6 @@ def rate(request):
             return HttpResponse("OK")
         else:
             return HttpResponse("wrong parameters!")
-
 
 def nearby_jobs(request):
     if request.method == 'GET':
