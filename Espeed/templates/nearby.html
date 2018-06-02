@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
     <link rel="stylesheet" href="../static/iconfont/iconfont.css">
-    <link rel="stylesheet" href="../static/css/style201806021057.css">
+    <link rel="stylesheet" href="../static/css/style.css">
 </head>
 
 <body class="page">
@@ -19,19 +19,32 @@
     <!-- 头部 -->
     <header>
         <div class="weui-navbar">
-            <div class="weui-navbar__item weui_bar__item_on"  id="distanceFilter">
+            <div class="weui-navbar__item weui_bar__item_on"  id="distanceNearby">
                 <span>距离筛选<span class="iconfont icon-julishaixuan"></span></span>
             </div>
-            <div class="weui-navbar__item"  id="pubTimeFilter"><span>工种筛选<span class="iconfont icon-gongrenshaixuan"></span></span>
+            <div class="weui-navbar__item"  id="jobsNearby"><span>工种筛选<span class="iconfont icon-gongrenshaixuan"></span></span>
             </div>
         </div>
     </header>
-    <div class="topModal distanceModal">
-        <div class="distanceModal_bd">
+    <div class="distanceModal">
+        <div class="distanceModal_bd flex">
+            <input type = "button" value="1公里" class="weui-btn weui-btn_mini weui-btn_default" >
+            <input type = "button" value="5公里" class="weui-btn weui-btn_mini weui-btn_primary" >
+            <input type = "button" value="10公里" class="weui-btn weui-btn_mini weui-btn_default" >
+            <input type = "button" value="20公里" class="weui-btn weui-btn_mini weui-btn_default" >
+            <input type = "button" value="50公里" class="weui-btn weui-btn_mini weui-btn_default" >
+            <input type = "button" value="100公里" class="weui-btn weui-btn_mini weui-btn_default" >
+            <input type = "button" value="150公里" class="weui-btn weui-btn_mini weui-btn_default" >
+            <input type = "button" value="200公里" class="weui-btn weui-btn_mini weui-btn_default" >
         </div>
         <div class="distanceModal_ft">
-            <a href="javascript:;" class="weui-btn weui-btn_plain-default">取消</a>
-            <a href="javascript:;" class="weui-btn weui-btn_primary">确定</a>
+        </div>
+    </div>
+    <div class="jobsModal">
+        <div class="jobsModal_bd flex">
+
+        </div>
+        <div class="jobsModal_ft">
         </div>
     </div>
 
@@ -76,6 +89,8 @@
         window.localStorage.setItem("role",$('#roleInserts').text());
 
 
+
+
         //调用微信sdk配置
         wx.config({
             // debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -100,6 +115,7 @@
         var $currentPage = 1;
         var $byDis = true;
         var $byPubTime = true;
+        var $nearbyTagArr = [];
         // addNum($currentPage, $byDis, $byPubTime)；
         loadData($currentPage,$byDis,$byPubTime);
 
@@ -155,21 +171,69 @@
         });
 
         //距离排序
-        $("#distanceFilter").click(function () {
-            $("#distanceFilter .filterArrow").toggleClass('active');
-            $byDis = !$byDis;
-            $(".listCon").html("");
-            $currentPage = 1;
-            loadData($currentPage,$byDis,$byPubTime);
+        $("#distanceNearby").click(function (ev) {
+            if($(".distanceModal").css('top') == "-100px" ) {
+                var event = ev || event;  // firefox的兼容性
+                event.stopPropagation();  // 阻止冒泡事件
+                $(".distanceModal").css("top", "0");
+            }else {
+                var event = ev || event;  // firefox的兼容性
+                event.stopPropagation();  // 阻止冒泡事件
+                $(".distanceModal").css("top", "-100px");
+            }
         });
 
-        //时间排序
-        $("#pubTimeFilter").click(function () {
-            $("#pubTimeFilter .filterArrow").toggleClass('active');
-            $byPubTime = !$byPubTime;
-            $(".listCon").html("");
-            $currentPage = 1;
-            loadData($currentPage,$byDis,$byPubTime);
+
+        // 点击弹窗时，阻止冒泡事件
+        $(".distanceModal").click(function(ev){
+            var event = ev || event;
+            event.stopPropagation();
+        });
+
+        $(document).click(function(){
+            $(".distanceModal").css("top", "-100px");
+        });
+
+        $(".distanceModal input[type='button']").click(function (ev) {
+            var event = ev || event;  // firefox的兼容性
+            event.stopPropagation();  // 阻止冒泡事件
+            alert($(this).val());
+            $(".distanceModal").css("top", "-100px");
+        });
+
+
+        // 弹窗初始化
+        var $modalHeight = $(".jobsModal_bd").css("height");
+        function initModal() {
+            //获取列表中的tag标签，去重，渲染
+            var jobtext = $(".tag").map(function (value) {
+                return $(this).text();
+            }).join(',');
+            $nearbyTagArr = $.unique(jobtext.split(','));
+            var $tagBtns = "";
+            $.each($nearbyTagArr,function (key, job) {
+                $tagBtns += '<input id="'+ key +'" type="checkbox" value="'+ job +'" /><label for="'+ key +'">'+ job +'</label>';
+            });
+            $(".jobsModal_bd").html($tagBtns);
+
+            //设置弹窗的定位位置
+            console.log($modalHeight);
+            $(".jobsModal").css('top',-$modalHeight);
+        }
+
+        initModal();
+
+        //工种筛选
+        $("#jobsNearby").click(function (ev) {
+            if($(".jobsModal").css('top') == $modalHeight ) {
+                var event = ev || event;  // firefox的兼容性
+                event.stopPropagation();  // 阻止冒泡事件
+                $(".jobsModal").css("top", "0");
+            }else {
+                var event = ev || event;  // firefox的兼容性
+                event.stopPropagation();  // 阻止冒泡事件
+                $(".jobsModal").css("top", $modalHeight );
+            }
         });
 
 
@@ -183,7 +247,7 @@
 
             $.ajax({
                 async: true,
-                url: "/worklist_ajax/",                    /*/worklist_ajax/*/
+                url: "workerList.json",                    /*/worklist_ajax/*/
                 dataType: "json",
                 type: "post",
                 data: {
@@ -240,7 +304,8 @@
                 $('.listCon').append(str);
 
             });
-            console.log("现在li的总数"+ $(".listItem").length)
+            console.log("现在li的总数"+ $(".listItem").length);
+
             //是否可以评价
             function isRateble(vis) {
                 return vis ? '<a href="#" class="rate weui-btn weui-btn_mini weui-btn_default">评价</a>' : "";
@@ -384,7 +449,7 @@
                 }
             });
 
-
+            initModal();
         }
 
 

@@ -744,30 +744,69 @@ footer {
   .dail .main .phoneNum {
     margin-bottom: 50%; }
 
-.nearbyPage {
-  /*@keyframes navMove {
-    0% {
-      top: -50px;
-    }
-    100% {
-      top: 0;
-    }
-  }*/ }
-  .nearbyPage .topModal {
-    width: 100%;
-    top: 0;
-    background: #fff;
-    border-bottom: 1px solid #eaeaea;
-    z-index: 20;
-    padding-top: 51px; }
-  .nearbyPage .distanceModal {
-    height: 300px; }
-    .nearbyPage .distanceModal .distanceModal_bd {
-      padding-top: 20px; }
-    .nearbyPage .distanceModal .distanceModal_ft {
+.nearbyPage .distanceModal {
+  width: 100%;
+  position: absolute;
+  background: #fff;
+  border-bottom: 1px solid #eaeaea;
+  z-index: 20;
+  padding-top: 51px;
+  -webkit-transition: all ease .3s;
+  transition: all ease .3s;
+  top: -100px;
+  height: 100px; }
+  .nearbyPage .distanceModal .distanceModal_bd {
+    padding: 0 10px 10px 10px;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap; }
+    .nearbyPage .distanceModal .distanceModal_bd .weui-btn:nth-child(1) {
       margin-top: 15px; }
-      .nearbyPage .distanceModal .distanceModal_ft .weui-btn {
-        width: 45%;
-        display: inline-block; }
+  .nearbyPage .distanceModal .distanceModal_ft {
+    margin-top: 15px; }
+    .nearbyPage .distanceModal .distanceModal_ft .weui-btn {
+      width: 45%;
+      display: inline-block; }
+.nearbyPage .jobsModal {
+  width: 100%;
+  position: absolute;
+  background: #fff;
+  border-bottom: 1px solid #eaeaea;
+  z-index: 20;
+  padding-top: 51px;
+  -webkit-transition: all ease .3s;
+  transition: all ease .3s; }
+  .nearbyPage .jobsModal .jobsModal_bd {
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    width: 100%;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    position: relative;
+    text-align: center; }
+    .nearbyPage .jobsModal .jobsModal_bd input[type="checkbox"] {
+      position: absolute;
+      clip: rect(0, 0, 0, 0); }
+    .nearbyPage .jobsModal .jobsModal_bd input[type="checkbox"] + label {
+      width: 26%;
+      margin: 10px 3%;
+      border: 1px solid #999999;
+      border-radius: 3px;
+      background: #fff;
+      color: #666666;
+      font-size: 13px;
+      line-height: 2.4em;
+      position: relative;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; }
+    .nearbyPage .jobsModal .jobsModal_bd input[type="checkbox"]:checked + label {
+      color: #fff;
+      background: #3493eb;
+      border: 1px solid #3284d1; }
 
 /*# sourceMappingURL=style.css.map */
