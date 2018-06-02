@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
   <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
   <link rel="stylesheet" href="../static/css/style201805301918.css">
-  <style>
+  <!--<style>  如果苹果端没有问题，可以注释掉
     [contenteditable = "true"], input, textarea {
       -webkit-user-select: auto!important;
       -khtml-user-select: auto!important;
@@ -19,14 +19,14 @@
       user-select: text!important;
     }
 
-  </style>
+  </style>-->
 </head>
 
 <body class="page">
   <div class="baseProfile">
     <section class="main flex">
       <form action="/baseProfile/" method="post">
-      <a class="changePortrait"><img src="{{ headimgurl }}"><p>{{ nickname }}</p></a>
+      <a class="changePortrait"><img src="{{ headimgurl }}"><p id="showName">{{ nickname }}</p></a>
       <div class="inputBox">
         <span class="usernameLabel">用户名</span>
         <input class="usernameInput" type="text" id="username" name="username" value="" placeholder="请输入用户名（必填,别人可见）">
@@ -44,9 +44,6 @@
       </form>
     </section>
 
-    <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
-    <span id="openidInsert" style="display:none;">{{ openid }}</span>
-
   </div>
   <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
   <script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
@@ -55,8 +52,6 @@
   <script>
     $(function() {
         FastClick.attach(document.body);
-
-        window.localStorage.setItem("openid",$('#openidInsert').text());
 
         window.localStorage.setItem("openid",$('#openid').val());
         window.localStorage.setItem("nickname",$('#nickname').val());
@@ -69,12 +64,17 @@
         window.localStorage.setItem("phoneNum",$('#phoneNum').val());
         window.localStorage.setItem("myJob","0");             //设置工种初始值，防止个人中心报错
 
+
+        if(window.localStorage.getItem('username') != ""){
+            $("#showName").html(window.localStorage.getItem('username'));
+        }
+
         $(".submitBtn").click(function () {
-            if($(".username").val() == ""){
-                alert("请输入用户名");
+            if($(".usernameInput").val() == ""){
+                $.alert("请输入用户名");
                 return false;
             } else {
-                window.localStorage.setItem("usename",$('#username').val());
+                window.localStorage.setItem("username",$('#username').val());
             }
         })
     });

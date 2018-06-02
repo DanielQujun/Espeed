@@ -58,7 +58,6 @@
 
     <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
     <span id="openidInsert" style="display:none;">{{ openid }}</span>
-
     <span id="roleInsert" style="display:none;">{{ role }}</span>
 </div>
 
@@ -74,6 +73,8 @@
     $(function () {
         FastClick.attach(document.body);
         window.localStorage.setItem("openid",$('#openidInsert').text());
+        window.localStorage.setItem("role",$('#roleInserts').text());
+
 
         //调用微信sdk配置
         wx.config({
@@ -182,7 +183,7 @@
 
             $.ajax({
                 async: true,
-                url: "workerList.json",                    /*/worklist_ajax/*/
+                url: "/worklist_ajax/",                    /*/worklist_ajax/*/
                 dataType: "json",
                 type: "post",
                 data: {
@@ -206,7 +207,7 @@
 
 
         }
-        var $role = parseInt($("#role").text());
+        var $role = $("#roleInsert").text();
         //渲染数据
         function showData(data) {
 

@@ -891,50 +891,32 @@ footer {
 
     .weui-cells {
       text-align: left;
-    }
 
-    #workerWrap {
-      display: none;
-    }
+      .usernameInput {
+        width:90%;
+        color: #999;
+      }
 
-    #bossWrap {
-      display: none;
-    }
-    /*.inputBox {
-     margin-top: 1rem;
-     text-align: left;
-     
-     .username {
-       margin-top: 4px;
-      height: 46px;
-      line-height: 46px;
-      width: 100%;
-      border-radius: 5px;
-      border: 1px solid #dedede;
-      outline: none;
-      padding: 0 0 0 14px;
-      box-sizing: border-box;
-      margin-bottom:  6px;
-    }
+      .edit {
+        color: #3493eb;
+      }
 
-    .username.active {
-      box-shadow: 0 0 1px 2px #3493eb;
-    }
+      .icon-bianji {
+        margin-left: 5px;
+        color: #3493eb;
+      }
 
-    .tag {
-      border: 1px solid #fbaf5d;
-            padding: 4px 10px;
-            font-size: 14px;
-            line-height: 2.5em;
-            color: #fbaf5d;
-            border-radius: 2px;
-            margin-right: 4px;
-    }
+      .weui-cell__bd {
+        color: #999;
+      }
 
     }
+
     .submitBtn {
-      margin-top: 1rem;
-    }*/
+      display: none;
+      width: 80%;
+      margin-top: 30px;
+    }
 
   }
 }
