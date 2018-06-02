@@ -21,8 +21,8 @@ class UserProfileBase(models.Model):
     phonenum = models.CharField(max_length=20)				# 电话
     avatarAddr = models.URLField()						# 头像
     Role = models.IntegerField(default=True)	    # 身份
-    Location_lati = models.CharField(max_length=100)     # 定位
-    Location_longi = models.CharField(max_length=100)  # 定位
+    Location_lati = models.FloatField(null=True)     # 定位
+    Location_longi = models.FloatField(null=True)  # 定位
     Score = models.IntegerField(default=5)       # 评分
     ScoreCount = models.IntegerField(default=True)	# 评价人数
     Jobs = SetTextField(
@@ -31,7 +31,7 @@ class UserProfileBase(models.Model):
     online = models.BooleanField(default=False)     # 是否在线
     createTime = models.DateTimeField(auto_now_add=True)				# 注册时间
     last_login = models.DateField(default=None)			# 最后访问时间
-    publishTime = models.CharField(max_length=20,default=None)
+    publishTime = models.CharField(max_length=20,null=True)
 
 class UserVisible(models.Model):
     transation_no = models.CharField(default=None, max_length=50)

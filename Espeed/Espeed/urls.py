@@ -40,8 +40,6 @@ urlpatterns = [
     url(r'^transaction_ajax/', weixin_views.transaction_ajax, name='transaction_ajax'),
     url(r'^rate/', weixin_views.rate, name='rate'),
     url(r'^nearby_jobs/', weixin_views.nearby_jobs, name='nearby_jobs'),
-    url(r'^nearby_workers/', weixin_views.nearby_workers, name='nearby_workers'),
+    url(r'^nearby/', weixin_views.nearby_workers, name='nearby_workers'),
     url(r'^change_username/', weixin_views.change_username, name='change_username'),
-
-
 ]

@@ -254,7 +254,7 @@ def create_jobcates():
         job_cate.save()
 
 if __name__ == '__main__':
-    for i in range(200):
+    for i in range(1):
         openid = hashlib.md5(''.join([random.choice("0123456789") for i in range(8)])).hexdigest()
         username = random.choice(name1) + random.choice(name2) + random.choice(name3)
         nickname = random.choice(nickname_str) + random.choice(nickname_str) +random.choice(nickname_str) + random.choice(nickname_str)
@@ -262,8 +262,8 @@ if __name__ == '__main__':
         sex = random.choice(['1','2'])
         jobs = set(random.sample(jobs_cates_samp, 2))
         role = random.choice([1,2])
-        Location_lati = '28.1{i}027215073601'.format(i=i)
-        Location_longi = '112.9{i}513532428318'.format(i=i)
+        Location_lati = float(u'28.153687729085096')
+        Location_longi = float(u'112.9855580663209')
         Score = random.choice([1,2,3,4,5])
         gen_user(openid, phonenum, username, nickname, sex, jobs,role, Location_lati, Location_longi,Score)
     #print Distance('22.925574625328796','113.27683018769442','28.151706861629958','112.9853043363359')

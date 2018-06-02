@@ -180,6 +180,8 @@ def chose_role(request):
         return render(request, 'role.html', data)
 
     elif request.method == 'POST':
+        print "i am in chose role!!"
+        print request.POST
         openid = request.POST.get('openid')
         role = request.POST.get('role')
         if role and openid:
@@ -263,8 +265,8 @@ def chose_job_cate(request):
                 print request.POST
                 user = UserProfileBase.objects.filter(openId=openid).first()
                 user.Jobs = POST_DATA.get('tag')
-                user.Location_lati = POST_DATA.get('latitude')
-                user.Location_longi = POST_DATA.get('longitude')
+                user.Location_lati = float(POST_DATA.get('latitude'))
+                user.Location_longi = float(POST_DATA.get('longitude'))
                 user.online = 'True'
                 user.publishTime = time.time()
                 user.save()
@@ -355,6 +357,7 @@ def usercenter(request):
             data = {}
             data['headimgurl'] = user.avatarAddr
             data['openid'] = openid
+            data['username'] = user.userName
 
             return render(request, 'userCenter.html', data)
 
@@ -383,7 +386,7 @@ def history(request):
         if openid:
             data = {}
             data['openid'] = openid
-            return render(request, 'history.html')
+            return render(request, 'history.html', data)
 
 
 def history_ajax(request):
@@ -452,7 +455,7 @@ def transaction(request):
         if openid:
             data = {}
             data['openid'] = openid
-            return render(request, 'transaction.html')
+            return render(request, 'transaction.html', data)
 
 def transaction_ajax(request):
     if request.method == 'POST':
@@ -506,7 +509,9 @@ def worklist_ajax(request):
 
             work_objects_db = []
             for tag in tag_set:
-                workers = UserProfileBase.objects.exclude(Role=user.Role).filter(Jobs__contains=tag)
+                workers = UserProfileBase.objects.exclude(Role=user.Role).filter(Jobs__contains=tag).\
+                    filter(Location_longi__range=(user.Location_longi - 0.1,user.Location_longi +0.1)).\
+                    filter(Location_lati__range=(user.Location_lati - 0.1,user.Location_lati + 0.1))
                 for worker in workers:
                     worker_dic = {}
                     worker_dic['userid'] = worker.id
@@ -794,7 +799,13 @@ def nearby_jobs(request):
             return HttpResponseRedirect(callbackurl)
 
 def nearby_workers(request):
-    return render(request, 'workers_nearby.html')
+    if request.method == 'GET':
+        openid = request.GET.get('openid')
+        data = {}
+        data['openid'] = openid
+        user = UserProfileBase.objects.filter(openId=openid).first()
+        data['role'] = user.Role
+        return render(request, 'nearby.html', data)
 
 
 def change_username(request):
