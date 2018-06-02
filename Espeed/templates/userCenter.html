@@ -23,15 +23,12 @@
         <li class="menuList"><a href="javascript:goUrl('history');"  class="link flex"><span class="title"><i class="iconfont icon-history"></i>历史查看</span><i class="iconfont icon-arrow-right"></i></a></li>
         <li class="menuList"><a href="javascript:goUrl('profile');"   class="link flex"><span class="title"><i class="iconfont icon-profile"></i>我的资料</span><i class="iconfont icon-arrow-right"></i></a></li>
         <li class="menuList"><a href="javascript:goUrl('transaction');"   class="link flex"><span class="title"><i class="iconfont icon-record"></i>交易记录</span><i class="iconfont icon-arrow-right"></i></a></li>
-
         <li class="menuList"><a href="javascript:goUrl('role');"   class="link flex"><span class="title"><i class="iconfont icon-qiehuan"></i>切换身份</span><i class="iconfont icon-arrow-right"></i></a></li>
       </ul>
     </section>
 
-
     <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
     <span id="openidInsert" style="display:none;">{{ openid }}</span>
-
 
   </div>
 
@@ -41,24 +38,20 @@
   <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
   <script type="text/javascript"src="../static/js/utility.js"></script>
   <script>
-    // 开启fastclick功能
     $(function() {
         FastClick.attach(document.body);
+
         window.localStorage.setItem("openid",$('#openidInsert').text());
+        window.localStorage.setItem("headimgurl",$('.portrait').attr('src'));
+        window.localStorage.setItem("username",$('.username').text());
 
-
-        //显示用户名
-        $(".username").html(window.localStorage.getItem('username'));
-        // 显示头像
-        // $(".portrait").attr("src",window.localStorage.getItem('headimgurl'));
-
-        //显示tag标签
         function showTag() {
             var myJobArr = $.session.get('myJob').split(",");
             var $tags = '<span class="tag">'+ myJobArr[0] +'</span><span class="tag">'+ myJobArr[0] +'</span>';
             $("tagBox").html($tags);
-
         }
+
+        showTag();
 
     });
 

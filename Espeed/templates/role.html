@@ -10,7 +10,7 @@
   <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
   <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
   <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
-  <link rel="stylesheet" href="../static/css/style201805301918.css">
+  <link rel="stylesheet" href="../static/css/style201806021057.css">
 </head>
 
 <body class="page">
@@ -29,7 +29,6 @@
           </label>
 
         </div>
-        <input id="openid" type="hidden" value="{{ openid }}" name="openid">
         <button type="submit" class="weui-btn weui-btn_primary confirmBtn">确定</button>
       </form>
     </section>
@@ -48,12 +47,20 @@
     $(function() {
         FastClick.attach(document.body);
         window.localStorage.setItem("openid",$('#openidInsert').text());
+        window.localStorage.getItem("role");
 
+        if(window.localStorage.getItem("role") == "1") {
+            $("#worker").attr("checked","checked");
+            $("#boss").attr("checked","");
+        } else {
+            $("#worker").attr("checked","");
+            $("#boss").attr("checked","checked");
+        }
 
-        /*$(".confirmBtn").click(function () {
-            var $roleVal = $('input[name="role"]:checked').val();
+        $(".confirmBtn").click(function () {
+            var $roleVal = $('input[name="role"]').is(":checked").val();
             window.localStorage.setItem("role",$roleVal);
-        })*/
+        })
 
     });
   </script>

@@ -11,19 +11,16 @@
   <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
   <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
   <link rel="stylesheet" href="../static/iconfont/iconfont.css">
-  <link rel="stylesheet" href="../static/css/style201805301918.css">
+  <link rel="stylesheet" href="../static/css/style201806021057.css">
 </head>
 
 <body class="page">
   <div class="history">
-    <!-- 主体内容 -->
     <section class="main">
       <ul class="listCon">
       </ul>
     </section>
-    <!--<div class="jiaobiaoBox stop offline">-->
   </div>
-
 
   <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
   <span id="openidInsert" style="display:none;">{{ openid }}</span>
@@ -216,7 +213,7 @@
                         type: "post",
                         data: {
                             openid: window.localStorage.getItem("openid"),
-//                        openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+//                          openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                             userid: id,
                             rateVal: complainid
                         },

@@ -10,44 +10,48 @@
     <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
-    <link rel="stylesheet" href="../static/css/style201805301918.css">
+    <link rel="stylesheet" href="../static/iconfont/iconfont.css">
+    <link rel="stylesheet" href="../static/css/style201806021057.css">
 </head>
 
 <body class="page">
   <div class="profile">
       <section class="main">
-          <a class="changePortrait" href="#"><img src="{{ headimgurl }}"></a><!--{{ headimgurl }}-->
+          <a class="changePortrait" href="#"><img src="{{ headimgurl }}"></a>
+          <form action = "">
+              <div class="weui-cells__title" style="text-align: left;">个人资料</div>
+              <div class="weui-cells">
+                  <div class="weui-cell">
+                      <div class="weui-cell__hd"><label class="weui-label">用户名</label></div>
+                      <div class="weui-cell__bd">
+                          <input class="weui-input usernameInput" type="text" value="{{ username }}" readonly="true" placeholder="请输入用户名"/><span id="editUsername" class="iconfont icon-bianji"></span>
+                      </div>
+                  </div>
+                  <div class="weui-cell">
+                      <div class="weui-cell__hd"><label class="weui-label">电话号码</label></div>
+                      <div class="weui-cell__bd">
+                          <input class="weui-input" type="text" value="{{ phone_num }}" readonly="true"/>
+                      </div>
+                  </div>
 
-          <div class="weui-cells__title" style="text-align: left;">个人资料</div>
-          <div class="weui-cells">
-              <div class="weui-cell">
-                  <div class="weui-cell__bd">
-                      <p>用户名</p>
+                  <div class="weui-cell">
+                      <div class="weui-cell__hd"><label class="weui-label">身份</label></div>
+                      <div class="weui-cell__bd">
+                          <input class="weui-input shenfen" type="text" value="{{ phone_num }}" readonly="true"/>
+                      </div>
                   </div>
-                  <div class="weui-cell__ft">{{ username }}</div>
-              </div>
-              <div class="weui-cell">
-                  <div class="weui-cell__bd">
-                      <p>电话号码</p>
+                  <div class="weui-cell">
+                      <div class="weui-cell__hd"><label class="weui-label">工种</label></div>
+                      <div class="weui-cell__bd">
+                          <input class="weui-input" type="text" value="{{ Jobs }}" readonly="true"/>
+                      </div>
                   </div>
-                  <div class="weui-cell__ft">{{ phone_num }}</div>
               </div>
+              <input type="submit" value="确定" class="weui-btn weui-btn_primary submitBtn">
+              <input id="hiddenRole" type="hidden" value="{{ role }}">
+          </form>
 
-              <div class="weui-cell">
-                  <div class="weui-cell__bd">
-                      <p>身份</p>
-                  </div>
-                  <div class="weui-cell__ft roleTitle shenfen" ></div>
-              </div>
-              <div class="weui-cell" id="workerWrap" style="display: flex;">
-                  <div class="weui-cell__bd">
-                      <p>工种</p>
-                  </div>
-                  <div class="weui-cell__ft " class="tagWrap">{{ Jobs }}</div>
-              </div>
-          </div>
-          <input id="hiddenRole" type="hidden" value="{{ role }}">
-        </section>
+      </section>
 
       <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
       <span id="openidInsert" style="display:none;">{{ openid }}</span>
@@ -64,10 +68,28 @@
         window.localStorage.setItem("openid",$('#openidInsert').text());
 
         if($("#hiddenRole").val() == 1) {
-            $(".shenfen").html("工人");
+            $(".shenfen").val("工人");
         } else {
-            $(".shenfen").html("老板");
+            $(".shenfen").val("老板");
         }
+
+        //点击编辑图标，激活编辑框
+        $("#editUsername").click(function () {
+            $(this).css("display","none");
+            $(".usernameInput").addClass("edit").attr("readonly",false);
+            $(".submitBtn").css("display","block");
+        })
+
+        $(".submitBtn").click(function () {
+            console.log($(".usernameInput").val());
+            if($(".usernameInput").val() == ""){
+                $.alert("请输入用户名");
+                return false;
+            }
+            $("#editUsername").css("display","block");
+            $(".usernameInput").removeClass("edit").attr("readonly",true);
+            $(".submitBtn").css("display","none");
+        })
     });
   </script>
 </body>
