@@ -43,7 +43,11 @@
       <button class="weui-btn weui-btn_primary submitBtn">确定</button>
       </form>
     </section>
-  </div>-->
+
+    <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
+    <span id="openidInsert" style="display:none;">{{ openid }}</span>
+
+  </div>
   <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
   <script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
   <script type="text/javascript" src="../static/lib/jquerySession.js"></script>
@@ -51,6 +55,8 @@
   <script>
     $(function() {
         FastClick.attach(document.body);
+
+        window.localStorage.setItem("openid",$('#openidInsert').text());
 
         window.localStorage.setItem("openid",$('#openid').val());
         window.localStorage.setItem("nickname",$('#nickname').val());

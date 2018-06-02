@@ -36,6 +36,12 @@
         <button class="bigBtn"><i class="iconfont icon-jia1"></i>立即发布</button>
         <button class="smallBtn" onclick="goUrl('userCenter')"><i class="iconfont icon-wode"></i>个人中心</button>
     </footer>
+
+
+    <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
+    <span id="openidInsert" style="display:none;">{{ openid }}</span>
+    <span id="roleInserts" style="display:none;">{{ role }}</span>
+
 </div>
 
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
@@ -49,6 +55,8 @@
 
     $(function () {
         FastClick.attach(document.body);
+        window.localStorage.setItem("openid",$('#openidInsert').text());
+
 
         //调用微信sdk配置
         wx.config({
@@ -133,6 +141,9 @@
         }
     }
 
+    var $roleInsert = $('#roleInsert').text();
+    var $tipStr = ""
+
     //如果没有publish类（没有选工种），则不能发布，弹窗提示
     $('.bigBtn').click(function () {
         //将选择的工种数值写入session
@@ -143,8 +154,15 @@
         $.session.set("myJob", $jobVal);
 
         if ($('.bigBtn.publish').length == 1) {
+
+            if($roleInsert == 1){
+                $tipStr = "发布后，您的消息将被各位老板看见，您可能会接到老板的招工电话，请保持手机畅通";
+            }else {
+                $tipStr = "发布后，您的招聘信息将被工人们查看，您可能会接到咨询电话，请保持手机畅通";
+            }
+
             //至少选了1个工种
-            $.confirm("发布后，您的消息将被各位老板看见，您可能会接到老板的招工电话，请保持手机畅通", "确认发布", function () {
+            $.confirm($tipStr, "确认发布", function () {
                 //通过ajax将session中发布参数传到后台
                 $.ajax({
                     url: "/jobs/",

@@ -977,7 +977,44 @@ footer {
   }
 }
 
+.nearbyPage {
 
+  .topModal {
+    width: 100%;
+    //position: absolute;
+    top: 0;
+    background: #fff;
+    border-bottom: 1px solid #eaeaea;
+    z-index: 20;
+    padding-top: 51px;
+  }
+  .distanceModal {
+    height: 300px;
+
+    .distanceModal_bd {
+      padding-top: 20px;
+
+    }
+    .distanceModal_ft {
+      margin-top:15px;
+
+      .weui-btn {
+        width: 45%;
+        display: inline-block;
+      }
+    }
+
+  }
+  /*@keyframes navMove {
+    0% {
+      top: -50px;
+    }
+    100% {
+      top: 0;
+    }
+  }*/
+
+}
 
 
 
