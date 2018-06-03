@@ -262,6 +262,7 @@ def workers_or_jobs_list(request):
     code = request.GET.get("code", "")
     state = request.GET.get("state", "")
     openid = request.GET.get("openid", "")
+    sort_time = request.GET.get('sorttime',False)
 
     if not code and not openid:
         return HttpResponse('非法访问...')
@@ -291,6 +292,13 @@ def workers_or_jobs_list(request):
                         data = render_js_config(request)
                         data['openid'] = user.openId
                         data['role'] = user.Role
+                        if sort_time:
+                            data['byDis'] = 'false'
+                            data['byPubTime'] = 'true'
+                        else:
+                            data['byDis'] = 'true'
+                            data['byPubTime'] = 'true'
+                        print data
                         return render(request, 'workerList.html', data)
                     else:
                         print "qujun: User is Not Online!"

@@ -109,8 +109,10 @@
         var $j=0;
         var $totalPage = 10;
         var $currentPage = 1;
-        var $byDis = true;
-        var $byPubTime = true;
+        //var $byDis = true;
+        //var $byPubTime = true;
+        var $byDis = {{ byDis|safe }};
+        var $byPubTime = {{ byPubTime|safe }};
         loadData($currentPage,$byDis,$byPubTime);
 
 
