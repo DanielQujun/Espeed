@@ -19,7 +19,7 @@
       <form action="/role/" method="post">
         <div class="roleBox">
           <label for="worker"><img src="../static/images/role_worker.png" ><br>
-            <input class="worker" type="radio" id="worker" name="role" value="1">我是技术人员
+            <input class="worker" type="radio" id="worker" name="role" value="1" checked>我是技术人员
           </label>
 
         </div>
@@ -48,10 +48,12 @@
     $(function() {
         FastClick.attach(document.body);
         window.localStorage.setItem("openid",$('#openidInsert').text());
+        window.localStorage.setItem("role","1");
 
         $('input[type="radio"]').on('focus',function () {
             window.localStorage.setItem("role",$(this).val());
-        })
+        });
+
 
 
     });
