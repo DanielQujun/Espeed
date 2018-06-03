@@ -159,7 +159,7 @@
         }
     }
 
-    var $roleInsert = $('#roleInsert').text();
+    var $roleInsert = window.localStorage.getItem("role");
     var $tipStr = "";
 
     //如果没有publish类（没有选工种），则不能发布，弹窗提示

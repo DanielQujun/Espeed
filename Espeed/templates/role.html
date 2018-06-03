@@ -25,7 +25,7 @@
         </div>
         <div class="roleBox">
           <label for="boss"><img src="../static/images/role_boss.png" ><br>
-            <input type="radio" id="boss" name="role" value="2" checked >我需要专业技术人员
+            <input type="radio" id="boss" name="role" value="2" >我需要专业技术人员
           </label>
 
         </div>
@@ -48,20 +48,11 @@
     $(function() {
         FastClick.attach(document.body);
         window.localStorage.setItem("openid",$('#openidInsert').text());
-        window.localStorage.getItem("role");
 
-        if(window.localStorage.getItem("role") == "1") {
-            $("#worker").attr("checked","checked");
-            $("#boss").attr("checked","");
-        } else {
-            $("#worker").attr("checked","");
-            $("#boss").attr("checked","checked");
-        }
-
-        $(".confirmBtn").click(function () {
-            var $roleVal = $('input[name="role"]').is(":checked").val();
-            window.localStorage.setItem("role",$roleVal);
+        $('input[type="radio"]').on('focus',function () {
+            window.localStorage.setItem("role",$(this).val());
         })
+
 
     });
   </script>
