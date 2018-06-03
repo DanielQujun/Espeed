@@ -55,8 +55,24 @@ input {
 .page .weui-dialog__btn {
   color:#3493eb;
 }
+.weui-tabbar {
+   background-color: #3493eb;
+}
+.weui-tabbar__icon>i, i.weui-tabbar__icon {
+  font-size: 24px;
+  color: #fff;
+}
+.weui-tabbar__item.weui-bar__item--on .weui-tabbar__label {
+  color: #fff;
+}
+.weui-bar__item--on {
+  background-color: #3284d1;
+}
+.weui-tabbar__label {
+  color: #fff;
+}
 
-// 底部导航栏
+  // 底部导航栏
 footer {
   position: fixed;
   width: 100%;
@@ -107,10 +123,6 @@ footer {
     font-size: 18px;
     background: #333;
     line-height:52px;
-
-    .iconfont {
-      font-size: 18px;
-    }
   }
   .bigBtn:active {
     background: #3284d1;
@@ -128,6 +140,32 @@ footer {
     color: #fff;
   }
 }
+.fixedBtn {
+  position: fixed;
+  left: 50%;
+  margin-left: -75px;
+  right:0;
+  border-radius: 30px;
+  height: 36px;
+  background:#3493eb;
+  width: 150px;
+  bottom: 54px;
+  text-align: center;
+  color: #fff;
+  outline: none;
+  border: none;
+  margin-bottom: 10px;
+  vertical-align: top;
+
+  .iconfont {
+    font-size: 16px;
+    margin-right: 5px;
+  }
+
+}
+
+
+
 .rateActionstar {
   display: inline-block;
   width: 100px;

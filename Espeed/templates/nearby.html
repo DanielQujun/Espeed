@@ -4,14 +4,14 @@
 
 <head lang="en">
     <meta charset="utf-8">
-    <title>列表页</title>
+    <title>附近的人</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
     <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
     <link rel="stylesheet" href="../static/iconfont/iconfont.css">
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/style201806031533.css">
 </head>
 
 <body class="page">
@@ -20,9 +20,9 @@
     <header>
         <div class="weui-navbar">
             <div class="weui-navbar__item weui_bar__item_on"  id="distanceNearby">
-                <span>距离筛选<span class="iconfont icon-julishaixuan"></span></span>
+                <span>距离筛选</span>
             </div>
-            <div class="weui-navbar__item"  id="jobsNearby"><span>工种筛选<span class="iconfont icon-gongrenshaixuan"></span></span>
+            <div class="weui-navbar__item"  id="jobsNearby"><span>工种筛选</span>
             </div>
         </div>
         <div class="distanceModal">
@@ -58,9 +58,26 @@
 
     <!-- 底部 -->
     <footer>
-        <button class="smallBtn nearbyBtn" onclick="goUrl('nearby')" ><i class="iconfont icon-fujinderen"></i>附近的人</button>
-        <button class="bigBtn cancel"><i class="iconfont icon-quxiao"></i>取消发布</button>
-        <button class="smallBtn userCenterBtn" onclick="goUrl('userCenter')" ><i class="iconfont icon-wode"></i>个人中心</button>
+        <div class="weui-tabbar">
+            <a href="javascript:goUrl('nearby');" class="weui-tabbar__item weui-bar__item--on">
+                <div class="weui-tabbar__icon">
+                    <i class="iconfont icon-fujinderen"></i>
+                </div>
+                <p class="weui-tabbar__label">附近的人</p>
+            </a>
+            <a href="javascript:goUrl('workerList');" class="weui-tabbar__item">
+                <div class="weui-tabbar__icon">
+                    <i class="iconfont icon-zhifeiji"></i>
+                </div>
+                <p class="weui-tabbar__label">在线发布</p>
+            </a>
+            <a href="javascript:goUrl('userCenter');" class="weui-tabbar__item">
+                <div class="weui-tabbar__icon">
+                    <i class="iconfont icon-gerenzhongxin"></i>
+                </div>
+                <p class="weui-tabbar__label">个人中心</p>
+            </a>
+        </div>
     </footer>
 
 
