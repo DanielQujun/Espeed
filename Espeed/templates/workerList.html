@@ -45,13 +45,13 @@
         <button class="fixedBtn bigBtn cancel"><i class="iconfont icon-quxiao"></i>取消发布</button>
     <footer>
         <div class="weui-tabbar">
-            <a href="javascript:goUrl('nearby');" class="weui-tabbar__item weui-bar__item--on">
+            <a href="javascript:goUrl('nearby');" class="weui-tabbar__item">
                 <div class="weui-tabbar__icon">
                     <i class="iconfont icon-fujinderen"></i>
                 </div>
                 <p class="weui-tabbar__label">附近的人</p>
             </a>
-            <a href="javascript:goUrl('workerList');" class="weui-tabbar__item">
+            <a href="javascript:goUrl('workerList');" class="weui-tabbar__item weui-bar__item--on">
                 <div class="weui-tabbar__icon">
                     <i class="iconfont icon-zhifeiji"></i>
                 </div>
@@ -191,7 +191,7 @@
 
             $.ajax({
                 async: true,
-                url: "workerList.json",                    /*/worklist_ajax/*/
+                url: "/nearby_ajax/",                    /*/worklist_ajax/*/
                 dataType: "json",
                 type: "post",
                 data: {
