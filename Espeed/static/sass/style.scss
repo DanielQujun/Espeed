@@ -151,7 +151,7 @@ footer {
   right:0;
   border-radius: 30px;
   height: 36px;
-  background:#3493eb;
+  background:#333;
   width: 150px;
   bottom: 54px;
   text-align: center;
@@ -161,6 +161,9 @@ footer {
   margin-bottom: 10px;
   vertical-align: top;
 
+  &.publish {
+    background:#3493eb;
+  }
   .iconfont {
     font-size: 16px;
     margin-right: 5px;
@@ -1042,11 +1045,13 @@ footer {
       z-index: 92;
       padding: 5px 15px;
       box-sizing: border-box;
+      font-size: 0;
 
       .weui-btn {
         width: 20%;
-        margin: 0 2.5% 15px 2.5%;
+        margin: 0 2.4% 15px 2.4%;
         padding: 0;
+
       }
     }
 

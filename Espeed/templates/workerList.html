@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
     <link rel="stylesheet" href="../static/iconfont/iconfont.css">
-    <link rel="stylesheet" href="../static/css/style201806031655.css">
+    <link rel="stylesheet" href="../static/css/style201806032229.css">
 </head>
 
 <body class="page">
@@ -64,10 +64,6 @@
                 <p class="weui-tabbar__label">个人中心</p>
             </a>
         </div>
-        <!--<button class="smallBtn nearbyBtn" onclick="goUrl('nearby')" ><i class="iconfont icon-fujinderen"></i>附近的人</button>
-
-        <button class="smallBtn " onclick="goUrl('workerList')" ><i class="iconfont icon-fujinderen"></i>在线发布</button>
-        <button class="smallBtn userCenterBtn" onclick="goUrl('userCenter')" ><i class="iconfont icon-wode"></i>个人中心</button>-->
     </footer>
 
     <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
@@ -123,10 +119,10 @@
             $loading = true;
             ++ $currentPage;
             if($currentPage <= $totalPage ){
-                setInterval(loadData($currentPage,$byDis,$byPubTime),1000);                 //测试
+                loadData($currentPage,$byDis,$byPubTime);                 //测试
                 $loading = false;
             } else {
-                console.log("不执行了")
+//                console.log("不执行了");
                 $(document.body).destroyInfinite();
                 $('.loadMoreTip').css("display","none");
                 $('.bottomTips').css("display","block");
@@ -186,10 +182,10 @@
 
         //加载对应页码数据
         function loadData(page,byDis,byPubTime) {
-            console.log(new Date());
+//            console.log(new Date());
             $j++;
-            console.log("开始执行loadData函数,第"+ $j + "次执行");
-            console.log('第'+ $j + '次执,loadData向后台请求的页码数'+ page);
+//            console.log("开始执行loadData函数,第"+ $j + "次执行");
+//            console.log('第'+ $j + '次执,loadData向后台请求的页码数'+ page);
 
             $.ajax({
                 async: true,
@@ -205,10 +201,10 @@
                 success: function (data) {
                     $totalPage = data.totalPage;
                     $currentPage = data.currentPage;
-                    console.log('第'+ $j + '次执,现在数据中的totalPage:'+ $totalPage);
-                    console.log('第'+ $j + '次执,现在数据中的currentPage,也是自身的$currentPage:'+ $currentPage);
-                    setInterval(showData(data.listData),1000);
-                    console.log("第" + $j + "次请求结束");
+//                    console.log('第'+ $j + '次执,现在数据中的totalPage:'+ $totalPage);
+//                    console.log('第'+ $j + '次执,现在数据中的currentPage,也是自身的$currentPage:'+ $currentPage);
+                    showData(data.listData);
+//                    console.log("第" + $j + "次请求结束");
                 },
                 error: function (error) {
                     console.log(error.readyState, error.statusText);
@@ -225,10 +221,18 @@
             $.each(data, function (key, val) {
                 //造tag标签
                 var $tagArr = val.tag;
-                if($role == "1"){
-                    $tag = '招聘<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
+                if($tagArr.length == "1"){
+                    if($role == "1"){
+                        $tag = '我是<span class="tag">' + $tagArr[0] + '</span>';
+                    } else {
+                        $tag = '招聘 <span class="tag">' + $tagArr[0] + '</span>';
+                    }
                 } else {
-                    $tag = '我是 <span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
+                    if($role == "1"){
+                        $tag = '我是<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
+                    } else {
+                        $tag = '招聘 <span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
+                    }
                 }
 
                 //拼大字符串
@@ -250,7 +254,7 @@
                 $('.listCon').append(str);
 
             });
-            console.log("现在li的总数"+ $(".listItem").length);
+//            console.log("现在li的总数"+ $(".listItem").length);
             //是否可以评价
             function isRateble(vis) {
                 return vis ? '<a href="#" class="rate weui-btn weui-btn_mini weui-btn_default">评价</a>' : "";
