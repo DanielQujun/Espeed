@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
     <link rel="stylesheet" href="../static/iconfont/iconfont.css">
-    <link rel="stylesheet" href="../static/css/style201806031533.css">
+    <link rel="stylesheet" href="../static/css/style201806031543.css">
 </head>
 
 <body class="page">
@@ -191,7 +191,7 @@
 
             $.ajax({
                 async: true,
-                url: "/worklist_ajax/",                    /*/worklist_ajax/*/
+                url: "workerList.json",                    /*/worklist_ajax/*/
                 dataType: "json",
                 type: "post",
                 data: {
@@ -340,7 +340,7 @@
             $('.rate').click(function (event){
                 var $thisList = $(event.currentTarget);
                 var $rateVal = $thisList.siblings('.userid').html();
-                alert("评价获取的用户id" + $rateVal);
+                // alert("评价获取的用户id" + $rateVal);
                 var $star5 = '<span class="rateActionstar star5"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">很专业</span>'
                 var $star4 = '<span class="rateActionstar star4"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">专业</span>'
                 var $star3 = '<span class="rateActionstar star3"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">一般</span>'

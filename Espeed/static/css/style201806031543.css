@@ -334,7 +334,8 @@ footer .cancel {
   font-size: 14px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  padding: 31px 12px 60px 12px; }
+  padding: 31px 12px 60px 12px;
+  padding-bottom: 60px; }
 .jobs .main .jobsBox {
   margin-top: 10px; }
 .jobs .main .jobsBox .jobs_bd {
@@ -390,7 +391,8 @@ footer .cancel {
 /* 工人列表页开始 */
 .workerList {
   background: #f5f6f7;
-  padding-top: 60px; }
+  padding-top: 60px;
+  padding-bottom: 90px; }
 .workerList header {
   position: fixed;
   width: 100%;
