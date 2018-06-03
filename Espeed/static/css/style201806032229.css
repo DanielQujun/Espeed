@@ -8,8 +8,6 @@
   color: #3284d1; }
 
 .flex {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex; }
 
 body {
@@ -17,9 +15,8 @@ body {
 
 input {
   -webkit-user-select: auto !important;
+  -khtml-user-select: auto !important;
   -o-user-select: auto !important;
-  -moz-user-select: text;
-  -ms-user-select: text;
   user-select: text; }
 
 .clearfix:after {
@@ -80,7 +77,6 @@ footer {
   height: 52px;
   left: 0;
   bottom: 0;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   font-size: 0;
   background: #3493eb;
@@ -89,7 +85,6 @@ footer button {
   outline: none;
   border: none;
   color: #333;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   margin: 0;
   font-size: 15px;
@@ -133,7 +128,7 @@ footer .cancel {
   right: 0;
   border-radius: 30px;
   height: 36px;
-  background: #3493eb;
+  background: #333;
   width: 150px;
   bottom: 54px;
   text-align: center;
@@ -142,6 +137,8 @@ footer .cancel {
   border: none;
   margin-bottom: 10px;
   vertical-align: top; }
+.fixedBtn.publish {
+  background: #3493eb; }
 .fixedBtn .iconfont {
   font-size: 16px;
   margin-right: 5px; }
@@ -193,7 +190,6 @@ footer .cancel {
   width: 86%;
   background: #fff;
   margin: 1.17rem auto 0 auto;
-  -webkit-box-shadow: 0 0.1rem 0.2rem rgba(100, 100, 100, 0.2);
   box-shadow: 0 0.1rem 0.2rem rgba(100, 100, 100, 0.2);
   padding-bottom: 20px; }
 .login .main .registerBox h4 {
@@ -205,7 +201,6 @@ footer .cancel {
   width: 90%;
   margin: 0 auto;
   text-align: left;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding: 7px 0; }
 .login .main .registerBox .phoneBox {
@@ -252,11 +247,7 @@ footer .cancel {
 /* 注册页面结束 */
 /* 角色选择界面开始 */
 .role .main {
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
   flex-direction: column;
-  -ms-flex-pack: distribute;
   justify-content: space-around;
   height: 100vh; }
 .role .main .roleBox {
@@ -283,7 +274,6 @@ footer .cancel {
   width: 86%;
   margin: 0 auto;
   text-align: center;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding-top: 75px;
   font-size: 14px; }
@@ -306,10 +296,8 @@ footer .cancel {
   border: 1px solid #dedede;
   outline: none;
   padding: 0 0 0 14px;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box; }
 .baseProfile .main form .inputBox .usernameInput.active {
-  -webkit-box-shadow: 0 0 1px 2px #3493eb;
   box-shadow: 0 0 1px 2px #3493eb; }
 .baseProfile .main .submitBtn {
   margin-top: 37.5px; }
@@ -336,18 +324,14 @@ footer .cancel {
   margin-right: 2px; }
 .jobs .main {
   font-size: 14px;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding: 31px 12px 60px 12px;
   padding-bottom: 60px; }
 .jobs .main .jobsBox {
   margin-top: 10px; }
 .jobs .main .jobsBox .jobs_bd {
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
   justify-content: flex-start;
   width: 100%;
-  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   position: relative;
   text-align: center; }
@@ -417,7 +401,6 @@ footer .cancel {
   background: url("../images/filterArrow.png") no-repeat 0 -15px; }
 .workerList .main {
   height: 100vh;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   font-size: 14px; }
 .workerList .main .weui-loadmore {
@@ -431,27 +414,17 @@ footer .cancel {
 .workerList .main .listItem {
   border-top: 1px solid #eaeaea;
   border-bottom: 1px solid #eaeaea;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   background: #fff;
   width: 100%;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding: 10px;
   margin-bottom: 10px; }
 .workerList .main .listItem .infoBox {
   width: 100%;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between; }
 .workerList .main .listItem .infoBox .list_hd {
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between; }
 .workerList .main .listItem .infoBox .list_hd .username {
   margin-right: 8px;
@@ -487,15 +460,11 @@ footer .cancel {
   background: url("../images/star5.png") no-repeat left top;
   background-size: contain; }
 .workerList .main .listItem .infoBox .list_bd {
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   font-size: 14px;
   color: #999; }
 .workerList .main .listItem .infoBox .list_ft {
   font-size: 14px;
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
   justify-content: flex-end; }
 .workerList .main .listItem .infoBox .list_ft .userid {
   visibility: hidden;
@@ -536,14 +505,8 @@ footer .cancel {
   width: 86%;
   margin: 0 auto;
   text-align: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
   justify-content: flex-start;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding-top: 2rem;
   font-size: 14px; }
@@ -568,13 +531,9 @@ footer .cancel {
   list-style: none;
   font-size: 18px;
   margin-bottom: 30px;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between; }
 .userCenter .main .menuBox .menuList a {
   color: #333;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between; }
 .userCenter .main .menuBox .menuList a .iconfont {
   margin: 0 6px;
@@ -604,34 +563,23 @@ footer .cancel {
   z-index: 100; }
 .history .main {
   height: 100vh;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   font-size: 14px; }
 .history .main .listItem {
   border-top: 1px solid #eaeaea;
   border-bottom: 1px solid #eaeaea;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   background: #fff;
   width: 100%;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding: 10px;
   margin-bottom: 10px; }
 .history .main .listItem .infoBox {
   width: 100%;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   position: relative; }
 .history .main .listItem .infoBox .list_hd {
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between; }
 .history .main .listItem .infoBox .list_hd .username {
   margin-right: 8px; }
@@ -647,15 +595,11 @@ footer .cancel {
   width: 100px;
   height: 16px; }
 .history .main .listItem .infoBox .list_bd {
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   font-size: 12px;
   color: #999; }
 .history .main .listItem .infoBox .list_ft {
   font-size: 13px;
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
   justify-content: flex-end; }
 .history .main .listItem .infoBox .list_ft .userid {
   visibility: hidden;
@@ -692,14 +636,10 @@ footer .cancel {
   margin-bottom: 10px;
   line-height: 2em; }
 .transaction .listCon .listItem .list_hd {
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   color: #999;
   border-bottom: 1px solid #dedede; }
 .transaction .listCon .listItem .list_bd {
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   color: #666;
   font-weight: 700; }
@@ -719,14 +659,8 @@ footer .cancel {
   width: 100%;
   margin: 0 auto;
   text-align: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
   justify-content: flex-start;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding-top: 2rem;
   font-size: 14px; }
@@ -760,14 +694,8 @@ footer .cancel {
   width: 86%;
   margin: 0 auto;
   text-align: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
   justify-content: flex-start;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding-top: 2rem;
   font-size: 14px; }
@@ -815,11 +743,11 @@ footer .cancel {
   display: none;
   z-index: 92;
   padding: 5px 15px;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  font-size: 0; }
 .nearbyPage .distanceModal .distanceModal_bd .weui-btn {
   width: 20%;
-  margin: 0 2.5% 15px 2.5%;
+  margin: 0 2.4% 15px 2.4%;
   padding: 0; }
 .nearbyPage .jobsModal {
   width: 100%;
@@ -850,7 +778,6 @@ footer .cancel {
   display: none;
   z-index: 95;
   padding: 5px 15px;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box; }
 .nearbyPage .jobsModal .jobsModal_bd .weui-btn {
   width: 20%;

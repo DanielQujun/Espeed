@@ -133,7 +133,7 @@ footer {
   right: 0;
   border-radius: 30px;
   height: 36px;
-  background: #3493eb;
+  background: #333;
   width: 150px;
   bottom: 54px;
   text-align: center;
@@ -142,6 +142,8 @@ footer {
   border: none;
   margin-bottom: 10px;
   vertical-align: top; }
+  .fixedBtn.publish {
+    background: #3493eb; }
   .fixedBtn .iconfont {
     font-size: 16px;
     margin-right: 5px; }
@@ -816,10 +818,11 @@ footer {
     z-index: 92;
     padding: 5px 15px;
     -webkit-box-sizing: border-box;
-            box-sizing: border-box; }
+            box-sizing: border-box;
+    font-size: 0; }
     .nearbyPage .distanceModal .distanceModal_bd .weui-btn {
       width: 20%;
-      margin: 0 2.5% 15px 2.5%;
+      margin: 0 2.4% 15px 2.4%;
       padding: 0; }
 .nearbyPage .jobsModal {
   width: 100%;
