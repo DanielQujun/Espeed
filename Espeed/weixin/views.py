@@ -28,7 +28,9 @@ def index(request):
     callbackurl = "/register"
     return HttpResponseRedirect(callbackurl)
 
+
 def chushihua(request):
+    print "微信初始化！！"
     """
     :param request: 
     :return: 
@@ -52,55 +54,13 @@ def chushihua(request):
         else:
             return HttpResponse('')
     elif request.method == "POST":
-        raw_xml = request.body.decode(u'UTF-8')
-        dict_str = parse_Xml2Dict(raw_xml)
-        try:
-            MsgType = dict_str['MsgType']
-        except BaseException:
-            MsgType = ''
-        try:
-            Event = dict_str['Event']
-        except BaseException:
-            Event = ''
-        if MsgType == 'text':  # 当接收到用户发来的文本信息时
-            res_dict = {}
-            res_dict['ToUserName'] = dict_str['FromUserName']
-            res_dict['FromUserName'] = dict_str['ToUserName']
-            res_dict['CreateTime'] = int(time.time())
-            res_dict['MsgType'] = 'text'
-            res_dict['Content'] = dict_str['Content']
-            echostr = parse_Dict2Xml('xml', res_dict)
-            return HttpResponse(echostr)
-        elif MsgType == 'image':
-            send_text(dict_str['FromUserName'], "收到你发送的图片")
-            return HttpResponse('')
-        elif MsgType == 'voice':
-            dict_user_info = get_user_info(dict_str['FromUserName'])
-            print '------------------------------'
-            print '发送语音的用户信息如下'
-            print dict_user_info
-            print dict_user_info['nickname'].encode('utf-8')
-            print '------------------------------'
-            return HttpResponse('')
-        elif Event == 'subscribe':  # 关注公众号事件
-            if dict_str['EventKey'] and dict_str['Ticket']:  # 通过扫描二维码进行关注
-                qrcode_num = dict_str['EventKey'].split('_')[1]
-                send_text(
-                    dict_str['FromUserName'],
-                    "感谢您关注公众号！qrcode is " +
-                    str(qrcode_num))
-            else:
-                send_text(dict_str['FromUserName'], "感谢您关注公众号！")
-            return HttpResponse('')
-        elif Event == 'SCAN':
-            send_text(dict_str['FromUserName'],
-                      "qrcode is " + str(dict_str['EventKey']))
-            return HttpResponse('')
-        elif MsgType == 'location':
-            send_text(dict_str['FromUserName'], "你现在在:\n" + dict_str['Label'])
-            return HttpResponse('')
-        else:
-            return HttpResponse('')
+        print "微信 POST!!"
+        response = HttpResponse(responseMsg(request.body), content_type="application/xml")
+    else:
+        response = None
+
+    return response
+
 
 @csrf_exempt
 def create_menu(request):
@@ -131,6 +91,7 @@ def create_menu(request):
             WEIXIN_ACCESS_TOKEN +
             ' create menu err:' +
             response['errmsg'])
+
 
 def register(request):
     if request.method == 'GET':
@@ -174,6 +135,7 @@ def register(request):
             callbackurl = "/register/?openid={openid}&verify_code_wrong='verify_code_wrong".format(openid=openid)
             return HttpResponseRedirect(callbackurl)
 
+
 def chose_role(request):
     if request.method == 'GET':
         data = {}
@@ -193,6 +155,7 @@ def chose_role(request):
             user.save()
             callbackurl = "/jobs/?openid={openid}".format(openid=openid)
             return HttpResponseRedirect(callbackurl)
+
 
 def input_name(request):
     if request.method == 'GET':
@@ -229,6 +192,7 @@ def input_name(request):
             return HttpResponseRedirect(callbackurl)
         else:
             return "bad post data"
+
 
 def chose_job_cate(request):
     if request.method == 'GET':
@@ -290,7 +254,8 @@ def chose_job_cate(request):
             return HttpResponseRedirect(callbackurl)
             #return HttpResponse('invalid post')
 
-def wokers_or_jobs_list(request):
+
+def workers_or_jobs_list(request):
     print request.GET
     "获取用户 openid 判定 ID 是否是认证用户来跳转不同的页面"
     # http://www.cnblogs.com/txw1958/p/weixin71-oauth20.html
@@ -349,6 +314,7 @@ def wokers_or_jobs_list(request):
         print "user_dict 为空！！！！！"
         return HttpResponse('非法访问...')
 
+
 # @login_required
 def usercenter(request):
     if request.method == 'GET':
@@ -361,6 +327,7 @@ def usercenter(request):
             data['username'] = user.userName
 
             return render(request, 'userCenter.html', data)
+
 
 # @login_required
 def profile(request):
@@ -379,6 +346,7 @@ def profile(request):
                 return render(request, 'profile.html', data)
         else:
             return HttpResponse(u'非法访问')
+
 
 # @login_required
 def history(request):
@@ -449,6 +417,7 @@ def history_ajax(request):
         else:
             return HttpResponse("wrong parameters!")
 
+
 #@login_required
 def transaction(request):
     if request.method == 'GET':
@@ -457,6 +426,7 @@ def transaction(request):
             data = {}
             data['openid'] = openid
             return render(request, 'transaction.html', data)
+
 
 def transaction_ajax(request):
     if request.method == 'POST':
@@ -515,8 +485,10 @@ def worklist_ajax(request):
                 filter_query = Q(Jobs__contains=tag_list[0])
             print filter_query
             workers = UserProfileBase.objects.exclude(Role=user.Role).filter(filter_query). \
-                filter(Location_longi__range=(user.Location_longi - 0.1, user.Location_longi + 0.1)). \
-                filter(Location_lati__range=(user.Location_lati - 0.1, user.Location_lati + 0.1))
+                filter(Location_longi__range=(user.Location_longi - 10, user.Location_longi + 10)). \
+                filter(Location_lati__range=(user.Location_lati - 10, user.Location_lati + 10))
+                # filter(Location_longi__range=(user.Location_longi - 0.1, user.Location_longi + 0.1)). \
+                # filter(Location_lati__range=(user.Location_lati - 0.1, user.Location_lati + 0.1))
 
             for worker in workers:
                 worker_dic = {}
@@ -559,6 +531,7 @@ def worklist_ajax(request):
         else:
             return HttpResponse("wrong parameters!")
 
+
 def render_js_config(request):
     data = {}
     data['openid'] = request.GET.get('openid')
@@ -573,6 +546,7 @@ def render_js_config(request):
     data['signature'] = hashlib.sha1(jsapi_string).hexdigest()
 
     return data
+
 
 def wxpay_notify(request):
     return_str = """
@@ -611,6 +585,7 @@ def wxpay_notify(request):
             pass
         finally:
             return HttpResponse(return_str, status=200)
+
 
 def zhihu_pre(request):
     if request.META.has_key('HTTP_X_FORWARDED_FOR'):
@@ -658,6 +633,7 @@ def zhihu_pre(request):
         print e.message, 400
         return HttpResponse("zhifu some thing wrong!")
 
+
 def dail(request):
     print request.GET
     openid = request.GET.get('openid')
@@ -672,6 +648,7 @@ def dail(request):
     data = {'phone_num': phone_num, 'headimgurl':headimgurl, 'username':username, 'openid':openid}
 
     return render(request, 'dail.html', data)
+
 
 def verify_code(request):
     phoneNum = request.POST.get('phoneNum')
@@ -727,9 +704,11 @@ def verify_code(request):
     else:
         return HttpResponse({"success": "false", "Code": sms_return_dic['Code']})
 
+
 def complain(request):
     # TODO
     return HttpResponse("OK")
+
 
 def rate(request):
     if request.method == "POST":
@@ -745,6 +724,7 @@ def rate(request):
             return HttpResponse("OK")
         else:
             return HttpResponse("wrong parameters!")
+
 
 def nearby_jobs(request):
     if request.method == 'GET':
@@ -805,14 +785,111 @@ def nearby_jobs(request):
             callbackurl = "/register/?openid={openid}".format(openid=openid)
             return HttpResponseRedirect(callbackurl)
 
+
 def nearby_workers(request):
     if request.method == 'GET':
         openid = request.GET.get('openid')
         data = {}
+        data['openid'] = request.GET.get('openid')
+        data['timestamp'] = int(time.time())
+        data['nonceStr'] = 'qujunqujun'
+        data['appid'] = WEIXIN_APPID
+        data['jsapi_ticket'] = get_jsapi_token()
+        data['url'] = request.build_absolute_uri()
+        jsapi_string = "jsapi_ticket={JSAPI_TICKET}&noncestr={NONCESTR}&timestamp={TIMESTAMP}&url={URL}".\
+            format(JSAPI_TICKET=data['jsapi_ticket'],NONCESTR=data['nonceStr'], TIMESTAMP=data['timestamp'], URL=data['url'])
+
+        data['signature'] = hashlib.sha1(jsapi_string).hexdigest()
+
         data['openid'] = openid
         user = UserProfileBase.objects.filter(openId=openid).first()
         data['role'] = user.Role
         return render(request, 'nearby.html', data)
+
+
+def nearby_ajax(request):
+    if request.method == "POST":
+        print "i am /nearby_ajax/!!!"
+        print request.POST
+        openid = request.POST.get('openid')
+        sortByDis = request.POST.get('sortByDis')
+        sortByPubTime = request.POST.get('sortByPubTime')
+        page = request.POST.get('page')
+        worker_radius = request.POST.get('radius')
+        tag_list = [request.POST.get('filterTag')]
+        perNum = 10
+        # openid = 'oT69X1Chvefxgv3wby_-PaEIM9nY'
+        if openid:
+            user = UserProfileBase.objects.filter(openId=openid).first()
+            # tag_list = list(user.Jobs.copy())
+            # 查询该用户支付过的记录
+            payed_list = [payed_user.user_visible for payed_user in
+                          UserVisible.objects.filter(user_payed=openid, pay_status='payed')]
+            print "qujun debug views line 834!!! get payed_list"
+
+            work_objects_db = []
+            if len(tag_list) >= 2:
+                filter_query = reduce(lambda x, y: Q(Jobs__contains=x) | Q(Jobs__contains=y), tag_list)
+            else:
+                if tag_list[0] == u'\u5168\u90e8':
+                    filter_query = ''
+                else:
+                    filter_query = Q(Jobs__contains=tag_list[0])
+            if filter_query:
+                print "nearby i get filter_filter_query!"
+                print filter_query
+                workers = UserProfileBase.objects.exclude(Role=user.Role).filter(filter_query). \
+                    filter(Location_longi__range=(user.Location_longi - 0.1, user.Location_longi + 0.1)). \
+                    filter(Location_lati__range=(user.Location_lati - 0.1, user.Location_lati + 0.1))
+            else:
+                workers = UserProfileBase.objects.exclude(Role=user.Role).\
+                    filter(Location_longi__range=(user.Location_longi - 0.1, user.Location_longi + 0.1)). \
+                    filter(Location_lati__range=(user.Location_lati - 0.1, user.Location_lati + 0.1))
+
+            for worker in workers:
+                worker_dic = {}
+                worker_dic['userid'] = worker.id
+                worker_dic['username'] = worker.userName
+                worker_dic['tag'] = list(worker.Jobs)
+                # worker_dic['star'] = int(worker.Score)
+                worker_dic['star'] = int(worker.Score)
+                worker_dic['pubTime'] = int(worker.publishTime.replace('.', '') + '0')
+                worker_dic['distance'] = Distance(user.Location_lati, user.Location_longi, worker.Location_lati,
+                                                  worker.Location_longi)
+                # worker_dic['isVisible'] = True if UserVisible.objects.filter(user_payed=user.openId, user_visible=worker.openId) \
+                #                                 else False
+                worker_dic['isVisible'] = True if worker.openId in payed_list else False
+                worker_dic['isRateble'] = worker_dic['isVisible']
+                worker_dic['phoneNum'] = worker.phonenum if worker_dic['isVisible'] else "123456789123"
+                worker_dic['portraitUrl'] = worker.avatarAddr
+                if float(worker_dic['distance']) < float(worker_radius):
+                    work_objects_db.append(worker_dic)
+            # work_objects_db = list(set(work_objects_db))
+            # print work_objects_db
+            if sortByDis == 'true':
+                work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['distance'])
+            elif sortByPubTime == 'true':
+                work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['pubTime'])
+            work_objects = work_objects_db
+            p = Paginator(work_objects, perNum)  # 3条数据为一页，实例化分页对象
+            # print p.count  # 10 对象总共10个元素
+            print p.num_pages  # 4 对象可分4页
+            # print p.page_range  # xrange(1, 5) 对象页的可迭代范围
+
+            page_object = p.page(page)  # 取对象的第一分页对象
+            conten_dict = {
+                "totalNum": p.count,
+                "perNum": perNum,
+                "totalPage": p.num_pages,
+                "currentPage": page,
+                "listData": page_object.object_list
+            }
+            return HttpResponse(json.dumps(conten_dict))
+        else:
+            return HttpResponse("wrong parameters!")
+
+    else:
+        return HttpResponse("wrong request method!!")
 
 
 def change_username(request):

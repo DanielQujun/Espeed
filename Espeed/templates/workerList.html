@@ -307,7 +307,7 @@
                                 userid: $rateVal             //想要查看谁的电话号码
                             },
                             success: function (result) {
-                                alert("&paySign=" + result.sign);
+                                // alert("&paySign=" + result.sign);
                                 $.session.set("pSign", result.sign);
                                 //点击确认
                                 wx.chooseWXPay({

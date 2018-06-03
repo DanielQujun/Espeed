@@ -1,5 +1,5 @@
 # encoding:utf-8
-from xml.etree.ElementTree import Element
+from xml.etree.ElementTree import Element,fromstring
 from xml.etree.ElementTree import tostring
 from xml.etree.ElementTree import dump
 from datetime import datetime
@@ -10,6 +10,9 @@ import random
 import string
 import hashlib
 import json
+from django.utils.encoding import smart_unicode
+
+from django.utils.encoding import smart_str
 
 import weixin.config
 from weixin.config import REDIS_HOST,REDIS_PORT
@@ -89,6 +92,34 @@ def dictfetchall(cursor):
         for row in cursor.fetchall()
     ]
 
+def responseMsg(postContent):
+    postStr = smart_str(postContent)
+    if postStr:
+        msg = xmlContent2Dic(postStr)
+        if msg['MsgType']:
+            if msg['MsgType'] == 'event':
+                resultStr = handleEvent(msg)  #处理事件推送
+        else:
+            resultStr = 'Input something...'
+
+    return resultStr
+
+#函数把微信XML格式信息转换成字典格式
+def xmlContent2Dic(xmlContent):
+    dics = {}
+    elementTree = fromstring(xmlContent)
+    if elementTree.tag == 'xml':
+        for child in elementTree:
+            dics[child.tag] = smart_unicode(child.text)
+    return dics
+
+def handleEvent(msg):
+    msg_content = u'您好，感谢关注“建工家”招工信息平台。[耶][耶][耶][耶][耶][耶][耶]'
+    if msg['Event'] == 'subscribe':
+        resultStr="<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[%s]]></MsgType><Content><![CDATA[%s]]></Content></xml>"
+        resultStr = resultStr % (msg['FromUserName'],msg['ToUserName'],str(int(time.time())),'text',msg_content)
+    return resultStr
+
 
 def get_access_token():
     WEIXIN_ACCESS_TOKEN = r.get('WEIXIN_ACCESS_TOKEN')
@@ -124,7 +155,23 @@ def get_access_token_bak():
             weixin.config.WEIXIN_ACCESS_TOKEN_LASTTIME) + "---" + str(weixin.config.WEIXIN_ACCESS_TOKEN_EXPIRES_IN)
         return weixin.config.WEIXIN_ACCESS_TOKEN
 
+
 def get_jsapi_token():
+    JSAPI_TICKET = r.get('JSAPI_TICKET')
+    if JSAPI_TICKET:
+        return JSAPI_TICKET
+    else:
+        jsapi_url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={ACCESS_TOKEN}&type=jsapi". \
+            format(ACCESS_TOKEN=get_access_token())
+        resp, content = my_get(jsapi_url)
+        jsapi_ticket_dic = parse_Json2Dict(content)
+        JSAPI_TICKET = str(jsapi_ticket_dic[u'ticket'])
+        JSAPI_TICKET_EXPIRES_IN = jsapi_ticket_dic['expires_in']
+        r.set(name='JSAPI_TICKET',value=JSAPI_TICKET,ex=JSAPI_TICKET_EXPIRES_IN-60)
+        return JSAPI_TICKET
+
+
+def get_jsapi_token_bak():
     if weixin.config.WEIXIN_ACCESS_TOKEN_LASTTIME == 0 or (int(
             time.time()) - weixin.config.WEIXIN_ACCESS_TOKEN_LASTTIME > weixin.config.WEIXIN_ACCESS_TOKEN_EXPIRES_IN - 300):
         jsapi_url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={ACCESS_TOKEN}&type=jsapi". \
