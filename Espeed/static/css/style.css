@@ -63,7 +63,8 @@ footer {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   font-size: 0;
-  background: #3493eb; }
+  background: #3493eb;
+  z-index: 80; }
   footer button {
     outline: none;
     border: none;
@@ -744,69 +745,76 @@ footer {
   .dail .main .phoneNum {
     margin-bottom: 50%; }
 
+/*nearby页面*/
 .nearbyPage .distanceModal {
   width: 100%;
+  height: 100%;
   position: absolute;
-  background: #fff;
-  border-bottom: 1px solid #eaeaea;
-  z-index: 20;
-  padding-top: 51px;
-  -webkit-transition: all ease .3s;
-  transition: all ease .3s;
-  top: -100px;
-  height: 100px; }
+  top: 0;
+  left: 0;
+  z-index: 90;
+  padding-top: 51px; }
+  .nearbyPage .distanceModal .mask {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 91; }
+    .nearbyPage .distanceModal .mask.show {
+      display: block; }
   .nearbyPage .distanceModal .distanceModal_bd {
-    padding: 0 10px 10px 10px;
-    -webkit-box-pack: start;
-        -ms-flex-pack: start;
-            justify-content: flex-start;
-    -ms-flex-wrap: wrap;
-        flex-wrap: wrap; }
-    .nearbyPage .distanceModal .distanceModal_bd .weui-btn:nth-child(1) {
-      margin-top: 15px; }
-  .nearbyPage .distanceModal .distanceModal_ft {
-    margin-top: 15px; }
-    .nearbyPage .distanceModal .distanceModal_ft .weui-btn {
-      width: 45%;
-      display: inline-block; }
+    width: 100%;
+    position: relative;
+    text-align: left;
+    background: #fff;
+    border-bottom: 1px solid #eaeaea;
+    border-top: 1px solid #eaeaea;
+    display: none;
+    z-index: 92;
+    padding: 5px 15px;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box; }
+    .nearbyPage .distanceModal .distanceModal_bd .weui-btn {
+      width: 20%;
+      margin: 0 2.5% 15px 2.5%;
+      padding: 0; }
 .nearbyPage .jobsModal {
   width: 100%;
+  height: 100%;
   position: absolute;
-  background: #fff;
-  border-bottom: 1px solid #eaeaea;
-  z-index: 20;
-  padding-top: 51px;
-  -webkit-transition: all ease .3s;
-  transition: all ease .3s; }
-  .nearbyPage .jobsModal .jobsModal_bd {
-    -webkit-box-pack: start;
-        -ms-flex-pack: start;
-            justify-content: flex-start;
+  top: 0;
+  left: 0;
+  z-index: 93;
+  padding-top: 51px; }
+  .nearbyPage .jobsModal .mask {
     width: 100%;
-    -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 94; }
+    .nearbyPage .jobsModal .mask.show {
+      display: block; }
+  .nearbyPage .jobsModal .jobsModal_bd {
+    width: 100%;
     position: relative;
-    text-align: center; }
-    .nearbyPage .jobsModal .jobsModal_bd input[type="checkbox"] {
-      position: absolute;
-      clip: rect(0, 0, 0, 0); }
-    .nearbyPage .jobsModal .jobsModal_bd input[type="checkbox"] + label {
-      width: 26%;
-      margin: 10px 3%;
-      border: 1px solid #999999;
-      border-radius: 3px;
-      background: #fff;
-      color: #666666;
-      font-size: 13px;
-      line-height: 2.4em;
-      position: relative;
-      display: block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis; }
-    .nearbyPage .jobsModal .jobsModal_bd input[type="checkbox"]:checked + label {
-      color: #fff;
-      background: #3493eb;
-      border: 1px solid #3284d1; }
+    text-align: left;
+    background: #fff;
+    border-bottom: 1px solid #eaeaea;
+    border-top: 1px solid #eaeaea;
+    display: none;
+    z-index: 95;
+    padding: 5px 15px;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box; }
+    .nearbyPage .jobsModal .jobsModal_bd .weui-btn {
+      width: 20%;
+      margin: 0 2.5% 15px 2.5%;
+      padding: 0; }
 
 /*# sourceMappingURL=style.css.map */

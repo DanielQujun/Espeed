@@ -25,31 +25,26 @@
             <div class="weui-navbar__item"  id="jobsNearby"><span>工种筛选<span class="iconfont icon-gongrenshaixuan"></span></span>
             </div>
         </div>
+        <div class="distanceModal">
+            <!--<div class="mask"></div>-->
+            <div class="distanceModal_bd flex">
+                <input  type="button" class="distanceBtn weui-btn weui-btn_mini weui-btn_default" value="100米" data-val="100" />
+                <input  type="button" class="distanceBtn weui-btn weui-btn_mini weui-btn_default" value="500米"  data-val="500"/>
+                <input  type="button" class="distanceBtn weui-btn weui-btn_mini weui-btn_primary" value="1千米"  data-val="1000"/>
+                <input  type="button" class="distanceBtn weui-btn weui-btn_mini weui-btn_default" value="5千米"  data-val="5000"/>
+                <input  type="button" class="distanceBtn weui-btn weui-btn_mini weui-btn_default" value="10千米"  data-val="10000"/>
+            </div>
+        </div>
+        <div class="jobsModal">
+            <!--<div class="mask"></div>-->
+            <div class="jobsModal_bd"></div>
+        </div>
     </header>
-    <div class="distanceModal">
-        <div class="distanceModal_bd flex">
-            <input type = "button" value="1公里" class="weui-btn weui-btn_mini weui-btn_default" >
-            <input type = "button" value="5公里" class="weui-btn weui-btn_mini weui-btn_primary" >
-            <input type = "button" value="10公里" class="weui-btn weui-btn_mini weui-btn_default" >
-            <input type = "button" value="20公里" class="weui-btn weui-btn_mini weui-btn_default" >
-            <input type = "button" value="50公里" class="weui-btn weui-btn_mini weui-btn_default" >
-            <input type = "button" value="100公里" class="weui-btn weui-btn_mini weui-btn_default" >
-            <input type = "button" value="150公里" class="weui-btn weui-btn_mini weui-btn_default" >
-            <input type = "button" value="200公里" class="weui-btn weui-btn_mini weui-btn_default" >
-        </div>
-        <div class="distanceModal_ft">
-        </div>
-    </div>
-    <div class="jobsModal">
-        <div class="jobsModal_bd flex">
 
-        </div>
-        <div class="jobsModal_ft">
-        </div>
-    </div>
 
     <!-- 主体内容 -->
     <section class="main">
+        <div id="location" style="display: block;">测试是否获取到了定位</div>
         <div class="weui-loadmore">
             <i class="weui-loading"></i>
             <span class="weui-loadmore__tips">正在加载</span>
@@ -82,13 +77,12 @@
 <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
 <script type="text/javascript"src="../static/js/utility.js"></script>
 <script>
-
     $(function () {
+
+
         FastClick.attach(document.body);
         window.localStorage.setItem("openid",$('#openidInsert').text());
         window.localStorage.setItem("role",$('#roleInserts').text());
-
-
 
 
         //调用微信sdk配置
@@ -107,17 +101,25 @@
         wx.error(function (res) {
             $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
         });
+        //配置成功后，调用接口
+        wx.ready(function () {
 
+            //调用location函数，将位置转化为地址，并写入session；
+            lacation();
+
+        });
 
         //初始化数据
+        $.session.set('radius',1000);
+        $.session.set('filterTag','全部');
         var $j=0;
         var $totalPage = 10;
         var $currentPage = 1;
         var $byDis = true;
         var $byPubTime = true;
-        var $nearbyTagArr = [];
-        // addNum($currentPage, $byDis, $byPubTime)；
-        loadData($currentPage,$byDis,$byPubTime);
+        var $radius = $.session.get('radius');
+        var $filterTag = $.session.get('filterTag');
+        loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
 
 
         //上拉加载
@@ -128,7 +130,7 @@
             ++ $currentPage;
             if($currentPage <= $totalPage ){
                 // addNum($currentPage,$byDis,$byPubTime);
-                loadData($currentPage,$byDis,$byPubTime);
+                loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
                 $loading = false;
             } else {
                 console.log("不执行了");
@@ -149,60 +151,32 @@
             $(this).hide();
         });
 
-        //取消发布按钮弹窗
-        $('.cancel').click(function () {
-            $.confirm("取消后，您的信息将对其他人不可见", "确认取消", function () {
-                $.ajax({
-                    url: "/jobs/",
-                    type: "post",
-                    data: {
-                        online: false,
-                        openid: window.localStorage.getItem("openid"),
-                        timestamp: $.now()
-                    },
-                    success: function () {
-                        location.href = "/jobs/?openid="+window.localStorage.getItem("openid");
-//                        location.href = "/jobs/?openid=oT69X1PX1jG6Ojhij3tQVOGSnWzQ";
-                    }
-                });
-            }, function () {
-                return false;
-            });
-        });
 
         //距离排序
         $("#distanceNearby").click(function (ev) {
-            if($(".distanceModal").css('top') == "-100px" ) {
-                var event = ev || event;  // firefox的兼容性
-                event.stopPropagation();  // 阻止冒泡事件
-                $(".distanceModal").css("top", "0");
-            }else {
-                var event = ev || event;  // firefox的兼容性
-                event.stopPropagation();  // 阻止冒泡事件
-                $(".distanceModal").css("top", "-100px");
-            }
+            $(".jobsModal").css("display","none");
+            $(this).css("display","block");
+            $(".distanceModal").css("display","block");
+            $(".distanceModal .mask").toggleClass("show");
+            $(".distanceModal_bd").slideToggle("slow");
+        });
+        $(".distanceModal .mask").click(function (ev) {
+            $(".jobsModal").css("display","none");
+            $(".distanceModal").css("display","block");
+            $(".distanceModal .mask").toggleClass("show");
+            $(".distanceModal_bd").slideToggle("slow");
+        });
+        $(".distanceBtn").click(function () {
+            $.session.set('radius',parseInt($(this).attr("data-val")));
+            $radius = $.session.get('radius');
+            $(this).addClass("weui-btn_primary").removeClass("weui-btn_default")
+                .siblings().removeClass("weui-btn_primary").addClass("weui-btn_default");
+            $currentPage = 1;
+            loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
+            $(".distanceModal_bd").slideToggle("slow");
         });
 
-
-        // 点击弹窗时，阻止冒泡事件
-        $(".distanceModal").click(function(ev){
-            var event = ev || event;
-            event.stopPropagation();
-        });
-
-        $(document).click(function(){
-            $(".distanceModal").css("top", "-100px");
-        });
-
-        $(".distanceModal input[type='button']").click(function (ev) {
-            var event = ev || event;  // firefox的兼容性
-            event.stopPropagation();  // 阻止冒泡事件
-            alert($(this).val());
-            $(".distanceModal").css("top", "-100px");
-        });
-
-
-        // 弹窗初始化
+        // 工种过滤弹窗初始化
         var $modalHeight = $(".jobsModal_bd").css("height");
         function initModal() {
             //获取列表中的tag标签，去重，渲染
@@ -212,49 +186,78 @@
             $nearbyTagArr = $.unique(jobtext.split(','));
             var $tagBtns = "";
             $.each($nearbyTagArr,function (key, job) {
-                $tagBtns += '<input id="'+ key +'" type="checkbox" value="'+ job +'" /><label for="'+ key +'">'+ job +'</label>';
+                $tagBtns += '<input  type="button" class="filterTagBtn weui-btn weui-btn_mini weui-btn_default" value="'+ job +'" />';
             });
             $(".jobsModal_bd").html($tagBtns);
 
-            //设置弹窗的定位位置
-            console.log($modalHeight);
-            $(".jobsModal").css('top',-$modalHeight);
-        }
+            var $alltag = '<input  type="button" class="filterTagBtn weui-btn weui-btn_mini weui-btn_primary" value="全部" />';
+            $(".jobsModal_bd").prepend($alltag);
 
+            var activeBtnVal = $.session.get("filterTag");
+
+            $.each($(".filterTagBtn"),function (key,val) {
+                if($(this).val() == activeBtnVal) {
+                    $(this).addClass("weui-btn_primary").removeClass("weui-btn_default")
+                        .siblings().removeClass("weui-btn_primary").addClass("weui-btn_default");
+                }
+            });
+
+
+        }
         initModal();
+
 
         //工种筛选
         $("#jobsNearby").click(function (ev) {
-            if($(".jobsModal").css('top') == $modalHeight ) {
-                var event = ev || event;  // firefox的兼容性
-                event.stopPropagation();  // 阻止冒泡事件
-                $(".jobsModal").css("top", "0");
-            }else {
-                var event = ev || event;  // firefox的兼容性
-                event.stopPropagation();  // 阻止冒泡事件
-                $(".jobsModal").css("top", $modalHeight );
-            }
+            var event = ev || event;
+            event.stopPropagation();
+            initModal();
+            $(".distanceModal").css("display","none");
+            $(".jobsModal").css("display","block");
+            $(".jobsModal .mask").toggleClass("show");
+            $(".jobsModal_bd").slideToggle("slow");
+        });
+        $(".jobsModal .mask").click(function (ev) {
+            var event = ev || event;
+            event.stopPropagation();
+
+            $(".distanceModal").css("display","none");
+            $(".jobsModal").css("display","block");
+            $(".jobsModal .mask").toggleClass("show");
+            $(".jobsModal_bd").slideToggle("slow");
+        });
+        $(".jobsModal_bd").on("click",'.filterTagBtn',function (ev) {
+            $.session.set('filterTag',$(this).val());
+            $filterTag = $.session.get('filterTag');
+            $(this).addClass("weui-btn_primary").removeClass("weui-btn_default")
+                .siblings().removeClass("weui-btn_primary").addClass("weui-btn_default");
+            $currentPage = 1;
+            console.log($filterTag);
+                loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
+            $(".jobsModal_bd").slideToggle("slow");
         });
 
 
-
-
         //加载对应页码数据
-        function loadData(page,byDis,byPubTime) {
+        function loadData(page,byDis,byPubTime,radius,filterTag) {
             $j++;
             console.log("开始执行loadData函数,第"+ $j + "次执行");
             console.log('第'+ $j + '次执,loadData向后台请求的页码数'+ page);
 
             $.ajax({
                 async: true,
-                url: "workerList.json",                    /*/worklist_ajax/*/
+                url: "/nearby_ajax/",                    /*/worklist_ajax/*/
                 dataType: "json",
                 type: "post",
                 data: {
                     openid: window.localStorage.getItem("openid"),
                     sortByDis: byDis,
                     sortByPubTime: byPubTime,
-                    page: page
+                    page: page,
+                    radius: radius,             //1000米
+                    filterTag:filterTag,        //"全部"，"木工"...
+                    latitude: $.session.get('latitude'),
+                    longitude: $.session.get('longitude')
                 },
                 success: function (data) {
                     $totalPage = data.totalPage;
@@ -442,14 +445,12 @@
                             $.toast("评价成功", "text");
                             $thisList.hide();
                             $currentPage = 1;
-                            loadData($currentPage,$byDis,$byPubTime);
+                            loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
                         }
 
                     })
                 }
             });
-
-            initModal();
         }
 
 
