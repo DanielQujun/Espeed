@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.contrib import admin
+from weixin.models import UserProfileBase
 
-# Register your models here.
+@admin.register(UserProfileBase)
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ('userName', 'phonenum', 'Role', 'Jobs','online','createTime','last_login','publishTime')

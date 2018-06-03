@@ -15,6 +15,7 @@ import xml.etree.ElementTree as et
 from weixin.config import *
 from weixin.functions import *
 from weixin.models import *
+from django.db.models import Q
 from django.core.paginator import Paginator
 from wx_pay import WxPay, WxPayError
 from aliyunsdkcore.client import AcsClient
@@ -501,33 +502,39 @@ def worklist_ajax(request):
         # openid = 'oT69X1Chvefxgv3wby_-PaEIM9nY'
         if openid:
             user = UserProfileBase.objects.filter(openId=openid).first()
-            tag_set = user.Jobs.copy()
+            tag_list = list(user.Jobs.copy())
             # 查询该用户支付过的记录
             payed_list = [payed_user.user_visible for payed_user in UserVisible.objects.filter(user_payed=openid,pay_status='payed')]
             print payed_list
             print "qujun debug views line 378!!! for payed_list"
 
             work_objects_db = []
-            for tag in tag_set:
-                workers = UserProfileBase.objects.exclude(Role=user.Role).filter(Jobs__contains=tag).\
-                    filter(Location_longi__range=(user.Location_longi - 0.1,user.Location_longi +0.1)).\
-                    filter(Location_lati__range=(user.Location_lati - 0.1,user.Location_lati + 0.1))
-                for worker in workers:
-                    worker_dic = {}
-                    worker_dic['userid'] = worker.id
-                    worker_dic['username'] = worker.userName
-                    worker_dic['tag'] = list(worker.Jobs)
-                    #worker_dic['star'] = int(worker.Score)
-                    worker_dic['star'] = int(worker.Score)
-                    worker_dic['pubTime'] = int(worker.publishTime.replace('.','')+'0')
-                    worker_dic['distance'] = Distance(user.Location_lati, user.Location_longi, worker.Location_lati, worker.Location_longi)
-                    # worker_dic['isVisible'] = True if UserVisible.objects.filter(user_payed=user.openId, user_visible=worker.openId) \
-                    #                                 else False
-                    worker_dic['isVisible'] = True if worker.openId in payed_list else False
-                    worker_dic['isRateble'] = worker_dic['isVisible']
-                    worker_dic['phoneNum'] = worker.phonenum if worker_dic['isVisible'] else "123456789123"
-                    worker_dic['portraitUrl'] = worker.avatarAddr
-                    work_objects_db.append(worker_dic)
+            if len(tag_list) >= 2:
+                filter_query = reduce(lambda x, y: Q(Jobs__contains=x) | Q(Jobs__contains=y), tag_list)
+            else:
+                filter_query = Q(Jobs__contains=tag_list[0])
+            print filter_query
+            workers = UserProfileBase.objects.exclude(Role=user.Role).filter(filter_query). \
+                filter(Location_longi__range=(user.Location_longi - 0.1, user.Location_longi + 0.1)). \
+                filter(Location_lati__range=(user.Location_lati - 0.1, user.Location_lati + 0.1))
+
+            for worker in workers:
+                worker_dic = {}
+                worker_dic['userid'] = worker.id
+                worker_dic['username'] = worker.userName
+                worker_dic['tag'] = list(worker.Jobs)
+                #worker_dic['star'] = int(worker.Score)
+                worker_dic['star'] = int(worker.Score)
+                worker_dic['pubTime'] = int(worker.publishTime.replace('.','')+'0')
+                worker_dic['distance'] = Distance(user.Location_lati, user.Location_longi, worker.Location_lati, worker.Location_longi)
+                # worker_dic['isVisible'] = True if UserVisible.objects.filter(user_payed=user.openId, user_visible=worker.openId) \
+                #                                 else False
+                worker_dic['isVisible'] = True if worker.openId in payed_list else False
+                worker_dic['isRateble'] = worker_dic['isVisible']
+                worker_dic['phoneNum'] = worker.phonenum if worker_dic['isVisible'] else "123456789123"
+                worker_dic['portraitUrl'] = worker.avatarAddr
+                work_objects_db.append(worker_dic)
+            # work_objects_db = list(set(work_objects_db))
             # print work_objects_db
             if sortByDis == 'true':
                 work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['distance'])
