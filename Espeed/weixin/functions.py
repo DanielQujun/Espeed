@@ -189,3 +189,14 @@ def get_jsapi_token_bak():
         print "old access_token ->> " + weixin.config.JSAPI_TICKET + "---" + str(
             weixin.config.JSAPI_TICKET_LASTTIME) + "---" + str(weixin.config.JSAPI_TICKET_EXPIRES_IN)
         return weixin.config.JSAPI_TICKET
+
+
+def send_online_to_redis(username, jobs, phonenum, location_lati, location_longi, publishtime):
+    data_dic = {'username': username, 'jobs': jobs, 'phonenum': phonenum, 'location_lati': location_lati,
+                'location_longi':location_longi, 'publishtime':publishtime}
+    print json.dumps(data_dic)
+    try:
+        r.lpush('online_queue', json.dumps(data_dic))
+    except Exception, e:
+        print "send_online_to_redis FAILED"
+        print e

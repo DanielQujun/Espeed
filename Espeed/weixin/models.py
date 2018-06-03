@@ -31,7 +31,7 @@ class UserProfileBase(models.Model):
     online = models.BooleanField(default=False)     # 是否在线
     createTime = models.DateTimeField(auto_now_add=True)				# 注册时间
     last_login = models.DateField(default=None)			# 最后访问时间
-    publishTime = models.CharField(max_length=20,null=True)
+    publishTime = models.CharField(max_length=20, null=True)
 
 class UserVisible(models.Model):
     transation_no = models.CharField(default=None, max_length=50)
@@ -52,3 +52,6 @@ class verify_code_request(models.Model):
     request_ip = models.CharField(max_length=50)
     request_phonenum = models.CharField(max_length=50)
     request_time = models.CharField(max_length=50)
+
+class send_template(models.Model):
+    useropenid = models.DateField(default=None)

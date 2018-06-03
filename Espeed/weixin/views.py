@@ -114,7 +114,6 @@ def register(request):
                     username=openid,
                     password='snsapi_userinfo'
                 )
-                # 默认未激活状态，用来判断是否是已经通过认证的学员
                 user.is_active = False
                 user.save()
                 profile = UserProfileBase(
@@ -235,6 +234,7 @@ def chose_job_cate(request):
                 user.online = 'True'
                 user.publishTime = time.time()
                 user.save()
+                send_online_to_redis(user.userName,user.Jobs,user.phonenum,user.Location_lati,user.Location_longi,user.publishTime)
                 callbackurl = "/workerList/?openid={openid}".format(openid=openid)
                 return HttpResponse("OK")
                 # return HttpResponseRedirect(callbackurl)

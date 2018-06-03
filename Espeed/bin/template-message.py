@@ -7,12 +7,14 @@ reload(sys)
 sys.setdefaultencoding("utf-8")
 
 import redis
-r = redis.Redis(host='127.0.0.1',port='6379')
+r = redis.Redis(host='127.0.0.1', port='6379')
 
 def get_access_token():
     WEIXIN_ACCESS_TOKEN = r.get('WEIXIN_ACCESS_TOKEN')
     if WEIXIN_ACCESS_TOKEN:
         return WEIXIN_ACCESS_TOKEN
+    else:
+        print "did not get WEIXIN_ACCESS_TOKEN"
 
 class WechatPush():
 
@@ -41,35 +43,42 @@ class WechatPush():
     j = json.loads(content)
     print j
 
+def userlist_send_message():
+    online_users = r.lrange('online_queue', 0, 50)
+    for user_online in online_users:
+        user_online_dic = json.loads(user_online)
+        print user_online_dic
+
 if __name__ == "__main__":
-    timestamp = time.time()
-    openid = 'oT69X1NC-ZcQHgM2ERE4bRj-_pS4'
-    username = u'张先生'
-    phonenum = "1388****888"
-    timestruct = time.localtime(timestamp)
-    time_str = time.strftime('%Y-%m-%d %H:%M:%S', timestruct)
-
-
-    wechatpush = WechatPush()
-    touser = openid
-    template_id = 'nNYHQN0U7Jvbb8ldc13ZxA1kAfzfPSo33D889RCra7k'
-    url = "http://ewosugong.com/workerList/?openid={openid}&sorttime=true".format(openid=openid)
-    data = {
-            "first": {
-            "value":"您关注的工种，有新的用户上线了",
-            "color":"#173177"
-            },
-            "keyword1": {
-                "value": username,
-                "color": "#173177"
-            },
-            "keyword2":{
-            "value": phonenum,
-            "color":"#173177"
-            },
-            "remark":{
-            "value": "快来查看下吧",
-            "color": "#173177"
-            },
-        }
-    wechatpush.do_push(touser=touser,url=url,template_id=template_id, data=data)
+    userlist_send_message()
+    # timestamp = time.time()
+    # openid = 'oT69X1NC-ZcQHgM2ERE4bRj-_pS4'
+    # username = u'张先生'
+    # phonenum = "1388****888"
+    # timestruct = time.localtime(timestamp)
+    # time_str = time.strftime('%Y-%m-%d %H:%M:%S', timestruct)
+    #
+    #
+    # wechatpush = WechatPush()
+    # touser = openid
+    # template_id = 'nNYHQN0U7Jvbb8ldc13ZxA1kAfzfPSo33D889RCra7k'
+    # url = "http://ewosugong.com/workerList/?openid={openid}&sorttime=true".format(openid=openid)
+    # data = {
+    #         "first": {
+    #         "value":"您关注的工种，有新的用户上线了",
+    #         "color":"#173177"
+    #         },
+    #         "keyword1": {
+    #             "value": username,
+    #             "color": "#173177"
+    #         },
+    #         "keyword2":{
+    #         "value": phonenum,
+    #         "color":"#173177"
+    #         },
+    #         "remark":{
+    #         "value": "快来查看下吧",
+    #         "color": "#173177"
+    #         },
+    #     }
+    # wechatpush.do_push(touser=touser,url=url,template_id=template_id, data=data)
