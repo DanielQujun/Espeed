@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
     <link rel="stylesheet" href="../static/iconfont/iconfont.css">
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/style201806031533.css">
 </head>
 
 <body class="page">
@@ -25,13 +25,34 @@
             </div>
         </div>
         <input type="hidden" id="jobList" value="{{ jobList|safe }}">
-    </section>
 
+    </section>
+    <button class="fixedBtn bigBtn"><i class="iconfont icon-jia1"></i>立即发布</button>
     <!-- 底部 -->
     <footer>
-        <button class="smallBtn nearbyBtn" onclick="goUrl('nearby')" ><i class="iconfont icon-fujinderen"></i>附近的人</button>
-        <button class="bigBtn"><i class="iconfont icon-jia1"></i>立即发布</button>
-        <button class="smallBtn" onclick="goUrl('userCenter')"><i class="iconfont icon-wode"></i>个人中心</button>
+        <div class="weui-tabbar">
+            <a href="javascript:goUrl('nearby');" class="weui-tabbar__item weui-bar__item--on">
+                <div class="weui-tabbar__icon">
+                    <i class="iconfont icon-fujinderen"></i>
+                </div>
+                <p class="weui-tabbar__label">附近的人</p>
+            </a>
+            <a href="javascript:goUrl('workerList');" class="weui-tabbar__item">
+                <div class="weui-tabbar__icon">
+                    <i class="iconfont icon-zhifeiji"></i>
+                </div>
+                <p class="weui-tabbar__label">在线发布</p>
+            </a>
+            <a href="javascript:goUrl('userCenter');" class="weui-tabbar__item">
+                <div class="weui-tabbar__icon">
+                    <i class="iconfont icon-gerenzhongxin"></i>
+                </div>
+                <p class="weui-tabbar__label">个人中心</p>
+            </a>
+        </div>
+        <!--<button class="smallBtn nearbyBtn" onclick="goUrl('nearby')" ><i class="iconfont icon-fujinderen"></i>附近的人</button>
+        <button class="smallBtn " onclick="goUrl('workerList')" ><i class="iconfont icon-fujinderen"></i>在线发布</button>
+        <button class="smallBtn" onclick="goUrl('userCenter')"><i class="iconfont icon-wode"></i>个人中心</button>-->
     </footer>
 
 
