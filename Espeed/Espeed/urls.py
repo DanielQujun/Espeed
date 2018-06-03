@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^role/', weixin_views.chose_role, name='chose_role'),
     url(r'^baseProfile/', weixin_views.input_name, name='input_name'),
     url(r'^jobs/', weixin_views.chose_job_cate, name='chose_job_cate'),
-    url(r'^workerList/', weixin_views.wokers_or_jobs_list, name='wokers_or_jobs_list'),
+    url(r'^workerList/', weixin_views.workers_or_jobs_list, name='wokers_or_jobs_list'),
     url(r'^userCenter/', weixin_views.usercenter, name='usercenter'),
     url(r'^profile/', weixin_views.profile, name='profile'),
     url(r'^history/', weixin_views.history, name='history'),
@@ -41,5 +41,6 @@ urlpatterns = [
     url(r'^rate/', weixin_views.rate, name='rate'),
     url(r'^nearby_jobs/', weixin_views.nearby_jobs, name='nearby_jobs'),
     url(r'^nearby/', weixin_views.nearby_workers, name='nearby_workers'),
-    url(r'^change_username/', weixin_views.change_username, name='change_username'),
+    url(r'^nearby_ajax/', weixin_views.nearby_ajax, name='nearby_ajax'),
+
 ]
