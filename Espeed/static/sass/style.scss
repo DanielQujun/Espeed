@@ -66,6 +66,7 @@ footer {
   box-sizing: border-box;
   font-size: 0;
   background: #3493eb;
+  z-index: 80;
 
   button {
     outline: none;
@@ -958,35 +959,49 @@ footer {
     }
   }
 }
-
+/*nearby页面*/
 .nearbyPage {
 
   .distanceModal {
     width: 100%;
+    height: 100%;
     position: absolute;
-    background: #fff;
-    border-bottom: 1px solid #eaeaea;
-    z-index: 20;
+    top: 0;
+    left: 0;
+    z-index: 90;
     padding-top: 51px;
-    transition: all ease .3s;
-    top: -100px;
-    height: 100px;
 
-    .distanceModal_bd {
-      padding:  0 10px 10px 10px;
-      justify-content: flex-start;
-      flex-wrap: wrap;
+    .mask {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: rgba(0,0,0,.5);
+      display: none;
+      z-index: 91;
 
-      .weui-btn:nth-child(1) {
-        margin-top: 15px;
+      &.show {
+        display: block;
       }
     }
-    .distanceModal_ft {
-      margin-top:15px;
+
+    .distanceModal_bd {
+      width: 100%;
+      position: relative;
+      text-align: left;
+      background: #fff;
+      border-bottom: 1px solid #eaeaea;
+      border-top: 1px solid #eaeaea;
+      display: none;
+      z-index: 92;
+      padding: 5px 15px;
+      box-sizing: border-box;
 
       .weui-btn {
-        width: 45%;
-        display: inline-block;
+        width: 20%;
+        margin: 0 2.5% 15px 2.5%;
+        padding: 0;
       }
     }
 
@@ -994,48 +1009,51 @@ footer {
 
   .jobsModal {
     width: 100%;
+    height: 100%;
     position: absolute;
-    background: #fff;
-    border-bottom: 1px solid #eaeaea;
-    z-index: 20;
+    top: 0;
+    left: 0;
+    z-index: 93;
     padding-top: 51px;
-    transition: all ease .3s;
+
+    .mask {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: rgba(0,0,0,.5);
+      display: none;
+      z-index: 94;
+
+      &.show {
+        display: block;
+      }
+    }
+
 
     .jobsModal_bd {
-      justify-content: flex-start;
       width: 100%;
-      flex-wrap: wrap;
       position: relative;
-      text-align: center;
+      text-align: left;
+      background: #fff;
+      border-bottom: 1px solid #eaeaea;
+      border-top: 1px solid #eaeaea;
+      display: none;
+      z-index: 95;
+      padding: 5px 15px;
+      box-sizing: border-box;
 
-      input[type = "checkbox"] {
-        position: absolute;
-        clip: rect(0,0,0,0);
+      .weui-btn {
+        width: 20%;
+        margin: 0 2.5% 15px 2.5%;
+        padding: 0;
       }
-      input[type = "checkbox"] + label {
-        width: 26%;
-        margin: 10px 3%;
-        border: 1px solid #999999;
-        border-radius: 3px;
-        background: #fff;
-        color: #666666;
-        font-size: 13px;
-        line-height: 2.4em;
-        position: relative;
-        display: block;
-        white-space:nowrap;
-        overflow:hidden;
-        text-overflow:ellipsis;
-      }
-      input[type = "checkbox"]:checked + label {
-        color: #fff;
-        background: #3493eb;
-        border: 1px solid #3284d1;
-      }
-
     }
 
   }
+
+
 
 
 
