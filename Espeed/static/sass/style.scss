@@ -62,6 +62,7 @@ input {
   font-size: 24px;
   color: #fff;
 }
+
 .weui-tabbar__item.weui-bar__item--on .weui-tabbar__label {
   color: #fff;
 }
@@ -70,8 +71,11 @@ input {
 }
 .weui-tabbar__label {
   color: #fff;
+  margin-top: 3px;
 }
-
+.weui-tabbar__item {
+  padding: 2px 0 0;
+}
   // 底部导航栏
 footer {
   position: fixed;

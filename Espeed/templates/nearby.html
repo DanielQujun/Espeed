@@ -189,6 +189,7 @@
             $(this).addClass("weui-btn_primary").removeClass("weui-btn_default")
                 .siblings().removeClass("weui-btn_primary").addClass("weui-btn_default");
             $currentPage = 1;
+            $(".listCon").html("");
             loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
             $(".distanceModal_bd").slideToggle("slow");
         });
@@ -197,21 +198,30 @@
         var $modalHeight = $(".jobsModal_bd").css("height");
         function initModal() {
             //获取列表中的tag标签，去重，渲染
-            var jobtext = $(".tag").map(function (value) {
-                return $(this).text();
-            }).join(',');
-            $nearbyTagArr = $.unique(jobtext.split(','));
-            var $tagBtns = "";
-            $.each($nearbyTagArr,function (key, job) {
-                $tagBtns += '<input  type="button" class="filterTagBtn weui-btn weui-btn_mini weui-btn_default" value="'+ job +'" />';
-            });
-            $(".jobsModal_bd").html($tagBtns);
+            var $alltag = '';
+            var $tagBtns = '';
+            if($(".tag").length == "0"){
+                $tagBtns = '';
+                $(".jobsModal_bd").html($tagBtns);
+                $alltag = '<input  type="button" class="filterTagBtn weui-btn weui-btn_mini weui-btn_primary" value="全部" />';
+                $(".jobsModal_bd").prepend($alltag);
+            }else {
+                var jobtext = $(".tag").map(function (value) {
+                    return $(this).text();
+                }).join(',');
+                var $nearbyTagArr = $.unique(jobtext.split(','));
 
-            var $alltag = '<input  type="button" class="filterTagBtn weui-btn weui-btn_mini weui-btn_primary" value="全部" />';
-            $(".jobsModal_bd").prepend($alltag);
+                $.each($nearbyTagArr,function (key, job) {
+                    $tagBtns += '<input  type="button" class="filterTagBtn weui-btn weui-btn_mini weui-btn_default" value="'+ job +'" />';
+                });
+                $(".jobsModal_bd").html($tagBtns);
+
+                var $alltag = '<input  type="button" class="filterTagBtn weui-btn weui-btn_mini weui-btn_primary" value="全部" />';
+                $(".jobsModal_bd").prepend($alltag);
+
+            }
 
             var activeBtnVal = $.session.get("filterTag");
-
             $.each($(".filterTagBtn"),function (key,val) {
                 if($(this).val() == activeBtnVal) {
                     $(this).addClass("weui-btn_primary").removeClass("weui-btn_default")
@@ -250,7 +260,8 @@
                 .siblings().removeClass("weui-btn_primary").addClass("weui-btn_default");
             $currentPage = 1;
             console.log($filterTag);
-                loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
+            $(".listCon").html("");
+            loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
             $(".jobsModal_bd").slideToggle("slow");
         });
 
@@ -473,7 +484,8 @@
 
     });
 
-
+    //创建百度地图对象
+    var myGeo = new BMap.Geocoder();
 
 
 </script>

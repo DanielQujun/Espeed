@@ -68,7 +68,11 @@ input {
   background-color: #3284d1; }
 
 .weui-tabbar__label {
-  color: #fff; }
+  color: #fff;
+  margin-top: 3px; }
+
+.weui-tabbar__item {
+  padding: 2px 0 0; }
 
 footer {
   position: fixed;
