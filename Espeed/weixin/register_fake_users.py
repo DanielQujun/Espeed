@@ -247,9 +247,72 @@ def create_jobcates():
             }, {
             'title': "水泥塑石工",
             'value': 27
-            }
+            },]
+    jobs_cates2 = [
+        {
+            'title': "消防管道专业",
+            'value': 28
+        },{
+            'title': "空调安装",
+            'value': 29
+            },{
+            'title': "造价/预算",
+            'value': 30
+            },{
+            'title': "测绘/测量",
+            'value': 31
+            },{
+            'title': "园林景观设计",
+            'value': 32
+            },{
+            'title': "美工平面设计",
+            'value': 33
+            },{
+            'title': "手绘动漫",
+            'value': 34
+            },{
+            'title': "CAD制图",
+            'value': 35
+            },{
+            'title': "建筑工程师",
+            'value': 36
+            },{
+            'title': "3D设计/制作",
+            'value': 37
+            },{
+            'title': "室内装潢设计",
+            'value': 38
+            },{
+            'title': "供水排水专业",
+            'value': 39
+            },{
+            'title': "文员/助理",
+            'value': 40
+            },{
+            'title': "资料员",
+            'value': 41
+            },{
+            'title': "财务/会计",
+            'value': 42
+            },{
+            'title': "法律顾问",
+            'value': 43
+            },{
+            'title': "机电设备维护",
+            'value': 44
+            },{
+            'title': "沙石水泥",
+            'value': 45
+            },{
+            'title': "其他特殊工种",
+            'value': 46
+            },
+        {
+            'title': "铝合金门窗制作",
+            'value': 47
+        },
         ]
-    for i in jobs_cates:
+    for i in jobs_cates2:
         job_cate = Jobcates(id=i.get('value'), jobcate=i.get('title'))
         job_cate.save()
 

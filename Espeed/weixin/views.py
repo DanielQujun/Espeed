@@ -494,7 +494,7 @@ def worklist_ajax(request):
             print filter_query
             workers = UserProfileBase.objects.exclude(Role=user.Role).filter(filter_query). \
                 filter(Location_longi__range=(user.Location_longi - 10, user.Location_longi + 10)). \
-                filter(Location_lati__range=(user.Location_lati - 10, user.Location_lati + 10))
+                filter(Location_lati__range=(user.Location_lati - 10, user.Location_lati + 10)).filter(online=True)
                 # filter(Location_longi__range=(user.Location_longi - 0.1, user.Location_longi + 0.1)). \
                 # filter(Location_lati__range=(user.Location_lati - 0.1, user.Location_lati + 0.1))
 
@@ -626,7 +626,7 @@ def zhihu_pre(request):
         pay_data = wx_pay.js_pay_api(
             openid=openid,
             body=body,
-            total_fee=1,
+            total_fee=100,
             out_trade_no=out_trade_no,
             spbill_create_ip=ip
         )
@@ -848,14 +848,16 @@ def nearby_ajax(request):
                 print filter_query
                 workers = UserProfileBase.objects.exclude(Role=user.Role).filter(filter_query). \
                     filter(Location_longi__range=(user.Location_longi - 0.1, user.Location_longi + 0.1)). \
-                    filter(Location_lati__range=(user.Location_lati - 0.1, user.Location_lati + 0.1))
+                    filter(Location_lati__range=(user.Location_lati - 0.1, user.Location_lati + 0.1)).filter(online=True)
             else:
                 workers = UserProfileBase.objects.exclude(Role=user.Role).\
                     filter(Location_longi__range=(user.Location_longi - 0.1, user.Location_longi + 0.1)). \
-                    filter(Location_lati__range=(user.Location_lati - 0.1, user.Location_lati + 0.1))
+                    filter(Location_lati__range=(user.Location_lati - 0.1, user.Location_lati + 0.1)).filter(online=True)
 
             for worker in workers:
                 worker_dic = {}
+                print "nearby return here!!!"
+                print worker.online
                 worker_dic['userid'] = worker.id
                 worker_dic['username'] = worker.userName
                 worker_dic['tag'] = list(worker.Jobs)
@@ -892,6 +894,7 @@ def nearby_ajax(request):
                 "currentPage": page,
                 "listData": page_object.object_list
             }
+
             return HttpResponse(json.dumps(conten_dict))
         else:
             return HttpResponse("wrong parameters!")
