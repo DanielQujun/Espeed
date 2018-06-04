@@ -172,11 +172,11 @@
                 var $thisList = $(event.currentTarget);
                 var $rateVal = $thisList.siblings('.userid').html();
 //                alert("申诉获取的用户id" + $rateVal);
-                var $reason5 = '<span class=""></span>申诉原因5</span>'
-                var $reason4 = '<span class=""></span>申诉原因4</span>'
-                var $reason3 = '<span class=""></span>申诉原因3</span>'
-                var $reason2 = '<span class=""></span>申诉原因2</span>'
-                var $reason1 = '<span class=""></span>申诉原因1</span>'
+                var $reason5 = '<span class=""></span>号码已停机</span>';
+                var $reason4 = '<span class=""></span>虚假信息</span>';
+                var $reason3 = '<span class=""></span>态度恶劣</span>';
+                var $reason2 = '<span class=""></span>与描述不符</span>';
+                var $reason1 = '<span class=""></span>其他原因</span>';
                 $.actions({
                     actions: [{
                         text: $reason5,
@@ -221,6 +221,7 @@
                             $.toast("申诉成功，请等待客服处理", "text");
                             $thisList.val('处理中');
                             $thisList.attr("disabled","disabled");
+                            $(".listCon").html("");
                             $currentPage = 1;
                             loadData($currentPage);
                         }

@@ -395,7 +395,9 @@
                         success: function () {
                             $.toast("评价成功", "text");
                             $thisList.hide();
+                            $(".listCon").html("");
                             $currentPage = 1;
+                            loadData($currentPage,$byDis,$byPubTime);
                         }
 
                     })
