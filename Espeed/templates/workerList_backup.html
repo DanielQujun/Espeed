@@ -4,7 +4,7 @@
 
 <head lang="en">
     <meta charset="utf-8">
-    <title>附近的人</title>
+    <title>列表页</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
     <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
@@ -15,36 +15,21 @@
 </head>
 
 <body class="page">
-<div class="workerList nearbyPage">
+<div class="workerList">
     <!-- 头部 -->
     <header>
         <div class="weui-navbar">
-            <div class="weui-navbar__item weui_bar__item_on"  id="distanceNearby">
-                <span>距离筛选</span>
+            <div class="weui-navbar__item weui_bar__item_on"  id="distanceFilter">
+                <span>离我最近<span class="filterArrow"></span></span>
+
             </div>
-            <div class="weui-navbar__item"  id="jobsNearby"><span>工种筛选</span>
+            <div class="weui-navbar__item"  id="pubTimeFilter"><span>最新上线<span class="filterArrow"></span></span>
             </div>
-        </div>
-        <div class="distanceModal">
-            <!--<div class="mask"></div>-->
-            <div class="distanceModal_bd flex">
-                <input  type="button" class="distanceBtn weui-btn weui-btn_mini weui-btn_default" value="100米" data-val="100" />
-                <input  type="button" class="distanceBtn weui-btn weui-btn_mini weui-btn_default" value="500米"  data-val="500"/>
-                <input  type="button" class="distanceBtn weui-btn weui-btn_mini weui-btn_default" value="1千米"  data-val="1000"/>
-                <input  type="button" class="distanceBtn weui-btn weui-btn_mini weui-btn_default" value="5千米"  data-val="5000"/>
-                <input  type="button" class="distanceBtn weui-btn weui-btn_mini weui-btn_primary" value="10千米"  data-val="10000"/>
-            </div>
-        </div>
-        <div class="jobsModal">
-            <!--<div class="mask"></div>-->
-            <div class="jobsModal_bd"></div>
         </div>
     </header>
 
-
     <!-- 主体内容 -->
     <section class="main">
-        <div id="location" style="display: block;">正在获取定位信息...</div>
         <div class="weui-loadmore">
             <i class="weui-loading"></i>
             <span class="weui-loadmore__tips">正在加载</span>
@@ -57,15 +42,16 @@
     </section>
 
     <!-- 底部 -->
+        <button class="fixedBtn bigBtn cancel"><i class="iconfont icon-quxiao"></i>取消发布</button>
     <footer>
         <div class="weui-tabbar">
-            <a href="javascript:goUrl('nearby');" class="weui-tabbar__item weui-bar__item--on">
+            <a href="javascript:goUrl('nearby');" class="weui-tabbar__item">
                 <div class="weui-tabbar__icon">
                     <i class="iconfont icon-fujinderen"></i>
                 </div>
                 <p class="weui-tabbar__label">附近的人</p>
             </a>
-            <a href="javascript:goUrl('workerList');" class="weui-tabbar__item">
+            <a href="javascript:goUrl('workerList');" class="weui-tabbar__item weui-bar__item--on">
                 <div class="weui-tabbar__icon">
                     <i class="iconfont icon-zhifeiji"></i>
                 </div>
@@ -80,10 +66,10 @@
         </div>
     </footer>
 
-
     <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
     <span id="openidInsert" style="display:none;">{{ openid }}</span>
     <span id="roleInsert" style="display:none;">{{ role }}</span>
+
 </div>
 
 <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
@@ -95,12 +81,8 @@
 <script type="text/javascript"src="../static/js/utility.js"></script>
 <script>
     $(function () {
-
-
         FastClick.attach(document.body);
         window.localStorage.setItem("openid",$('#openidInsert').text());
-        window.localStorage.setItem("role",$('#roleInserts').text());
-
 
         //调用微信sdk配置
         wx.config({
@@ -118,25 +100,16 @@
         wx.error(function (res) {
             $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
         });
-        //配置成功后，调用接口
-        wx.ready(function () {
-
-            //调用location函数，将位置转化为地址，并写入session；
-            lacation();
-
-        });
 
         //初始化数据
-        $.session.set('radius',10000);
-        $.session.set('filterTag','全部');
         var $j=0;
         var $totalPage = 10;
         var $currentPage = 1;
-        var $byDis = true;
-        var $byPubTime = true;
-        var $radius = $.session.get('radius');
-        var $filterTag = $.session.get('filterTag');
-        loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
+        //var $byDis = true;
+        //var $byPubTime = true;
+        var $byDis = {{ byDis|safe }};
+        var $byPubTime = {{ byPubTime|safe }};
+        loadData($currentPage,$byDis,$byPubTime);
 
 
         //上拉加载
@@ -146,8 +119,7 @@
             $loading = true;
             ++ $currentPage;
             if($currentPage <= $totalPage ){
-                // addNum($currentPage,$byDis,$byPubTime);
-                loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
+                loadData($currentPage,$byDis,$byPubTime);                 //测试
                 $loading = false;
             } else {
 //                console.log("不执行了");
@@ -168,131 +140,70 @@
             $(this).hide();
         });
 
+        //取消发布按钮弹窗
+        $('.cancel').click(function () {
+            $.confirm("取消后，您的信息将对其他人不可见", "确认取消", function () {
+                $.ajax({
+                    url: "/jobs/",
+                    type: "post",
+                    data: {
+                        online: false,
+                      openid: window.localStorage.getItem("openid"),
+//                        openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
+                        timestamp: $.now()
+                    },
+                    success: function () {
+                        location.href = "/jobs/?openid="+window.localStorage.getItem("openid");
+//                        location.href = "/jobs/?openid=oT69X1PX1jG6Ojhij3tQVOGSnWzQ";
+                    }
+                });
+            }, function () {
+                return false;
+            });
+        });
 
         //距离排序
-        $("#distanceNearby").click(function (ev) {
-            $(".jobsModal").css("display","none");
-            $(this).css("display","block");
-            $(".distanceModal").css("display","block");
-            $(".distanceModal .mask").toggleClass("show");
-            $(".distanceModal_bd").slideToggle("slow");
-        });
-        $(".distanceModal .mask").click(function (ev) {
-            $(".jobsModal").css("display","none");
-            $(".distanceModal").css("display","block");
-            $(".distanceModal .mask").toggleClass("show");
-            $(".distanceModal_bd").slideToggle("slow");
-        });
-        $(".distanceBtn").click(function () {
-            $.session.set('radius',parseInt($(this).attr("data-val")));
-            $radius = $.session.get('radius');
-            $(this).addClass("weui-btn_primary").removeClass("weui-btn_default")
-                .siblings().removeClass("weui-btn_primary").addClass("weui-btn_default");
-            $currentPage = 1;
+        $("#distanceFilter").click(function () {
+            $("#distanceFilter .filterArrow").toggleClass('active');
+            $byDis = !$byDis;
             $(".listCon").html("");
-            loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
-            $(".distanceModal_bd").slideToggle("slow");
-        });
-
-        // 工种过滤弹窗初始化
-        var $modalHeight = $(".jobsModal_bd").css("height");
-        function initModal() {
-            //获取列表中的tag标签，去重，渲染
-            var $alltag = '';
-            var $tagBtns = '';
-            if($(".tag").length == "0"){
-                $tagBtns = '';
-                $(".jobsModal_bd").html($tagBtns);
-                $alltag = '<input  type="button" class="filterTagBtn weui-btn weui-btn_mini weui-btn_primary" value="全部" />';
-                $(".jobsModal_bd").prepend($alltag);
-            }else {
-                var jobtext = $(".tag").map(function (value) {
-                    return $(this).text();
-                }).join(',');
-                var $nearbyTagArr = $.unique(jobtext.split(','));
-
-                $.each($nearbyTagArr,function (key, job) {
-                    $tagBtns += '<input  type="button" class="filterTagBtn weui-btn weui-btn_mini weui-btn_default" value="'+ job +'" />';
-                });
-                $(".jobsModal_bd").html($tagBtns);
-
-                var $alltag = '<input  type="button" class="filterTagBtn weui-btn weui-btn_mini weui-btn_primary" value="全部" />';
-                $(".jobsModal_bd").prepend($alltag);
-
-            }
-
-            var activeBtnVal = $.session.get("filterTag");
-            $.each($(".filterTagBtn"),function (key,val) {
-                if($(this).val() == activeBtnVal) {
-                    $(this).addClass("weui-btn_primary").removeClass("weui-btn_default")
-                        .siblings().removeClass("weui-btn_primary").addClass("weui-btn_default");
-                }
-            });
-
-
-        }
-        initModal();
-
-
-        //工种筛选
-        $("#jobsNearby").click(function (ev) {
-            var event = ev || event;
-            event.stopPropagation();
-            initModal();
-            $(".distanceModal").css("display","none");
-            $(".jobsModal").css("display","block");
-            $(".jobsModal .mask").toggleClass("show");
-            $(".jobsModal_bd").slideToggle("slow");
-        });
-        $(".jobsModal .mask").click(function (ev) {
-            var event = ev || event;
-            event.stopPropagation();
-
-            $(".distanceModal").css("display","none");
-            $(".jobsModal").css("display","block");
-            $(".jobsModal .mask").toggleClass("show");
-            $(".jobsModal_bd").slideToggle("slow");
-        });
-        $(".jobsModal_bd").on("click",'.filterTagBtn',function (ev) {
-            $.session.set('filterTag',$(this).val());
-            $filterTag = $.session.get('filterTag');
-            $(this).addClass("weui-btn_primary").removeClass("weui-btn_default")
-                .siblings().removeClass("weui-btn_primary").addClass("weui-btn_default");
             $currentPage = 1;
-//            console.log($filterTag);
-            $(".listCon").html("");
-            loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
-            $(".jobsModal_bd").slideToggle("slow");
+            loadData($currentPage,$byDis,$byPubTime);
         });
 
+        //时间排序
+        $("#pubTimeFilter").click(function () {
+            $("#pubTimeFilter .filterArrow").toggleClass('active');
+            $byPubTime = !$byPubTime;
+            $(".listCon").html("");
+            $currentPage = 1;
+            loadData($currentPage,$byDis,$byPubTime);
+        });
 
         //加载对应页码数据
-        function loadData(page,byDis,byPubTime,radius,filterTag) {
+        function loadData(page,byDis,byPubTime) {
+//            console.log(new Date());
             $j++;
 //            console.log("开始执行loadData函数,第"+ $j + "次执行");
 //            console.log('第'+ $j + '次执,loadData向后台请求的页码数'+ page);
 
             $.ajax({
                 async: true,
-                url: "/nearby_ajax/",                    /*/nearby_ajax/*/
+                url: "workerList.json",                    /*/worklist_ajax/*/
                 dataType: "json",
                 type: "post",
                 data: {
                     openid: window.localStorage.getItem("openid"),
                     sortByDis: byDis,
                     sortByPubTime: byPubTime,
-                    page: page,
-                    radius: radius,             //1000米
-                    filterTag:filterTag,        //"全部"，"木工"...
-                    latitude: $.session.get('latitude'),
-                    longitude: $.session.get('longitude')
+                    page: page
                 },
                 success: function (data) {
                     $totalPage = data.totalPage;
                     $currentPage = data.currentPage;
 //                    console.log('第'+ $j + '次执,现在数据中的totalPage:'+ $totalPage);
 //                    console.log('第'+ $j + '次执,现在数据中的currentPage,也是自身的$currentPage:'+ $currentPage);
-                        showData(data.listData);
+                    showData(data.listData);
 //                    console.log("第" + $j + "次请求结束");
                 },
                 error: function (error) {
@@ -312,32 +223,31 @@
                 var $tagArr = val.tag;
                 if($tagArr.length == "1"){
                     if($role == "1"){
-                        $tag = '招聘<span class="tag">' + $tagArr[0] + '</span>';
-                    } else {
                         $tag = '我是<span class="tag">' + $tagArr[0] + '</span>';
+                    } else {
+                        $tag = '招聘 <span class="tag">' + $tagArr[0] + '</span>';
                     }
                 } else {
                     if($role == "1"){
-                        $tag = '招聘<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
-                    } else {
                         $tag = '我是<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
+                    } else {
+                        $tag = '招聘 <span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
                     }
                 }
-
 
                 //拼大字符串
                 var str = "";
                 str += '<li class="listItem flex">' +
                     '<div class="infoBox flex">' +
                     '<div class="list_hd flex">' +
-                    '<div class="tagBox"><span class="username">' + val.username + '</span>'+ $tag +'</div>' +
+                    '<div class="tagBox"><span class="username">' + val.username + '</span></div>' +
                     '<div class="star star' + val.star + '"></div>' +
                     '</div>' +
                     '<div class="list_bd flex">' +
-                    '<span class="distance">距您：' + formatDistance(val.distance) + '</span>' +
+                    '<span class="distance">'+ $tag +'</span>' +
                     '<p class="publishedTime">发布于：' + formatTime(val.pubTime) + '</p>' +
                     '</div>' +
-                    '<div class="list_ft flex"><span class="userid">'+ val.userid + '</span>' +  isRateble(val.isVisible) + isVisible(val.isVisible, val.phoneNum) +
+                    '<div class="list_ft flex"><span class="distance">距您：' + formatDistance(val.distance) + '</span><span><span class="userid">'+ val.userid + '</span>' +  isRateble(val.isVisible) + isVisible(val.isVisible, val.phoneNum) + '</span>' +
                     '</div>' +
                     '</div>' +
                     '</li>';
@@ -345,7 +255,6 @@
 
             });
 //            console.log("现在li的总数"+ $(".listItem").length);
-
             //是否可以评价
             function isRateble(vis) {
                 return vis ? '<a href="#" class="rate weui-btn weui-btn_mini weui-btn_default">评价</a>' : "";
@@ -390,10 +299,9 @@
             $('.check').click(function (event) {
                 var $thisList = $(event.currentTarget);
                 var $rateVal = $thisList.siblings(".userid").html();
-                // alert("被查看人的id"+$rateVal);
                 $.confirm({
                     title: '温馨提示',
-                    text: '查看电话号码需要支付0.5元查看费用',
+                    text: '查看电话号码需要支付1元查看费用,请联系人双方注意保护自己合法权益及人身安全，本平台不予负责。',
                     onOK: function () {
                         //通过ajax发送预订单所需基本信息
                         $.ajax({
@@ -405,7 +313,8 @@
                                 userid: $rateVal             //想要查看谁的电话号码
                             },
                             success: function (result) {
-                                $.session.set("pSign", result.sign)
+                                // alert("&paySign=" + result.sign);
+                                $.session.set("pSign", result.sign);
                                 //点击确认
                                 wx.chooseWXPay({
                                     timestamp: result.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
@@ -430,10 +339,14 @@
                 });
             });
 
+            //拨号弹窗
+            // 通过a链接自动拨号
+
             //评价弹窗
             $('.rate').click(function (event){
                 var $thisList = $(event.currentTarget);
                 var $rateVal = $thisList.siblings('.userid').html();
+                // alert("评价获取的用户id" + $rateVal);
                 var $star5 = '<span class="rateActionstar star5"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">很专业</span>'
                 var $star4 = '<span class="rateActionstar star4"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">专业</span>'
                 var $star3 = '<span class="rateActionstar star3"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">一般</span>'
@@ -474,29 +387,26 @@
                         url:"/rate/",
                         type: "post",
                         data: {
-                            openid: window.localStorage.getItem("openid"),
+                                openid: window.localStorage.getItem("openid"),
+//                            openid: "oT69X1PX1jG6Ojhij3tQVOGSnWzQ",
                             userid: id,
                             rateVal: rateCount
                         },
                         success: function () {
                             $.toast("评价成功", "text");
-                            location.href = "/nearby/?openid=" + window.localStorage.getItem("openid");
-                            $(".listCon").html("");
                             $thisList.hide();
+                            $(".listCon").html("");
                             $currentPage = 1;
-                            loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
+                            loadData($currentPage,$byDis,$byPubTime);
                         }
 
                     })
                 }
             });
         }
-
-
     });
 
-    //创建百度地图对象
-    var myGeo = new BMap.Geocoder();
+
 
 
 </script>
