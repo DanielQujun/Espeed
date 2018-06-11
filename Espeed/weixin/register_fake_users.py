@@ -312,7 +312,19 @@ def create_jobcates():
             'value': 47
         },
         ]
-    for i in jobs_cates2:
+    jobs_cates3 = [
+        {
+            'title': "室内装饰电工",
+            'value': 48
+        },        {
+            'title': "室内精装铺砖工",
+            'value': 49
+        },        {
+            'title': "市政铺砖工",
+            'value': 50
+        },
+    ]
+    for i in jobs_cates3:
         job_cate = Jobcates(id=i.get('value'), jobcate=i.get('title'))
         job_cate.save()
 

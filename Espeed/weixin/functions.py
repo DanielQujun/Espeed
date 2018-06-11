@@ -167,7 +167,7 @@ def get_jsapi_token():
         jsapi_ticket_dic = parse_Json2Dict(content)
         JSAPI_TICKET = str(jsapi_ticket_dic[u'ticket'])
         JSAPI_TICKET_EXPIRES_IN = jsapi_ticket_dic['expires_in']
-        r.set(name='JSAPI_TICKET',value=JSAPI_TICKET,ex=JSAPI_TICKET_EXPIRES_IN-60)
+        r.set(name='JSAPI_TICKET', value=JSAPI_TICKET, ex=JSAPI_TICKET_EXPIRES_IN-60)
         return JSAPI_TICKET
 
 
@@ -191,12 +191,12 @@ def get_jsapi_token_bak():
         return weixin.config.JSAPI_TICKET
 
 
-def send_online_to_redis(username, jobs, phonenum, location_lati, location_longi, publishtime):
-    data_dic = {'username': username, 'jobs': jobs, 'phonenum': phonenum, 'location_lati': location_lati,
-                'location_longi':location_longi, 'publishtime':publishtime}
+def send_online_to_redis(username,openId, role, jobs, phonenum, location_lati, location_longi, publishtime):
+    data_dic = {'username': username, 'openid':openId, 'role': role, 'jobs': jobs, 'phonenum': phonenum, 'location_lati': location_lati,
+                'location_longi': location_longi, 'publishtime': publishtime}
     print json.dumps(data_dic)
     try:
-        r.lpush('online_queue', json.dumps(data_dic))
+        r.sadd('online_queue', json.dumps(data_dic))
     except Exception, e:
         print "send_online_to_redis FAILED"
         print e

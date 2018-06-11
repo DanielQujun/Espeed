@@ -32,6 +32,7 @@ class UserProfileBase(models.Model):
     createTime = models.DateTimeField(auto_now_add=True)				# 注册时间
     last_login = models.DateField(default=None)			# 最后访问时间
     publishTime = models.CharField(max_length=20, null=True)
+    last_login2 = models.CharField(max_length=20, null=True)
 
 class UserVisible(models.Model):
     transation_no = models.CharField(default=None, max_length=50)

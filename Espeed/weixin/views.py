@@ -234,7 +234,8 @@ def chose_job_cate(request):
                 user.online = 'True'
                 user.publishTime = time.time()
                 user.save()
-                send_online_to_redis(user.userName,user.Jobs,user.phonenum,user.Location_lati,user.Location_longi,user.publishTime)
+                send_online_to_redis(user.userName,user.openId, user.Role,user.Jobs,user.phonenum,user.Location_lati,
+                                     user.Location_longi,user.publishTime)
                 callbackurl = "/workerList/?openid={openid}".format(openid=openid)
                 return HttpResponse("OK")
                 # return HttpResponseRedirect(callbackurl)
@@ -287,6 +288,8 @@ def workers_or_jobs_list(request):
             # 用户存在，判断用户是否是认证用户
             if user.fromUser.is_active:
                 if user.phonenum:
+                    user.last_login2 = time.time()
+                    user.save()
                     if user.online:
                         print "qujun: User is  Online!"
                         data = render_js_config(request)
