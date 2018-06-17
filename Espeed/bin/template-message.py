@@ -9,6 +9,11 @@ import traceback
 sys.setdefaultencoding("utf-8")
 from math import *
 import redis
+import logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+
 r = redis.Redis(host='127.0.0.1', port='6379')
 r1 = redis.Redis(host='127.0.0.1', port='6379', db=1)
 
@@ -34,7 +39,7 @@ def get_access_token():
     if WEIXIN_ACCESS_TOKEN:
         return WEIXIN_ACCESS_TOKEN
     else:
-        print "did not get WEIXIN_ACCESS_TOKEN"
+        logger.error("did not get WEIXIN_ACCESS_TOKEN")
 
 class WechatPush():
 
@@ -43,7 +48,7 @@ class WechatPush():
     para_data = para_dct
     f = urllib2.urlopen(url, para_data)
     content = f.read()
-    print " i get weixin return content "
+    logger.error(" i get weixin return content ")
     return content
 
   def do_push(self,touser,url,template_id,data):
@@ -56,13 +61,13 @@ class WechatPush():
                 'data': data
                 }
     json_template = json.dumps(dict_arr)
-    print dict_arr
+
     access_token = get_access_token()
     requst_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + access_token
     content = self.post_data(requst_url,json_template)
     #读取json数据
     j = json.loads(content)
-    print j
+    logger.error(j)
 
 
 if __name__ == "__main__":
@@ -73,8 +78,8 @@ if __name__ == "__main__":
             cursor = db.cursor()
             online_user = r.spop('online_queue')
             if online_user:
-                print "有人上线了"
-                print online_user
+                logger.error("有人上线了")
+                logger.error(online_user)
                 online_user_dic = json.loads(online_user)
                 jobs = online_user_dic.get('jobs').split(',')
                 role = online_user_dic.get('role')
@@ -97,12 +102,16 @@ if __name__ == "__main__":
                     online = user[16]
                     wechatpush = WechatPush()
                     touser = openid
-                    distnce = Distance(online_user_dic.get('location_lati'),online_user_dic.get('location_lati'),Location_lati,Location_longi)
-                    print "两者距离为%s"%distnce
-                    if online_user_dic['phonenum'] != user[8] and not r1.get(openid) and distnce < 10000000 :
+                    distnce = Distance(online_user_dic.get('location_lati'), online_user_dic.get('location_lati'),Location_lati,Location_longi)
+                    logger.error("两者距离为%s"%distnce)
+                    if online_user_dic['phonenum'] != user[8] and not r1.get(openid) and distnce < 10000000:
                         # 将已发送的用户插入redis队列，设置一天的过期时间
-                        r1.set(name=openid, value=openid, ex=86400)
-                        print "给用户%s发送信息" %(openid)
+                        today = datetime.date.today()
+                        tomorrow = today + datetime.timedelta(days=1)
+                        tomorrow_0630 = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, 06, 30, 0)
+                        r1.set(name=openid, value=username)
+                        r1.expireat(openid, tomorrow_0630)
+                        logger.error("给用户%s发送信息" %(username))
                         if role == 1:
                             value = "附近有适合你的专业技术工种"
                         else:
@@ -132,9 +141,9 @@ if __name__ == "__main__":
             else:
                 time.sleep(10)
         except Exception, e:
-            print e
-            print traceback.format_exc()
-            print "出错了"
+
+            logger.error(traceback.format_exc())
+            logger.error("出错了")
             time.sleep(5)
 
         finally:
