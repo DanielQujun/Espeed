@@ -22,7 +22,9 @@ from aliyunsdkcore.client import AcsClient
 import uuid
 from aliyunsdkcore.profile import region_provider
 from aliyunsdkdysmsapi.request.v20170525 import SendSmsRequest
-
+import logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 def index(request):
     callbackurl = "/register"
@@ -102,8 +104,8 @@ def register(request):
         return render(request, 'login.html', data)
 
     elif request.method == 'POST':
-        print "qujun:get register post!"
-        print request.POST
+        logger.info("qujun:get register post!")
+        logger.info(request.POST)
         openid = request.POST.get('openid')
         phonenum = request.POST.get('phoneNum')
         veirycode = request.POST.get('signCode')
@@ -142,7 +144,7 @@ def chose_role(request):
         return render(request, 'role.html', data)
 
     elif request.method == 'POST':
-        print "i am in chose role!!"
+        logger.info("i am in chose role!!")
         print request.POST
         openid = request.POST.get('openid')
         role = request.POST.get('role')
@@ -165,11 +167,10 @@ def input_name(request):
         baseinfourl = BASEINFOURL.format(WEIXIN_ACCESS_TOKEN=get_access_token(), OPENID=data['openid'])
         resp, content = my_get(baseinfourl)
         user_info_dict = parse_Json2Dict(content)
-        print user_info_dict
 
         return render(request, 'baseProfile.html', user_info_dict)
     elif request.method == 'POST':
-        print "qujun: iam in inpurt name!"
+        logger.info("qujun: iam in inpurt name!")
         POST_DATA = request.POST
         print POST_DATA
 
@@ -214,8 +215,7 @@ def chose_job_cate(request):
             job_dic = {'title': jobcate.jobcate, 'value': jobcate.id}
             data['jobList'].append(job_dic)
         data['jobList'] = json.dumps(data['jobList'])
-        print "qujun RENDER jsapi data!!!!!!!!!!!!!"
-        print data
+
         return render(request, 'jobs.html', data)
 
     elif request.method == 'POST':
@@ -240,7 +240,7 @@ def chose_job_cate(request):
                 return HttpResponse("OK")
                 # return HttpResponseRedirect(callbackurl)
             else:
-                print "qujun : update database for jobs OFFline!!!"
+                logger.error("update database for %s jobs OFFline!!!"%openid)
                 data = {}
                 data['openid'] = openid
                 user = UserProfileBase.objects.filter(openId=openid).first()
@@ -249,7 +249,6 @@ def chose_job_cate(request):
 
                 return render(request, 'jobs.html', data)
 
-
         else:
             callbackurl = "/register/?openid={openid}".format(openid=openid)
             return HttpResponseRedirect(callbackurl)
@@ -257,7 +256,7 @@ def chose_job_cate(request):
 
 
 def workers_or_jobs_list(request):
-    print request.GET
+
     "获取用户 openid 判定 ID 是否是认证用户来跳转不同的页面"
     # http://www.cnblogs.com/txw1958/p/weixin71-oauth20.html
     code = request.GET.get("code", "")
@@ -275,14 +274,13 @@ def workers_or_jobs_list(request):
             '&secret=' + WEIXIN_APPSECRET + '&code=' + code + '&grant_type=authorization_code'
         resp, content = my_get(url)
         user_dict = parse_Json2Dict(content)
-        print user_dict
+
     elif openid:
         user_dict['openid'] = openid
         user_dict['scope'] = "snsapi_userinfo"
 
     if user_dict['openid']:
-        print "work list get openid is : "
-        print user_dict['openid']
+
         user = UserProfileBase.objects.filter(openId=user_dict['openid']).first()
         if user is not None:
             # 用户存在，判断用户是否是认证用户
@@ -291,7 +289,7 @@ def workers_or_jobs_list(request):
                     user.last_login2 = time.time()
                     user.save()
                     if user.online:
-                        print "qujun: User is  Online!"
+                        logger.error("qujun: User %s is  Online!"%user.openId)
                         data = render_js_config(request)
                         data['openid'] = user.openId
                         data['role'] = user.Role
@@ -304,7 +302,7 @@ def workers_or_jobs_list(request):
                         print data
                         return render(request, 'workerList.html', data)
                     else:
-                        print "qujun: User is Not Online!"
+                        logger.error("qujun: User  %s is Not Online!"%user.openId)
                         callbackurl = "/jobs/?openid={openid}".format(openid=user.openId)
                         return HttpResponseRedirect(callbackurl)
                 else:
@@ -474,7 +472,7 @@ def transaction_ajax(request):
 
 def worklist_ajax(request):
     if request.method == 'POST':
-        print request.POST
+
         openid = request.POST.get('openid')
         sortByDis =request.POST.get('sortByDis')
         sortByPubTime = request.POST.get('sortByPubTime')
@@ -486,23 +484,20 @@ def worklist_ajax(request):
             tag_list = list(user.Jobs.copy())
             # 查询该用户支付过的记录
             payed_list = [payed_user.user_visible for payed_user in UserVisible.objects.filter(user_payed=openid,pay_status='payed')]
-            print payed_list
-            print "qujun debug views line 378!!! for payed_list"
+
 
             work_objects_db = []
             if len(tag_list) >= 2:
                 filter_query = reduce(lambda x, y: Q(Jobs__contains=x) | Q(Jobs__contains=y), tag_list)
             else:
                 filter_query = Q(Jobs__contains=tag_list[0])
-            print filter_query
+
             workers = UserProfileBase.objects.exclude(Role=user.Role).filter(filter_query). \
                 filter(Location_longi__range=(user.Location_longi - 10, user.Location_longi + 10)). \
                 filter(Location_lati__range=(user.Location_lati - 10, user.Location_lati + 10)).filter(online=True)
-                # filter(Location_longi__range=(user.Location_longi - 0.1, user.Location_longi + 0.1)). \
-                # filter(Location_lati__range=(user.Location_lati - 0.1, user.Location_lati + 0.1))
 
             for worker in workers:
-                worker_dic = {}
+                worker_dic = dict()
                 worker_dic['userid'] = worker.id
                 worker_dic['username'] = worker.userName
                 worker_dic['tag'] = list(worker.Jobs)
@@ -526,7 +521,7 @@ def worklist_ajax(request):
             work_objects = work_objects_db
             p = Paginator(work_objects, perNum)  # 3条数据为一页，实例化分页对象
             #print p.count  # 10 对象总共10个元素
-            print p.num_pages  # 4 对象可分4页
+
             #print p.page_range  # xrange(1, 5) 对象页的可迭代范围
 
             page_object = p.page(page)  # 取对象的第一分页对象
@@ -537,7 +532,6 @@ def worklist_ajax(request):
                 "currentPage": page,
                 "listData": page_object.object_list
             }
-            print conten_dict
             return HttpResponse(json.dumps(conten_dict))
         else:
             return HttpResponse("wrong parameters!")
@@ -656,7 +650,7 @@ def dail(request):
     headimgurl = show_user.avatarAddr
     username = show_user.userName
     #print {'phone_num': phone_num,'headimgurl':headimgurl,'username':username}
-    data = {'phone_num': phone_num, 'headimgurl':headimgurl, 'username':username, 'openid':openid}
+    data = {'phone_num': phone_num, 'headimgurl': headimgurl, 'username': username, 'openid': openid}
 
     return render(request, 'dail.html', data)
 
@@ -676,8 +670,8 @@ def verify_code(request):
 
     ip_request_times = len(verify_code_request.objects.filter(request_ip=ip))
     if ip_request_times > 10:
-        print "evoke spm control"
-        str_return = {"success":"false","Code":"TOO_MANY"}
+        logger.error("evoke spm control")
+        str_return = {"success": "false", "Code": "TOO_MANY"}
         return HttpResponse(str_return)
     verify_request = verify_code_request(request_ip=ip, request_phonenum=phoneNum, request_time=request_time)
     verify_request.save()
@@ -706,7 +700,6 @@ def verify_code(request):
 
     params = "{\"code\":\"%s\"}"%(code)
     sms_return_string = send_sms(__business_id, phoneNum, "E我速工", "SMS_135675002", params)
-    print sms_return_string
     sms_return_dic = json.loads(sms_return_string)
     if sms_return_dic['Code'] == 'OK':
         request.session['verify_code'] = str(code)
@@ -820,7 +813,7 @@ def nearby_workers(request):
 
 def nearby_ajax(request):
     if request.method == "POST":
-        print "i am /nearby_ajax/!!!"
+        logger.info("i am /nearby_ajax/!!!")
         print request.POST
         openid = request.POST.get('openid')
         sortByDis = request.POST.get('sortByDis')
@@ -829,14 +822,13 @@ def nearby_ajax(request):
         worker_radius = request.POST.get('radius')
         tag_list = [request.POST.get('filterTag')]
         perNum = 10
-        # openid = 'oT69X1Chvefxgv3wby_-PaEIM9nY'
         if openid:
             user = UserProfileBase.objects.filter(openId=openid).first()
             # tag_list = list(user.Jobs.copy())
             # 查询该用户支付过的记录
             payed_list = [payed_user.user_visible for payed_user in
                           UserVisible.objects.filter(user_payed=openid, pay_status='payed')]
-            print "qujun debug views line 834!!! get payed_list"
+
 
             work_objects_db = []
             if len(tag_list) >= 2:
@@ -847,8 +839,7 @@ def nearby_ajax(request):
                 else:
                     filter_query = Q(Jobs__contains=tag_list[0])
             if filter_query:
-                print "nearby i get filter_filter_query!"
-                print filter_query
+
                 workers = UserProfileBase.objects.exclude(Role=user.Role).filter(filter_query). \
                     filter(Location_longi__range=(user.Location_longi - 0.1, user.Location_longi + 0.1)). \
                     filter(Location_lati__range=(user.Location_lati - 0.1, user.Location_lati + 0.1)).filter(online=True)
@@ -859,8 +850,7 @@ def nearby_ajax(request):
 
             for worker in workers:
                 worker_dic = {}
-                print "nearby return here!!!"
-                print worker.online
+                logger.info("nearby return here!!!")
                 worker_dic['userid'] = worker.id
                 worker_dic['username'] = worker.userName
                 worker_dic['tag'] = list(worker.Jobs)
