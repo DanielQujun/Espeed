@@ -4,7 +4,6 @@
 
 <head lang="en">
     <meta charset="utf-8">
-    <title>列表页</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
     <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
@@ -100,6 +99,19 @@
         wx.error(function (res) {
             $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
         });
+
+        //修改标题
+        var $role = $("#roleInsert").text();
+        var $title = "";
+        var $head = $("head");
+        if($role == "1"){
+            $title = '<title>以下是附近的老板要找人干活</title>';
+            $head.eq(0).append($title);
+        } else {
+            $title = '<title>以下是附近的工人要找活干</title>';
+            $head.eq(0).append($title);
+        };
+
 
         //初始化数据
         var $j=0;
@@ -213,7 +225,9 @@
 
 
         }
-        var $role = $("#roleInsert").text();
+
+
+
         //渲染数据
         function showData(data) {
 
