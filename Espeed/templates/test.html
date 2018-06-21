@@ -2,7 +2,6 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>hide</title>
     <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
     <style>
         .box{
@@ -15,27 +14,18 @@
     </style>
 </head>
 <body>
-<button class="btn">点我出现弹窗</button>
-<div class="box"></div>
 <script>
-    $(function(){
-        $('.btn').click(function(ev){
-            var event = ev || event;  // firefox的兼容性
-            event.stopPropagation();  // 阻止冒泡事件
-
-            $('.box').show();
-        });
-
-        // 点击弹窗时，阻止冒泡事件
-        $('.box').click(function(ev){
-            var event = ev || event;
-            event.stopPropagation();
-        });
-
-        $(document).click(function(){
-            $('.box').hide();
-        });
-    })
+    var $role = 2;
+    var $title = "";
+    var $head = $("head");
+    console.log($head);
+    if($role == "1"){
+        $title = '<title>以下是附近的老板要找人干活</title>'
+        $head.eq(0).append($title);
+    } else {
+        $title = '<title>以下是附近的工人要找活干</title>'
+        $head.eq(0).append($title);
+    }
 </script>
 </body>
 </html>

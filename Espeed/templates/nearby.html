@@ -126,6 +126,19 @@
 
         });
 
+        //修改标题
+        var $role = $("#roleInsert").text();
+        var $title = "";
+        var $head = $("head");
+        if($role == "1"){
+            $title = '<title>附近的老板</title>';
+            $head.eq(0).append($title);
+        } else {
+            $title = '<title>附近的工人</title>';
+            $head.eq(0).append($title);
+        };
+
+
         //初始化数据
         $.session.set('radius',30000);
         $.session.set('filterTag','全部');
