@@ -503,7 +503,12 @@ def worklist_ajax(request):
                 worker_dic['tag'] = list(worker.Jobs)
                 #worker_dic['star'] = int(worker.Score)
                 worker_dic['star'] = int(worker.Score)
-                worker_dic['pubTime'] = int(worker.publishTime.replace('.','')+'0')
+                # 老板要改成登录时间
+                if not worker.last_login2:
+                    logger.error("%s has no last_login2 value"%worker.phonenum)
+                    continue
+                worker_dic['pubTime'] = int(worker.last_login2.replace('.', '') + '0')
+                #worker_dic['pubTime'] = int(worker.publishTime.replace('.','')+'0')
                 worker_dic['distance'] = Distance(user.Location_lati, user.Location_longi, worker.Location_lati, worker.Location_longi)
                 # worker_dic['isVisible'] = True if UserVisible.objects.filter(user_payed=user.openId, user_visible=worker.openId) \
                 #                                 else False
@@ -856,7 +861,12 @@ def nearby_ajax(request):
                 worker_dic['tag'] = list(worker.Jobs)
                 # worker_dic['star'] = int(worker.Score)
                 worker_dic['star'] = int(worker.Score)
-                worker_dic['pubTime'] = int(worker.publishTime.replace('.', '') + '0')
+                # 老板要改成登录时间
+                if not worker.last_login2:
+                    logger.error("%s has no last_login2 value"%worker.phonenum)
+                    continue
+                worker_dic['pubTime'] = int(worker.last_login2.replace('.', '') + '0')
+                #worker_dic['pubTime'] = int(worker.publishTime.replace('.', '') + '0')
                 worker_dic['distance'] = Distance(user.Location_lati, user.Location_longi, worker.Location_lati,
                                                   worker.Location_longi)
                 # worker_dic['isVisible'] = True if UserVisible.objects.filter(user_payed=user.openId, user_visible=worker.openId) \
