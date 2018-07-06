@@ -74,7 +74,7 @@ def create_menu(request):
 
     menu_data = {}
     button1 = {}
-    button1['name'] = '速工找人'
+    button1['name'] = '点击进入找人找活'
     button1['type'] = 'view'
     button1['url'] = HOME_URL
 
