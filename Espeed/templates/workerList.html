@@ -276,7 +276,7 @@
 
             //是否可见
             function isVisible(vis, val) {
-                return vis ? '<a href="tel:' + val + '"' + ' class="dial weui-btn weui-btn_mini weui-btn_success">' + val + '</a>' : '<a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>'
+                return vis ? '<a href="tel:' + val + '"' + ' class="dial weui-btn weui-btn_mini weui-btn_success">' + val + '</a>' : '<a href="javascript:;" class="share weui-btn weui-btn_mini weui-btn_primary">分享至朋友圈查看号码</a><a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>'
             }
 
             //距离格式化
@@ -308,6 +308,44 @@
                 }
                 return num;
             }
+
+            //分享调用
+            $(".share").click(function () {
+                wx.onMenuShareTimeline({
+                    title: '上E我速工找工作就是亲公司那个',
+                    link: 'http://www.baidu.com', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: '', // 分享图标
+                    success: function () {              //todo需要检验userid
+                        $.ajax({
+                            url: "/zhihu_pre/",
+                            dataType: "json",
+                            type: "post",
+                            data: {
+                                openid: window.localStorage.getItem("openid"),
+                                userid: $rateVal             //想要查看谁的电话号码
+                            },
+                            success: function (result) {
+                                // alert("&paySign=" + result.sign);
+                                $.session.set("pSign", result.sign);
+                                //点击确认
+                                wx.chooseWXPay({
+                                    timestamp: result.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                                    nonceStr: result.nonceStr, // 支付签名随机串，不长于 32 位
+                                    package: result.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+                                    signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入
+                                    // 'MD5'
+                                    paySign: result.sign, // 支付签名
+                                    success: function (res) {
+                                        location.href = "/dail/?openid=" + window.localStorage.getItem("openid") + "&paySign=" + result.sign;
+                                    },
+                                    fail: function (errMsg) {
+                                        console.log(errMsg);
+                                    }
+                                })
+                            }
+                        })
+                    }
+            });
 
             //查看电话号码弹窗
             $('.check').click(function (event) {
