@@ -92,7 +92,10 @@
             signature: "{{ signature }}",// 必填，签名，见附录1
             jsApiList: [
                 'getLocation',
-                'chooseWXPay'
+                'chooseWXPay',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage'
+
             ]
         });
         //通过error接口处理失败验证
@@ -201,7 +204,7 @@
 
             $.ajax({
                 async: true,
-                url: "/worklist_ajax/",                    /*/worklist_ajax/*/
+                url: "workerList.json",                    /*/worklist_ajax/*/
                 dataType: "json",
                 type: "post",
                 data: {
@@ -261,7 +264,7 @@
                     '<span class="distance">距您：' + formatDistance(val.distance) + '</span>' +
                     '<p class="publishedTime">发布于：' + formatTime(val.pubTime) + '</p>' +
                     '</div>' +
-                    '<div class="list_ft flex"><span class="userid">'+ val.userid + '</span>' +  isRateble(val.isVisible) + isVisible(val.isVisible, val.phoneNum) +
+                    '<div class="list_ft flex"><span class="userid">'+ val.userid + '</span>'+ isSharable(val.sharable) +  isRateble(val.isVisible) + isVisible(val.isVisible, val.phoneNum) +
                     '</div>' +
                     '</div>' +
                     '</li>';
@@ -276,7 +279,12 @@
 
             //是否可见
             function isVisible(vis, val) {
-                return vis ? '<a href="tel:' + val + '"' + ' class="dial weui-btn weui-btn_mini weui-btn_success">' + val + '</a>' : '<a href="javascript:;" class="share weui-btn weui-btn_mini weui-btn_primary">分享至朋友圈查看号码</a><a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>'
+                return vis ? '<a href="tel:' + val + '"' + ' class="dial weui-btn weui-btn_mini weui-btn_success">' + val + '</a>' :'<a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>'
+            }
+
+            //是否可分享
+            function isSharable(sharable){
+                return sharable ? '<a href="javascript:;" class="share weui-btn weui-btn_mini weui-btn_primary">分享朋友圈查看号码</a>' : '';
             }
 
             //距离格式化
@@ -312,7 +320,7 @@
             //分享调用
             $(".share").click(function () {
                 wx.onMenuShareTimeline({
-                    title: '上E我速工找工作就是亲公司那个',
+                    title: '上E我速工找工作就是快，各种工种都有！',
                     link: 'http://www.baidu.com', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                     imgUrl: '', // 分享图标
                     success: function () {              //todo需要检验userid
@@ -322,13 +330,16 @@
                             type: "post",
                             data: {
                                 openid: window.localStorage.getItem("openid"),
-                                userid: $rateVal             //想要查看谁的电话号码
+                                userid: $rateVal,             //想要查看谁的电话号码
+                                shared: true
                             },
                             success: function (result) {
                                 // alert("&paySign=" + result.sign);
                                 $.session.set("pSign", result.sign);
+                                //直接跳转电话号码查看页面
+                                location.href = "/dail/?openid=" + window.localStorage.getItem("openid") + "&paySign=" + result.sign;
                                 //点击确认
-                                wx.chooseWXPay({
+                               /* wx.chooseWXPay({
                                     timestamp: result.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
                                     nonceStr: result.nonceStr, // 支付签名随机串，不长于 32 位
                                     package: result.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
@@ -341,7 +352,7 @@
                                     fail: function (errMsg) {
                                         console.log(errMsg);
                                     }
-                                })
+                                })*/
                             }
                         })
                     }
@@ -362,7 +373,8 @@
                             type: "post",
                             data: {
                                 openid: window.localStorage.getItem("openid"),
-                                userid: $rateVal             //想要查看谁的电话号码
+                                userid: $rateVal,             //想要查看谁的电话号码
+                                shared: false
                             },
                             success: function (result) {
                                 // alert("&paySign=" + result.sign);

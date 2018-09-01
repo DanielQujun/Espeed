@@ -14,6 +14,7 @@
       "pubTime": 1280977330000,
       "distance": 2421,
       "isVisible": false,
+      "sharable": true,
       "isRateble": true,
       "phoneNum": 18570607610,
       "portraitUrl": "../static/images/defaultHead.png"
@@ -29,6 +30,7 @@
       "pubTime": 1280977330000,
       "distance": 123,
       "isVisible": true,
+      "sharable": true,
       "isRateble": false,
       "phoneNum": 15080755770,
       "portraitUrl": "../static/images/defaultHead.png"
@@ -44,6 +46,7 @@
       "pubTime": 1280977330000,
       "distance": 123,
       "isVisible": true,
+      "sharable": true,
       "isRateble": false,
       "phoneNum": 15080755770,
       "portraitUrl": "../static/images/defaultHead.png"
@@ -59,6 +62,7 @@
       "pubTime": 1280977330000,
       "distance": 123,
       "isVisible": true,
+      "sharable": true,
       "isRateble": false,
       "phoneNum": 15080755770,
       "portraitUrl": "../static/images/defaultHead.png"
@@ -74,6 +78,7 @@
       "pubTime": 1280977330000,
       "distance": 123,
       "isVisible": true,
+      "sharable": true,
       "isRateble": false,
       "phoneNum": 15080755770,
       "portraitUrl": "../static/images/defaultHead.png"
