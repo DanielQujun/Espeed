@@ -317,13 +317,16 @@
                 return num;
             }
 
+            var shareImgStr = '<img src="../static/images/shareTip.png" style="height: 100%;width: 100%;"/>';
+
+
             //分享调用
             $(".share").click(function (event) {
                 var $thisList = $(event.currentTarget);
                 var $rateVal = $thisList.siblings(".userid").html();
                 $.alert({
                     title: '温馨提示',
-                    text: '请点击右上角菜单，分享至朋友圈分享',
+                    text: shareImgStr,
                     onOK: function () {
                         window.localStorage.setItem("shareId",$rateVal)
                     }
@@ -332,11 +335,11 @@
                 wx.onMenuShareTimeline({
                     title: '上E我速工找工作就是快，各种工种都有！',
                     link: 'http://ewosugong.com/shareCode/', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                    imgUrl: 'http://ewosugong.com/images/Espeed_logo.png', // 分享图标
+                    imgUrl: 'http://ofv416fej.bkt.clouddn.com/18-9-1/17425874.jpg', // 分享图标
                     success: function () {              //todo需要检验userid
                         // alert(1);
                         $.ajax({
-                            url: "/zhihu_pre/",
+                            url: "/moment_shared_notify/",                          /*/zhihu_pre/*/
                             dataType: "json",
                             type: "post",
                             data: {
@@ -350,7 +353,6 @@
                                 $.session.set("pSign", result.sign);
                                 //直接跳转电话号码查看页面
                                 location.href = "/dail/?openid=" + window.localStorage.getItem("openid") + "&paySign=" + result.sign;
-
                             }
                         })
                     }
