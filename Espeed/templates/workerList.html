@@ -321,7 +321,7 @@
             $(".share").click(function () {
                 wx.onMenuShareTimeline({
                     title: '上E我速工找工作就是快，各种工种都有！',
-                    link: 'http://www.baidu.com', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    link: 'http://ewosugong.com/workerList/', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                     imgUrl: '', // 分享图标
                     success: function () {              //todo需要检验userid
                         $.ajax({
@@ -338,24 +338,11 @@
                                 $.session.set("pSign", result.sign);
                                 //直接跳转电话号码查看页面
                                 location.href = "/dail/?openid=" + window.localStorage.getItem("openid") + "&paySign=" + result.sign;
-                                //点击确认
-                               /* wx.chooseWXPay({
-                                    timestamp: result.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-                                    nonceStr: result.nonceStr, // 支付签名随机串，不长于 32 位
-                                    package: result.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
-                                    signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入
-                                    // 'MD5'
-                                    paySign: result.sign, // 支付签名
-                                    success: function (res) {
-                                        location.href = "/dail/?openid=" + window.localStorage.getItem("openid") + "&paySign=" + result.sign;
-                                    },
-                                    fail: function (errMsg) {
-                                        console.log(errMsg);
-                                    }
-                                })*/
+
                             }
                         })
                     }
+                })
             });
 
             //查看电话号码弹窗
