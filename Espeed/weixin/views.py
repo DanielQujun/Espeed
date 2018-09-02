@@ -26,6 +26,11 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+
+import redis
+r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
+
+
 def index(request):
     callbackurl = "/register"
     return HttpResponseRedirect(callbackurl)
@@ -273,6 +278,7 @@ def workers_or_jobs_list(request):
         url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' + WEIXIN_APPID + \
             '&secret=' + WEIXIN_APPSECRET + '&code=' + code + '&grant_type=authorization_code'
         resp, content = my_get(url)
+        logger.info("workers_or_jobs_list get content from weixin code: %s", content)
         user_dict = parse_Json2Dict(content)
 
     elif openid:
@@ -379,9 +385,8 @@ def history_ajax(request):
             user = UserProfileBase.objects.filter(openId=openid).first()
             tag_set = user.Jobs.copy()
             # 查询该用户支付过的记录
-            payed_list = [payed_user.user_visible for payed_user in UserVisible.objects.filter(user_payed=openid,pay_status='payed')]
-            print openid
-            print "qujun debug views line 378!!! for payed_list"
+            payed_list = [payed_user.user_visible for payed_user in UserVisible.objects.filter(user_payed=openid,
+                                                                                               pay_status='payed')]
 
             work_objects_db = []
             for payed_openid in payed_list:
@@ -394,7 +399,8 @@ def history_ajax(request):
                     #worker_dic['star'] = int(worker.Score)
                     worker_dic['star'] = worker.Score
                     worker_dic['pubTime'] = int(worker.publishTime.replace('.','')+'0')
-                    worker_dic['distance'] = Distance(user.Location_lati, user.Location_longi, worker.Location_lati, worker.Location_longi)
+                    worker_dic['distance'] = Distance(user.Location_lati, user.Location_longi,
+                                                      worker.Location_lati, worker.Location_longi)
                     # worker_dic['isVisible'] = True if UserVisible.objects.filter(user_payed=user.openId, user_visible=worker.openId) \
                     #                                 else False
                     worker_dic['isVisible'] = True
@@ -498,6 +504,12 @@ def worklist_ajax(request):
 
             for worker in workers:
                 worker_dic = dict()
+                # 添加sharable参数给前端做是否可分享判断ß
+                if r.get(openid):
+                    worker_dic['sharable'] = False
+                else:
+                    worker_dic['sharable'] = True
+
                 worker_dic['userid'] = worker.id
                 worker_dic['username'] = worker.userName
                 worker_dic['tag'] = list(worker.Jobs)
@@ -597,6 +609,36 @@ def wxpay_notify(request):
             return HttpResponse(return_str, status=200)
 
 
+def moment_shared_notify(request):
+
+    if request.method == "POST":
+        try:
+            # 支付者id
+            openid = request.POST.get('openid')
+            # 被查看者id
+            userid = request.POST.get('userid')
+            out_trade_no = time.strftime('%Y%m%d%M%S', time.localtime(time.time())) + "".join(
+                random.choice(CHAR) for _ in range(5))
+            useropenid = UserProfileBase.objects.filter(id=userid).first().openId
+
+            User_view_pay = UserVisible(transation_no=out_trade_no, user_payed=openid, user_visible=useropenid,
+                                        pay_status='payed', request_time=time.time())
+            sign = "momentshared"+str(time.time())
+            User_view_pay.paysign = sign
+            User_view_pay.save()
+
+            # 设置分享限制，在redis中写入该openid做标记
+            today = datetime.date.today()
+            tomorrow = today + datetime.timedelta(days=1)
+            tomorrow_0630 = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, 1, 0, 0)
+            r.set(name=openid, value=useropenid)
+            r.expireat(openid, tomorrow_0630)
+            return HttpResponse(json.dumps({"sign": sign}))
+        except Exception, e:
+            logger.error("moment_shared_notify error: %s", e)
+            return HttpResponse("Wrong")
+
+
 def zhihu_pre(request):
     if request.META.has_key('HTTP_X_FORWARDED_FOR'):
         ip = request.META['HTTP_X_FORWARDED_FOR']
@@ -640,7 +682,7 @@ def zhihu_pre(request):
         # 订单生成后将请将返回的json数据 传入前端页面微信支付js的参数部分
         # print jsonify(pay_data)
     except WxPayError, e:
-        print e.message, 400
+        logge.error("WxPayError: %s",e.message)
         return HttpResponse("zhifu some thing wrong!")
 
 
@@ -856,6 +898,10 @@ def nearby_ajax(request):
             for worker in workers:
                 worker_dic = {}
                 logger.info("nearby return here!!!")
+                if r.get(openid):
+                    worker_dic['sharable'] = False
+                else:
+                    worker_dic['sharable'] = True
                 worker_dic['userid'] = worker.id
                 worker_dic['username'] = worker.userName
                 worker_dic['tag'] = list(worker.Jobs)
@@ -914,3 +960,9 @@ def change_username(request):
         user.save()
         callbackurl = "/profile/?openid={openid}".format(openid=openid)
         return HttpResponseRedirect(callbackurl)
+
+
+def shareCode(request):
+    if request.method == 'GET':
+        data = {}
+        return render(request, 'shareCode.html', data)

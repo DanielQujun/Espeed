@@ -43,5 +43,7 @@ urlpatterns = [
     url(r'^nearby_jobs/', weixin_views.nearby_jobs, name='nearby_jobs'),
     url(r'^nearby/', weixin_views.nearby_workers, name='nearby_workers'),
     url(r'^nearby_ajax/', weixin_views.nearby_ajax, name='nearby_ajax'),
+    url(r'^shareCode/', weixin_views.shareCode, name='shareCode'),
+    url(r'^moment_shared_notify/', weixin_views.moment_shared_notify, name='moment_shared_notify'),
 
 ]
