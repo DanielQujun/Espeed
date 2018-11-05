@@ -748,6 +748,7 @@ def verify_code(request):
     params = "{\"code\":\"%s\"}"%(code)
     sms_return_string = send_sms(__business_id, phoneNum, "E我速工", "SMS_135675002", params)
     sms_return_dic = json.loads(sms_return_string)
+    logger.info("sms return for verify code: %s", sms_return_dic)
     if sms_return_dic['Code'] == 'OK':
         request.session['verify_code'] = str(code)
         request.session['verify_code_time'] = request_time
