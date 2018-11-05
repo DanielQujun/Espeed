@@ -519,7 +519,8 @@ def worklist_ajax(request):
                 if not worker.last_login2:
                     logger.error("%s has no last_login2 value"%worker.phonenum)
                     continue
-                worker_dic['pubTime'] = int(worker.last_login2.replace('.', '') + '0')
+                pubtime = worker.last_login2.replace('.', '')
+                worker_dic['pubTime'] = int(pubtime.ljust(13,'0'))
                 #worker_dic['pubTime'] = int(worker.publishTime.replace('.','')+'0')
                 worker_dic['distance'] = Distance(user.Location_lati, user.Location_longi, worker.Location_lati, worker.Location_longi)
                 # worker_dic['isVisible'] = True if UserVisible.objects.filter(user_payed=user.openId, user_visible=worker.openId) \
@@ -534,8 +535,11 @@ def worklist_ajax(request):
             if sortByDis == 'true':
                 work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['distance'])
             elif sortByPubTime == 'true':
-                work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['pubTime'])
+                work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['pubTime'], reverse=True)
+            else:
+                work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['distance'])
             work_objects = work_objects_db
+            logger.info("return for user %s work_list_ajax: %s", openid, work_objects)
             p = Paginator(work_objects, perNum)  # 3条数据为一页，实例化分页对象
             #print p.count  # 10 对象总共10个元素
 
@@ -912,7 +916,8 @@ def nearby_ajax(request):
                 if not worker.last_login2:
                     logger.error("%s has no last_login2 value"%worker.phonenum)
                     continue
-                worker_dic['pubTime'] = int(worker.last_login2.replace('.', '') + '0')
+                pubtime = worker.last_login2.replace('.', '')
+                worker_dic['pubTime'] = int(pubtime.ljust(13, '0'))
                 #worker_dic['pubTime'] = int(worker.publishTime.replace('.', '') + '0')
                 worker_dic['distance'] = Distance(user.Location_lati, user.Location_longi, worker.Location_lati,
                                                   worker.Location_longi)
@@ -929,7 +934,9 @@ def nearby_ajax(request):
             if sortByDis == 'true':
                 work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['distance'])
             elif sortByPubTime == 'true':
-                work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['pubTime'])
+                work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['pubTime'], reverse=True)
+            else:
+                work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['distance'])
             work_objects = work_objects_db
             p = Paginator(work_objects, perNum)  # 3条数据为一页，实例化分页对象
             # print p.count  # 10 对象总共10个元素
