@@ -320,7 +320,10 @@ def workers_or_jobs_list(request):
                 return HttpResponseRedirect(callbackurl)
 
         else:
-            callbackurl = "/register/?openid={openid}".format(openid=user_dict['openid'])
+            # 添加游客身份
+            # callbackurl = "/register/?openid={openid}".format(openid=user_dict['openid'])
+            callbackurl = "/nearby/?openid={openid}&guest={guest}".\
+                format(openid=user_dict['openid'], guest="true")
             return HttpResponseRedirect(callbackurl)
     else:
         logger.debug("user_dict 为空！！！！！")
@@ -784,7 +787,7 @@ def nearby_jobs(request):
         data['jsapi_ticket'] = get_jsapi_token()
         data['url'] = request.build_absolute_uri()
         jsapi_string = "jsapi_ticket={JSAPI_TICKET}&noncestr={NONCESTR}&timestamp={TIMESTAMP}&url={URL}".\
-            format(JSAPI_TICKET=data['jsapi_ticket'],NONCESTR=data['nonceStr'], TIMESTAMP=data['timestamp'], URL=data['url'])
+            format(JSAPI_TICKET=data['jsapi_ticket'], NONCESTR=data['nonceStr'], TIMESTAMP=data['timestamp'], URL=data['url'])
 
         data['signature'] = hashlib.sha1(jsapi_string).hexdigest()
 
@@ -835,7 +838,7 @@ def nearby_workers(request):
     if request.method == 'GET':
         openid = request.GET.get('openid')
         data = {}
-        data['openid'] = request.GET.get('openid')
+        data['openid'] = openid
         data['timestamp'] = int(time.time())
         data['nonceStr'] = 'qujunqujun'
         data['appid'] = WEIXIN_APPID
@@ -846,21 +849,27 @@ def nearby_workers(request):
 
         data['signature'] = hashlib.sha1(jsapi_string).hexdigest()
 
-        data['openid'] = openid
         user = UserProfileBase.objects.filter(openId=openid).first()
-        data['role'] = user.Role
+        data['role'] = user.Role if user else "1"
+        data['guest'] = request.GET.get('guest') or 'false'
         return render(request, 'nearby.html', data)
 
 
 def nearby_ajax(request):
     if request.method == "POST":
         logger.info("i am /nearby_ajax/, post data: %s", request.POST)
-        openid = request.POST.get('openid')
-        sortByDis = request.POST.get('sortByDis')
-        sortByPubTime = request.POST.get('sortByPubTime')
-        page = request.POST.get('page')
-        worker_radius = request.POST.get('radius')
-        tag_list = [request.POST.get('filterTag')]
+        POST_DATA = request.POST
+        # TODO add defualt for debug
+        location_lati = POST_DATA.get('latitude')
+        location_lati = float(location_lati) if location_lati else 28.1537348787504
+        location_longi = POST_DATA.get('longitude')
+        location_longi = float(location_longi) if location_longi else 112.985121429159
+        openid = POST_DATA.get('openid')
+        sortByDis = POST_DATA.get('sortByDis')
+        sortByPubTime = POST_DATA.get('sortByPubTime')
+        page = POST_DATA.get('page')
+        worker_radius = POST_DATA.get('radius')
+        tag_list = [POST_DATA.get('filterTag')]
         perNum = 10
         if openid:
             user = UserProfileBase.objects.filter(openId=openid).first()
@@ -880,13 +889,15 @@ def nearby_ajax(request):
                     filter_query = Q(Jobs__contains=tag_list[0])
             if filter_query:
 
-                workers = UserProfileBase.objects.exclude(Role=user.Role).filter(filter_query). \
-                    filter(Location_longi__range=(user.Location_longi - 0.1, user.Location_longi + 0.1)). \
-                    filter(Location_lati__range=(user.Location_lati - 0.1, user.Location_lati + 0.1)).filter(online=True)
+                # workers = UserProfileBase.objects.exclude(Role=user.Role).filter(filter_query). \
+                workers = UserProfileBase.objects.filter(filter_query). \
+                    filter(Location_longi__range=(location_longi - 0.1, location_longi + 0.1)). \
+                    filter(Location_lati__range=(location_lati - 0.1, location_lati + 0.1)).filter(online=True)
             else:
-                workers = UserProfileBase.objects.exclude(Role=user.Role).\
-                    filter(Location_longi__range=(user.Location_longi - 0.1, user.Location_longi + 0.1)). \
-                    filter(Location_lati__range=(user.Location_lati - 0.1, user.Location_lati + 0.1)).filter(online=True)
+                # workers = UserProfileBase.objects.exclude(Role=user.Role). \
+                workers = UserProfileBase.objects. \
+                    filter(Location_longi__range=(location_longi - 0.1, location_longi + 0.1)). \
+                    filter(Location_lati__range=(location_lati - 0.1, location_lati + 0.1)).filter(online=True)
 
             for worker in workers:
                 worker_dic = {}
@@ -907,7 +918,7 @@ def nearby_ajax(request):
                 pubtime = worker.last_login2.replace('.', '')
                 worker_dic['pubTime'] = int(pubtime.ljust(13, '0'))
                 #worker_dic['pubTime'] = int(worker.publishTime.replace('.', '') + '0')
-                worker_dic['distance'] = Distance(user.Location_lati, user.Location_longi, worker.Location_lati,
+                worker_dic['distance'] = Distance(location_lati, location_longi, worker.Location_lati,
                                                   worker.Location_longi)
                 # worker_dic['isVisible'] = True if UserVisible.objects.filter(user_payed=user.openId, user_visible=worker.openId) \
                 #                                 else False
@@ -917,7 +928,6 @@ def nearby_ajax(request):
                 worker_dic['portraitUrl'] = worker.avatarAddr
                 if float(worker_dic['distance']) < float(worker_radius):
                     work_objects_db.append(worker_dic)
-            # work_objects_db = list(set(work_objects_db))
             if sortByDis == 'true':
                 work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['distance'])
             elif sortByPubTime == 'true':
