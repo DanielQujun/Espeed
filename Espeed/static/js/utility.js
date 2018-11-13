@@ -29,7 +29,8 @@ function getBaiduPosition(lng,lat) {
             //将转化完的坐标，写入session中，方便ajax发送已经转化过了的地址信息；
             $.session.set('latitude', data.result[0].y);
             $.session.set('longitude', data.result[0].x);
-
+            alert( $.session.getItem('latitude'));
+            alert( $.session.getItem('longitude'));
             // 根据坐标得到地址描述
             myGeo.getLocation(new BMap.Point($.session.get("longitude"),$.session.get("latitude")), function (result) {
                 if (result) {

@@ -7,560 +7,464 @@
     <title>附近的人</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
-    <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
+    <script type="text/javascript" src="../static/lib/index.min.js"></script> <!-- 解决移动端适配 -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
     <link rel="stylesheet" href="../static/iconfont/iconfont.css">
     <link rel="stylesheet" href="../static/css/style201806032229.css">
 </head>
+<!-- 附近的工人，附近的老板 -->
 
 <body class="page">
-<div class="workerList nearbyPage">
-    <!-- 头部 -->
-    <header>
-        <div class="weui-navbar">
-            <div class="weui-navbar__item weui_bar__item_on"  id="distanceNearby">
-                <span>距离筛选</span>
-            </div>
-            <div class="weui-navbar__item"  id="jobsNearby"><span>工种筛选</span>
-            </div>
-        </div>
-        <div class="distanceModal">
-            <!--<div class="mask"></div>-->
-            <div class="distanceModal_bd flex">
-                <input  type="button" class="distanceBtn weui-btn weui-btn_mini weui-btn_default" value="100米" data-val="100" />
-                <input  type="button" class="distanceBtn weui-btn weui-btn_mini weui-btn_default" value="500米"  data-val="500"/>
-                <input  type="button" class="distanceBtn weui-btn weui-btn_mini weui-btn_default" value="1千米"  data-val="1000"/>
-                <input  type="button" class="distanceBtn weui-btn weui-btn_mini weui-btn_default" value="5千米"  data-val="5000"/>
-                <input  type="button" class="distanceBtn weui-btn weui-btn_mini weui-btn_primary" value="30千米"  data-val="30000"/>
-            </div>
-        </div>
-        <div class="jobsModal">
-            <!--<div class="mask"></div>-->
-            <div class="jobsModal_bd"></div>
-        </div>
-    </header>
-
-
-    <!-- 主体内容 -->
-    <section class="main">
-        <div id="location" style="display: block;">正在获取定位信息...</div>
-        <div class="weui-loadmore">
-            <i class="weui-loading"></i>
-            <span class="weui-loadmore__tips">正在加载</span>
-        </div>
-        <ul class="listCon">
-        </ul>
-
-        <p class="loadMoreTip weui-footer__text">加载更多</p>
-        <p class="bottomTips weui-footer__text">没有更多了</p>
-    </section>
-
-    <!-- 底部 -->
-    <footer>
-        <div class="weui-tabbar">
-            <a href="javascript:goUrl('nearby');" class="weui-tabbar__item weui-bar__item--on">
-                <div class="weui-tabbar__icon">
-                    <i class="iconfont icon-fujinderen"></i>
+    <div class="workerList nearbyPage">
+        <!-- 头部 -->
+        <header>
+            <div class="weui-navbar">
+                <div class="weui-navbar__item weui_bar__item_on" id="nearbyWorker">
+                    <span>附近的工人</span>
                 </div>
-                <p class="weui-tabbar__label">附近的人</p>
-            </a>
-            <a href="javascript:goUrl('workerList');" class="weui-tabbar__item">
-                <div class="weui-tabbar__icon">
-                    <i class="iconfont icon-zhifeiji"></i>
+                <div class="weui-navbar__item" id="nearbyBoss"><span>附近的老板</span>
                 </div>
-                <p class="weui-tabbar__label">在线发布</p>
-            </a>
-            <a href="javascript:goUrl('userCenter');" class="weui-tabbar__item">
-                <div class="weui-tabbar__icon">
-                    <i class="iconfont icon-gerenzhongxin"></i>
-                </div>
-                <p class="weui-tabbar__label">个人中心</p>
-            </a>
-        </div>
-    </footer>
+            </div>
+        </header>
 
 
-    <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
-    <span id="openidInsert" style="display:none;">{{ openid }}</span>
-    <span id="roleInsert" style="display:none;">{{ role }}</span>
-</div>
+        <!-- 主体内容 -->
+        <section class="main">
+            <div id="location" style="display: block;">正在获取定位信息...</div>
+            <div class="weui-loadmore">
+                <i class="weui-loading"></i>
+                <span class="weui-loadmore__tips">正在加载</span>
+            </div>
+            <ul class="listCon">
+            </ul>
 
-<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
-<script type="text/javascript" src="../static/lib/jquerySession.js"></script>
-<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>        <!-- 引入微信js sdk -->
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BVbS3AVAs8iNor6NGxKfc1gG5OcqTxBu"></script>
-<script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
-<script type="text/javascript"src="../static/js/utility.js"></script>
-<script>
-    $(function () {
+            <p class="loadMoreTip weui-footer__text">加载更多</p>
+            <p class="bottomTips weui-footer__text">没有更多了</p>
+        </section>
 
-
-        FastClick.attach(document.body);
-        window.localStorage.setItem("openid",$('#openidInsert').text());
-        window.localStorage.setItem("role",$('#roleInserts').text());
-
-
-        //调用微信sdk配置
-        wx.config({
-            // debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-            appId: "{{ appid }}", // 必填，企业号的唯一标识，此处填写企业号corpid
-            timestamp: "{{timestamp}}", // 必填，生成签名的时间戳
-            nonceStr: "{{ nonceStr }}", // 必填，生成签名的随机串
-            signature: "{{ signature }}",// 必填，签名，见附录1
-            jsApiList: [
-                'getLocation',
-                'chooseWXPay'
-            ]
-        });
-        //通过error接口处理失败验证
-        wx.error(function (res) {
-            $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
-        });
-        //配置成功后，调用接口
-        wx.ready(function () {
-
-            //调用location函数，将位置转化为地址，并写入session；
-            lacation();
-
-        });
-
-        //修改标题
-        var $role = $("#roleInsert").text();
-        var $title = "";
-        var $head = $("head");
-        if($role == "1"){
-            $title = '<title>附近的老板</title>';
-            $head.eq(0).append($title);
-        } else {
-            $title = '<title>附近的工人</title>';
-            $head.eq(0).append($title);
-        };
+        <!-- 底部 -->
+        <footer>
+            <div class="weui-tabbar">
+                <a href="javascript:goUrl('nearby');" class="weui-tabbar__item weui-bar__item--on">
+                    <div class="weui-tabbar__icon">
+                        <i class="iconfont icon-fujinderen"></i>
+                    </div>
+                    <p class="weui-tabbar__label">附近的人</p>
+                </a>
+                <a href="javascript:goUrl('workerList');" class="weui-tabbar__item">
+                    <div class="weui-tabbar__icon">
+                        <i class="iconfont icon-zhifeiji"></i>
+                    </div>
+                    <p class="weui-tabbar__label">在线发布</p>
+                </a>
+                <a href="javascript:goUrl('userCenter');" class="weui-tabbar__item">
+                    <div class="weui-tabbar__icon">
+                        <i class="iconfont icon-gerenzhongxin"></i>
+                    </div>
+                    <p class="weui-tabbar__label">个人中心</p>
+                </a>
+            </div>
+        </footer>
 
 
-        //初始化数据
-        $.session.set('radius',30000);
-        $.session.set('filterTag','全部');
-        var $j=0;
-        var $totalPage = 10;
-        var $currentPage = 1;
-        var $byDis = true;
-        var $byPubTime = true;
-        var $radius = $.session.get('radius');
-        var $filterTag = $.session.get('filterTag');
-        loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
+        <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
+        <span id="openidInsert" style="display:none;">{{ openid }}</span>
+        <span id="guestInsert" style="display:none;">{{ guest }}</span>
+    </div>
+
+    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+    <script type="text/javascript" src="../static/lib/jquerySession.js"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script> <!-- 引入微信js sdk -->
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=BVbS3AVAs8iNor6NGxKfc1gG5OcqTxBu"></script>
+    <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
+    <script type="text/javascript" src="../static/js/utility.js"></script>
+    <script>
+        $(function () {
 
 
-        //上拉加载
-        var $loading = false;  //状态标记
-        $(document.body).infinite().on("infinite", function() {
-            if($loading) return;
-            $loading = true;
-            ++ $currentPage;
-            if($currentPage <= $totalPage ){
-                // addNum($currentPage,$byDis,$byPubTime);
-                loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
-                $loading = false;
-            } else {
-//                console.log("不执行了");
-                $(document.body).destroyInfinite();
-                $('.loadMoreTip').css("display","none");
-                $('.bottomTips').css("display","block");
-                $loading = false;
-            }
+            FastClick.attach(document.body);
+            window.localStorage.setItem("openid", $('#openidInsert').text());
+            window.localStorage.setItem("guest", $('#guestInsert').text());
+            window.localStorage.setItem("role", 2);  //页面载入时默认显示附近的工人，所以传老板的角色给后台
 
-        });
+            //调用微信sdk配置
+            wx.config({
+                // debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: "{{ appid }}", // 必填，企业号的唯一标识，此处填写企业号corpid
+                timestamp: "{{timestamp}}", // 必填，生成签名的时间戳
+                nonceStr: "{{ nonceStr }}", // 必填，生成签名的随机串
+                signature: "{{ signature }}",// 必填，签名，见附录1
+                jsApiList: [
+                    'getLocation',
+                    'chooseWXPay'
+                ]
+            });
+            //通过error接口处理失败验证
+            wx.error(function (res) {
+                $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
+            });
+            //配置成功后，调用接口
+            wx.ready(function () {
+                //调用location函数，将位置转化为地址，并写入session；
+                lacation();
 
-        // 加载数据时状态显示
-        $('.weui-loadmore').ajaxStart(function () {
-            $(this).show();
-        });
+            });
 
-        $('.weui-loadmore').ajaxStop(function () {
-            $(this).hide();
-        });
+            //初始化数据
+            $.session.set('radius', 30000);
+            $.session.set('filterTag', '全部');
+            var $j = 0;
+            var $totalPage = 10;
+            var $currentPage = 1;
+            var $byDis = true;
+            var $byPubTime = true;
+            var $radius = $.session.get('radius');
+            var $filterTag = $.session.get('filterTag');
+            var $role = $.session.get('role');
+            var $guest = $.session.get('guest');
+            loadData($currentPage, $byDis, $byPubTime, $radius, $filterTag, $role, $guest);
 
 
-        //距离排序
-        $("#distanceNearby").click(function (ev) {
-            $(".jobsModal").css("display","none");
-            $(this).css("display","block");
-            $(".distanceModal").css("display","block");
-            $(".distanceModal .mask").toggleClass("show");
-            $(".distanceModal_bd").slideToggle("slow");
-        });
-        $(".distanceModal .mask").click(function (ev) {
-            $(".jobsModal").css("display","none");
-            $(".distanceModal").css("display","block");
-            $(".distanceModal .mask").toggleClass("show");
-            $(".distanceModal_bd").slideToggle("slow");
-        });
-        $(".distanceBtn").click(function () {
-            $.session.set('radius',parseInt($(this).attr("data-val")));
-            $radius = $.session.get('radius');
-            $(this).addClass("weui-btn_primary").removeClass("weui-btn_default")
-                .siblings().removeClass("weui-btn_primary").addClass("weui-btn_default");
-            $currentPage = 1;
-            $(".listCon").html("");
-            loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
-            $(".distanceModal_bd").slideToggle("slow");
-        });
+            //附近的工人
+            $("#nearbyWorker").click(function (ev) {
+                window.localStorage.setItem("role", 2);
+                loadData($currentPage, $byDis, $byPubTime, $radius, $filterTag, 2, $guest);//加载附近的工人数据
+            });
 
-        // 工种过滤弹窗初始化
-        var $modalHeight = $(".jobsModal_bd").css("height");
-        function initModal() {
-            //获取列表中的tag标签，去重，渲染
-            var $alltag = '';
-            var $tagBtns = '';
-            if($(".tag").length == "0"){
-                $tagBtns = '';
-                $(".jobsModal_bd").html($tagBtns);
-                $alltag = '<input  type="button" class="filterTagBtn weui-btn weui-btn_mini weui-btn_primary" value="全部" />';
-                $(".jobsModal_bd").prepend($alltag);
-            }else {
-                var jobtext = $(".tag").map(function (value) {
-                    return $(this).text();
-                }).join(',');
-                var $nearbyTagArr = $.unique(jobtext.split(','));
-
-                $.each($nearbyTagArr,function (key, job) {
-                    $tagBtns += '<input  type="button" class="filterTagBtn weui-btn weui-btn_mini weui-btn_default" value="'+ job +'" />';
-                });
-                $(".jobsModal_bd").html($tagBtns);
-
-                var $alltag = '<input  type="button" class="filterTagBtn weui-btn weui-btn_mini weui-btn_primary" value="全部" />';
-                $(".jobsModal_bd").prepend($alltag);
-
-            }
-
-            var activeBtnVal = $.session.get("filterTag");
-            $.each($(".filterTagBtn"),function (key,val) {
-                if($(this).val() == activeBtnVal) {
-                    $(this).addClass("weui-btn_primary").removeClass("weui-btn_default")
-                        .siblings().removeClass("weui-btn_primary").addClass("weui-btn_default");
-                }
+            //附近的老板
+            $("#nearbyBoss").click(function (ev) {
+                window.localStorage.setItem("role", 1);
+                loadData($currentPage, $byDis, $byPubTime, $radius, $filterTag, 1, $guest);//加载附近的老板数据
             });
 
 
-        }
-        initModal();
+            //上拉加载
+            var $loading = false;  //状态标记
+            $(document.body).infinite().on("infinite", function () {
+                if ($loading) return;
+                $loading = true;
+                ++$currentPage;
+                if ($currentPage <= $totalPage) {
+                    // addNum($currentPage,$byDis,$byPubTime);
+                    loadData($currentPage, $byDis, $byPubTime, $radius, $filterTag, $role, $guest);
+                    $loading = false;
+                } else {
+                    //                console.log("不执行了");
+                    $(document.body).destroyInfinite();
+                    $('.loadMoreTip').css("display", "none");
+                    $('.bottomTips').css("display", "block");
+                    $loading = false;
+                }
+
+            });
+
+            // 加载数据时状态显示
+            $('.weui-loadmore').ajaxStart(function () {
+                $(this).show();
+            });
+
+            $('.weui-loadmore').ajaxStop(function () {
+                $(this).hide();
+            });
 
 
-        //工种筛选
-        $("#jobsNearby").click(function (ev) {
-            var event = ev || event;
-            event.stopPropagation();
-            initModal();
-            $(".distanceModal").css("display","none");
-            $(".jobsModal").css("display","block");
-            $(".jobsModal .mask").toggleClass("show");
-            $(".jobsModal_bd").slideToggle("slow");
-        });
-        $(".jobsModal .mask").click(function (ev) {
-            var event = ev || event;
-            event.stopPropagation();
-
-            $(".distanceModal").css("display","none");
-            $(".jobsModal").css("display","block");
-            $(".jobsModal .mask").toggleClass("show");
-            $(".jobsModal_bd").slideToggle("slow");
-        });
-        $(".jobsModal_bd").on("click",'.filterTagBtn',function (ev) {
-            $.session.set('filterTag',$(this).val());
-            $filterTag = $.session.get('filterTag');
-            $(this).addClass("weui-btn_primary").removeClass("weui-btn_default")
-                .siblings().removeClass("weui-btn_primary").addClass("weui-btn_default");
-            $currentPage = 1;
-//            console.log($filterTag);
-            $(".listCon").html("");
-            loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
-            $(".jobsModal_bd").slideToggle("slow");
-        });
 
 
-        //加载对应页码数据
-        function loadData(page,byDis,byPubTime,radius,filterTag) {
-            $j++;
-//            console.log("开始执行loadData函数,第"+ $j + "次执行");
-//            console.log('第'+ $j + '次执,loadData向后台请求的页码数'+ page);
+            //加载对应页码数据
+            function loadData(page, byDis, byPubTime, radius, filterTag, role, guest) {
+                $j++;
+                //            console.log("开始执行loadData函数,第"+ $j + "次执行");
+                //            console.log('第'+ $j + '次执,loadData向后台请求的页码数'+ page);
 
-            $.ajax({
-                async: true,
-                url: "/nearby_ajax/",                    /*/nearby_ajax/*/
-                dataType: "json",
-                type: "post",
-                data: {
-                    openid: window.localStorage.getItem("openid"),
-                    sortByDis: byDis,
-                    sortByPubTime: byPubTime,
-                    page: page,
-                    radius: radius,             //1000米
-                    filterTag:filterTag,        //"全部"，"木工"...
-                    latitude: $.session.get('latitude'),
-                    longitude: $.session.get('longitude')
-                },
-                success: function (data) {
-                    $totalPage = data.totalPage;
-                    $currentPage = data.currentPage;
-//                    console.log('第'+ $j + '次执,现在数据中的totalPage:'+ $totalPage);
-//                    console.log('第'+ $j + '次执,现在数据中的currentPage,也是自身的$currentPage:'+ $currentPage);
+                $.ajax({
+                    async: true,
+                    url: "/nearby_ajax/",                    /*/nearby_ajax/*/
+                    dataType: "json",
+                    type: "post",
+                    data: {
+                        openid: window.localStorage.getItem("openid"),
+                        sortByDis: byDis,
+                        sortByPubTime: byPubTime,
+                        page: page,
+                        radius: radius,             //1000米
+                        filterTag: filterTag,        //"全部"，"木工"...
+                        latitude: $.session.get('latitude'),
+                        longitude: $.session.get('longitude'),
+                        role: role,
+                        guest: guest
+                    },
+                    success: function (data) {
+                        $totalPage = data.totalPage;
+                        $currentPage = data.currentPage;
+                        //                    console.log('第'+ $j + '次执,现在数据中的totalPage:'+ $totalPage);
+                        //                    console.log('第'+ $j + '次执,现在数据中的currentPage,也是自身的$currentPage:'+ $currentPage);
                         showData(data.listData);
-//                    console.log("第" + $j + "次请求结束");
-                },
-                error: function (error) {
-                    console.log(error.readyState, error.statusText);
-                }
-            });
-
-
-        }
-        var $role = $("#roleInsert").text();
-        //渲染数据
-        function showData(data) {
-
-            var $tag = "";
-            $.each(data, function (key, val) {
-                //造tag标签
-                var $tagArr = val.tag;
-                if($tagArr.length == "1"){
-                    if($role == "1"){
-                        $tag = '招聘<span class="tag">' + $tagArr[0] + '</span>';
-                    } else {
-                        $tag = '我是<span class="tag">' + $tagArr[0] + '</span>';
-                    }
-                } else {
-                    if($role == "1"){
-                        $tag = '招聘<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
-                    } else {
-                        $tag = '我是<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1]+ '</span>';
-                    }
-                }
-
-
-                //拼大字符串
-                var str = "";
-                str += '<li class="listItem flex">' +
-                    '<div class="infoBox flex">' +
-                    '<div class="list_hd flex">' +
-                    '<div class="tagBox"><span class="username">' + val.username + '</span>'+ $tag +'</div>' +
-                    '<div class="star star' + val.star + '"></div>' +
-                    '</div>' +
-                    '<div class="list_bd flex">' +
-                    '<span class="distance">距您：' + formatDistance(val.distance) + '</span>' +
-                    '<p class="publishedTime">发布于：' + formatTime(val.pubTime) + '</p>' +
-                    '</div>' +
-                    '<div class="list_ft flex"><span class="userid">'+ val.userid + '</span>'+ isSharable(val.sharable)  +  isRateble(val.isVisible) + isVisible(val.isVisible, val.phoneNum) +
-                    '</div>' +
-                    '</div>' +
-                    '</li>';
-                $('.listCon').append(str);
-
-            });
-//            console.log("现在li的总数"+ $(".listItem").length);
-
-            //是否可以评价
-            function isRateble(vis) {
-                return vis ? '<a href="#" class="rate weui-btn weui-btn_mini weui-btn_default">评价</a>' : "";
-            }
-
-            //是否可见
-            function isVisible(vis, val) {
-                return vis ? '<a href="tel:' + val + '"' + ' class="dial weui-btn weui-btn_mini weui-btn_success">' + val + '</a>' : '<a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>'
-            }
-
-            //是否可分享
-            function isSharable(sharable){
-                return sharable ? '<a href="javascript:;" class="share weui-btn weui-btn_mini weui-btn_primary">分享朋友圈查看号码</a>' : '';
-            }
-
-            //距离格式化
-            function formatDistance(val) {
-                if (val > 1000) {
-                    return (val / 1000).toFixed(2) + ' km';
-                } else {
-                    return parseInt(val) + ' m';
-                }
-            }
-
-            //日期格式化
-            function formatTime(str) {
-                var oDate = new Date(str),
-                    oYear = oDate.getFullYear(),
-                    oMonth = oDate.getMonth() + 1,
-                    oDay = oDate.getDate(),
-                    oHour = oDate.getHours(),
-                    oMin = oDate.getMinutes(),
-                    oSen = oDate.getSeconds(),
-                    oTime = getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin);//最后拼接时间
-                return oTime;
-            }
-
-            //补0操作
-            function getzf(num) {
-                if (parseInt(num) < 10) {
-                    num = '0' + num;
-                }
-                return num;
-            }
-            var shareImgStr = '<img src="../static/images/shareTip.png" style="height: 100%;width: 100%;"/>';
-            //分享调用
-            $(".share").click(function (event) {
-                var $thisList = $(event.currentTarget);
-                var $rateVal = $thisList.siblings(".userid").html();
-                $.alert({
-                    title: '温馨提示',
-                    text: 'shareImgStr',
-                    onOK: function () {
-                        window.localStorage.setItem("shareId",$rateVal)
+                        //                    console.log("第" + $j + "次请求结束");
+                    },
+                    error: function (error) {
+                        console.log(error.readyState, error.statusText);
                     }
                 });
 
-                wx.onMenuShareTimeline({
-                    title: '上E我速工找工作就是快，各种工种都有！',
-                    link: 'http://ewosugong.com/shareCode/', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                    imgUrl: 'http://ofv416fej.bkt.clouddn.com/18-9-1/17425874.jpg', // 分享图标
-                    success: function () {              //todo需要检验userid
-                        // alert(1);
-                        $.ajax({
-                            url: "/moment_shared_notify/",
-                            dataType: "json",
-                            type: "post",
-                            data: {
-                                openid: window.localStorage.getItem("openid"),
-                                userid: window.localStorage.getItem("shareId"),             //想要查看谁的电话号码
-                                shared: true
-                            },
-                            success: function (result) {
-                                // alert(2);
-                                // alert("&paySign=" + result.sign);
-                                $.session.set("pSign", result.sign);
-                                //直接跳转电话号码查看页面
-                                location.href = "/dail/?openid=" + window.localStorage.getItem("openid") + "&paySign=" + result.sign;
 
-                            }
-                        })
+            }
+            var $role = $("#roleInsert").text();
+            //渲染数据
+            function showData(data) {
+
+                var $tag = "";
+                $.each(data, function (key, val) {
+                    //造tag标签
+                    var $tagArr = val.tag;
+                    if ($tagArr.length == "1") {
+                        if ($role == "1") {
+                            $tag = '招聘<span class="tag">' + $tagArr[0] + '</span>';
+                        } else {
+                            $tag = '我是<span class="tag">' + $tagArr[0] + '</span>';
+                        }
+                    } else {
+                        if ($role == "1") {
+                            $tag = '招聘<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1] + '</span>';
+                        } else {
+                            $tag = '我是<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1] + '</span>';
+                        }
                     }
+
+
+                    //拼大字符串
+                    var str = "";
+                    str += '<li class="listItem flex">' +
+                        '<div class="infoBox flex">' +
+                        '<div class="list_hd flex">' +
+                        '<div class="tagBox"><span class="username">' + val.username + '</span>' + $tag + '</div>' +
+                        '<div class="star star' + val.star + '"></div>' +
+                        '</div>' +
+                        '<div class="list_bd flex">' +
+                        '<span class="distance">距您：' + formatDistance(val.distance) + '</span>' +
+                        '<p class="publishedTime">发布于：' + formatTime(val.pubTime) + '</p>' +
+                        '</div>' +
+                        '<div class="list_ft flex"><span class="userid">' + val.userid + '</span>' + isSharable($guest,val.sharable) + isRateble(val.isVisible) + isVisible(val.isVisible, val.phoneNum) +
+                        '</div>' +
+                        '</div>' +
+                        '</li>';
+                    $('.listCon').append(str);
+
                 });
-            });
+                //            console.log("现在li的总数"+ $(".listItem").length);
+
+                //是否可以评价
+                function isRateble(vis) {
+                    return vis ? '<a href="#" class="rate weui-btn weui-btn_mini weui-btn_default">评价</a>' : "";
+                }
+
+                //是否可见
+                function isVisible(vis, val) {
+                    return vis ? '<a href="tel:' + val + '"' + ' class="dial weui-btn weui-btn_mini weui-btn_success">' + val + '</a>' : '<a href="javascript:;" class="check weui-btn weui-btn_mini weui-btn_primary">查看电话号码</a>'
+                }
+
+                //是否可分享
+                function isSharable(guest,sharable) {
+                    if(!guest && sharable){
+                        return '<a href="javascript:;" class="share weui-btn weui-btn_mini weui-btn_primary">分享朋友圈查看号码</a>' 
+                    } else {
+                        return '';
+                    }
+                }
+
+                //距离格式化
+                function formatDistance(val) {
+                    if (val > 1000) {
+                        return (val / 1000).toFixed(2) + ' km';
+                    } else {
+                        return parseInt(val) + ' m';
+                    }
+                }
+
+                //日期格式化
+                function formatTime(str) {
+                    var oDate = new Date(str),
+                        oYear = oDate.getFullYear(),
+                        oMonth = oDate.getMonth() + 1,
+                        oDay = oDate.getDate(),
+                        oHour = oDate.getHours(),
+                        oMin = oDate.getMinutes(),
+                        oSen = oDate.getSeconds(),
+                        oTime = getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin);//最后拼接时间
+                    return oTime;
+                }
+
+                //补0操作
+                function getzf(num) {
+                    if (parseInt(num) < 10) {
+                        num = '0' + num;
+                    }
+                    return num;
+                }
+                var shareImgStr = '<img src="../static/images/shareTip.png" style="height: 100%;width: 100%;"/>';
+                //分享调用
+                $(".share").click(function (event) {
+                    var $thisList = $(event.currentTarget);
+                    var $rateVal = $thisList.siblings(".userid").html();
+                    $.alert({
+                        title: '温馨提示',
+                        text: 'shareImgStr',
+                        onOK: function () {
+                            window.localStorage.setItem("shareId", $rateVal)
+                        }
+                    });
+
+                    wx.onMenuShareTimeline({
+                        title: '上E我速工找工作就是快，各种工种都有！',
+                        link: 'http://ewosugong.com/shareCode/', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: 'http://ofv416fej.bkt.clouddn.com/18-9-1/17425874.jpg', // 分享图标
+                        success: function () {              //todo需要检验userid
+                            // alert(1);
+                            $.ajax({
+                                url: "/moment_shared_notify/",
+                                dataType: "json",
+                                type: "post",
+                                data: {
+                                    openid: window.localStorage.getItem("openid"),
+                                    userid: window.localStorage.getItem("shareId"),             //想要查看谁的电话号码
+                                    shared: true
+                                },
+                                success: function (result) {
+                                    // alert(2);
+                                    // alert("&paySign=" + result.sign);
+                                    $.session.set("pSign", result.sign);
+                                    //直接跳转电话号码查看页面
+                                    location.href = "/dail/?openid=" + window.localStorage.getItem("openid") + "&paySign=" + result.sign;
+
+                                }
+                            })
+                        }
+                    });
+                });
 
 
 
 
-            //查看电话号码弹窗
-            $('.check').click(function (event) {
-                var $thisList = $(event.currentTarget);
-                var $rateVal = $thisList.siblings(".userid").html();
-                // alert("被查看人的id"+$rateVal);
-                $.confirm({
-                    title: '温馨提示',
-                    text: '查看电话号码需要支付0.5元查看费用',
-                    onOK: function () {
-                        //通过ajax发送预订单所需基本信息
-                        $.ajax({
-                            url: "/zhihu_pre/",
-                            dataType: "json",
-                            type: "post",
-                            data: {
-                                openid: window.localStorage.getItem("openid"),
-                                userid: $rateVal             //想要查看谁的电话号码
-                            },
-                            success: function (result) {
-                                $.session.set("pSign", result.sign)
-                                //点击确认
-                                wx.chooseWXPay({
-                                    timestamp: result.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-                                    nonceStr: result.nonceStr, // 支付签名随机串，不长于 32 位
-                                    package: result.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
-                                    signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入
-                                    // 'MD5'
-                                    paySign: result.sign, // 支付签名
-                                    success: function (res) {
-                                        location.href = "/dail/?openid=" + window.localStorage.getItem("openid") + "&paySign=" + result.sign;
+                //查看电话号码弹窗
+                $('.check').click(function (event) {
+                    var $thisList = $(event.currentTarget);
+                    var $rateVal = $thisList.siblings(".userid").html();
+                    // alert("被查看人的id"+$rateVal);
+                    $.confirm({
+                        title: '温馨提示',
+                        text: '查看电话号码需要支付0.5元查看费用',
+                        onOK: function () {
+                            if ($gueset == true) {
+                                location.href = "/login/?openid=" + window.localStorage.getItem("openid") ;
+                            } else {
+                                //通过ajax发送预订单所需基本信息
+                                $.ajax({
+                                    url: "/zhihu_pre/",
+                                    dataType: "json",
+                                    type: "post",
+                                    data: {
+                                        openid: window.localStorage.getItem("openid"),
+                                        userid: $rateVal             //想要查看谁的电话号码
                                     },
-                                    fail: function (errMsg) {
-                                         console.log(errMsg);
+                                    success: function (result) {
+                                        $.session.set("pSign", result.sign)
+                                        //点击确认
+                                        wx.chooseWXPay({
+                                            timestamp: result.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                                            nonceStr: result.nonceStr, // 支付签名随机串，不长于 32 位
+                                            package: result.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+                                            signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入
+                                            // 'MD5'
+                                            paySign: result.sign, // 支付签名
+                                            success: function (res) {
+                                                location.href = "/dail/?openid=" + window.localStorage.getItem("openid") + "&paySign=" + result.sign;
+                                            },
+                                            fail: function (errMsg) {
+                                                console.log(errMsg);
+                                            }
+                                        })
                                     }
                                 })
                             }
+                           
+                        },
+                        onCancel: function () {
+                            return false;
+                        }
+                    });
+                });
+
+                //评价弹窗
+                $('.rate').click(function (event) {
+                    var $thisList = $(event.currentTarget);
+                    var $rateVal = $thisList.siblings('.userid').html();
+                    var $star5 = '<span class="rateActionstar star5"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">很专业</span>'
+                    var $star4 = '<span class="rateActionstar star4"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">专业</span>'
+                    var $star3 = '<span class="rateActionstar star3"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">一般</span>'
+                    var $star2 = '<span class="rateActionstar star2"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">差</span>'
+                    var $star1 = '<span class="rateActionstar star1"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">很差</span>'
+                    $.actions({
+                        actions: [{
+                            text: $star5,
+                            onClick: function () {
+                                rate($rateVal, 5);
+                            }
+                        }, {
+                            text: $star4,
+                            onClick: function () {
+                                rate($rateVal, 4);
+                            }
+                        }, {
+                            text: $star3,
+                            onClick: function () {
+                                rate($rateVal, 3);
+                            }
+                        }, {
+                            text: $star2,
+                            onClick: function () {
+                                rate($rateVal, 2);
+                            }
+                        }, {
+                            text: $star1,
+                            onClick: function () {
+                                rate($rateVal, 1);
+                            }
+                        }]
+                    });
+
+                    function rate(id, rateCount) {
+                        //发送评价数据
+                        $.ajax({
+                            url: "/rate/",
+                            type: "post",
+                            data: {
+                                openid: window.localStorage.getItem("openid"),
+                                userid: id,
+                                rateVal: rateCount
+                            },
+                            success: function () {
+                                $.toast("评价成功", "text");
+                                location.href = "/nearby/?openid=" + window.localStorage.getItem("openid");
+                                $(".listCon").html("");
+                                $thisList.hide();
+                                $currentPage = 1;
+                                loadData($currentPage, $byDis, $byPubTime, $radius, $filterTag);
+                            }
+
                         })
-                    },
-                    onCancel: function () {
-                        return false;
                     }
                 });
-            });
-
-            //评价弹窗
-            $('.rate').click(function (event){
-                var $thisList = $(event.currentTarget);
-                var $rateVal = $thisList.siblings('.userid').html();
-                var $star5 = '<span class="rateActionstar star5"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">很专业</span>'
-                var $star4 = '<span class="rateActionstar star4"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">专业</span>'
-                var $star3 = '<span class="rateActionstar star3"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">一般</span>'
-                var $star2 = '<span class="rateActionstar star2"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">差</span>'
-                var $star1 = '<span class="rateActionstar star1"></span><span class="rateDes" style="display:inline-block;text-align:left;width: 50px;">很差</span>'
-                $.actions({
-                    actions: [{
-                        text: $star5,
-                        onClick: function() {
-                            rate($rateVal,5);
-                        }
-                    },{
-                        text: $star4,
-                        onClick: function() {
-                            rate($rateVal,4);
-                        }
-                    },{
-                        text: $star3,
-                        onClick: function() {
-                            rate($rateVal,3);
-                        }
-                    },{
-                        text: $star2,
-                        onClick: function() {
-                            rate($rateVal,2);
-                        }
-                    },{
-                        text: $star1,
-                        onClick: function() {
-                            rate($rateVal,1);
-                        }
-                    }]
-                });
-
-                function rate(id,rateCount) {
-                    //发送评价数据
-                    $.ajax({
-                        url:"/rate/",
-                        type: "post",
-                        data: {
-                            openid: window.localStorage.getItem("openid"),
-                            userid: id,
-                            rateVal: rateCount
-                        },
-                        success: function () {
-                            $.toast("评价成功", "text");
-                            location.href = "/nearby/?openid=" + window.localStorage.getItem("openid");
-                            $(".listCon").html("");
-                            $thisList.hide();
-                            $currentPage = 1;
-                            loadData($currentPage,$byDis,$byPubTime,$radius,$filterTag);
-                        }
-
-                    })
-                }
-            });
-        }
+            }
 
 
-    });
+        });
 
-    //创建百度地图对象
-    var myGeo = new BMap.Geocoder();
+        //创建百度地图对象
+        var myGeo = new BMap.Geocoder();
 
 
-</script>
+    </script>
 </body>
 
 </html>
