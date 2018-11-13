@@ -189,8 +189,9 @@
         //时间排序
         $("#pubTimeFilter").click(function () {
             $("#pubTimeFilter .filterArrow").toggleClass('active');
-            $byDis = 'false'
-            $byPubTime = !$byPubTime;
+            $byDis = 'false';
+            $byPubTime = 'true';
+            //$byPubTime = !$byPubTime;
             $(".listCon").html("");
             $currentPage = 1;
             loadData($currentPage,$byDis,$byPubTime);

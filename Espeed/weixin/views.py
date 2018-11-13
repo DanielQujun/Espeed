@@ -37,7 +37,7 @@ def index(request):
 
 
 def chushihua(request):
-    print "微信初始化！！"
+    logger.info("微信初始化！！")
     """
     :param request: 
     :return: 
@@ -61,7 +61,7 @@ def chushihua(request):
         else:
             return HttpResponse('')
     elif request.method == "POST":
-        print "微信 POST!!"
+        logger.info("微信 POST!!")
         response = HttpResponse(responseMsg(request.body), content_type="application/xml")
     else:
         response = None
@@ -79,7 +79,7 @@ def create_menu(request):
 
     menu_data = {}
     button1 = {}
-    button1['name'] = '点击进入找人找活'
+    button1['name'] = '找工人        |        找老板'
     button1['type'] = 'view'
     button1['url'] = HOME_URL
 
@@ -134,7 +134,7 @@ def register(request):
                 callbackurl = "/baseProfile/?openid={openid}".format(openid=openid)
                 return HttpResponseRedirect(callbackurl)
             else:
-                print 'qujun:信息不全！！'
+                logger.error('qujun:信息不全！！')
                 callbackurl = "/register/?openid={openid}".format(openid=openid)
                 return HttpResponseRedirect(callbackurl)
         else:
@@ -149,8 +149,7 @@ def chose_role(request):
         return render(request, 'role.html', data)
 
     elif request.method == 'POST':
-        logger.info("i am in chose role!!")
-        print request.POST
+        logger.info("i am in chose role post data: %s", request.POST)
         openid = request.POST.get('openid')
         role = request.POST.get('role')
         if role and openid:
@@ -175,9 +174,8 @@ def input_name(request):
 
         return render(request, 'baseProfile.html', user_info_dict)
     elif request.method == 'POST':
-        logger.info("qujun: iam in inpurt name!")
         POST_DATA = request.POST
-        print POST_DATA
+        logger.info("qujun: iam in inpurt name!")
 
         if POST_DATA.values():
             user = UserProfileBase.objects.filter(openId=POST_DATA.get('openid')).first()
@@ -226,12 +224,11 @@ def chose_job_cate(request):
     elif request.method == 'POST':
 
         POST_DATA = request.POST
-        print POST_DATA
+        logger.debug(POST_DATA)
         openid = POST_DATA.get('openid')
         if not None in POST_DATA.values() and openid:
             if POST_DATA.get('online') == 'true':
-                print "qujun : update database for jobs choose!!!"
-                print request.POST
+                logger.debug("qujun : update database for jobs choose!!!")
                 user = UserProfileBase.objects.filter(openId=openid).first()
                 user.Jobs = POST_DATA.get('tag')
                 user.Location_lati = float(POST_DATA.get('latitude'))
@@ -305,10 +302,10 @@ def workers_or_jobs_list(request):
                         else:
                             data['byDis'] = 'true'
                             data['byPubTime'] = 'true'
-                        print data
+                        logger.debug(data)
                         return render(request, 'workerList.html', data)
                     else:
-                        logger.error("qujun: User  %s is Not Online!"%user.openId)
+                        logger.info("qujun: User  %s is Not Online!"%user.openId)
                         callbackurl = "/jobs/?openid={openid}".format(openid=user.openId)
                         return HttpResponseRedirect(callbackurl)
                 else:
@@ -326,7 +323,7 @@ def workers_or_jobs_list(request):
             callbackurl = "/register/?openid={openid}".format(openid=user_dict['openid'])
             return HttpResponseRedirect(callbackurl)
     else:
-        print "user_dict 为空！！！！！"
+        logger.debug("user_dict 为空！！！！！")
         return HttpResponse('非法访问...')
 
 
@@ -375,7 +372,7 @@ def history(request):
 
 def history_ajax(request):
     if request.method == 'POST':
-        print request.POST
+        logger.debug("history post data: %s", request.POST)
         openid = request.POST.get('openid')
         sortByDis =request.POST.get('sortByDis')
         sortByPubTime = request.POST.get('sortByPubTime')
@@ -408,16 +405,16 @@ def history_ajax(request):
                     worker_dic['phoneNum'] = worker.phonenum
                     worker_dic['portraitUrl'] = worker.avatarAddr
                     work_objects_db.append(worker_dic)
-            # print work_objects_db
+
             # if sortByDis == 'true':
             #     work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['distance'])
             # elif sortByPubTime == 'true':
             #     work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['pubTime'])
             work_objects = work_objects_db
             p = Paginator(work_objects, 10)  # 3条数据为一页，实例化分页对象
-            #print p.count  # 10 对象总共10个元素
-            print p.num_pages  # 4 对象可分4页
-            #print p.page_range  # xrange(1, 5) 对象页的可迭代范围
+            # p.count  # 10 对象总共10个元素
+            # p.num_pages  # 4 对象可分4页
+            # p.page_range  # xrange(1, 5) 对象页的可迭代范围
 
             page_object = p.page(page)  # 取对象的第一分页对象
             conten_dict = {
@@ -427,7 +424,7 @@ def history_ajax(request):
                 "currentPage": page,
                 "listData": page_object.object_list
             }
-            print conten_dict
+
             return HttpResponse(json.dumps(conten_dict))
         else:
             return HttpResponse("wrong parameters!")
@@ -445,14 +442,14 @@ def transaction(request):
 
 def transaction_ajax(request):
     if request.method == 'POST':
-        print request.POST
+        logger.debug("got transaction post data: %s", request.POST)
         openid = request.POST.get('openid')
         sortByDis =request.POST.get('sortByDis')
         sortByPubTime = request.POST.get('sortByPubTime')
         page = request.POST.get('page')
         # openid = 'oT69X1Chvefxgv3wby_-PaEIM9nY'
         if openid:
-            print "i get openid here 448 line :" + openid
+            logger.debug("i get openid here 448 line :" + openid)
             listData = []
             user_transactions = UserVisible.objects.filter(user_payed=openid)
             for tansaction_item in user_transactions:
@@ -463,16 +460,14 @@ def transaction_ajax(request):
                 transation_dic['transcationMoney'] = -50
                 listData.append(transation_dic)
         p = Paginator(listData, 3)  # 3条数据为一页，实例化分页对象
-        # print p.count  # 10 对象总共10个元素
-        print p.num_pages  # 4 对象可分4页
-        # print p.page_range  # xrange(1, 5) 对象页的可迭代范围
+        #  p.count  # 10 对象总共10个元素
+        #  p.page_range  # xrange(1, 5) 对象页的可迭代范围
 
         page_object = p.page(page)  # 取对象的第一分页对象
         conten_dict = {
 
             "listData": page_object.object_list
         }
-        print conten_dict
         return HttpResponse(json.dumps(conten_dict))
 
 
@@ -531,7 +526,6 @@ def worklist_ajax(request):
                 worker_dic['portraitUrl'] = worker.avatarAddr
                 work_objects_db.append(worker_dic)
             # work_objects_db = list(set(work_objects_db))
-            # print work_objects_db
             if sortByDis == 'true':
                 work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['distance'])
             elif sortByPubTime == 'true':
@@ -541,9 +535,9 @@ def worklist_ajax(request):
             work_objects = work_objects_db
             logger.info("return for user %s work_list_ajax: %s", openid, work_objects)
             p = Paginator(work_objects, perNum)  # 3条数据为一页，实例化分页对象
-            #print p.count  # 10 对象总共10个元素
+            #p.count  # 10 对象总共10个元素
 
-            #print p.page_range  # xrange(1, 5) 对象页的可迭代范围
+            #p.page_range  # xrange(1, 5) 对象页的可迭代范围
 
             page_object = p.page(page)  # 取对象的第一分页对象
             conten_dict = {
@@ -585,7 +579,7 @@ def wxpay_notify(request):
         _xml = request.body
         # 拿到微信发送的xml请求 即微信支付后的回调内容
         xml = str(_xml)
-        print("xml", xml)
+
         return_dict = {}
         tree = et.fromstring(xml)
         # xml 解析
@@ -598,8 +592,8 @@ def wxpay_notify(request):
             elif return_code == 'SUCCESS':
                 # 拿到自己这次支付的 out_trade_no
                 _out_trade_no = tree.find("out_trade_no").text
-                print "qujun:debug in views 453line!!!  zhifu pay success!!!"
-                print _out_trade_no
+                logger.debug("qujun:debug in views 453line!!!  zhifu pay success!!!")
+
                 User_view_pay = UserVisible.objects.filter(transation_no=_out_trade_no).first()
                 User_view_pay.payed_time = time.time()
                 User_view_pay.pay_status = 'payed'
@@ -648,8 +642,7 @@ def zhihu_pre(request):
         ip = request.META['HTTP_X_FORWARDED_FOR']
     else:
         ip = request.META['REMOTE_ADDR']
-    print "qujun zhihu_pre line 448!!!!!"
-    print request.POST
+    logger.debug("qujun zhihu_pre post data: %s", request.POST)
     # 支付者id
     openid = request.POST.get('openid')
     # 被查看者id
@@ -684,14 +677,14 @@ def zhihu_pre(request):
         User_view_pay.save()
         return HttpResponse(json.dumps(pay_data))
         # 订单生成后将请将返回的json数据 传入前端页面微信支付js的参数部分
-        # print jsonify(pay_data)
+
     except WxPayError, e:
         logge.error("WxPayError: %s",e.message)
         return HttpResponse("zhifu some thing wrong!")
 
 
 def dail(request):
-    print request.GET
+
     openid = request.GET.get('openid')
     paysign = request.GET.get('paySign')
     User_view_pay = UserVisible.objects.filter(user_payed=openid,paysign=paysign).first()
@@ -700,7 +693,6 @@ def dail(request):
     phone_num = show_user.phonenum
     headimgurl = show_user.avatarAddr
     username = show_user.userName
-    #print {'phone_num': phone_num,'headimgurl':headimgurl,'username':username}
     data = {'phone_num': phone_num, 'headimgurl': headimgurl, 'username': username, 'openid': openid}
 
     return render(request, 'dail.html', data)
@@ -804,8 +796,7 @@ def nearby_jobs(request):
             job_dic = {'title': jobcate.jobcate, 'value': jobcate.id}
             data['jobList'].append(job_dic)
         data['jobList'] = json.dumps(data['jobList'])
-        print "qujun RENDER jsapi data!!!!!!!!!!!!!"
-        print data
+
         return render(request, 'jobs_nearby.html', data)
 
     elif request.method == 'POST':
@@ -814,8 +805,7 @@ def nearby_jobs(request):
         openid = POST_DATA.get('openid')
         if not None in POST_DATA.values() and openid:
             if POST_DATA.get('online') == 'true':
-                print "qujun : update database for jobs choose!!!"
-                print request.POST
+
                 user = UserProfileBase.objects.filter(openId=openid).first()
                 user.Jobs = POST_DATA.get('tag')
                 user.Location_lati = POST_DATA.get('latitude')
@@ -827,7 +817,6 @@ def nearby_jobs(request):
                 return HttpResponse("OK")
 
             else:
-                print "qujun : update database for jobs OFFline!!!"
                 data = {}
                 data['openid'] = openid
                 user = UserProfileBase.objects.filter(openId=openid).first()
@@ -865,8 +854,7 @@ def nearby_workers(request):
 
 def nearby_ajax(request):
     if request.method == "POST":
-        logger.info("i am /nearby_ajax/!!!")
-        print request.POST
+        logger.info("i am /nearby_ajax/, post data: %s", request.POST)
         openid = request.POST.get('openid')
         sortByDis = request.POST.get('sortByDis')
         sortByPubTime = request.POST.get('sortByPubTime')
@@ -930,7 +918,6 @@ def nearby_ajax(request):
                 if float(worker_dic['distance']) < float(worker_radius):
                     work_objects_db.append(worker_dic)
             # work_objects_db = list(set(work_objects_db))
-            # print work_objects_db
             if sortByDis == 'true':
                 work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['distance'])
             elif sortByPubTime == 'true':
@@ -939,9 +926,8 @@ def nearby_ajax(request):
                 work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['distance'])
             work_objects = work_objects_db
             p = Paginator(work_objects, perNum)  # 3条数据为一页，实例化分页对象
-            # print p.count  # 10 对象总共10个元素
-            print p.num_pages  # 4 对象可分4页
-            # print p.page_range  # xrange(1, 5) 对象页的可迭代范围
+            #  p.count  # 10 对象总共10个元素
+            #  p.page_range  # xrange(1, 5) 对象页的可迭代范围
 
             page_object = p.page(page)  # 取对象的第一分页对象
             conten_dict = {
