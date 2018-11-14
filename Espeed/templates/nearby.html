@@ -173,10 +173,6 @@
 
             //加载对应页码数据
             function loadData(page, byDis, byPubTime, radius, filterTag, role, guest) {
-                $j++;
-                //            console.log("开始执行loadData函数,第"+ $j + "次执行");
-                //            console.log('第'+ $j + '次执,loadData向后台请求的页码数'+ page);
-
                 $.ajax({
                     async: true,
                     url: "/nearby_ajax/",                    /*/nearby_ajax/*/
@@ -197,10 +193,7 @@
                     success: function (data) {
                         $totalPage = data.totalPage;
                         $currentPage = data.currentPage;
-                        //                    console.log('第'+ $j + '次执,现在数据中的totalPage:'+ $totalPage);
-                        //                    console.log('第'+ $j + '次执,现在数据中的currentPage,也是自身的$currentPage:'+ $currentPage);
                         showData(data.listData);
-                        //                    console.log("第" + $j + "次请求结束");
                     },
                     error: function (error) {
                         console.log(error.readyState, error.statusText);
@@ -209,7 +202,6 @@
 
 
             }
-            var $role = $("#roleInsert").text();
             //渲染数据
             function showData(data) {
 
