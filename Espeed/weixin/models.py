@@ -102,8 +102,10 @@ class Jobcates(models.Model):
         verbose_name_plural = '工种列表'
     jobcate = models.CharField(max_length=32)
 
+
 class transations(models.Model):
     transations_user = models.CharField(max_length=50)
+
 
 class verify_code_request(models.Model):
     request_ip = models.CharField(max_length=50)
