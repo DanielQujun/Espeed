@@ -38,7 +38,7 @@ function getBaiduPosition(lng,lat) {
             myGeo.getLocation(new BMap.Point($.session.get("longitude"),$.session.get("latitude")), function (result) {
                 if (result) {
                     //地址写入页面
-                    alert("转化成功");
+                    // alert("转化成功");
                     $("#location").text(result.address);
                 } else {
                     $.alert("获取位置失败...","text");
