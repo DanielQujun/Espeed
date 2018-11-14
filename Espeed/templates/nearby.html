@@ -103,12 +103,12 @@
             //通过error接口处理失败验证
             wx.error(function (res) {
                 $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
-                console.log(res.errMsg, $.scojs_message.TYPE_ERROR);
+                // console.log(res.errMsg, $.scojs_message.TYPE_ERROR);
             });
             //配置成功后，调用接口
             wx.ready(function () {
                 //调用location函数，将位置转化为地址，并写入session；
-                alert("微信接口通了")
+                // alert("微信接口通了")
                 lacation();
 
             });
