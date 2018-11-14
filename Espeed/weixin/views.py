@@ -336,12 +336,16 @@ def usercenter(request):
         openid = request.GET.get('openid')
         if openid:
             user = UserProfileBase.objects.filter(openId=openid).first()
-            data = {}
-            data['headimgurl'] = user.avatarAddr
-            data['openid'] = openid
-            data['username'] = user.userName
+            if user:
+                data = {}
+                data['headimgurl'] = user.avatarAddr
+                data['openid'] = openid
+                data['username'] = user.userName
 
-            return render(request, 'userCenter.html', data)
+                return render(request, 'userCenter.html', data)
+            else:
+                return HttpResponseRedirect('/register/?openid={openid}'.format(openid=openid))
+
 
 
 # @login_required
@@ -433,7 +437,7 @@ def history_ajax(request):
             return HttpResponse("wrong parameters!")
 
 
-#@login_required
+@login_required
 def transaction(request):
     if request.method == 'GET':
         openid = request.GET.get('openid')
@@ -868,8 +872,10 @@ def nearby_ajax(request):
         sortByDis = POST_DATA.get('sortByDis')
         sortByPubTime = POST_DATA.get('sortByPubTime')
         page = POST_DATA.get('page')
+        # TODO 扩大半径范围
         worker_radius = POST_DATA.get('radius')
         tag_list = [POST_DATA.get('filterTag')]
+        role = POST_DATA.get('role')
         perNum = 10
         if openid:
             user = UserProfileBase.objects.filter(openId=openid).first()
@@ -889,16 +895,14 @@ def nearby_ajax(request):
                     filter_query = Q(Jobs__contains=tag_list[0])
             if filter_query:
 
-                # workers = UserProfileBase.objects.exclude(Role=user.Role).filter(filter_query). \
-                workers = UserProfileBase.objects.filter(filter_query). \
-                    filter(Location_longi__range=(location_longi - 0.1, location_longi + 0.1)). \
-                    filter(Location_lati__range=(location_lati - 0.1, location_lati + 0.1)).filter(online=True)
+                workers = UserProfileBase.objects.exclude(Role=role).exclude(openId=openid).filter(filter_query). \
+                    filter(Location_longi__range=(location_longi - 10, location_longi + 10)). \
+                    filter(Location_lati__range=(location_lati - 10, location_lati + 10)).filter(online=True)
             else:
-                # workers = UserProfileBase.objects.exclude(Role=user.Role). \
-                workers = UserProfileBase.objects. \
-                    filter(Location_longi__range=(location_longi - 0.1, location_longi + 0.1)). \
-                    filter(Location_lati__range=(location_lati - 0.1, location_lati + 0.1)).filter(online=True)
-
+                workers = UserProfileBase.objects.exclude(Role=role).exclude(openId=openid). \
+                    filter(Location_longi__range=(location_longi - 10, location_longi + 10)). \
+                    filter(Location_lati__range=(location_lati - 10, location_lati + 10)).filter(online=True)
+            logger.info("got nearby workers data len: %s", len(work_objects_db))
             for worker in workers:
                 worker_dic = {}
                 logger.info("nearby return here!!!")
@@ -926,7 +930,7 @@ def nearby_ajax(request):
                 worker_dic['isRateble'] = worker_dic['isVisible']
                 worker_dic['phoneNum'] = worker.phonenum if worker_dic['isVisible'] else "123456789123"
                 worker_dic['portraitUrl'] = worker.avatarAddr
-                if float(worker_dic['distance']) < float(worker_radius):
+                if float(worker_dic['distance']) < float(worker_radius)*100:
                     work_objects_db.append(worker_dic)
             if sortByDis == 'true':
                 work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['distance'])
@@ -934,6 +938,7 @@ def nearby_ajax(request):
                 work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['pubTime'], reverse=True)
             else:
                 work_objects_db = sorted(work_objects_db, key=lambda woker_dic: woker_dic['distance'])
+            logger.info("got nearby data len: %s", len(work_objects_db))
             work_objects = work_objects_db
             p = Paginator(work_objects, perNum)  # 3条数据为一页，实例化分页对象
             #  p.count  # 10 对象总共10个元素
