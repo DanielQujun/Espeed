@@ -131,12 +131,14 @@
             //附近的工人
             $("#nearbyWorker").click(function (ev) {
                 window.localStorage.setItem("role", 2);
+                $(".listCon").html("");
                 loadData($currentPage, $byDis, $byPubTime, $radius, $filterTag, 2, $guest);//加载附近的工人数据
             });
 
             //附近的老板
             $("#nearbyBoss").click(function (ev) {
                 window.localStorage.setItem("role", 1);
+                $(".listCon").html("");
                 loadData($currentPage, $byDis, $byPubTime, $radius, $filterTag, 1, $guest);//加载附近的老板数据
             });
 
