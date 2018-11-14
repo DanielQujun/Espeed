@@ -103,10 +103,12 @@
             //通过error接口处理失败验证
             wx.error(function (res) {
                 $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
+                console.log(res.errMsg, $.scojs_message.TYPE_ERROR);
             });
             //配置成功后，调用接口
             wx.ready(function () {
                 //调用location函数，将位置转化为地址，并写入session；
+                alert("微信接口通了")
                 lacation();
 
             });
@@ -297,7 +299,7 @@
                 var shareImgStr = '<img src="../static/images/shareTip.png" style="height: 100%;width: 100%;"/>';
                 //分享调用
                 $(".share").click(function (event) {
-                    if(!$guest){
+                    if(!$guest){        //待优化
                         var $thisList = $(event.currentTarget);
                         var $rateVal = $thisList.siblings(".userid").html();
                         $.alert({
