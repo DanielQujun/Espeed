@@ -83,11 +83,11 @@
         window.localStorage.setItem("openid",$('#openidInsert').text());
         
         $("#goNearby").on("click",function(){
-            location.href = "/nearby/?openid=" + window.localStorage.getItem("openid") + "guest=true";
+            location.href = "/nearby/?openid=" + window.localStorage.getItem("openid") + "&guest=true";
         })
         
         $("#goLogin").on("click",function(){
-            location.href = "/register/?openid=" + window.localStorage.getItem("openid") + "guest=true";
+            location.href = "/register/?openid=" + window.localStorage.getItem("openid") + "&guest=true";
         })
     });
 
