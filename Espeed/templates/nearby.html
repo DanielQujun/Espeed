@@ -97,7 +97,9 @@
             FastClick.attach(document.body);
             window.localStorage.setItem("openid", $('#openidInsert').text());
             window.localStorage.setItem("guest", $('#guestInsert').text());
+            $.session.set("guest", $('#guestInsert').text()); 
             window.localStorage.setItem("role", 2);  //页面载入时默认显示附近的工人，所以传老板的角色给后台
+            $.session.set('role', 2);
 
             //调用微信sdk配置
             wx.config({
@@ -146,6 +148,7 @@
             //附近的工人
             $("#nearbyWorker").click(function (ev) {
                 window.localStorage.setItem("role", 2);
+                $.session.set('role', 2);
                 $(".listCon").html("");
                 loadData($currentPage, $byDis, $byPubTime, $radius, $filterTag, $.session.get('role'), $guest);//加载附近的工人数据
             });
@@ -153,6 +156,7 @@
             //附近的老板
             $("#nearbyBoss").click(function (ev) {
                 window.localStorage.setItem("role", 1);
+                $.session.set('role', 1);
                 $(".listCon").html("");
                 loadData($currentPage, $byDis, $byPubTime, $radius, $filterTag, $.session.get('role'), $guest);//加载附近的老板数据
             });
@@ -371,7 +375,7 @@
                         title: '温馨提示',
                         text: '查看电话号码需要支付0.5元查看费用',
                         onOK: function () {
-                            if ($gueset) {
+                            if ($guest) {
                                 location.href = "/login/?openid=" + window.localStorage.getItem("openid") ;
                             } else {
                                 //通过ajax发送预订单所需基本信息
