@@ -373,7 +373,7 @@
                     // alert("被查看人的id"+$rateVal);
                     $.confirm({
                         title: '温馨提示',
-                        text: '查看电话号码需要支付0.5元查看费用',
+                        text: '查看电话号码需要支付1元查看费用,请联系人双方注意保护自己合法权益及人身安全，本平台不予负责。',
                         onOK: function () {
                             if ($guest.toString() == "true") {
                                 location.href = "/register/?openid="+ window.localStorage.getItem("openid");
@@ -458,38 +458,26 @@
                     }
                 });
 
-                //查看电话号码弹窗
-                // $('.check').click(function (event) {
-                //     var $thisList = $(event.currentTarget);
-                //     var $rateVal = $thisList.siblings(".userid").html();
-                //     // alert("被查看人的id"+$rateVal);
-                //     $.confirm({
-                //         title: '温馨提示',
-                //         text: '查看电话号码需要支付1元查看费用,请联系人双方注意保护自己合法权益及人身安全，本平台不予负责。',
-                //         onOK: function () {
+                function rate(id,rateCount){
+                    $.ajax({
+                        url: "/rate/",
+                        type: "post",
+                        data: {
+                            openid: window.localStorage.getItem("openid"),
+                            userid: id,
+                            rateVal: rateCount
+                        },
+                        success: function () {
+                            $.toast("评价成功", "text");
+                            location.href = "/nearby/?openid=" + window.localStorage.getItem("openid");
+                            $(".listCon").html("");
+                            $thisList.hide();
+                            $currentPage = 1;
+                            loadData($currentPage, $byDis, $byPubTime, $radius, $filterTag,$.session.get('role'), $guest);
+                        }
 
-                //             //通过ajax发送预订单所需基本信息
-                //             $.ajax({
-                //                 url: "/rate/",
-                //                 type: "post",
-                //                 data: {
-                //                     openid: window.localStorage.getItem("openid"),
-                //                     userid: id,
-                //                     rateVal: rateCount
-                //                 },
-                //                 success: function () {
-                //                     $.toast("评价成功", "text");
-                //                     location.href = "/nearby/?openid=" + window.localStorage.getItem("openid");
-                //                     $(".listCon").html("");
-                //                     $thisList.hide();
-                //                     $currentPage = 1;
-                //                     loadData($currentPage, $byDis, $byPubTime, $radius, $filterTag);
-                //                 }
-
-                //             })
-                //         }
-                //     });
-                // });
+                    })
+                }
 
             }
                 
