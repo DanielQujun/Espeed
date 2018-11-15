@@ -358,7 +358,7 @@
                             }
                         });
                     } else {
-                        location.href = "/login/?openid=" + window.localStorage.getItem("openid") ;
+                        location.href = "/register/?openid=" + window.localStorage.getItem("openid") ;
                     }
                     
                 });
@@ -376,7 +376,7 @@
                         text: '查看电话号码需要支付0.5元查看费用',
                         onOK: function () {
                             if ($guest) {
-                                location.href = "/login/?openid=" + window.localStorage.getItem("openid") ;
+                                location.href = "/register/?openid="+ window.localStorage.getItem("openid");
                             } else {
                                 //通过ajax发送预订单所需基本信息
                                 $.ajax({
@@ -418,7 +418,7 @@
                 //评价弹窗
                 $('.rate').click(function (event) {
                     if($guest){
-                        location.href = "/login/?openid=" + window.localStorage.getItem("openid") ;
+                        location.href = "/register/?openid=" + window.localStorage.getItem("openid") ;
                     } else {
                         var $thisList = $(event.currentTarget);
                         var $rateVal = $thisList.siblings('.userid').html();
