@@ -39,7 +39,6 @@
             </div>
         </header>
 
-
         <!-- 主体内容 -->
         <section class="main">
             <div id="location" style="display: block;">正在获取定位信息...</div>
@@ -148,14 +147,14 @@
             $("#nearbyWorker").click(function (ev) {
                 window.localStorage.setItem("role", 2);
                 $(".listCon").html("");
-                loadData($currentPage, $byDis, $byPubTime, $radius, $filterTag, 2, $guest);//加载附近的工人数据
+                loadData($currentPage, $byDis, $byPubTime, $radius, $filterTag, $.session.get('role'), $guest);//加载附近的工人数据
             });
 
             //附近的老板
             $("#nearbyBoss").click(function (ev) {
                 window.localStorage.setItem("role", 1);
                 $(".listCon").html("");
-                loadData($currentPage, $byDis, $byPubTime, $radius, $filterTag, 1, $guest);//加载附近的老板数据
+                loadData($currentPage, $byDis, $byPubTime, $radius, $filterTag, $.session.get('role'), $guest);//加载附近的老板数据
             });
 
 
@@ -167,7 +166,7 @@
                 ++$currentPage;
                 if ($currentPage <= $totalPage) {
                     // addNum($currentPage,$byDis,$byPubTime);
-                    loadData($currentPage, $byDis, $byPubTime, $radius, $filterTag, $role, $guest);
+                    loadData($currentPage, $byDis, $byPubTime, $radius, $filterTag, $.session.get('role'), $guest);
                     $loading = false;
                 } else {
                     //                console.log("不执行了");
@@ -230,13 +229,13 @@
                     //造tag标签
                     var $tagArr = val.tag;
                     if ($tagArr.length == "1") {
-                        if ($role == "1") {
+                        if ($.session.get('role') == "1") {
                             $tag = '招聘<span class="tag">' + $tagArr[0] + '</span>';
                         } else {
                             $tag = '我是<span class="tag">' + $tagArr[0] + '</span>';
                         }
                     } else {
-                        if ($role == "1") {
+                        if ($.session.get('role') == "1") {
                             $tag = '招聘<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1] + '</span>';
                         } else {
                             $tag = '我是<span class="tag">' + $tagArr[0] + '</span><span class="tag">' + $tagArr[1] + '</span>';
@@ -313,7 +312,7 @@
                     }
                     return num;
                 }
-            }
+
                 var shareImgStr = '<img src="../static/images/shareTip.png" style="height: 100%;width: 100%;"/>';
                 //分享调用
                 $(".share").click(function (event) {
@@ -487,7 +486,8 @@
                 });
             });
 
-
+            }
+                
         });
 
         //创建百度地图对象
