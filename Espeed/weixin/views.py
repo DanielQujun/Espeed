@@ -142,6 +142,13 @@ def register(request):
             return HttpResponseRedirect(callbackurl)
 
 
+def guide(request):
+    if request.method == 'GET':
+        data = {}
+        data['openid'] = request.GET.get('openid')
+        return render(request, 'guide.html', data)
+
+
 def chose_role(request):
     if request.method == 'GET':
         data = {}
@@ -322,7 +329,7 @@ def workers_or_jobs_list(request):
         else:
             # 添加游客身份
             # callbackurl = "/register/?openid={openid}".format(openid=user_dict['openid'])
-            callbackurl = "/nearby/?openid={openid}&guest={guest}".\
+            callbackurl = "/guide/?openid={openid}&guest={guest}".\
                 format(openid=user_dict['openid'], guest="true")
             return HttpResponseRedirect(callbackurl)
     else:
@@ -783,6 +790,7 @@ def rate(request):
 
 def nearby_jobs(request):
     if request.method == 'GET':
+        logger.debug("get nearby request get arg:%s",request.GET)
         data = {}
         data['openid'] = request.GET.get('openid')
         data['timestamp'] = int(time.time())
@@ -840,6 +848,8 @@ def nearby_jobs(request):
 
 def nearby_workers(request):
     if request.method == 'GET':
+        logger.info("get nearby request get arg:%s",request.GET)
+
         openid = request.GET.get('openid')
         data = {}
         data['openid'] = openid
@@ -902,10 +912,10 @@ def nearby_ajax(request):
                 workers = UserProfileBase.objects.exclude(Role=role).exclude(openId=openid). \
                     filter(Location_longi__range=(location_longi - 10, location_longi + 10)). \
                     filter(Location_lati__range=(location_lati - 10, location_lati + 10)).filter(online=True)
-            logger.info("got nearby workers data len: %s", len(work_objects_db))
+            logger.info("got nearby workers data len: %s", len(workers))
             for worker in workers:
                 worker_dic = {}
-                logger.info("nearby return here!!!")
+
                 if r.get(openid):
                     worker_dic['sharable'] = False
                 else:
