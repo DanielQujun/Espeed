@@ -469,7 +469,7 @@
                         },
                         success: function () {
                             $.toast("评价成功", "text");
-                            location.href = "/nearby/?openid=" + window.localStorage.getItem("openid");
+                            location.href = "/nearby/?openid=" + window.localStorage.getItem("openid")+"&guest=false";
                             $(".listCon").html("");
                             $thisList.hide();
                             $currentPage = 1;
