@@ -1102,14 +1102,40 @@ footer {
     }
 
   }
-
-
-
-
-
 }
 
 
+/* 我的介绍 */
+.profile {
+  background: #fff;
+
+  .main {
+    height: 100vh;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding-top: 2rem;
+    font-size: 14px;;
+
+    img {
+      width: 80px;
+      height:80px;
+      border-radius: 50%;
+      border: 1px solid #e0e0e0;
+      margin-bottom: 40px;
+    }
+
+
+
+
+
+
+  }
+}
+/* 个人资料结束 */
 
 
 

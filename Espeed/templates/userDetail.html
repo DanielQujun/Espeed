@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>我的介绍</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+  <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
+  <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+  <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+  <link rel="stylesheet" href="../static/iconfont/iconfont.css">
+  <link rel="stylesheet" href="../static/css/style201806032229.css">
+  <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
+  <script type="text/javascript" src="../static/js/weui.min.js"></script>
+  <style>
+    .presentation {
+      padding-top: 40px;
+      background: #fff url(../static/images/wave_bg.png) no-repeat center top;
+      background-size: cover;
+    }
+
+    .presentation .portrait_wrap {
+      text-align: center;
+    }
+
+    .presentation .changePortrait {
+
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .presentation .changePortrait img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      -webkit-box-shadow: 0 5px 9px rgba(0, 0, 0, .3);
+      -moz-box-shadow: 0 5px 9px rgba(0, 0, 0, .3);
+      box-shadow: 0 5px 9px rgba(0, 0, 0, .3);
+    }
+
+    .presentation .name_wrap {
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+      color: #fff;
+      margin-bottom: 10px;
+
+    }
+
+    .presentation .name_wrap span {
+      padding: 0 10px;
+    }
+
+    .presentation .name_wrap .role {
+      border-left: 1px solid #ededef;
+    }
+
+    .role_wrap {
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 45px;
+    }
+
+    .role_wrap .tip {
+      color: #fff;
+      margin-right: 5px;
+    }
+
+    .role_wrap .tag {
+      padding: 0 8px;
+      background: #ffc245;
+      color: #fff;
+      border-radius: 2px;
+    }
+
+    .fixed-bottom {
+      background: #fff;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1000;
+    }
+
+    .fixed-bottom .weui-btn-area {
+      margin-top: 0.3em;
+    }
+  </style>
+
+
+</head>
+<body class="page">
+<div class="presentation">
+  <section class="main">
+    <div class="portrait_wrap">
+      <a class="changePortrait" href="#">
+        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552790088&di=6b8981b87a9ef3ce6edf88dbda9f7a58&imgtype=jpg&er=1&src=http%3A%2F%2Fpic8.nipic.com%2F20100726%2F838011_162220004587_2.jpg"
+             alt="">
+        <!--<img src="{{ headimgurl }}">-->
+      </a>
+    </div>
+
+    <div class="name_wrap">
+      <span>文泽海</span><span class="role">工人</span>      <!-- TODO:待插入 -->
+    </div>
+    <div class="role_wrap">
+      <span class="tip">我是</span>                <!-- TODO:待解析 -->
+      <span class="tag">建筑木工 泥瓦工</span>      <!-- TODO:待插入 -->
+    </div>
+    <p class="weui-cells__title">我的案例</p>
+    <div class="weui-gallery" id="gallery">
+      <span class="weui-gallery__img" id="galleryImg"></span>
+      <div class="weui-gallery__opr">
+        <a href="javascript:" class="weui-gallery__del">
+          <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+        </a>
+      </div>
+    </div>
+
+    <!--<ul class="weui-uploader__files" id="uploaderCustomFiles">
+      <li class="weui-uploader__file gallery" data-id="3"
+          style="background-image: url(https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=498fd51ff6f2b211e42e8248f2bb0205/d833c895d143ad4b88a4f5ac8f025aafa50f06d7.jpg);"></li><li id="imgShow" class="weui-uploader__file" data-id="3"
+      <li class="weui-uploader__file gallery" data-id="3"
+          style="background-image: url(https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=498fd51ff6f2b211e42e8248f2bb0205/d833c895d143ad4b88a4f5ac8f025aafa50f06d7.jpg);"></li>
+    </ul>-->
+
+
+
+
+    <p class="weui-cells__title">上传图片</p>
+    <div class="weui-cells weui-cells_form" id="uploader">
+      <div class="weui-cell">
+        <div class="weui-cell__bd">
+          <div class="weui-uploader">
+            <div class="weui-uploader__hd"><p class="weui-uploader__title">图片上传</p>
+              <div class="weui-uploader__info"><span id="uploadCount">3</span>/5</div>
+            </div>
+            <div class="weui-uploader__bd">
+              <ul class="weui-uploader__files" id="uploaderFiles">
+                <li class="weui-uploader__file weui-uploader__file_status" data-id="1"
+                    style="background-image: url(https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=498fd51ff6f2b211e42e8248f2bb0205/d833c895d143ad4b88a4f5ac8f025aafa50f06d7.jpg);">
+                  <div class="weui-uploader__file-content"><i class="weui-icon-warn"></i></div>
+                </li>
+                <li class="weui-uploader__file weui-uploader__file_status" data-id="2"
+                    style="background-image: url(https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=498fd51ff6f2b211e42e8248f2bb0205/d833c895d143ad4b88a4f5ac8f025aafa50f06d7.jpg);">
+                  <div class="weui-uploader__file-content"><i class="weui-icon-warn"></i></div>
+                </li>
+                <li class="weui-uploader__file weui-uploader__file_status" data-id="4"
+                    style="background-image: url(https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=498fd51ff6f2b211e42e8248f2bb0205/d833c895d143ad4b88a4f5ac8f025aafa50f06d7.jpg);">
+                  <div class="weui-uploader__file-content"><i class="weui-icon-warn"></i></div>
+                </li>
+              </ul>
+              <div class="weui-uploader__input-box"><input id="uploaderInput" class="weui-uploader__input" type="file"
+                                                           accept="image/*" capture="camera" multiple=""></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="fixed-bottom">
+      <!--<div class="check_phone_wrap">-->
+      <!--<div class="weui-btn-area"><a id="uploaderCustomBtn" href="javascript:" class="weui-btn weui-btn_primary">查看电话号码</a></div>-->
+      <!--</div>-->
+      <div class="upload_confirm_wrap">
+        <div class="weui-btn-area"><a id="" href="javascript:" class="weui-btn weui-btn_primary">下一步</a></div>
+      </div>
+    </div>
+
+  </section>
+
+
+</div>
+<script>
+  var uploadCount = 0;
+  weui.uploader('#uploader', {
+    url: 'http://localhost:8081',
+    auto: true,
+    type: 'file',
+    fileVal: 'fileVal',
+    compress: {
+      width: 1600,
+      height: 1600,
+      quality: .8
+    },
+    onBeforeQueued: function (files) {
+      // `this` 是轮询到的文件, `files` 是所有文件
+
+      if (["image/jpg", "image/jpeg", "image/png", "image/gif"].indexOf(this.type) < 0) {
+        weui.alert('请上传图片');
+        return false; // 阻止文件添加
+      }
+      if (this.size > 10 * 1024 * 1024) {
+        weui.alert('请上传不超过10M的图片');
+        return false;
+      }
+      if (files.length > 5) { // 防止一下子选择过多文件
+        weui.alert('最多只能上传5张图片，请重新选择');
+        return false;
+      }
+      if (uploadCount + 1 > 5) {
+        weui.alert('最多只能上传5张图片');
+        return false;
+      }
+
+      ++uploadCount;
+
+      // return true; // 阻止默认行为，不插入预览图的框架
+    },
+    onQueued: function () {
+      console.log(this);
+
+      // console.log(this.status); // 文件的状态：'ready', 'progress', 'success', 'fail'
+      // console.log(this.base64); // 如果是base64上传，file.base64可以获得文件的base64
+
+      // this.upload(); // 如果是手动上传，这里可以通过调用upload来实现；也可以用它来实现重传。
+      // this.stop(); // 中断上传
+
+      // return true; // 阻止默认行为，不显示预览图的图像
+    },
+    onBeforeSend: function (data, headers) {
+      console.log(this, data, headers);
+      // $.extend(data, { test: 1 }); // 可以扩展此对象来控制上传参数
+      // $.extend(headers, { Origin: 'http://127.0.0.1' }); // 可以扩展此对象来控制上传头部
+
+      // return false; // 阻止文件上传
+    },
+    onProgress: function (procent) {
+      console.log(this, procent);
+      // return true; // 阻止默认行为，不使用默认的进度显示
+    },
+    onSuccess: function (ret) {
+      console.log(this, ret);
+      // return true; // 阻止默认行为，不使用默认的成功态
+    },
+    onError: function (err) {
+      console.log(this, err);
+      // return true; // 阻止默认行为，不使用默认的失败态
+    }
+  });
+
+
+  $(function(){
+    $(".gallery").click(function (){
+      var imgUrl = "https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=498fd51ff6f2b211e42e8248f2bb0205/d833c895d143ad4b88a4f5ac8f025aafa50f06d7.jpg";
+      weui.gallery(imgUrl, {
+        className: 'custom-classname',
+        onDelete: function(){
+          if(confirm('确定删除该图片？')){ console.log('删除'); }
+          gallery.hide(function() {
+            console.log('`gallery` has been hidden');
+          });
+        }
+      });
+    });
+  });
+
+
+</script>
+</body>
+</html>
