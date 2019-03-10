@@ -517,6 +517,7 @@ footer {
     background: #3493eb;
     color: #fff;
 
+
        .filterArrow {
          display: inline-block;
          width:20px;
@@ -529,6 +530,7 @@ footer {
       }
 
     }
+    
   }
 
   .main {
@@ -1009,6 +1011,12 @@ footer {
 }
 /*nearby页面*/
 .nearbyPage {
+
+  .weui-navbar__item.weui_bar__item_on {
+    background: red;
+  }
+  
+
 
   .distanceModal {
     width: 100%;

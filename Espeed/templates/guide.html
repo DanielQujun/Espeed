@@ -1,0 +1,96 @@
+<!-- 基础空白文档 -->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="utf-8">
+    <title>e我速工</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+    <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="../static/css/style201806032229.css">
+    <style>
+    .guide {
+        width: 100vw;
+        height: 100vh;
+        background: url(../static/images/nearby_01.jpg) no-repeat center top;
+        background-size: contain;
+        display: flex;
+        flex-direction: column;
+        /* justify-content: center; */
+        align-items: center;
+        text-align: center;
+        padding-top: 60vh;
+        box-sizing: border-box;
+    }
+    .goNearbyBtn {
+        width: 180px;
+        height: 40px;
+        border-radius: 20px;
+        background: #3493eb;
+        color: #fff;
+        font-size: 14px;
+        outline: none;
+        border: 1px solid #3493eb;
+    }
+    .goNearbyBtn:active {
+        background: #2071bd;
+    }
+    .goLoginBtn {
+        width: 180px;
+        height: 40px;
+        border-radius: 20px;
+        border: 1px solid #3493eb;
+        background: #fff;
+        color: #3493eb;
+        font-size: 14px;
+        outline: none;
+    }
+    .goLoginBtn:active {
+        background: #f7f7f7;
+    }
+    .divTxt {
+        font-size: 13px;
+        text-align: center;
+        color: #999999;
+        margin: 10px 0;
+    }
+    </style>
+</head>
+
+<body class="page">
+<div class="guide">
+    <!-- 主体内容 -->
+    <section class="main">
+        <button class="goNearbyBtn" id="goNearby">附近的人</button>
+        <p class="divTxt">或</p>
+        <button class="goLoginBtn" id="goLogin">手机注册</button>
+    </section>
+    <span id="openidInsert" style="display:none;">{{ openid }}</span>
+
+</div>
+
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+<script type="text/javascript" src="../static/lib/jquerySession.js"></script>
+<script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
+<script>
+
+    $(function () {
+        // 开启fastclick功能
+        FastClick.attach(document.body);
+        window.localStorage.setItem("openid",$('#openidInsert').text());
+        
+        $("#goNearby").on("click",function(){
+            location.href = "/nearby/?openid=" + window.localStorage.getItem("openid") + "&guest=true";
+        })
+        
+        $("#goLogin").on("click",function(){
+            location.href = "/register/?openid=" + window.localStorage.getItem("openid") + "&guest=true";
+        })
+    });
+
+</script>
+</body>
+</html>
