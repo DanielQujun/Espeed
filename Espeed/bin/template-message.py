@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 r = redis.Redis(host='127.0.0.1', port='6379')
 r1 = redis.Redis(host='127.0.0.1', port='6379', db=1)
 
+
 def Distance(lat1,lng1,lat2,lng2):# 第二种计算方法
     lat1 = float(lat1)
     lat2 = float(lat2)
@@ -26,13 +27,14 @@ def Distance(lat1,lng1,lat2,lng2):# 第二种计算方法
     radlat2=radians(lat2)
     a=radlat1-radlat2
     b=radians(lng1)-radians(lng2)
-    s=2*asin(sqrt(pow(sin(a/2),2)+cos(radlat1)*cos(radlat2)*pow(sin(b/2),2)))
-    earth_radius=6378.137
-    s=s*earth_radius*1000
-    if s<0:
+    s = 2 * asin(sqrt(pow(sin(a/2), 2)+cos(radlat1)*cos(radlat2)*pow(sin(b/2),2)))
+    earth_radius = 6378.137
+    s = s * earth_radius * 1000
+    if s < 0:
         return -s
     else:
         return s
+
 
 def get_access_token():
     WEIXIN_ACCESS_TOKEN = r.get('WEIXIN_ACCESS_TOKEN')
@@ -74,7 +76,7 @@ if __name__ == "__main__":
 
     while True:
         try:
-            db = MySQLdb.connect("127.0.0.1", "root", "qujun@32.com", "sugong", charset='utf8')
+            db = MySQLdb.connect("127.0.0.1", "root", "aaa@****.com", "sugong", charset='utf8')
             cursor = db.cursor()
             online_user = r.spop('online_queue')
             if online_user:
