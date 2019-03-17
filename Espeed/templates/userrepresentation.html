@@ -130,17 +130,19 @@
         </div>
 
         <div class="name_wrap">
-            <span>文泽海</span><span class="role">{{ 工人 }}</span>      <!-- TODO:待插入 -->
+            <span>文泽海</span><span class="role">{{ role }}</span>      <!-- TODO:待插入 -->
         </div>
         <div class="role_wrap">
             <span class="tip">我是</span>                <!-- TODO:待解析 -->
-            <span class="tag">{{ 建筑木工 泥瓦工 }}</span>      <!-- TODO:待插入 -->
+            <span class="tag">{{ tag }}</span>      <!-- TODO:待插入 -->
         </div>
         <p class="weui-cells__title"><span class="img-list-title">我的案例</span><span class="edit-btn" id="edit-btn">编辑</span></p>
         <!--图片列表-->
         <ul class="img-list-wrap">
+            {% for img-id, img-url in userimgs.items %}
             <li class="img-list-item" data-id="{{ img-id }}" style="background-image: url({{ img-url }})"></li>
-            <!-- TODO:待插入和循环 -->
+
+            {% endfor %}
         </ul>
 
         <!--图片预览插件-->
