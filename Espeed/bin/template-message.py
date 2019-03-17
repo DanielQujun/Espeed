@@ -43,6 +43,7 @@ def get_access_token():
     else:
         logger.error("did not get WEIXIN_ACCESS_TOKEN")
 
+
 class WechatPush():
 
   def post_data(self, url, para_dct):
@@ -66,7 +67,7 @@ class WechatPush():
 
     access_token = get_access_token()
     requst_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + access_token
-    content = self.post_data(requst_url,json_template)
+    content = self.post_data(requst_url, json_template)
     #读取json数据
     j = json.loads(content)
     logger.error(j)

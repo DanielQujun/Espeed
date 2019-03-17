@@ -112,5 +112,17 @@ class verify_code_request(models.Model):
     request_phonenum = models.CharField(max_length=50)
     request_time = models.CharField(max_length=50)
 
+
 class send_template(models.Model):
     useropenid = models.DateField(default=None)
+
+
+class Pictures(models.Model):
+    picpath = models.CharField(max_length=50)
+    useropenid = models.CharField(max_length=50)
+    cate = models.CharField(max_length=50, default="show")
+    uploadtime = models.DateField(default=None)
+    deletetime = models.DateField(default=None)
+
+    def __str__(self):
+        return self.picpath

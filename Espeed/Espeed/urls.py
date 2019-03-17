@@ -46,5 +46,7 @@ urlpatterns = [
     url(r'^nearby_ajax/', weixin_views.nearby_ajax, name='nearby_ajax'),
     url(r'^shareCode/', weixin_views.shareCode, name='shareCode'),
     url(r'^moment_shared_notify/', weixin_views.moment_shared_notify, name='moment_shared_notify'),
+    url(r'^userrepresentation/', weixin_views.userrepresentation, name='userrepresentation'),
+    url(r'^uploadimg/', weixin_views.uploadFile, name='uploadimg')
 
 ]

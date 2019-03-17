@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 import hashlib
+import os
+import json
 from datetime import datetime as dt
 from django.http import HttpResponseRedirect
 
@@ -985,3 +987,57 @@ def shareCode(request):
     if request.method == 'GET':
         data = {}
         return render(request, 'shareCode.html', data)
+
+
+def userrepresentation(request):
+    if request.method == 'GET':
+        openid = request.GET.get('openid')
+        user = UserProfileBase.objects.filter(openId=openid).first()
+        images = Pictures.objects.filter(useropenid=openid).exclude(deletetime=None).all()
+
+        data = {}
+        data['role'] = user.Role
+        jobs = [i for i in user.Jobs]
+        data['Jobs'] = ' '.join(jobs)
+        data['headimgurl'] = user.avatarAddr
+        data['username'] = user.userName
+        data['openid'] = openid
+        for image in images:
+            data[image.id] = image.picpath
+
+        return render(request, 'userrepresentation.html', data)
+
+
+@csrf_exempt
+def uploadFile(request):
+    if request.method == 'POST':
+        openid = request.POST.get('openid')
+
+        for filename in request.FILES:
+            logger.error("hahah: %s", filename)
+            timestr = dt.now().strftime('%Y/%m/%d')
+            imgextensions = ['jpg', 'png', 'jpeg', 'bmp', 'pic']
+            fname = u''.join(str(filename))
+            isimage = len([i for i in imgextensions if fname.find(i) >= 0]) > 0
+            basepath = "/home/www-data/pic"
+            if not os.path.exists(basepath):
+                os.makedirs(basepath)
+            savepath = os.path.join(basepath, filename)
+            if isimage:
+                with open(savepath, 'wb+') as wfile:
+                    for chunk in request.FILES[filename].chunks():
+                        wfile.write(chunk)
+                user_img = Pictures(picpath=savepath, useropenid=openid, uploadtime=dt.now())
+                user_img.save()
+
+                response = {"code": 200, "status": "OK"}
+                return HttpResponse(json.dumps(response))
+            else:
+                return HttpResponse("wrong request method!!")
+
+    elif request.method == 'GET':
+        openid = request.GET.get('openid')
+
+        data = render_js_config(request)
+        data['openid'] = openid
+        return render(request, 'uploadImage.html', data)
