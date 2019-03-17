@@ -129,36 +129,36 @@
     <section class="main">
         <div class="portrait_wrap">
             <a class="changePortrait" href="#">
-                <!--<img src="{{ headimgurl }}">-->
+                <img src="{{ headimgurl }}">
             </a>
         </div>
 
         <div class="name_wrap">
-            <!--<span>文泽海</span><span class="role">{{ role }}</span>-->
+            <span>文泽海</span><span class="role">{{ role }}</span>
         </div>
         <div class="role_wrap">
             <span class="tip" id="role-tip">我是</span>
-            <!--<span class="tag">{{ tag }}</span>-->
+            <span class="tag">{{ tag }}</span>
         </div>
         <p class="weui-cells__title"><span class="img-list-title">我的案例</span><span class="edit-btn"
                                                                                    id="edit-btn">编辑</span></p>
         <!--图片列表-->
         <ul class="img-list-wrap" id="img-list-wrap">
             <!---->
-            <!--{% for img-id, img-url in userimgs.items %}-->
-            <!--<li class="img-list-item normal" data-id="{{ img-id }}" style="background-image: url({{ img-url }})"></li>-->
-            <!--{% endfor %}-->
+            {% for img-id, img-url in userimgs.items %}
+            <li class="img-list-item normal" data-id="{{ img-id }}" style="background-image: url({{ img-url }})"></li>
+            {% endfor %}
 
             <!--调试代码，先注释-->
-            <li class="img-list-item normal" data-id="001"
-                data-src="http://img.hb.aicdn.com/3c3e6b14ea97ec49831852e87af89163b3297a804837d9-o9aPUz_fw658.jpg"
-                style="background-image: url(http://img.hb.aicdn.com/3c3e6b14ea97ec49831852e87af89163b3297a804837d9-o9aPUz_fw658.jpg)"></li>
-            <li class="img-list-item normal" data-id="002"
-                data-src="http://img.hb.aicdn.com/6e630b8b78fc992f41b3bf2a6c3b94e84f89f1461ac650-oddXGE_fw658.jpg"
-                style="background-image: url(http://img.hb.aicdn.com/6e630b8b78fc992f41b3bf2a6c3b94e84f89f1461ac650-oddXGE_fw658.jpg)"></li>
-            <li class="img-list-item normal" data-id="003"
-                data-src="http://img.hb.aicdn.com/1a014a8ac23ab35911f077e2e47cbd3afb106cc91603e-nJmkHR_fw658.jpg"
-                style="background-image: url(http://img.hb.aicdn.com/1a014a8ac23ab35911f077e2e47cbd3afb106cc91603e-nJmkHR_fw658.jpg)"></li>
+            <!--<li class="img-list-item normal" data-id="001"-->
+                <!--data-src="http://img.hb.aicdn.com/3c3e6b14ea97ec49831852e87af89163b3297a804837d9-o9aPUz_fw658.jpg"-->
+                <!--style="background-image: url(http://img.hb.aicdn.com/3c3e6b14ea97ec49831852e87af89163b3297a804837d9-o9aPUz_fw658.jpg)"></li>-->
+            <!--<li class="img-list-item normal" data-id="002"-->
+                <!--data-src="http://img.hb.aicdn.com/6e630b8b78fc992f41b3bf2a6c3b94e84f89f1461ac650-oddXGE_fw658.jpg"-->
+                <!--style="background-image: url(http://img.hb.aicdn.com/6e630b8b78fc992f41b3bf2a6c3b94e84f89f1461ac650-oddXGE_fw658.jpg)"></li>-->
+            <!--<li class="img-list-item normal" data-id="003"-->
+                <!--data-src="http://img.hb.aicdn.com/1a014a8ac23ab35911f077e2e47cbd3afb106cc91603e-nJmkHR_fw658.jpg"-->
+                <!--style="background-image: url(http://img.hb.aicdn.com/1a014a8ac23ab35911f077e2e47cbd3afb106cc91603e-nJmkHR_fw658.jpg)"></li>-->
         </ul>
 
         <div class="fixed-bottom">
@@ -168,7 +168,6 @@
                 <div class="btn-edit-wrap" style="display: none;padding: 0 15px;">
                     <a style="width: 49%;display: inline-block;" id="cancel-btn"
                        href="javascript:goUrl('userrepresentation');" class="weui-btn weui-btn_default">取消</a>
-                    <!-- goUrl('uploadimg')  -->
                     <a style="width: 49%;display: inline-block;" id="confirm-btn" href="javascript:;"
                        class="weui-btn weui-btn_warn">确定</a>
                 </div>
@@ -178,10 +177,8 @@
 
 
     <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
-    <!--<span id="openidInsert" style="display:none;">{{ openid }}</span>                       &lt;!&ndash; TODO:待插入 &ndash;&gt;-->
-    <span id="openidInsert" style="display:none;">oT69X1PX1jG6Ojhij3tQVOGSnWzQ</span>
-    <!-- TODO:待插入 -->
-    <!--<span id="roleInsert" style="display:none;">{{ role }}</span>                       &lt;!&ndash; TODO:待插入 &ndash;&gt;-->
+    <span id="openidInsert" style="display:none;">{{ openid }}</span>                       <!-- TODO:待插入 -->
+    <span id="roleInsert" style="display:none;">{{ role }}</span>                       <!-- TODO:待插入 -->
 
 </div>
 <script type="text/javascript" src="../static/js/swiper.js"></script>
