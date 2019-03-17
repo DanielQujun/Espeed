@@ -11,9 +11,13 @@
     <link rel="stylesheet" href="../static/css/style201806032229.css">
     <style>
         .upload-image-page {
-            padding: 15px;
+            padding:  0 15px;
         }
-
+        .upload-image-page .weui-cells.weui-cells_form:before {
+            border-top: 1px solid #fff;
+        }.upload-image-page .weui-cells.weui-cells_form:after {
+            border-bottom: 1px solid #fff;
+        }
         .upload-image-page .upload-btn-wrap {
             margin-top: 30px;
         }
@@ -24,6 +28,7 @@
 <body class="page">
 <div class="upload-image-page">
     <section class="main">
+
         <div class="weui-gallery" id="gallery">
             <span class="weui-gallery__img" id="galleryImg"></span>
             <div class="weui-gallery__opr">
@@ -32,6 +37,7 @@
                 </a>
             </div>
         </div>
+
         <div class="weui-cells weui-cells_form" id="uploader">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
@@ -55,13 +61,14 @@
 
         <div class="upload-btn-wrap">
             <a href="javascript:;" id="upload-btn" class="weui-btn weui-btn_primary">上传</a>
-            <a href="javascript:;" class="weui-btn weui-btn_default">取消</a>
+            <a href="javascript:goUrl('userrepresentation');" class="weui-btn weui-btn_default">取消</a>
         </div>
     </section>
 
 </div>
 <script type="text/javascript" src="../static/js/weui.min.js"></script>
 <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
+<script type="text/javascript" src="../static/js/utility.js"></script>
 <script>
     $(function () {
         var tmpl = '<li class="weui-uploader__file" style="background-image:url(#url#)"></li>',
@@ -89,8 +96,6 @@
                 $uploaderFiles.append($(tmpl.replace('#url#', src)));
             }
             checkPhotoSize();
-
-
         });
 
         //控制显示三张以内照片
@@ -121,11 +126,12 @@
         //上传
         $("#upload-btn").click(function () {
             var uploadCount = 0;
+            console.log(fileArr);
             weui.uploader('#uploader', {
-                url: 'http://localhost:8081',
+                url: 'http://localhost:63342/Espeed/Espeed/templates/uploadImage',          //TODO：这里的地址要改
                 auto: false,
                 type: 'file',
-                fileVal: 'fileVal',
+                fileVal: 'fileArr',
                 compress: {
                     width: 1600,
                     height: 1600,
@@ -155,7 +161,7 @@
                     // console.log(this.status); // 文件的状态：'ready', 'progress', 'success', 'fail'
                     // console.log(this.base64); // 如果是base64上传，file.base64可以获得文件的base64
 
-                    // this.upload(); // 如果是手动上传，这里可以通过调用upload来实现；也可以用它来实现重传。
+                    this.upload(); // 如果是手动上传，这里可以通过调用upload来实现；也可以用它来实现重传。
                     // this.stop(); // 中断上传
 
                     // return true; // 阻止默认行为，不显示预览图的图像
