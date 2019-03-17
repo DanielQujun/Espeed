@@ -11,9 +11,13 @@
     <link rel="stylesheet" href="../static/css/style201806032229.css">
     <style>
         .upload-image-page {
-            padding: 15px;
+            padding:  0 15px;
         }
-
+        .upload-image-page .weui-cells.weui-cells_form:before {
+            border-top: 1px solid #fff;
+        }.upload-image-page .weui-cells.weui-cells_form:after {
+            border-bottom: 1px solid #fff;
+        }
         .upload-image-page .upload-btn-wrap {
             margin-top: 30px;
         }
@@ -24,6 +28,7 @@
 <body class="page">
 <div class="upload-image-page">
     <section class="main">
+
         <div class="weui-gallery" id="gallery">
             <span class="weui-gallery__img" id="galleryImg"></span>
             <div class="weui-gallery__opr">
@@ -32,6 +37,7 @@
                 </a>
             </div>
         </div>
+
         <div class="weui-cells weui-cells_form" id="uploader">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
@@ -89,8 +95,6 @@
                 $uploaderFiles.append($(tmpl.replace('#url#', src)));
             }
             checkPhotoSize();
-
-
         });
 
         //控制显示三张以内照片
@@ -122,7 +126,7 @@
         $("#upload-btn").click(function () {
             var uploadCount = 0;
             weui.uploader('#uploader', {
-                url: 'http://localhost:8081',
+                url: 'http://localhost:63342/Espeed/Espeed/templates/uploadImage',          //TODO：这里的地址要改
                 auto: false,
                 type: 'file',
                 fileVal: 'fileVal',
