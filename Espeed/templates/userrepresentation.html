@@ -154,8 +154,8 @@
                 <div class="weui-btn-area" id="go-upload-btn"><a href="uploadImage.html"
                                                                  class="weui-btn weui-btn_primary">上传照片</a></div>
                 <div class="btn-edit-wrap" style="display: none;padding: 0 15px;">
-                    <a  style="width: 49%;display: inline-block;" id="cancel-btn" href="userDetail.html" class="weui-btn weui-btn_default">取消</a>
-                    <a  style="width: 49%;display: inline-block;" id="confirm-btn" href="#" class="weui-btn weui-btn_primary">确定</a>
+                    <a style="width: 49%;display: inline-block;" id="cancel-btn" href="javascript:goUrl('userrepresentation');"  class="weui-btn weui-btn_default">取消</a>
+                    <a  style="width: 49%;display: inline-block;" id="confirm-btn" href="javascript:goUrl('uploadimg');" class="weui-btn weui-btn_primary">确定</a>
                 </div>
             </div>
         </div>
@@ -163,9 +163,11 @@
 
 
     <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
-    <span id="openidInsert" style="display:none;">{{ openid }}</span>                       //TODO:插入
+    <span id="openidInsert" style="display:none;">{{ openid }}</span>                       <!-- TODO:待插入 -->
+    <span id="role" style="display:none;">{{ role }}</span>                       <!-- TODO:待插入 -->
 
 </div>
+<script type="text/javascript"src="../static/js/utility.js"></script>
 <script>
     $(function () {
         window.localStorage.setItem("openid",$('#openidInsert').text());
@@ -197,12 +199,14 @@
         $("#confirm-btn").click(function () {
             $.ajax({
                 url:"",                     //TODO:地址待填写
+                type:"get",
                 data: {
-                    openid: "",
+                    openid: window.localStorage.getItem("openid"),
                     delImg: imgId
                 },
-                success: function () {
-                    window.location.href("userDetail.html");                //TODO:地址待修改；
+                success: function (result,status,xhr) {
+                    console.log(result,status,xhr);
+                    goUrl('userrepresentation');
                 },
                 error: function (xhr,status,error) {
                     console.log(xhr,status,error)
