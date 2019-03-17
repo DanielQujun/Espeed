@@ -70,6 +70,7 @@
     </section>
 
 </div>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>        <!-- 引入微信js sdk -->
 <script type="text/javascript" src="../static/js/weui.min.js"></script>
 <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
 <script type="text/javascript" src="../static/js/utility.js"></script>
@@ -112,15 +113,24 @@
                 success: function (res) {
                     console.log(res);
                     localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+
+                    var str = "";
+                    $.each(localIds, function (index, item) {
+                        str += '<li class="weui-uploader__file" style="background-image:url(' + item + ')"></li>"';
+                    });
+                    $("#uploaderFiles").html(str);
                 }
             });
 
         })
 
-
-
-
-
+        $(".weui-uploader__file").click(function (ev) {
+            var index = $(this).index();
+            wx.previewImage({
+                current: localIds[index], // 当前显示图片的http链接
+                urls: localIds // 需要预览的图片http链接列表
+            });
+        });
 
         // $uploaderInput.on("change", function (e) {
         //     var src, url = window.URL || window.webkitURL || window.mozURL,
@@ -177,12 +187,9 @@
                 success: function (res) {
                     console.log(res);
                     var serverId = res.serverId; // 返回图片的服务器端ID
+                    alert(1);
                 }
             });
-
-
-
-
 
 
             // weui.uploader('#uploader', {
