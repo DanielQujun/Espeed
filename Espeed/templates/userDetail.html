@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的介绍</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+    <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="../static/iconfont/iconfont.css">
+    <link rel="stylesheet" href="../static/css/style201806032229.css">
+    <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
+    <script type="text/javascript" src="../static/js/weui.min.js"></script>
+    <style>
+        .presentation {
+            padding-top: 40px;
+            background: #fff url(../static/images/wave_bg.png) no-repeat center top;
+            background-size: cover;
+        }
+
+        .presentation .portrait_wrap {
+            text-align: center;
+        }
+
+        .presentation .changePortrait {
+
+            overflow: hidden;
+            line-height: 0;
+        }
+
+        .presentation .changePortrait img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            -webkit-box-shadow: 0 5px 9px rgba(0, 0, 0, .3);
+            -moz-box-shadow: 0 5px 9px rgba(0, 0, 0, .3);
+            box-shadow: 0 5px 9px rgba(0, 0, 0, .3);
+        }
+
+        .presentation .name_wrap {
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+            color: #fff;
+            margin-bottom: 10px;
+
+        }
+
+        .presentation .name_wrap span {
+            padding: 0 10px;
+        }
+
+        .presentation .name_wrap .role {
+            border-left: 1px solid #ededef;
+        }
+
+        .role_wrap {
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .role_wrap .tip {
+            color: #fff;
+            margin-right: 5px;
+        }
+
+        .role_wrap .tag {
+            padding: 0 8px;
+            background: #ffc245;
+            color: #fff;
+            border-radius: 2px;
+        }
+
+        .fixed-bottom {
+            background: #fff;
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 990;
+        }
+
+        .fixed-bottom .weui-btn-area {
+            margin-top: 0.3em;
+        }
+
+        .weui-cells__title {
+            position: relative;
+        }
+
+        .edit-btn {
+            position: absolute;
+            top: 0;
+            right: 15px;
+            text-decoration: underline;
+            color: #3493eb;
+        }
+
+        .img-list-wrap {
+            position: relative;
+            padding: 0 15px;
+            list-style: none;
+        }
+
+        .img-list-wrap .img-list-item {
+            float: left;
+            margin-right: 9px;
+            margin-bottom: 9px;
+            width: 79px;
+            height: 79px;
+            background: no-repeat center center;
+            background-size: cover;
+        }
+        .img-list-item.choose.active {
+            border: 2px solid #007aff;
+        }
+    </style>
+
+
+</head>
+<body class="page">
+<div class="presentation">
+    <section class="main">
+        <div class="portrait_wrap">
+            <a class="changePortrait" href="#">
+                <img src="{{ headimgurl }}">                                <!-- TODO:待插入 -->
+            </a>
+        </div>
+
+        <div class="name_wrap">
+            <span>文泽海</span><span class="role">{{ 工人 }}</span>      <!-- TODO:待插入 -->
+        </div>
+        <div class="role_wrap">
+            <span class="tip">我是</span>                <!-- TODO:待解析 -->
+            <span class="tag">{{ 建筑木工 泥瓦工 }}</span>      <!-- TODO:待插入 -->
+        </div>
+        <p class="weui-cells__title"><span class="img-list-title">我的案例</span><span class="edit-btn" id="edit-btn">编辑</span></p>
+        <!--图片列表-->
+        <ul class="img-list-wrap">
+            <li class="img-list-item" data-id="{{ img-id }}" style="background-image: url({{ img-url }})"></li>
+            <!-- TODO:待插入和循环 -->
+        </ul>
+
+        <!--图片预览插件-->
+        <div class="weui-gallery" id="gallery">
+            <span class="weui-gallery__img" id="galleryImg"></span>
+        </div>
+
+
+        <div class="fixed-bottom">
+            <div class="upload_confirm_wrap">
+                <div class="weui-btn-area" id="go-upload-btn"><a href="uploadImage.html"
+                                                                 class="weui-btn weui-btn_primary">上传照片</a></div>
+                <div class="btn-edit-wrap" style="display: none;padding: 0 15px;">
+                    <a  style="width: 49%;display: inline-block;" id="cancel-btn" href="userDetail.html" class="weui-btn weui-btn_default">取消</a>
+                    <a  style="width: 49%;display: inline-block;" id="confirm-btn" href="#" class="weui-btn weui-btn_primary">确定</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
+    <span id="openidInsert" style="display:none;">{{ openid }}</span>                       //TODO:插入
+
+</div>
+<script>
+    $(function () {
+        window.localStorage.setItem("openid",$('#openidInsert').text());
+
+        //点击图片进行预览
+        $(".img-list-item").on("click", function () {
+            $("#galleryImg").attr("style", this.getAttribute("style"));
+            $("#gallery").fadeIn(100);
+        });
+        $("#gallery").on("click", function () {
+            $("#gallery").fadeOut(100);
+        });
+
+        //编辑图片
+        $("#edit-btn").click(function () {
+            $(".img-list-title").text("请选择要删除的图片");
+            $("#edit-btn").css("display", "none");
+            $("#go-upload-btn").css("display", "none");
+            $(".btn-edit-wrap").css("display", "block");
+            $(".img-list-item").addClass("choose");
+        });
+
+        var imgId = [];
+        $(".img-list-item.choose").on("click", function () {
+            $(this).addClass("active");
+            imgId.push($(this).data("id"));
+        });
+
+        $("#confirm-btn").click(function () {
+            $.ajax({
+                url:"",                     //TODO:地址待填写
+                data: {
+                    openid: "",
+                    delImg: imgId
+                },
+                success: function () {
+                    window.location.href("userDetail.html");                //TODO:地址待修改；
+                },
+                error: function (xhr,status,error) {
+                    console.log(xhr,status,error)
+                }
+            })
+        })
+    });
+
+
+
+
+
+</script>
+</body>
+</html>
