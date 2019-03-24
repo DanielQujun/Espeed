@@ -52,6 +52,9 @@
                         <div class="weui-uploader__bd">
                             <ul class="weui-uploader__files" id="uploaderFiles">
 
+                                <!--<li class="weui-uploader__file file-item" data-src="#url#"><img src="#url#" style="width: 100%;max-height: 100%;"></li>-->
+                                <!--<li class="weui-uploader__file file-item" data-src="#url#"><img src="#url#" style="width: 100%;max-height: 100%;"></li>-->
+                                <!--<li class="weui-uploader__file file-item" data-src="#url#"><img src="#url#" style="width: 100%;max-height: 100%;"></li>-->
                             </ul>
                             <div class="weui-uploader__input-box">
                                 <input id="uploaderInput" class="weui-uploader__input zjxfjs_file" type="file"
@@ -72,7 +75,6 @@
 </div>
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>        <!-- 引入微信js sdk -->
 <script type="text/javascript" src="../static/js/weui.min.js"></script>
-<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
 <script type="text/javascript" src="../static/js/utility.js"></script>
 <script>
@@ -98,162 +100,117 @@
             $.scojs_message(res.errMsg, $.scojs_message.TYPE_ERROR);
         });
 
-        var tmpl = '<li class="weui-uploader__file" style="background-image:url(#url#)"></li>',
-            $gallery = $("#gallery"),
-            $galleryImg = $("#galleryImg"),
-            $uploaderInput = $("#uploaderInput"),
-            $uploaderFiles = $("#uploaderFiles"),
-            fileArr = [];
+        var localIds = [];
+        var serverIds = [];
+        var tmpl = '<li class="weui-uploader__file file-item" data-src="#url#"><img src="#url#" style="width: 100%;max-height: 100%;"></li>';
 
-        var localIds;
-        $uploaderInput.on("change", function (e) {
-            wx.chooseImage({
-                count: 9, // 默认9
-                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-                sourceType: ['album'], // 可以指定来源是相册还是相机，默认二者都有
+
+        wx.ready(function () {
+            // 1 判断当前版本是否支持指定 JS 接口，支持批量判断
+            wx.checkJsApi({
+                jsApiList: [
+                    'chooseImage',
+                    'previewImage',
+                    'uploadImage',
+                    'downloadImage'
+                ],
                 success: function (res) {
-                    console.log(res);
-                    localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-
-                    var str = "";
-                    $.each(localIds, function (index, item) {
-                        str += '<li class="weui-uploader__file" style="background-image:url(' + item + ')"></li>';
-                    });
-                    $("#uploaderFiles").html(str);
+                    //alert(JSON.stringify(res));
+                    if (res.checkResult.getLocation == false) {
+                        alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
+                        return;
+                    } else {
+                        $("#uploaderInput").click(function () {
+                            wxChooseImage();
+                        })
+                    }
+                },
+                error: function (res) {
+                    alert(JSON.stringify("error=" + res));
                 }
             });
 
-        })
+            //上传图片
+            function wxChooseImage() {
+                wx.chooseImage({
+                    success: function (res) {
 
-        $(".weui-uploader__file").on("click",function (ev) {
-            var index = $(this).index();
-            wx.previewImage({
-                current: localIds[index], // 当前显示图片的http链接
-                urls: localIds // 需要预览的图片http链接列表
-            });
-        });
+                        console.log("得到图片本地ID： " + res.localIds);
 
-        // $uploaderInput.on("change", function (e) {
-        //     var src, url = window.URL || window.webkitURL || window.mozURL,
-        //         files = e.target.files;
-        //     var length = fileArr.length;
-        //     for (var i = 0, len = files.length; i < len; ++i) {
-        //         var file = files[i];
-        //         if (length + i + 1 > 9) {
-        //             break;
-        //         }
-        //         fileArr.push(file);
-        //         if (url) {
-        //             src = url.createObjectURL(file);
-        //         } else {
-        //             src = e.target.result;
-        //         }
-        //         $uploaderFiles.append($(tmpl.replace('#url#', src)));
-        //     }
-        //     checkPhotoSize();
-        // });
-        //
-        // //控制显示三张以内照片
-        // function checkPhotoSize() {
-        //     if (fileArr.length > 8) {
-        //         $(".weui-uploader__input-box").hide();
-        //     } else {
-        //         $(".weui-uploader__input-box").show();
-        //     }
-        // }
-        //
-        // var index; //第几张图片
-        // $uploaderFiles.on("click", "li", function () {
-        //     index = $(this).index();
-        //     $galleryImg.attr("style", this.getAttribute("style"));
-        //     $gallery.fadeIn(100);
-        // });
-        // $gallery.on("click", function () {
-        //     $gallery.fadeOut(100);
-        // });
-        // //删除图片
-        // $(".weui-gallery__del").click(function () {
-        //     $uploaderFiles.find("li").eq(index).remove();
-        //     fileArr.splice(index, index);
-        //     checkPhotoSize();
-        // });
+                        var i = 0, length = res.localIds.length;
 
-        //上传
-        $("#upload-btn").click(function () {
-            var uploadCount = 0;
+                        //保存本地图片列表
+                        localIds = res.localIds;
 
-            wx.uploadImage({
-                localId: 'localIds', // 需要上传的图片的本地ID，由chooseImage接口获得
-                isShowProgressTips: 1, // 默认为1，显示进度提示
-                success: function (res) {
-                    console.log(res);
-                    var serverId = res.serverId; // 返回图片的服务器端ID
+                        function upload() {
+                            //判断是否已经上传了足够的图片
+                            var len = $(".file_item").length;
+                            if (len >= 9) {
+                                alert("上传图片数量已达上限");
+                                return;
+                            }
+                            wx.uploadImage({
+                                localId: res.localIds[i],
+                                success: function (result) {
 
-                    alert(1);
-                }
+                                    console.log(result.serverId);
+                                    serverIds = result.serverId;
+
+                                    var src = localIds[i];
+                                    $("#uploaderInput").closest(".weui-uploader__bd").find(".weui-uploader__files").append($(tmpl.replace('#url#', src).replace('#url#', src)));
+
+                                    //是否继续显示上传“+”按钮
+                                    len = $("#uploaderInput").closest(".weui-uploader__bd").find(".weui-uploader__files li").length;//已经选了几张？
+                                    if (len >= 9) {
+                                        $("#uploaderInput").closest(".weui-uploader__input-box").hide();
+                                    }
+
+                                    i++;
+                                    if (i < length) {
+                                        upload();
+                                    }
+                                },
+                                fail: function (res) {
+                                    alert(JSON.stringify(res));
+                                }
+                            })
+                        }
+
+                        upload();
+
+                    }
+                })
+            }
+
+            //删除图片
+            $(".weui-gallery__del").click(function (ev) {
+                var num = $(this).index();
+                var list = $("#uploaderInput").closest(".weui-uploader__bd").find(".weui-uploader__files li");
+                $.each(list,function (index,item) {
+                    if(index == num){
+                        list.eq(index).remove();
+                    }
+                })
+
             });
 
+            //上传微信服务器图片地址到本地服务器
+           $("#upload-btn").click(function(){
+               $.ajax({
+                   url:"uploadimg/",
+                   type:get,
+                   data:{list:serverIds},
+                   success: function(result,status,xhr){
+                       console.log(result);
+                       goUrl('userrepresentation');
+                   }
+               });
+           })
 
-            // weui.uploader('#uploader', {
-            //     url: 'uploadimg/',          //TODO：这里的地址要改
-            //     auto: false,
-            //     type: 'file',
-            //     fileVal: 'fileArr',
-            //     compress: {
-            //         width: 1600,
-            //         height: 1600,
-            //         quality: .8
-            //     },
-            //     onBeforeQueued: function(files) {
-            //         if(["image/jpg", "image/jpeg", "image/png", "image/gif"].indexOf(this.type) < 0){
-            //             weui.alert('请上传图片');
-            //             return false; // 阻止文件添加
-            //         }
-            //         if(this.size > 10 * 1024 * 1024){
-            //             weui.alert('请上传不超过10M的图片');
-            //             return false;
-            //         }
-            //         if (files.length > 9) { // 防止一下子选择过多文件
-            //             weui.alert('最多只能上传5张图片，请重新选择');
-            //             return false;
-            //         }
-            //
-            //         ++uploadCount;
-            //
-            //         // return true; // 阻止默认行为，不插入预览图的框架
-            //     },
-            //     onQueued: function(){
-            //         console.log(this);
-            //
-            //         // console.log(this.status); // 文件的状态：'ready', 'progress', 'success', 'fail'
-            //         // console.log(this.base64); // 如果是base64上传，file.base64可以获得文件的base64
-            //
-            //         this.upload(); // 如果是手动上传，这里可以通过调用upload来实现；也可以用它来实现重传。
-            //         // this.stop(); // 中断上传
-            //
-            //         // return true; // 阻止默认行为，不显示预览图的图像
-            //     },
-            //     onBeforeSend: function(data, headers){
-            //         console.log(this, data, headers);
-            //         // $.extend(data, { test: 1 }); // 可以扩展此对象来控制上传参数
-            //         // $.extend(headers, { Origin: 'http://127.0.0.1' }); // 可以扩展此对象来控制上传头部
-            //
-            //         // return false; // 阻止文件上传
-            //     },
-            //     onProgress: function(procent){
-            //         console.log(this, procent);
-            //         // return true; // 阻止默认行为，不使用默认的进度显示
-            //     },
-            //     onSuccess: function (ret) {
-            //         console.log(this, ret);
-            //         // return true; // 阻止默认行为，不使用默认的成功态
-            //     },
-            //     onError: function(err){
-            //         console.log(this, err);
-            //         // return true; // 阻止默认行为，不使用默认的失败态
-            //     }
-            // });
+
         })
+
+
     });
 </script>
 </body>
