@@ -54,8 +54,8 @@
 
                             </ul>
                             <div class="weui-uploader__input-box">
-                                <input id="uploaderInput" class="weui-uploader__input zjxfjs_file" type="file"
-                                       accept="image/*" multiple="" capture="camera">
+                                <input id="uploaderInput" class="weui-uploader__input" type="file"/>
+                                       <!--accept="image/*" multiple="" capture="camera">-->
                             </div>
                         </div>
                     </div>
@@ -132,6 +132,7 @@
             });
 
             //上传图片
+            var i = 0;
             function wxChooseImage() {
                 wx.chooseImage({
                     count: 1, // 默认9
@@ -141,7 +142,8 @@
 
                         console.log("得到图片本地ID： " + res.localIds);
 
-                        var i = 0, length = res.localIds.length;
+
+                        var length = res.localIds.length;
 
                         //保存本地图片列表
                         localIds = res.localIds;
@@ -161,8 +163,10 @@
                                     console.log(result.serverId);
                                     serverIds.push(result.serverId);
 
-                                    var src = res.localIds[i];
-                                    $("#uploaderInput").closest(".weui-uploader__bd").find(".weui-uploader__files").append($(tmpl.replace('#url#', src).replace('#url#', src)));
+                                    // var src = res.localIds[i];
+                                    $("#uploaderInput").closest(".weui-uploader__bd").find(".weui-uploader__files").append($(tmpl.replace('#url#', res.localIds[i])));
+
+                                    //  $(tmpl.replace('#url#', src))
 
                                     //是否继续显示上传“+”按钮
                                     // lenNew = $("#uploaderInput").closest(".weui-uploader__bd").find(".weui-uploader__files li").length;//已经选了几张？
