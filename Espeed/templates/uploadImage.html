@@ -105,7 +105,7 @@
 
         wx.ready(function () {
             // 1 判断当前版本是否支持指定 JS 接口，支持批量判断
-            wx.checkJsApi({
+            /*wx.checkJsApi({
                 jsApiList: [
                     'chooseImage',
                     'previewImage',
@@ -118,19 +118,25 @@
                         alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
                         return;
                     } else {
-                        $("#uploaderInput").click(function () {
-                            wxChooseImage();
-                        })
+
                     }
                 },
                 error: function (res) {
                     alert(JSON.stringify("error=" + res));
                 }
+            });*/
+
+
+            $("#uploaderInput").click(function () {
+                wxChooseImage();
             });
 
             //上传图片
             function wxChooseImage() {
                 wx.chooseImage({
+                    count: 1, // 默认9
+                    sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                    sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                     success: function (res) {
 
                         console.log("得到图片本地ID： " + res.localIds);
@@ -143,11 +149,11 @@
                         var len;
                         function upload() {
                             //判断是否已经上传了足够的图片
-                            len = $(".file_item").length;
-                            if (len >= 9) {
-                                alert("上传图片数量已达上限");
-                                return;
-                            }
+                            // len = $(".file_item").length;
+                            // if (len >= 9) {
+                            //     alert("上传图片数量已达上限");
+                            //     return;
+                            // }
                             wx.uploadImage({
                                 localId: res.localIds[i],
                                 success: function (result) {
@@ -155,14 +161,14 @@
                                     console.log(result.serverId);
                                     serverIds.push(result.serverId);
 
-                                    var src = localIds[i];
+                                    var src = res.localIds[i];
                                     $("#uploaderInput").closest(".weui-uploader__bd").find(".weui-uploader__files").append($(tmpl.replace('#url#', src).replace('#url#', src)));
 
                                     //是否继续显示上传“+”按钮
-                                    lenNew = $("#uploaderInput").closest(".weui-uploader__bd").find(".weui-uploader__files li").length;//已经选了几张？
-                                    if (lenNew >= 9) {
-                                        $("#uploaderInput").closest(".weui-uploader__input-box").hide();
-                                    }
+                                    // lenNew = $("#uploaderInput").closest(".weui-uploader__bd").find(".weui-uploader__files li").length;//已经选了几张？
+                                    // if (lenNew >= 9) {
+                                    //     $("#uploaderInput").closest(".weui-uploader__input-box").hide();
+                                    // }
 
                                     i++;
                                     if (i < length) {
@@ -196,10 +202,10 @@
             //上传微信服务器图片地址到本地服务器
             $("#upload-btn").click(function(){
                 console.log("触发ajax")
-                alert(1);
+                // alert(1);
                 $.ajax({
                     url:"uploadimg/",
-                    type:get,
+                    type: "get",
                     data:{list:serverIds},
                     success: function(result,status,xhr){
                         console.log(result);
