@@ -55,7 +55,7 @@
                             </ul>
                             <div class="weui-uploader__input-box">
 
-                                <input id="uploaderInput" class="weui-uploader__input" type="file"/>
+                                <input id="uploaderInput" class="weui-uploader__input" type="button"/>
                                        <!--accept="image/*" multiple="" capture="camera">-->
                             </div>
                         </div>
@@ -130,25 +130,25 @@
 
             $("#uploaderInput").click(function (ev) {
                 wxChooseImage();
-                ev.preventDefault();
+                // ev.preventDefault();
             });
 
             //上传图片
             var i = 0;
             function wxChooseImage() {
                 wx.chooseImage({
-                    count: 1, // 默认9
+                    count: 9, // 默认9
                     sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
                     sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
                     success: function (res) {
 
-                        console.log("得到图片本地ID： " + res.localIds);
+                        alert("选择图片成功，得到图片本地ID，注意个数： " + res.localIds);
 
 
                         var length = res.localIds.length;
 
                         //保存本地图片列表
-                        localIds = res.localIds;
+                        localIds.push(res.localIds) ;
 
                         var len;
                         function upload() {
@@ -162,22 +162,27 @@
                                 localId: res.localIds[i],
                                 success: function (result) {
 
-                                    console.log(result.serverId);
+                                    alert("上传成功，当前上传的图片本地地址为: " + res.localIds[i])
+                                    alert("服务器返回的服务端图片地址： " + result.serverId);
                                     serverIds.push(result.serverId);
+
+                                    alert("存储后的图片服务器地址数组：" + serverIds.toString());
 
                                     wx.getLocalImgData({
                                         localId: res.localIds[i], // 图片的localID
                                         success: function (res) {
+
+                                            alert("转换base64成功，返回的数据为：" + res.localData);
                                             var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
 
                                             console.log(localData);
 
                                             $("#uploaderInput").closest(".weui-uploader__bd").find(".weui-uploader__files").append($(tmpl.replace('#url#', localData)));
+
+                                            alert("修改后的图片DOM元素为" + tmpl.toString());
+                                            alert("修改DOM结束")
                                         }
                                     });
-
-
-
 
                                     // var src = res.localIds[i];
                                     //$("#uploaderInput").closest(".weui-uploader__bd").find(".weui-uploader__files").append($(tmpl.replace('#url#', res.localIds[i]).replace('#url#', res.localIds[i])));
