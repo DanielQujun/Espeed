@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<script>
+    var updoc_wxJsSdk = {
+        /**注入SDK权限配置【思路第1步】*/
+        iniWxJsSDK: function () {
+            var _this = this;
+            //通过config接口注入权限验证配置
+            updocSrv_Commen.getWxJsSdkConfig({url: location.href}, function (res) {
+                var c = res.result;
+                wx.config({
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: c.appid, // 必填，公众号的唯一标识
+                    timestamp: c.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: c.noncestr, // 必填，生成签名的随机串
+                    signature: c.signature,// 必填，签名，见附录1
+                    jsApiList: ["chooseImage", "previewImage", "uploadImage", "downloadImage"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                });
+            });
+        },/**（编辑表单页面）上传图片第1步@param call 选图后的回调函数*/
+        onChooseImage: function (call) {
+            var _this = this;
+            var tmp = '<li class="weui-uploader__file" data-src="#url#"><img src="#url#" style="width: 100%;max-height: 100%;"></li>';
+            $("body").on("click",".uploaderInput",function(){
+                var $input = $(this);
+                var len = $input.closest(".weui-uploader__bd").find(".weui-uploader__files li").length;//已经选了几张？
+                if(len > = UPDOC_CONST.MAX_FILE_NUM){
+                    return false;
+                }
+                var max = UPDOC_CONST.MAX_FILE_NUM - len;
+                wx.chooseImage({
+                    count:max,
+                    sizeType: ["original","compressed"],
+                    sourceType: ["ablum","camera"],
+                    success:function (res) {
+                        var localIds = res.localIds;
+
+                        for(i in localIds){
+                            var src = localIds[i];
+                            $input.closest(".weui-uploader__bd").find(".weui")
+                        }
+
+                    }
+                }
+            })
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
