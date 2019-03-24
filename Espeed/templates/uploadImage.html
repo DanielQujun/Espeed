@@ -54,6 +54,7 @@
 
                             </ul>
                             <div class="weui-uploader__input-box">
+
                                 <input id="uploaderInput" class="weui-uploader__input" type="file"/>
                                        <!--accept="image/*" multiple="" capture="camera">-->
                             </div>
@@ -100,7 +101,7 @@
 
         var localIds = [];
         var serverIds = [];
-        var tmpl = '<li class="weui-uploader__file file_item" data-src="#url#"><img src="#url#" style="width: 100%;max-height: 100%;"></li>';
+        var tmpl = '<li class="weui-uploader__file file_item" ><img src="#url#" style="width: 100%;max-height: 100%;"></li>';
 
 
         wx.ready(function () {
@@ -127,7 +128,8 @@
             });*/
 
 
-            $("#uploaderInput").click(function () {
+            $("#uploaderInput").click(function (ev) {
+                ev.preventDefault();
                 wxChooseImage();
             });
 
@@ -163,8 +165,22 @@
                                     console.log(result.serverId);
                                     serverIds.push(result.serverId);
 
+                                    wx.getLocalImgData({
+                                        localId: res.localIds[i], // 图片的localID
+                                        success: function (res) {
+                                            var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+
+                                            console.log(localData);
+
+                                            $("#uploaderInput").closest(".weui-uploader__bd").find(".weui-uploader__files").append($(tmpl.replace('#url#', localData)));
+                                        }
+                                    });
+
+
+
+
                                     // var src = res.localIds[i];
-                                    $("#uploaderInput").closest(".weui-uploader__bd").find(".weui-uploader__files").append($(tmpl.replace('#url#', res.localIds[i])));
+                                    //$("#uploaderInput").closest(".weui-uploader__bd").find(".weui-uploader__files").append($(tmpl.replace('#url#', res.localIds[i]).replace('#url#', res.localIds[i])));
 
                                     //  $(tmpl.replace('#url#', src))
 
