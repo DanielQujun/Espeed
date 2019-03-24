@@ -52,9 +52,6 @@
                         <div class="weui-uploader__bd">
                             <ul class="weui-uploader__files" id="uploaderFiles">
 
-                                <!--<li class="weui-uploader__file file-item" data-src="#url#"><img src="#url#" style="width: 100%;max-height: 100%;"></li>-->
-                                <!--<li class="weui-uploader__file file-item" data-src="#url#"><img src="#url#" style="width: 100%;max-height: 100%;"></li>-->
-                                <!--<li class="weui-uploader__file file-item" data-src="#url#"><img src="#url#" style="width: 100%;max-height: 100%;"></li>-->
                             </ul>
                             <div class="weui-uploader__input-box">
                                 <input id="uploaderInput" class="weui-uploader__input zjxfjs_file" type="file"
@@ -78,14 +75,15 @@
 <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
 <script type="text/javascript" src="../static/js/utility.js"></script>
 <script>
+
     $(function () {
         //调用微信sdk配置
         wx.config({
             // debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-            appId: "{{ appid }}", // 必填，企业号的唯一标识，此处填写企业号corpid
-            timestamp: "{{timestamp}}", // 必填，生成签名的时间戳
-            nonceStr: "{{ nonceStr }}", // 必填，生成签名的随机串
-            signature: "{{ signature }}",// 必填，签名，见附录1
+            appId: "wx711503c7590f6d76", // 必填，企业号的唯一标识，此处填写企业号corpid
+            timestamp: "1553408937", // 必填，生成签名的时间戳
+            nonceStr: "qujunqujun", // 必填，生成签名的随机串
+            signature: "5d605b0f3d70367f0e927a4a372c230c262f4eb8",// 必填，签名，见附录1
             jsApiList: [
                 'chooseImage',
                 'previewImage',
@@ -102,7 +100,7 @@
 
         var localIds = [];
         var serverIds = [];
-        var tmpl = '<li class="weui-uploader__file file-item" data-src="#url#"><img src="#url#" style="width: 100%;max-height: 100%;"></li>';
+        var tmpl = '<li class="weui-uploader__file file_item" data-src="#url#"><img src="#url#" style="width: 100%;max-height: 100%;"></li>';
 
 
         wx.ready(function () {
@@ -142,9 +140,10 @@
                         //保存本地图片列表
                         localIds = res.localIds;
 
+                        var len;
                         function upload() {
                             //判断是否已经上传了足够的图片
-                            var len = $(".file_item").length;
+                            len = $(".file_item").length;
                             if (len >= 9) {
                                 alert("上传图片数量已达上限");
                                 return;
@@ -154,14 +153,14 @@
                                 success: function (result) {
 
                                     console.log(result.serverId);
-                                    serverIds = result.serverId;
+                                    serverIds.push(result.serverId);
 
                                     var src = localIds[i];
                                     $("#uploaderInput").closest(".weui-uploader__bd").find(".weui-uploader__files").append($(tmpl.replace('#url#', src).replace('#url#', src)));
 
                                     //是否继续显示上传“+”按钮
-                                    len = $("#uploaderInput").closest(".weui-uploader__bd").find(".weui-uploader__files li").length;//已经选了几张？
-                                    if (len >= 9) {
+                                    lenNew = $("#uploaderInput").closest(".weui-uploader__bd").find(".weui-uploader__files li").length;//已经选了几张？
+                                    if (lenNew >= 9) {
                                         $("#uploaderInput").closest(".weui-uploader__input-box").hide();
                                     }
 
@@ -195,17 +194,19 @@
             });
 
             //上传微信服务器图片地址到本地服务器
-           $("#upload-btn").click(function(){
-               $.ajax({
-                   url:"uploadimg/",
-                   type:get,
-                   data:{list:serverIds},
-                   success: function(result,status,xhr){
-                       console.log(result);
-                       goUrl('userrepresentation');
-                   }
-               });
-           })
+            $("#upload-btn").click(function(){
+                console.log("触发ajax")
+                alert(1);
+                $.ajax({
+                    url:"uploadimg/",
+                    type:get,
+                    data:{list:serverIds},
+                    success: function(result,status,xhr){
+                        console.log(result);
+                        goUrl('userrepresentation');
+                    }
+                });
+            })
 
 
         })
