@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>choose a img</title>
-    <title>lianlian xixi</title>
+	<meta charset="UTF-8">
+	<title>choose a img</title>
+	<title>lianlian xixi</title>
 
 </head>
 <body>
@@ -12,12 +12,54 @@
 <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 <script>
 
-    $(function(){
-        var a = ["1","2","3"];
-        var b = ["4","g","34f"]
-        b.push.apply(b,a)
-        console.log(b);
-    });
+    var images = {
+        localId: [],//微信返回的本地id列表
+        serverId: [],//微信返回的服务器id列表 };
+        ioslocId: []//用于兼容ios的本地id列表 图片是base64格式的
+    }
+
+    $("#add").on('click', function () { //点击加号的时候执行下面函数
+        var imglen = images.localId.length;//计算 本地id列表的长度
+        wx.chooseImage({
+            count: 8 - imglen, // 默认9 计算还可以选择几张图片 我这默认是8
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                $("#photolist").html("");//每次选择图片完成后都清空之前已经添加的html节点
+                rows = "";//声明一个空字符串用于保存循环出来的html
+                images.localId = images.localId.concat(res.localIds); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                if (window.__wxjs_is_wkwebview) { //判断ios是不是用的 wkwebview 内核
+                    for (var i = 0; i < images.localId.length; i++) {
+                        wx.getLocalImgData({ //循环调用 getLocalImgData
+                            localId: res.localIds[i], // 图片的localID
+                            success: function (res) {
+                                var localData = res.localData; // localData是图片的base64数据，可以用img标签显示
+                                localData = localData.replace('jgp', 'jpeg');//iOS 系统里面得到的数据，类型为 image/jgp,因此需要替换一下
+                                ioslocId.push(localData) //把base64格式的图片添加到ioslocId数组里 这样该数组里的元素都是base64格式的
+                                rows = "";
+                                for (var j = 0; j < ioslocId.length; j++) {
+                                    rows += `<div class="z_file" style="background-image: url(` + ioslocId[j] + `)"><div class="delete" data-id="` + j + `"></div></div>`
+                                }
+                                $("#photolist").html(rows);
+                            },
+                            fail: function (res) {
+                                alert("res");
+                            }
+                        });
+                    }
+                    alert(rows)
+                } else { //如果不是用的wkwebview 内核 或者是用的安卓系统 执行下面的xunh
+                    $.each(images.localId, function (index, el) {
+                        rows += `<div class="z_file" style="background-image: url(` + el + `)">  <div class="delete" data-id="` + index + `"></div>  </div>`
+                    });
+                    $("#photolist").html(rows);
+                }
+                uploadimg();
+            }
+        });
+    })
+
+
 </script>
 </body>
 </html>
