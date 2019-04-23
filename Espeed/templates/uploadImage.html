@@ -88,191 +88,202 @@
 <script type="text/javascript" src="../static/js/utility.js"></script>
 <script>
 
-    $(function () {
-        //调用微信sdk配置
-        wx.config({
-            // debug: true, 																						// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-            appId: "{{ appid }}", 																			// 必填，企业号的唯一标识，此处填写企业号corpid
-            timestamp: "{{timestamp}}", 																// 必填，生成签名的时间戳
-            nonceStr: "{{ nonceStr }}", 																// 必填，生成签名的随机串
-            signature: "{{ signature }}",																// 必填，签名，见附录1
-            jsApiList: [
-                'chooseImage',
-                'previewImage',
-                'uploadImage',
-                'downloadImage'
-            ]
-        });
-
-        // 微信SDK还未加载成功时，禁止操作上传按钮
-        var $chooseImageBtn = $("#uploaderInput");
-
-        // 判断 ios 终端
-        var u = navigator.userAgent;
-        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-
-        var LIds = [];																									// 用于存储照片本地地址
-        var SIds = [];																									// 用于存储照片远程服务器地址
-        var iosLIds = [];																								// 用于存储ios端本地图片地址
-        var len;																												// 用于存储图片数量
-
-        var tmpl = '<li class="weui-uploader__file file_item" style="background-image:url(#url#);background-size:cover;"></li>';
-
-        wx.ready(function () {
-            // 放开按钮禁用
-            $chooseImageBtn.attr("disabled", false);
-
-            //选择图片
-            $chooseImageBtn.click(function (ev) {
-
-                // 阻止系统默认的选择图片弹窗
-                ev.preventDefault();
-
-                // 选择照片
-                wx.chooseImage({
-                    count: 9, 																				// 图片最大选择数量，默认9
-                    sizeType: ['original', 'compressed'], 						// 可以指定是原图还是压缩图，默认二者都有
-                    sourceType: ['album', 'camera'], 									// 可以指定来源是相册还是相机，默认二者都有
-                    success: function (res) {
-                        len = LIds.length;														// 获取上一次选择的图片数量
-                        var max = 9 - len;    												// 这一次还可以传的数量，两次加起来不能超过9张
-                        var i = 0;    																// 记录上传次数
-                        var num;																			// 记录点击的图片的index值
-
-                        if (res.localIds.length > max) {							// 如果这次选择的图片的数量超过上线，提示
-                            alert("超过图片上传数量，请重新选择。");
-                            return;
-                        } else {																			// 将这次的值追加进上次选择的图片数组
-                            LIds.push.apply(LIds, res.localIds);
-                        }
-
-                        // 如果多次选择的图片的数量大于9张，则把➕号隐藏
-                        if (LIds.length >= 9) {
-                            $("#uploaderInput").closest(".weui-uploader__input-box").hide();
-                        }
-
-                        // 如果是 __wxjs_is_wkwebview 内核，则调用ios接口获取图片地址
-                        if (window.__wxjs_is_wkwebview) {
-                            for (var j = 0; j < LIds.length; j++) {
-                                wx.getLocalImgData({
-                                    localId: LIds[j], 																					// 图片的 localID
-                                    success: function (res) {
-                                        var localData = res.localData; 													// localData是图片的base64数据，可以用img标签显示
-                                        localData = localData.replace("jpg", "jpeg");						// 替换文件格式
-                                        iosLIds.push(localData);																// 存储本地base64图片格式
-                                    }
-                                });
-                            }
-                            showImg(iosLIds);																										// 以base64格式显示图片
-                        } else {
-                            showImg(LIds);																											// 以 lcalID 渲染图片
-                        }
-
-                        // 微信每次只允许上传一张图片，所以需要迭代上传，直到所有选择的图片都上传完毕
-                        function upload() {
-                            wx.uploadImage({
-                                localId: LIds[i],
-                                isShowProgressTips: 1,
-                                success: function (result) {
-                                    SIds.push(result.serverId);
-                                    i++;
-                                    if (i < len) {
-                                        upload()
-                                    } else {
-                                        //向后台发送微信服务器上图片的地址
-                                        $.ajax({
-                                            url: "uploadimg/",
-                                            data: {imgList: SIds},
-                                            type: "get",
-                                            success: function (response) {
-                                                console.log(response);
-                                                $("#upload-status").hide();
-                                                weui.toast('上传成功', {
-                                                    duration: 3000,
-                                                    callback: function () {
-                                                        goUrl('userrepresentation');
-                                                    }
-                                                });
-                                            },
-                                            fail: function (err) {
-                                                console.log(err);
-                                            }
-                                        })
-                                    }
-                                }
-                            })
-                        }
-
-                        // 点击上传按钮上传图片
-                        $("#upload-btn").click(function () {
-                            upload()
-                        });
-
-                        // 照片预览
-                        $("#uploaderFiles").on("click", "li", function () {
-                            var url = "";
-
-                            // 当前预览的图片的 index
-                            num = $(this).index();
-
-                            // 预览弹窗显示
-                            $("#gallery").show();
-
-                            // 根据不同的内核，显示不同的url地址
-                            if (window.__wxjs_is_wkwebview) {
-                                url = iosLIds[$(this).index()];
-                            } else {
-                                url = LIds[$(this).index()];
-                            }
-
-                            // 更改背景图片样式
-                            $("#galleryImg").css('background', 'url(' + url + ') no-repeat center center');
-
-                        });
-
-                        // 点击隐藏弹窗
-                        $("#gallery").on("click", function () {
-                            $("#galleryImg").html("");
-                            $(this).hide();
-                        });
-
-                        //删除图片
-                        $(".weui-gallery__del").click(function () {
-                            $("#gallery").hide();																															// 隐藏弹窗
-                            $("#galleryImg").css('background', '');																						// 清空背景样式
-
-                            if (window.__wxjs_is_wkwebview) {
-                                iosLIds.splice(num, 1);																												// 移除该照片的本地地址
-                                showImg(iosLIds);																															// 渲染列表
-                            } else {
-                                LIds.splice(num, 1);																													// 移除该照片的本地地址
-                                showImg(LIds);																																// 渲染列表
-                            }
-                            // 当本地图片列表数量小于9时，显示加号
-                            if (LIds.length < 9) {
-                                $("#uploaderInput").closest(".weui-uploader__input-box").show();
-                            }
-                        });
-
-
-                        function showImg(arr) {
-                            var str = "";
-                            var uploaderInput = $("#uploaderInput");
-
-                            uploaderInput.closest(".weui-uploader__bd").find(".weui-uploader__files").html("");
-
-                            for (var k = 0; k < arr.length; k++) {
-                                str += '<li class="weui-uploader__file file_item"  style="background-image:url(' + arr[k] + ');background-size:cover;" data-index="' + k + '"></li>';
-                            }
-
-                            uploaderInput.closest(".weui-uploader__bd").find(".weui-uploader__files").append(str)
-                        }
-
-                    }
-                });
-            });
-        })
+  $(function () {
+    //调用微信sdk配置
+    wx.config({
+      // debug: true, 																						// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      appId: "{{ appid }}", 																			// 必填，企业号的唯一标识，此处填写企业号corpid
+      timestamp: "{{timestamp}}", 																// 必填，生成签名的时间戳
+      nonceStr: "{{ nonceStr }}", 																// 必填，生成签名的随机串
+      signature: "{{ signature }}",																// 必填，签名，见附录1
+      jsApiList: [
+        'chooseImage',
+        'previewImage',
+        'uploadImage',
+        'downloadImage'
+      ]
     });
+
+    // 微信SDK还未加载成功时，禁止操作上传按钮
+    var $chooseImageBtn = $("#uploaderInput");
+
+    // 判断 ios 终端
+    var u = navigator.userAgent;
+    var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+
+    var LIds = [];																									// 用于存储照片本地地址
+    var SIds = [];																									// 用于存储照片远程服务器地址
+    var iosLIds = [];																								// 用于存储ios端本地图片地址
+    var len;																												// 用于存储图片数量
+
+    var tmpl = '<li class="weui-uploader__file file_item" style="background-image:url(#url#);background-size:cover;"></li>';
+
+    wx.ready(function () {
+      // 放开按钮禁用
+      $chooseImageBtn.attr("disabled", false);
+
+      //选择图片
+      $chooseImageBtn.click(function (ev) {
+
+        // 阻止系统默认的选择图片弹窗
+        ev.preventDefault();
+
+        // 选择照片
+        wx.chooseImage({
+          count: 9, 																				// 图片最大选择数量，默认9
+          sizeType: ['original', 'compressed'], 						// 可以指定是原图还是压缩图，默认二者都有
+          sourceType: ['album', 'camera'], 									// 可以指定来源是相册还是相机，默认二者都有
+          success: function (res) {
+            len = LIds.length;														// 获取上一次选择的图片数量
+            var max = 9 - len;    												// 这一次还可以传的数量，两次加起来不能超过9张
+            var i = 0;    																// 记录上传次数
+            var num;																			// 记录点击的图片的index值
+
+            if (res.localIds.length > max) {							// 如果这次选择的图片的数量超过上线，提示
+              alert("超过图片上传数量，请重新选择。");
+              return;
+            } else {																			// 将这次的值追加进上次选择的图片数组
+              LIds.push.apply(LIds, res.localIds);
+            }
+
+            // 如果多次选择的图片的数量大于9张，则把➕号隐藏
+            if (LIds.length >= 9) {
+              $("#uploaderInput").closest(".weui-uploader__input-box").hide();
+            }
+
+            // 如果是 __wxjs_is_wkwebview 内核，则调用ios接口获取图片地址
+            if (window.__wxjs_is_wkwebview) {
+              var iosStr = "";
+              var uploaderInput = $("#uploaderInput");
+              uploaderInput.closest(".weui-uploader__bd").find(".weui-uploader__files").html("");
+              for (var j = 0; j < LIds.length; j++) {
+								(function(j){
+                  wx.getLocalImgData({
+                    localId: LIds[j], 																					// 图片的 localID
+                    success: function (res) {
+                      var localData = res.localData; 													// localData是图片的base64数据，可以用img标签显示
+                      localData = localData.replace("jgp", "jpeg");						// 替换文件格式
+											iosLIds.push(localData);
+
+                      iosStr += '<li class="weui-uploader__file file_item"  style="background-image:url(' + localData + ');background-size:cover;" data-index="' + j + '"></li>';
+                      if(j === LIds.length-1){
+                        uploaderInput.closest(".weui-uploader__bd").find(".weui-uploader__files").append(iosStr);
+											}
+                    }
+                  });
+								})(j);
+              }
+              // 以base64格式显示图片
+            } else {
+              showImg(LIds);																											// 以 lcalID 渲染图片
+            }
+
+            // 微信每次只允许上传一张图片，所以需要迭代上传，直到所有选择的图片都上传完毕
+            function upload() {
+              wx.uploadImage({
+                localId: LIds[i],
+                isShowProgressTips: 1,
+                success: function (result) {
+                  SIds.push(result.serverId);
+                  i++;
+                  if (i < len) {
+                    upload()
+                  } else {
+                    //向后台发送微信服务器上图片的地址
+                    $.ajax({
+                      url: "uploadimg/",
+                      data: {imgList: SIds},
+                      type: "get",
+                      success: function (response) {
+                        // console.log(response);
+                        $("#upload-status").hide();
+                        weui.toast('上传成功', {
+                          duration: 3000,
+                          callback: function () {
+                            goUrl('userrepresentation');
+                          }
+                        });
+                      },
+                      fail: function (err) {
+                        console.log(err);
+                      }
+                    })
+                  }
+                }
+              })
+            }
+
+            // 点击上传按钮上传图片
+            $("#upload-btn").click(function () {
+              upload()
+            });
+
+            // 照片预览
+            $("#uploaderFiles").on("click", "li", function () {
+              var url = "";
+
+              // 当前预览的图片的 index
+              num = $(this).index();
+
+              // 预览弹窗显示
+              $("#gallery").show();
+
+              // 根据不同的内核，显示不同的url地址
+              if (window.__wxjs_is_wkwebview) {
+                url = iosLIds[$(this).index()];
+              } else {
+                url = LIds[$(this).index()];
+              }
+
+              // 更改背景图片样式
+              $("#galleryImg").css('background', 'url(' + url + ') no-repeat center center');
+
+            });
+
+            // 点击隐藏弹窗
+            $("#gallery").on("click", function () {
+              $("#galleryImg").html("");
+              $(this).hide();
+            });
+
+            //删除图片
+            $(".weui-gallery__del").click(function () {
+              $("#gallery").hide();																															// 隐藏弹窗
+              $("#galleryImg").css('background', '');																						// 清空背景样式
+
+              if (window.__wxjs_is_wkwebview) {
+                iosLIds.splice(num, 1);																												// 移除该照片的本地地址
+                LIds.splice(num, 1);
+                showImg(iosLIds);																															// 渲染列表
+              } else {
+                LIds.splice(num, 1);																													// 移除该照片的本地地址
+                showImg(LIds);																																// 渲染列表
+              }
+              // 当本地图片列表数量小于9时，显示加号
+              if (LIds.length < 9) {
+                $("#uploaderInput").closest(".weui-uploader__input-box").show();
+              }
+            });
+
+
+            function showImg(arr) {
+              var str = "";
+              var uploaderInput = $("#uploaderInput");
+
+              uploaderInput.closest(".weui-uploader__bd").find(".weui-uploader__files").html("");
+
+              for (var k = 0; k < arr.length; k++) {
+                str += '<li class="weui-uploader__file file_item"  style="background-image:url(' + arr[k] + ');background-size:cover;" data-index="' + k + '"></li>';
+              }
+
+              uploaderInput.closest(".weui-uploader__bd").find(".weui-uploader__files").append(str);
+            }
+
+          }
+        });
+      });
+    })
+  });
 </script>
 </body>
 
