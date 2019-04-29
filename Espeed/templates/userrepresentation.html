@@ -1,268 +1,411 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>我的介绍</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
-    <script type="text/javascript" src="../static/lib/index.min.js"></script>          <!-- 解决移动端适配 -->
-    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
-    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+	<meta charset="UTF-8">
+	<title>我的介绍</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+	<script type="text/javascript" src="../static/lib/index.min.js"></script> <!-- 解决移动端适配 -->
+	<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/css/swiper.min.css">
+	<link rel="stylesheet" href="../static/iconfont/iconfont.css">
+	<link rel="stylesheet" href="../static/css/style201806032229.css">
+	<script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
+	<script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>
 
-    <link rel="stylesheet" href="../static/iconfont/iconfont.css">
-    <link rel="stylesheet" href="../static/css/style201806032229.css">
-    <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
-    <!--<script type="text/javascript" src="../static/js/weui.min.js"></script>-->
-    <script type="text/javascript" src="../static/js/jquery-weui.min.js"></script>
-    <style>
-        .presentation {
-            padding-top: 40px;
-            background: #fff url(../static/images/wave_bg.png) no-repeat center top;
-            background-size: cover;
-        }
+	<style>
+		body {
+			height: 100vh;
+			width: 100vw;
+			overflow-y: scroll;
+			overflow-x: hidden;
+			background: #fff url(../static/images/wave_bg.png) no-repeat center top;
+			padding-top: 40px;
+			padding-bottom: 100px;
+			background-size: contain;
+		}
 
-        .presentation .portrait_wrap {
-            text-align: center;
-        }
+		.presentation {
+		}
 
-        .presentation .changePortrait {
+		.presentation .portrait_wrap {
+			text-align: center;
+		}
 
-            overflow: hidden;
-            line-height: 0;
-        }
+		.presentation .changePortrait {
 
-        .presentation .changePortrait img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            -webkit-box-shadow: 0 5px 9px rgba(0, 0, 0, .3);
-            -moz-box-shadow: 0 5px 9px rgba(0, 0, 0, .3);
-            box-shadow: 0 5px 9px rgba(0, 0, 0, .3);
-        }
+			overflow: hidden;
+			line-height: 0;
+		}
 
-        .presentation .name_wrap {
-            font-size: 16px;
-            font-weight: 700;
-            text-align: center;
-            color: #fff;
-            margin-bottom: 10px;
+		.presentation .changePortrait img {
+			width: 80px;
+			height: 80px;
+			border-radius: 50%;
+			-webkit-box-shadow: 0 5px 9px rgba(0, 0, 0, .3);
+			-moz-box-shadow: 0 5px 9px rgba(0, 0, 0, .3);
+			box-shadow: 0 5px 9px rgba(0, 0, 0, .3);
+		}
 
-        }
+		.presentation .name_wrap {
+			font-size: 16px;
+			font-weight: 700;
+			text-align: center;
+			color: #fff;
+			margin-bottom: 10px;
+		}
 
-        .presentation .name_wrap span {
-            padding: 0 10px;
-        }
+		.presentation .name_wrap span {
+			padding: 0 10px;
+		}
 
-        .presentation .name_wrap .role {
-            border-left: 1px solid #ededef;
-        }
+		.presentation .name_wrap .role {
+			border-left: 1px solid #ededef;
+		}
 
-        .role_wrap {
-            font-size: 14px;
-            text-align: center;
-            margin-bottom: 45px;
-        }
+		.role_wrap {
+			font-size: 14px;
+			text-align: center;
+			margin-bottom: 45px;
+		}
 
-        .role_wrap .tip {
-            color: #fff;
-            margin-right: 5px;
-        }
+		.role_wrap .tip {
+			color: #fff;
+			margin-right: 5px;
+		}
 
-        .role_wrap .tag {
-            padding: 0 8px;
-            background: #ffc245;
-            color: #fff;
-            border-radius: 2px;
-        }
+		.role_wrap .tag {
+			padding: 0 8px;
+			background: #ffc245;
+			color: #fff;
+			border-radius: 2px;
+		}
 
-        .fixed-bottom {
-            background: #fff;
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            /*z-index: 1;*/
-        }
+		.fixed-bottom {
+			background: #fff;
+			position: fixed;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
 
-        .fixed-bottom .weui-btn-area {
-            margin-top: 0.3em;
-        }
+		.fixed-bottom .weui-btn-area {
+			margin-top: 0.3em;
+		}
 
-        .weui-cells__title {
-            position: relative;
-        }
+		.weui-cells__title {
+			position: relative;
+		}
 
-        .edit-btn {
-            position: absolute;
-            top: 0;
-            right: 15px;
-            text-decoration: underline;
-            color: #3493eb;
-        }
+		.edit-btn {
+			position: absolute;
+			top: 0;
+			right: 15px;
+			color: #3493eb;
+			font-size: 14px;
+		}
 
-        .img-list-wrap {
-            position: relative;
-            padding: 0 15px;
-            list-style: none;
-        }
+		.img-list-wrap {
+			position: relative;
+			padding: 0 15px;
+			list-style: none;
+			/*margin-right: -9px;*/
+		}
 
-        .img-list-wrap .img-list-item {
-            float: left;
-            margin-right: 9px;
-            margin-bottom: 9px;
-            width: 79px;
-            height: 79px;
-            background: no-repeat center center;
-            background-size: cover;
-        }
+		.img-list-wrap .img-list-item {
+			float: left;
+			margin-right: 9px;
+			margin-bottom: 9px;
+			width: 79px;
+			height: 79px;
+			background: no-repeat center center;
+			background-size: cover;
+			box-sizing: border-box;
+			position: relative;
+		}
 
-        .img-list-item.choose.active {
-            border: 2px solid red;
-            box-sizing: border-box;
-        }
-    </style>
+		.swiper-container {
+			display: none;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 10000;
+			background: rgba(0, 0, 0, .95);
+		}
+
+		.swiper-slide {
+			background-size: cover;
+		}
+
+		.clearfix::after {
+			display: block;
+			content: "";
+			clear: both;
+			opacity: 0;
+		}
+
+		.img-list-item .check-circle {
+			position: absolute;
+			top: 7px;
+			right: 7px;
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			border: 1px solid #999;
+			background: rgba(0, 0, 0, 0);
+			display: none;
+		}
+
+		.img-list-item.choose .check-circle {
+			display: block;
+		}
+
+		.img-list-item.choose.active .check-circle {
+			border-color: #3493eb;
+			content: "\e601";
+			color: #fff;
+			background: #3493eb;
+		}
+
+		.img-list-item.choose.active .check-circle::after {
+			content: "";
+			position: absolute;
+			left: 4px;
+			top: 5px;
+			width: 50%;
+			height: 25%;
+			border: 2px solid #fff;
+			border-radius: 1px;
+			border-top: none;
+			border-right: none;
+			background: transparent;
+			transform: rotate(-45deg);
+		}
+	</style>
 
 
 </head>
+
 <body class="page">
 <div class="presentation">
-    <section class="main">
-        <div class="portrait_wrap">
-            <a class="changePortrait" href="#">
-                <img src="{{ headimgurl }}">
-            </a>
-        </div>
+	<div class="swiper-container" id="swiper-container">
+		<!-- 照片预览容器 -->
+		<div class="swiper-wrapper" id="swiper-wrapper">
+		</div>
+		<!-- 如果需要分页器 -->
+		<div class="swiper-pagination"></div>
+	</div>
 
-        <div class="name_wrap">
-            <span>文泽海</span><span class="role"></span>
-        </div>
-        <div class="role_wrap">
-            <span class="tip" id="role-tip">我是</span>
-            <span class="tag">{{ Jobs }}</span>
-        </div>
-        <p class="weui-cells__title"><span class="img-list-title">我的案例</span><span class="edit-btn"
-                                                                                   id="edit-btn">编辑</span></p>
-        <!--图片列表-->
-        <ul class="img-list-wrap" id="img-list-wrap">
-            <!---->
-            {% for img_id, img_url in userimgs.items %}
-            <li class="img-list-item normal" data-id="{{ img_id }}" style="background-image: url({{ img_url }})"></li>
-            {% endfor %}
+	<section class="main">
+		<div class="portrait_wrap">
+			<a class="changePortrait" href="#">
+				<img src="{{ headimgurl }}">
+			</a>
+		</div>
 
-            <!--调试代码，先注释-->
-            <!--<li class="img-list-item normal" data-id="001"-->
-                <!--data-src="http://img.hb.aicdn.com/3c3e6b14ea97ec49831852e87af89163b3297a804837d9-o9aPUz_fw658.jpg"-->
-                <!--style="background-image: url(http://img.hb.aicdn.com/3c3e6b14ea97ec49831852e87af89163b3297a804837d9-o9aPUz_fw658.jpg)"></li>-->
-            <!--<li class="img-list-item normal" data-id="002"-->
-                <!--data-src="http://img.hb.aicdn.com/6e630b8b78fc992f41b3bf2a6c3b94e84f89f1461ac650-oddXGE_fw658.jpg"-->
-                <!--style="background-image: url(http://img.hb.aicdn.com/6e630b8b78fc992f41b3bf2a6c3b94e84f89f1461ac650-oddXGE_fw658.jpg)"></li>-->
-            <!--<li class="img-list-item normal" data-id="003"-->
-                <!--data-src="http://img.hb.aicdn.com/1a014a8ac23ab35911f077e2e47cbd3afb106cc91603e-nJmkHR_fw658.jpg"-->
-                <!--style="background-image: url(http://img.hb.aicdn.com/1a014a8ac23ab35911f077e2e47cbd3afb106cc91603e-nJmkHR_fw658.jpg)"></li>-->
-        </ul>
+		<div class="name_wrap">
+			<span>{{ username }}</span><span class="role"></span>
+		</div>
+		<div class="role_wrap">
+			<span class="tip" id="role-tip">我是</span>
+			<span class="tag">{{ Jobs }}</span>
+		</div>
 
-        <div class="fixed-bottom">
-            <div class="upload_confirm_wrap">
-                <div class="weui-btn-area" id="go-upload-btn"><a href="javascript:goUrl('uploadimg');" class="weui-btn weui-btn_primary">上传照片</a></div>
+		<p class="weui-cells__title"><span class="img-list-title">我的案例</span><span class="edit-btn" id="edit-btn"><span class="iconfont icon-bianji"></span>编辑</span></p>
+		<!--图片列表-->
+		<ul class="img-list-wrap clearfix" id="img-list-wrap">
 
-                <div class="btn-edit-wrap" style="display: none;padding: 0 15px;">
-                    <a style="width: 49%;display: inline-block;" id="cancel-btn"
-                       href="javascript:goUrl('userrepresentation');" class="weui-btn weui-btn_default">取消</a>
-                    <a style="width: 49%;display: inline-block;" id="confirm-btn" href="javascript:;"
-                       class="weui-btn weui-btn_warn">确定</a>
-                </div>
-            </div>
-        </div>
-    </section>
+			<!-- {% for img_id, img_url in userimgs.items %}
+	<li class="img-list-item normal" data-id="{{ img_id }}" style="background-image: url({{ img_url }})"><span class="check-circle"></span></li>
+
+	{% endfor %} -->
+
+			<!--调试代码，先注释-->
+			<li class="img-list-item" data-id="001"
+					data-src="http://img3.imgtn.bdimg.com/it/u=1963706994,2216733363&fm=26&gp=0.jpg"
+					style="background-image: url(http://img3.imgtn.bdimg.com/it/u=1963706994,2216733363&fm=26&gp=0.jpg)">
+				<span class="check-circle"></span>
+			</li>
+			<li class="img-list-item" data-id="002"
+					data-src="http://img4.imgtn.bdimg.com/it/u=1801656165,2084574685&fm=26&gp=0.jpg"
+					style="background-image: url(http://img4.imgtn.bdimg.com/it/u=1801656165,2084574685&fm=26&gp=0.jpg)">
+				<span class="check-circle"></span>
+			</li>
+			<li class="img-list-item" data-id="003"
+					data-src="http://img3.imgtn.bdimg.com/it/u=2570514293,2631593750&fm=26&gp=0.jpg"
+					style="background-image: url(http://img3.imgtn.bdimg.com/it/u=2570514293,2631593750&fm=26&gp=0.jpg)">
+				<span class="check-circle"></span>
+			</li>
+			<li class="img-list-item" data-id="004"
+					data-src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1424193050,2677813614&fm=26&gp=0.jpg"
+					style="background-image: url(https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1424193050,2677813614&fm=26&gp=0.jpg)">
+				<span class="check-circle"></span>
+			</li>
+			<li class="img-list-item" data-id="005"
+					data-src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2152398133,3869312468&fm=26&gp=0.jpg"
+					style="background-image: url(https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2152398133,3869312468&fm=26&gp=0.jpg)">
+				<span class="check-circle"></span>
+			</li>
+			<li class="img-list-item" data-id="001"
+					data-src="http://img3.imgtn.bdimg.com/it/u=1963706994,2216733363&fm=26&gp=0.jpg"
+					style="background-image: url(http://img3.imgtn.bdimg.com/it/u=1963706994,2216733363&fm=26&gp=0.jpg)">
+				<span class="check-circle"></span>
+			</li>
+		</ul>
+
+		<div class="fixed-bottom">
+			<div class="upload_confirm_wrap">
+				<div class="weui-btn-area" id="go-upload-btn"><a href="javascript:goUrl('uploadimg');"
+																												 class="weui-btn weui-btn_primary">上传照片</a></div>
+
+				<div class="btn-edit-wrap" style="display: none;padding: 0 15px;">
+					<a style="width: 48%;display: inline-block;" id="cancel-btn"
+						 class="weui-btn weui-btn_default">取消</a>
+					<a style="width: 48%;display: inline-block;" id="delete-btn" href="javascript:void (0);"
+						 class="weui-btn weui-btn_warn">确定</a>
+				</div>
+			</div>
+		</div>
+	</section>
 
 
-    <!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
-    <span id="openidInsert" style="display:none;">{{ openid }}</span>                       <!-- TODO:待插入 -->
-    <span id="roleInsert" style="display:none;">{{ role }}</span>                       <!-- TODO:待插入 -->
+	<!--隐藏的后台差值尽量写在页面底部，id名为openidInsert，与openid做区分-->
+	<span id="openidInsert" style="display:none;">{{ openid }}</span> <!-- TODO:待插入 -->
+	<span id="roleInsert" style="display:none;">{{ role }}</span> <!-- TODO:待插入 -->
 
 </div>
-<script type="text/javascript" src="../static/js/swiper.js"></script>
 <script type="text/javascript" src="../static/js/utility.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.min.js"></script>
 <script>
     $(function () {
+        // 初始化照片预览轮播
+        var imgSwiper = new Swiper('.swiper-container', {
+            direction: 'horizontal', 														// 垂直切换选项
+            loop: false, 																				// 循环模式选项
+            autoplay: false,																		// 关闭自动播放
+            pagination: {																				// 开启分页器
+                el: '.swiper-pagination'
+            }
+        });
+
+        // 页面载入时，存一次 openid，后面有用到
         window.localStorage.setItem("openid", $('#openidInsert').text());
 
-        //根据用户角色显示公众前面的说明文字
-        var $role = $("#roleInsert").text();
-        if ($role == "1") {
+        // 根据用户角色显示公众前面的说明文字
+        if ($("#roleInsert").text() === "1") {
             $("#role-tip").text("我是");
             $(".role").text("工人");
         } else {
             $("#role-tip").text("招聘");
             $(".role").text("老板");
-        };
+        }
 
-        //编辑图片
+        // 点击编辑按钮
         $("#edit-btn").click(function () {
-            $(".img-list-title").text("请选择要删除的图片");
-            $("#edit-btn").css("display", "none");
-            $("#go-upload-btn").css("display", "none");
-            $(".btn-edit-wrap").css("display", "block");
-            $(".img-list-item").removeClass("normal").addClass("choose");
+            $(".img-list-title").text("请选择要删除的图片");							// 更改提示文字
+            $("#edit-btn").css("display", "none");										// 编辑按钮隐藏
+            $("#go-upload-btn").css("display", "none");								// 底部上传按钮隐藏
+            $(".btn-edit-wrap").css("display", "block");							// 底部取消和确定按钮容器显示
+            $(".img-list-item").addClass("choose");										// 给图片列表添加标识，表明进入编辑状态
         });
 
-        //点击图片进行预览
-        $(".img-list-item").click(function () {
-            // 在编辑状态
-            if ($(this).hasClass("choose")) {
-                $(this).toggleClass("active");
+        // 点击取消按钮，取消编辑
+        $("#cancel-btn").click(function () {
+            $(".img-list-title").text("我的案例");
+            $("#edit-btn").css("display", "block");
+            $("#go-upload-btn").css("display", "block");
+            $(".btn-edit-wrap").css("display", "none");
+            $(".img-list-item").removeClass("choose").removeClass("active");
+        });
 
-            } else  //普通浏览状态
-            {
+        // 删除图片
+        $("#delete-btn").click(function () {
+            var deleteItems = $(".img-list-item.active");							// 获取选中的图片
+            var len = deleteItems.length;															// 选中的图片的数量
 
-                //获取当前点击项
-                var index = $(this).index();
+            if (len > 0) {
 
-                //初始化图片浏览配置项
-                var srcArr = [];
-                $.each($(".normal"), function (index, item) {
-                    srcArr.push($(item).data("src"));
+                // 存储选中的图片的 id
+                var deleteArr = [];
+                $.each(deleteItems, function (index, item) {
+                    deleteArr.push($(item).data("id"));
                 });
 
-                //初始化photo browser
-                var pb1 = $.photoBrowser({
-                    items: srcArr,
-                    initIndex: index
+                // 弹窗确认是否删除所选择的图片
+                $.confirm({
+                    title: '确认删除',
+                    text: '是否确认删除选择的照片',
+                    onOK: function () {
+                        $.ajax({
+                            url: '/userrepresentation',
+                            type: "get",
+                            data: {deleteItems: deleteArr, openid: window.localStorage.getItem("openid")},
+                            success: function (result, status, xhr) {
+                                if (xhr.readyState === 4 && xhr.status === 200) {
+                                    $.toast("删除成功");																				// 提示删除成功
+                                    goUrl('userrepresentation');															// 重载页面
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.log(xhr, status, error);
+                            }
+                        })
+                    },
+                    onCancel: function () {
+                        return false;
+                    }
                 });
-
-                //打开对应图片
-                pb1.open(index);
+            } else {
+                // 提示没有选择图片
+                $.alert("您还没有选择需要删除的图片哦");
             }
         });
 
-        //发送删除请求
-        $("#confirm-btn").click(function () {
-            var selectedImg = [];
-            $.each($(".img-list-item.choose.active"), function (index, item) {
-                selectedImg.push($(item).data("id"));
+        // 选择图片
+        $(".img-list-item .check-circle").on("click", function (e) {
+            // 给图片坐上标识，表明已经选中
+            $(this).parent().toggleClass("active");
+            e.stopPropagation();
+        });
+
+        // 点击图片进行预览
+        $(".img-list-item").click(function () {
+            var index = $(this).index();																				// 获取当前点击项
+            var swiperWrapper = $("#swiper-wrapper");														//	图片预览容器
+            var srcArr = [];																										// 存储列表中所有图片的 src
+
+            // 存储图片 src
+            $.each($(".img-list-item"), function (index, item) {
+                srcArr.push($(item).data("src"));
             });
-            $.ajax({
-                url: "userrepresentation/",                     //TODO:地址待填写
-                type: "get",
-                data: {
-                    openid: window.localStorage.getItem("openid"),
-                    delImg: selectedImg
-                },
-                success: function (result, status, xhr) {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        goUrl('userrepresentation');
-                    }
-                    console.log(result, status, xhr);
-                },
-                error: function (xhr, status, error) {
-                    console.log(xhr, status, error)
-                }
-            })
-        })
 
+            // 替换轮播内容
+            swiperWrapper.html("");
+            var str = "";
+            $.each(srcArr, function (index, item) {
+                str += '<div class="swiper-slide" style="background: url(' + item + ') no-repeat center center;"></div>'
+            });
+            swiperWrapper.html(str);
+
+            // 显示预览容器
+            $("#swiper-container").css("display", "block");
+
+            // 更新轮播
+            imgSwiper.update();
+            // 切换到点击的那张图片
+            imgSwiper.slideTo(index, 0, false);
+
+            // 点击预览中的图片，关闭预览
+            $(".swiper-slide").click(function () {
+                $("#swiper-container").css("display", "none");
+            });
+        });
     });
-
-
 </script>
 </body>
+
 </html>
