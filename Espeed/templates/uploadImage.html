@@ -33,19 +33,87 @@
 		.tips {
 			text-align: center;
 			color: #fff;
-			background: rgba(0, 0, 0, 0.4);
+			z-index: 999999999;
 			line-height: 20px;
 			display: none;
+			position: fixed;
+			top: 45px;
+			left: 50%;
+			margin-left: -30px;
+			margin-top: -30px;
 		}
 	</style>
-
+	<!--css加载动画-->
+	<style type="text/css">@keyframes lds-bars {
+													 0% {
+														 opacity: 1;
+													 }
+													 50% {
+														 opacity: 0.5;
+													 }
+													 100% {
+														 opacity: 1;
+													 }
+												 }
+	@-webkit-keyframes lds-bars {
+		0% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0.5;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+	.lds-bars {
+		position: relative;
+	}
+	.lds-bars div {
+		position: absolute;
+		width: 20px;
+		height: 80px;
+		top: 60px;
+		-webkit-animation: lds-bars 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+		animation: lds-bars 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+	}
+	.lds-bars div:nth-child(1) {
+		left: 30px;
+		background: #63aef3;
+		-webkit-animation-delay: -0.6s;
+		animation-delay: -0.6s;
+	}
+	.lds-bars div:nth-child(2) {
+		left: 70px;
+		background: #3493eb;
+		-webkit-animation-delay: -0.4s;
+		animation-delay: -0.4s;
+	}
+	.lds-bars div:nth-child(3) {
+		left: 110px;
+		background: #166fc2;
+		-webkit-animation-delay: -0.2s;
+		animation-delay: -0.2s;
+	}
+	.lds-bars div:nth-child(4) {
+		left: 150px;
+		background: #63aef3;
+	}
+	.lds-bars {
+		width: 60px !important;
+		height: 60px !important;
+		-webkit-transform: translate(-30px, -30px) scale(0.3) translate(30px, 30px);
+		transform: translate(-30px, -30px) scale(0.3) translate(30px, 30px);
+	}
+	</style>
 </head>
 
 <body class="page">
-<div class="tips" id="upload-status">上传中</div>
+<div class="tips" id="upload-status">
+	<div style="width:100%;height:100%" class="lds-bars"><div></div><div></div><div></div><div></div></div>
+</div>
 <div class="upload-image-page">
 	<section class="main">
-
 		<div class="weui-gallery" id="gallery">
 			<span class="weui-gallery__img" id="galleryImg"></span>
 			<div class="weui-gallery__opr">
@@ -130,12 +198,12 @@
 
         // 选择照片
         wx.chooseImage({
-          count: 9, 																				// 图片最大选择数量，默认9
+          count: 4, 																				// 图片最大选择数量，默认4
           sizeType: ['original', 'compressed'], 						// 可以指定是原图还是压缩图，默认二者都有
           sourceType: ['album', 'camera'], 									// 可以指定来源是相册还是相机，默认二者都有
           success: function (res) {
-            len = LIds.length;														// 获取上一次选择的图片数量
-            var max = 9 - len;    												// 这一次还可以传的数量，两次加起来不能超过9张
+            // len = LIds.length;														// 获取上一次选择的图片数量
+            var max = 4 - LIds.length;    												// 这一次还可以传的数量，两次加起来不能超过4张
             var i = 0;    																// 记录上传次数
             var num;																			// 记录点击的图片的index值
 
@@ -146,8 +214,8 @@
               LIds.push.apply(LIds, res.localIds);
             }
 
-            // 如果多次选择的图片的数量大于9张，则把➕号隐藏
-            if (LIds.length >= 9) {
+            // 如果多次选择的图片的数量大于4张，则把➕号隐藏
+            if (LIds.length >= 4) {
               $("#uploaderInput").closest(".weui-uploader__input-box").hide();
             }
 
@@ -157,57 +225,43 @@
               var uploaderInput = $("#uploaderInput");
               uploaderInput.closest(".weui-uploader__bd").find(".weui-uploader__files").html("");
               for (var j = 0; j < LIds.length; j++) {
-								(function(j){
+                (function (j) {
                   wx.getLocalImgData({
                     localId: LIds[j], 																					// 图片的 localID
                     success: function (res) {
                       var localData = res.localData; 													// localData是图片的base64数据，可以用img标签显示
                       localData = localData.replace("jgp", "jpeg");						// 替换文件格式
-											iosLIds.push(localData);
+                      iosLIds.push(localData);
 
                       iosStr += '<li class="weui-uploader__file file_item"  style="background-image:url(' + localData + ');background-size:cover;" data-index="' + j + '"></li>';
-                      if(j === LIds.length-1){
+                      if (j === LIds.length - 1) {
                         uploaderInput.closest(".weui-uploader__bd").find(".weui-uploader__files").append(iosStr);
-											}
+                      }
                     }
                   });
-								})(j);
+                })(j);
               }
               // 以base64格式显示图片
             } else {
               showImg(LIds);																											// 以 lcalID 渲染图片
             }
 
+
             // 微信每次只允许上传一张图片，所以需要迭代上传，直到所有选择的图片都上传完毕
             function upload() {
+              $('.tips').css('display','block');
+              $chooseImageBtn.attr("disabled", true);
               wx.uploadImage({
                 localId: LIds[i],
-                isShowProgressTips: 1,
+                isShowProgressTips: 0,			//1
                 success: function (result) {
                   SIds.push(result.serverId);
                   i++;
-                  if (i < len) {
+                  if (i < LIds.length) {
                     upload()
                   } else {
-                    //向后台发送微信服务器上图片的地址
-                    $.ajax({
-                      url: "uploadimg/",
-                      data: {imgList: SIds},
-                      type: "get",
-                      success: function (response) {
-                        // console.log(response);
-                        $("#upload-status").hide();
-                        weui.toast('上传成功', {
-                          duration: 3000,
-                          callback: function () {
-                            goUrl('userrepresentation');
-                          }
-                        });
-                      },
-                      fail: function (err) {
-                        console.log(err);
-                      }
-                    })
+                    sendImgList();
+
                   }
                 }
               })
@@ -217,6 +271,33 @@
             $("#upload-btn").click(function () {
               upload()
             });
+
+            //发送imgList
+            function sendImgList() {
+              // alert(SIds.valueOf());
+              //向后台发送微信服务器上图片的地址
+              $.ajax({
+                url: "uploadimg/",
+                data: {imgList: SIds.toString(), openid:window.localStorage.getItem("openid")},
+                type: "post",
+                success: function (response) {
+                  // console.log(response);
+                  $("#upload-status").hide();
+                  weui.toast('上传成功', {
+                    duration: 3000,
+                    callback: function () {
+                      i = 0;
+                      $('.tips').css('display','none');
+                      $chooseImageBtn.attr("disabled", false);
+                      goUrl('userrepresentation');
+                    }
+                  });
+                },
+                fail: function (err) {
+                  console.log(err);
+                }
+              })
+            }
 
             // 照片预览
             $("#uploaderFiles").on("click", "li", function () {
@@ -259,8 +340,8 @@
                 LIds.splice(num, 1);																													// 移除该照片的本地地址
                 showImg(LIds);																																// 渲染列表
               }
-              // 当本地图片列表数量小于9时，显示加号
-              if (LIds.length < 9) {
+              // 当本地图片列表数量小于4时，显示加号
+              if (LIds.length < 4) {
                 $("#uploaderInput").closest(".weui-uploader__input-box").show();
               }
             });
