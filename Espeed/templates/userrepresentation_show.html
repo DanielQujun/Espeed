@@ -216,7 +216,7 @@
 			<span class="tag">{{ Jobs }}</span>
 		</div>
 
-		<p class="weui-cells__title"><span class="img-list-title">我的案例</span><span class="edit-btn" id="edit-btn"><span class="iconfont icon-bianji"></span>编辑</span></p>
+		<p class="weui-cells__title"><span class="img-list-title">我的案例</span></p>
 		<!--图片列表-->
 		<ul class="img-list-wrap clearfix" id="img-list-wrap">
 
@@ -224,53 +224,8 @@
 	<li class="img-list-item normal" data-id="{{ img_id }}" data-src="{{ img_url }}" style="background-image: url({{ img_url }})"><span class="check-circle"></span></li>
 
 	{% endfor %}
-
-			<!--调试代码，先注释-->
-			<!--<li class="img-list-item" data-id="001"-->
-					<!--data-src="http://img3.imgtn.bdimg.com/it/u=1963706994,2216733363&fm=26&gp=0.jpg"-->
-					<!--style="background-image: url(http://img3.imgtn.bdimg.com/it/u=1963706994,2216733363&fm=26&gp=0.jpg)">-->
-				<!--<span class="check-circle"></span>-->
-			<!--</li>-->
-			<!--<li class="img-list-item" data-id="002"-->
-					<!--data-src="http://img4.imgtn.bdimg.com/it/u=1801656165,2084574685&fm=26&gp=0.jpg"-->
-					<!--style="background-image: url(http://img4.imgtn.bdimg.com/it/u=1801656165,2084574685&fm=26&gp=0.jpg)">-->
-				<!--<span class="check-circle"></span>-->
-			<!--</li>-->
-			<!--<li class="img-list-item" data-id="003"-->
-					<!--data-src="http://img3.imgtn.bdimg.com/it/u=2570514293,2631593750&fm=26&gp=0.jpg"-->
-					<!--style="background-image: url(http://img3.imgtn.bdimg.com/it/u=2570514293,2631593750&fm=26&gp=0.jpg)">-->
-				<!--<span class="check-circle"></span>-->
-			<!--</li>-->
-			<!--<li class="img-list-item" data-id="004"-->
-					<!--data-src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1424193050,2677813614&fm=26&gp=0.jpg"-->
-					<!--style="background-image: url(https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1424193050,2677813614&fm=26&gp=0.jpg)">-->
-				<!--<span class="check-circle"></span>-->
-			<!--</li>-->
-			<!--<li class="img-list-item" data-id="005"-->
-					<!--data-src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2152398133,3869312468&fm=26&gp=0.jpg"-->
-					<!--style="background-image: url(https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2152398133,3869312468&fm=26&gp=0.jpg)">-->
-				<!--<span class="check-circle"></span>-->
-			<!--</li>-->
-			<!--<li class="img-list-item" data-id="001"-->
-					<!--data-src="http://img3.imgtn.bdimg.com/it/u=1963706994,2216733363&fm=26&gp=0.jpg"-->
-					<!--style="background-image: url(http://img3.imgtn.bdimg.com/it/u=1963706994,2216733363&fm=26&gp=0.jpg)">-->
-				<!--<span class="check-circle"></span>-->
-			<!--</li>-->
 		</ul>
 
-		<div class="fixed-bottom">
-			<div class="upload_confirm_wrap">
-				<div class="weui-btn-area" id="go-upload-btn"><a href="javascript:goUrl('uploadimg');"
-																												 class="weui-btn weui-btn_primary">上传照片</a></div>
-
-				<div class="btn-edit-wrap" style="display: none;padding: 0 15px;">
-					<a style="width: 48%;display: inline-block;" id="cancel-btn"
-						 class="weui-btn weui-btn_default">取消</a>
-					<a style="width: 48%;display: inline-block;" id="delete-btn" href="javascript:void (0);"
-						 class="weui-btn weui-btn_warn">确定</a>
-				</div>
-			</div>
-		</div>
 	</section>
 
 

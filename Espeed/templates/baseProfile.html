@@ -11,18 +11,98 @@
   <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
   <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
   <link rel="stylesheet" href="../static/css/style201806032229.css">
-  <!--<style>  如果苹果端没有问题，可以注释掉
-    [contenteditable = "true"], input, textarea {
-      -webkit-user-select: auto!important;
-      -khtml-user-select: auto!important;
-      -o-user-select: auto!important;
-      user-select: text!important;
+  <style>
+    .photo-hd-wrap {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
     }
-
-  </style>-->
+    .photo-bd-wrap {
+      margin-top: 15px;
+    }
+    .tips {
+      text-align: center;
+      color: #fff;
+      z-index: 999999999;
+      line-height: 20px;
+      display: none;
+      position: fixed;
+      top: 45px;
+      left: 50%;
+      margin-left: -30px;
+      margin-top: -30px;
+    }
+  </style>
+  <!--css加载动画-->
+  <style type="text/css">@keyframes lds-bars {
+                           0% {
+                             opacity: 1;
+                           }
+                           50% {
+                             opacity: 0.5;
+                           }
+                           100% {
+                             opacity: 1;
+                           }
+                         }
+  @-webkit-keyframes lds-bars {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  .lds-bars {
+    position: relative;
+  }
+  .lds-bars div {
+    position: absolute;
+    width: 20px;
+    height: 80px;
+    top: 60px;
+    -webkit-animation: lds-bars 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    animation: lds-bars 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  }
+  .lds-bars div:nth-child(1) {
+    left: 30px;
+    background: #63aef3;
+    -webkit-animation-delay: -0.6s;
+    animation-delay: -0.6s;
+  }
+  .lds-bars div:nth-child(2) {
+    left: 70px;
+    background: #3493eb;
+    -webkit-animation-delay: -0.4s;
+    animation-delay: -0.4s;
+  }
+  .lds-bars div:nth-child(3) {
+    left: 110px;
+    background: #166fc2;
+    -webkit-animation-delay: -0.2s;
+    animation-delay: -0.2s;
+  }
+  .lds-bars div:nth-child(4) {
+    left: 150px;
+    background: #63aef3;
+  }
+  .lds-bars {
+    width: 60px !important;
+    height: 60px !important;
+    -webkit-transform: translate(-30px, -30px) scale(0.3) translate(30px, 30px);
+    transform: translate(-30px, -30px) scale(0.3) translate(30px, 30px);
+  }
+  </style>
 </head>
 
 <body class="page">
+
+<div class="tips" id="upload-status">
+  <div style="width:100%;height:100%" class="lds-bars"><div></div><div></div><div></div><div></div></div>
+</div>
   <div class="baseProfile">
     <section class="main flex">
       <form action="/baseProfile/" method="post">
@@ -30,6 +110,35 @@
       <div class="inputBox">
         <span class="usernameLabel">用户名</span>
         <input class="usernameInput" type="text" id="username" name="username" value="" placeholder="请输入用户名（必填,别人可见）">
+
+        <div class="photo-hd-wrap">
+          <span class="usernameLabel">工程案例（选填）</span>
+          <span style="color: #9f9f9f;">2-3张工地照片</span>
+        </div>
+        <div class="photo-bd-wrap">
+          <div id="uploader">
+            <div class="weui-uploader">
+              <div class="weui-uploader__bd">
+                <!-- 图片列表容器 -->
+                <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+                <div class="weui-uploader__input-box">
+                  <input id="uploaderInput" disabled class="weui-uploader__input" type="file"
+                         accept="image/*" multiple=""/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="weui-gallery" id="gallery">
+          <span class="weui-gallery__img" id="galleryImg"></span>
+          <div class="weui-gallery__opr">
+            <a href="javascript:" class="weui-gallery__del">
+              <i class="weui-icon-delete weui-icon_gallery-delete" style="margin-bottom: 50px"></i>
+            </a>
+          </div>
+        </div>
+
         <input id="openid" type="hidden" value="{{ openid }}" name="openid">
         <input id="nickname" type="hidden" value="{{ nickname }}" name="nickname">
         <input id="sex" type="hidden" value="{{ sex }}" name="sex">
@@ -40,15 +149,18 @@
         <input id="headimgurl" type="hidden" value="{{ headimgurl }}" name="headimgurl">
         <input id="phoneNum" type="hidden" value="{{ phoneNum }}" name="phoneNum">
       </div>
-      <button class="weui-btn weui-btn_primary submitBtn">确定</button>
+      <button class="weui-btn weui-btn_primary submitBtn" id="upload-btn">确定</button>
       </form>
     </section>
 
   </div>
-  <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+  <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
+  <script type="text/javascript" src="../static/lib/jquery-2.1.4.js"></script>
   <script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
   <script type="text/javascript" src="../static/lib/jquerySession.js"></script>
-  <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
+  <script type="text/javascript" src="../static/js/weui.min.js"></script>
+  <script type="text/javascript" src="../static/js/utility.js"></script>
   <script>
     $(function() {
         FastClick.attach(document.body);
@@ -69,15 +181,232 @@
             $("#showName").html(window.localStorage.getItem('username'));
         }
 
-        $(".submitBtn").click(function () {
-            if($(".usernameInput").val() == ""){
-                $.alert("请输入用户名");
-                return false;
-            } else {
-                window.localStorage.setItem("username",$('#username').val());
-            }
+        //调用微信sdk配置
+        wx.config({
+          // debug: true, 																						// 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: "{{ appid }}", 																			// 必填，企业号的唯一标识，此处填写企业号corpid
+          timestamp: "{{timestamp}}", 																// 必填，生成签名的时间戳
+          nonceStr: "{{ nonceStr }}", 																// 必填，生成签名的随机串
+          signature: "{{ signature }}",																// 必填，签名，见附录1
+          jsApiList: [
+            'chooseImage',
+            'previewImage',
+            'uploadImage',
+            'downloadImage'
+          ]
+        });
+
+        // 微信SDK还未加载成功时，禁止操作上传按钮
+        var $chooseImageBtn = $("#uploaderInput");
+
+        // 判断 ios 终端
+        var u = navigator.userAgent;
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+
+        var LIds = [];																									// 用于存储照片本地地址
+        var SIds = [];																									// 用于存储照片远程服务器地址
+        var iosLIds = [];																								// 用于存储ios端本地图片地址
+        var len;																												// 用于存储图片数量
+
+        var tmpl = '<li class="weui-uploader__file file_item" style="background-image:url(#url#);background-size:cover;"></li>';
+
+        wx.ready(function () {
+          // 放开按钮禁用
+          $chooseImageBtn.attr("disabled", false);
+
+          //选择图片
+          $chooseImageBtn.click(function (ev) {
+
+            // 阻止系统默认的选择图片弹窗
+            ev.preventDefault();
+
+            // 选择照片
+            wx.chooseImage({
+              count: 3, 																				// 图片最大选择数量，默认4
+              sizeType: ['compressed'], 						            // 可以指定是原图还是压缩图，默认二者都有
+              sourceType: ['album', 'camera'], 									// 可以指定来源是相册还是相机，默认二者都有
+              success: function (res) {
+                // len = LIds.length;														// 获取上一次选择的图片数量
+                var max = 3 - LIds.length;    									// 这一次还可以传的数量，两次加起来不能超过4张
+                var i = 0;    																// 记录上传次数
+                var num;																			// 记录点击的图片的index值
+
+                if (res.localIds.length > max) {							// 如果这次选择的图片的数量超过上线，提示
+                  alert("超过图片上传数量，请重新选择。");
+                  return;
+                } else {																			// 将这次的值追加进上次选择的图片数组
+                  LIds.push.apply(LIds, res.localIds);
+                }
+
+                // 如果多次选择的图片的数量大于3张，则把➕号隐藏
+                if (LIds.length >= 3) {
+                  $("#uploaderInput").closest(".weui-uploader__input-box").hide();
+                }
+
+                // 如果是 __wxjs_is_wkwebview 内核，则调用ios接口获取图片地址
+                if (window.__wxjs_is_wkwebview) {
+                  var iosStr = "";
+                  var uploaderInput = $("#uploaderInput");
+                  uploaderInput.closest(".weui-uploader__bd").find(".weui-uploader__files").html("");
+                  for (var j = 0; j < LIds.length; j++) {
+                    (function (j) {
+                      wx.getLocalImgData({
+                        localId: LIds[j], 																					// 图片的 localID
+                        success: function (res) {
+                          var localData = res.localData; 													// localData是图片的base64数据，可以用img标签显示
+                          localData = localData.replace("jgp", "jpeg");						// 替换文件格式
+                          iosLIds.push(localData);
+
+                          iosStr += '<li class="weui-uploader__file file_item"  style="background-image:url(' + localData + ');background-size:cover;" data-index="' + j + '"></li>';
+                          if (j === LIds.length - 1) {
+                            uploaderInput.closest(".weui-uploader__bd").find(".weui-uploader__files").append(iosStr);
+                          }
+                        }
+                      });
+                    })(j);
+                  }
+                  // 以base64格式显示图片
+                } else {
+                  showImg(LIds);																											// 以 lcalID 渲染图片
+                }
+
+
+                // 微信每次只允许上传一张图片，所以需要迭代上传，直到所有选择的图片都上传完毕
+                function upload() {
+                  $('.tips').css('display','block');
+                  $chooseImageBtn.attr("disabled", true);
+                  wx.uploadImage({
+                    localId: LIds[i],
+                    isShowProgressTips: 0,			//1
+                    success: function (result) {
+                      SIds.push(result.serverId);
+                      i++;
+                      if (i < LIds.length) {
+                        upload()
+                      } else {
+                        sendImgList();
+                      }
+                    }
+                  })
+                }
+
+                // 点击上传按钮上传图片
+                $("#upload-btn").click(function () {
+                  if($(".usernameInput").val() == ""){
+                    $.alert("请输入用户名");
+                    return false;
+                  } else {
+                    upload();
+                    window.localStorage.setItem("username",$('#username').val());
+                  }
+
+                });
+
+                //发送imgList
+                function sendImgList() {
+                  // alert(SIds.valueOf());
+                  //向后台发送微信服务器上图片的地址
+                  $.ajax({
+                    url: "uploadimg/",
+                    data: {imgList: SIds.toString(), openid:window.localStorage.getItem("openid")},
+                    type: "post",
+                    success: function (response) {
+                      // console.log(response);
+                      $("#upload-status").hide();
+                      weui.toast('上传成功', {
+                        duration: 3000,
+                        callback: function () {
+                          i = 0;
+                          $('.tips').css('display','none');
+                          $chooseImageBtn.attr("disabled", false);
+
+                          if($(".usernameInput").val() == ""){
+                            $.alert("请输入用户名");
+                            return false;
+                          } else {
+                            window.localStorage.setItem("username",$('#username').val());
+                            goUrl('nearby');
+                          }
+                        }
+                      });
+                    },
+                    fail: function (err) {
+                      console.log(err);
+                    }
+                  })
+                }
+
+                // 照片预览
+                $("#uploaderFiles").on("click", "li", function () {
+                  var url = "";
+
+                  // 当前预览的图片的 index
+                  num = $(this).index();
+
+                  // 预览弹窗显示
+                  $("#gallery").show();
+
+                  // 根据不同的内核，显示不同的url地址
+                  if (window.__wxjs_is_wkwebview) {
+                    url = iosLIds[$(this).index()];
+                  } else {
+                    url = LIds[$(this).index()];
+                  }
+
+                  // 更改背景图片样式
+                  $("#galleryImg").css('background', 'url(' + url + ') no-repeat center center');
+
+                });
+
+                // 点击隐藏弹窗
+                $("#gallery").on("click", function () {
+                  $("#galleryImg").html("");
+                  $(this).hide();
+                });
+
+                //删除图片
+                $(".weui-gallery__del").click(function () {
+                  $("#gallery").hide();																															// 隐藏弹窗
+                  $("#galleryImg").css('background', '');																						// 清空背景样式
+
+                  if (window.__wxjs_is_wkwebview) {
+                    iosLIds.splice(num, 1);																												// 移除该照片的本地地址
+                    LIds.splice(num, 1);
+                    showImg(iosLIds);																															// 渲染列表
+                  } else {
+                    LIds.splice(num, 1);																													// 移除该照片的本地地址
+                    showImg(LIds);																																// 渲染列表
+                  }
+                  // 当本地图片列表数量小于4时，显示加号
+                  if (LIds.length < 4) {
+                    $("#uploaderInput").closest(".weui-uploader__input-box").show();
+                  }
+                });
+
+
+                function showImg(arr) {
+                  var str = "";
+                  var uploaderInput = $("#uploaderInput");
+
+                  uploaderInput.closest(".weui-uploader__bd").find(".weui-uploader__files").html("");
+
+                  for (var k = 0; k < arr.length; k++) {
+                    str += '<li class="weui-uploader__file file_item"  style="background-image:url(' + arr[k] + ');background-size:cover;" data-index="' + k + '"></li>';
+                  }
+
+                  uploaderInput.closest(".weui-uploader__bd").find(".weui-uploader__files").append(str);
+                }
+
+              }
+            });
+          });
         })
+
+
     });
+
+
+
   </script>
 </body>
 

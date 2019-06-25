@@ -97,7 +97,7 @@
             FastClick.attach(document.body);
             window.localStorage.setItem("openid", $('#openidInsert').text());
             window.localStorage.setItem("guest", $('#guestInsert').text());
-            $.session.set("guest", $('#guestInsert').text()); 
+            $.session.set("guest", $('#guestInsert').text());
             window.localStorage.setItem("role", 2);  //页面载入时默认显示附近的工人，所以传老板的角色给后台
             $.session.set('role', 2);
 
@@ -125,7 +125,7 @@
                 lacation();
 
             });
-            
+
             $(".weui-navbar__item").on("click",function(){
                 $(".weui-navbar__item").removeClass("weui_bar__item_on");
                 $(this).addClass("weui_bar__item_on");
@@ -252,7 +252,7 @@
                     str += '<li class="listItem flex">' +
                         '<div class="infoBox flex">' +
                         '<div class="list_hd flex">' +
-                        '<div class="tagBox"><span class="username">' + val.username + '</span>' + $tag + '</div>' +
+                        '<div class="tagBox"><span class="username" data-userid="'+ val.userid +'">' + val.username + '</span>' + $tag + '</div>' +
                         '<div class="star star' + val.star + '"></div>' +
                         '</div>' +
                         '<div class="list_bd flex">' +
@@ -281,7 +281,7 @@
                 //是否可分享
                 function isSharable(guest,sharable) {
                     if(!guest && sharable){
-                        return '<a href="javascript:;" class="share weui-btn weui-btn_mini weui-btn_primary">分享朋友圈查看号码</a>' 
+                        return '<a href="javascript:;" class="share weui-btn weui-btn_mini weui-btn_primary">分享朋友圈查看号码</a>'
                     } else {
                         return '';
                     }
@@ -360,10 +360,22 @@
                     } else {
                         location.href = "/register/?openid=" + window.localStorage.getItem("openid") ;
                     }
-                    
+
                 });
 
-
+                $(".username").on("click",function(){
+                    var userid = $(this).attr("data-userid");
+                    $.ajax({
+                        url:"http://ewosugong.com/userrepresentation/",
+                        data:{userid:userid},
+                        type:"GET",
+                        success:function(){
+                            // alert(1);
+                            location.href = "http://ewosugong.com/userrepresentation/?userid="+ userid;
+                        }
+                    });
+                    //+ "&openid="+window.localStorage.getItem("openid")
+                });
 
 
                 //查看电话号码弹窗
@@ -407,7 +419,7 @@
                                     }
                                 })
                             }
-                           
+
                         },
                         onCancel: function () {
                             return false;
@@ -480,7 +492,7 @@
                 }
 
             }
-                
+
         });
 
         //创建百度地图对象

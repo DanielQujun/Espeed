@@ -259,7 +259,7 @@
                 str += '<li class="listItem flex">' +
                     '<div class="infoBox flex">' +
                     '<div class="list_hd flex">' +
-                    '<div class="tagBox"><span class="username">' + val.username + '</span>'+ $tag +'</div>' +
+                    '<div class="tagBox"><span class="username"  data-userid="'+ val.userid +'">' + val.username + '</span>'+ $tag +'</div>' +
                     '<div class="star star' + val.star + '"></div>' +
                     '</div>' +
                     '<div class="list_bd flex">' +
@@ -310,6 +310,19 @@
                     oTime = getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin);//最后拼接时间
                 return oTime;
             }
+
+            $(".username").on("click",function(){
+                var userid = $(this).attr("data-userid");
+                $.ajax({
+                    url:"http://ewosugong.com/userrepresentation/",
+                    data:{userid:userid},
+                    type:"GET",
+                    success:function(){
+                        // alert(1);
+                        location.href = "http://ewosugong.com/userrepresentation/?userid="+ userid;
+                    }
+                });
+            });
 
             //补0操作
             function getzf(num) {
